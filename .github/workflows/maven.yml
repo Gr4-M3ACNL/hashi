@@ -39,7 +39,7 @@ jobs:
         distribution: 'temurin'
     
     - name: download dependencies
-      run: mvn -B dependency:resolve --file pom.xml
+      run: mvn -B dependency:resolve dependency:go-offline --file pom.xml
 
 
   check:
@@ -118,7 +118,7 @@ jobs:
       run: mvn -B clean javadoc:javadoc --file pom.xml
 
   documentation-test:
-    
+
     needs: check
     runs-on: ubuntu-latest
 
