@@ -5,7 +5,8 @@
 
   <groupId>fr.m3acnl</groupId>
   <artifactId>hashi</artifactId>
-  <version>1.0</version>
+  <packaging>jar</packaging>
+  <version>1.0-SNAPSHOT</version>
   <name>hashi</name>
 
 
@@ -14,8 +15,8 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
-    <javafx.version>21.0.2</javafx.version>
-    <start-class>${groupID}.${project.artifactId}.Hashi</start-class>
+    <javafx.version>23.0.1</javafx.version>
+    <start-class>fr.m3acnl.hashi.Hashi</start-class>
   </properties>
 
 
@@ -71,7 +72,7 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.10.2</version>
+      <version>5.11.4</version>
       <scope>test</scope>
     </dependency>
 
@@ -79,18 +80,18 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <version>2.17.0</version>
+      <version>2.18.2</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.17.0</version>
+      <version>2.18.2</version>
     </dependency>
   </dependencies>
 
   <build>
     <finalName>groupe4-hashi</finalName>
-    <defaultGoal>clean install</defaultGoal>
+    <defaultGoal>clean package</defaultGoal>
 
     <plugins>
 
@@ -98,8 +99,8 @@
       <!-- Compile with java 17 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-
-        <version>3.8.1</version>
+        
+        <version>3.13.0</version>
         <configuration>
           <release>17</release>
         </configuration>
@@ -110,7 +111,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
 
-        <version>3.3.1</version>
+        <version>3.6.0</version>
         <executions>
           <execution>
             <id>validate</id>
@@ -134,7 +135,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
 
-        <version>3.6.2</version>
+        <version>3.11.2</version>
         <configuration>
           <!-- Paramètre de sélection -->
           <show>private</show>
@@ -163,7 +164,7 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
 
-        <version>3.3.2</version>
+        <version>3.4.0</version>
         <configuration>
           <filesets>
             <!-- Chemin du dossier relatif à la base du projet -->
@@ -199,14 +200,15 @@
         <!-- Remise en forme du .jar -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        
-        <version>3.2.2</version>
+
+        <version>3.4.1</version>
         <configuration>
           <mainClass>${start-class}</mainClass>
           <layout>JAR</layout>
         </configuration>
         <executions>
           <execution>
+            <phase>package</phase>
             <goals>
               <goal>repackage</goal>
             </goals>
