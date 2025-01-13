@@ -16,8 +16,35 @@ on:
       - dev
 
 jobs:
+  dependence:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    
+    -name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    
+    - name: download dependencies
+      run: mvn -B dependency:resolve --file pom.xml
+
+
   check:
 
+    needs: dependence
     runs-on: ubuntu-latest
 
     steps:
@@ -91,6 +118,7 @@ jobs:
       run: mvn -B clean javadoc:javadoc --file pom.xml
 
   documentation-test:
+    
     needs: check
     runs-on: ubuntu-latest
 
@@ -161,7 +189,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: maven
     - name: Test with Maven
       run: mvn -B clean test --file pom.xml
 
@@ -187,7 +214,6 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: maven
     - name: Test with Maven
       run: mvn -B clean test --file pom.xml
 
@@ -213,6 +239,5 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-        cache: maven
     - name: Package with Maven
       run: mvn -B clean package --file pom.xml
