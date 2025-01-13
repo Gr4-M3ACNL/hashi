@@ -98,6 +98,7 @@
       <!-- Compile with java 17 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+
         <version>3.8.1</version>
         <configuration>
           <release>17</release>
@@ -108,6 +109,7 @@
         <!-- Vérifie la conformité du code par rapport au standard mis en place -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+
         <version>3.3.1</version>
         <executions>
           <execution>
@@ -131,6 +133,7 @@
         <!-- Création de la doc -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+
         <version>3.6.2</version>
         <configuration>
           <!-- Paramètre de sélection -->
@@ -159,6 +162,7 @@
         <!-- Suppression de la doc dans le clean -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
+
         <version>3.3.2</version>
         <configuration>
           <filesets>
@@ -184,6 +188,7 @@
         <!-- Implémentation de JavaFx pour les tests -->
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
+
         <version>0.0.8</version>
         <configuration>
           <mainClass>${start-class}</mainClass>
@@ -194,6 +199,7 @@
         <!-- Remise en forme du .jar -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        
         <version>3.2.2</version>
         <configuration>
           <mainClass>${start-class}</mainClass>
