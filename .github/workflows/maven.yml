@@ -17,7 +17,6 @@ on:
 
 jobs:
   dependence:
-    paths: ['pom.xml']
     runs-on: ubuntu-latest
 
     steps:
@@ -25,12 +24,13 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Cache Maven packages
-      uses: actions/cache@v3
+      uses: actions/cache@v4
+      id: cache
       with:
         path: ~/.m2
         key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
         restore-keys: |
-          ${{ runner.os }}-maven-
+          ${{ runner.os }}-maven
     
     - name: Set up JDK 17
       uses: actions/setup-java@v4
@@ -39,9 +39,11 @@ jobs:
         distribution: 'temurin'
     
     - name: download dependencies
+      if : steps.cache.outputs.cache-hit != 'true'
       run: |
         mvn -B dependency:resolve --file pom.xml
         mvn -B dependency:go-offline --file pom.xml
+        mvn -B package --file pom.xml
 
 
   check:
