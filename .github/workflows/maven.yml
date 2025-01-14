@@ -17,7 +17,7 @@ on:
 
 jobs:
   dependence:
-
+    paths: ['pom.xml']
     runs-on: ubuntu-latest
 
     steps:
