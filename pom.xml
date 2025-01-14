@@ -148,8 +148,7 @@
           <testDoctitle>Documentation des tests ${project.name}</testDoctitle>
 
           <!-- Chemin de génération -->
-          <reportOutputDirectory>${project.basedir}/doc</reportOutputDirectory>
-          <destDir>javadoc</destDir>
+          <outputDirectory>${project.basedir}/doc</outputDirectory>
           <docfilessubdirs>true</docfilessubdirs>
 
           <!-- Paramètre de génération -->
@@ -169,7 +168,7 @@
           <filesets>
             <!-- Chemin du dossier relatif à la base du projet -->
             <fileset>
-              <directory>doc/javadoc</directory>
+              <directory>doc/apidocs</directory>
             </fileset>
             <fileset>
               <directory>doc/plantuml</directory>

@@ -44,6 +44,7 @@ jobs:
         mvn -B dependency:resolve --file pom.xml
         mvn -B dependency:go-offline --file pom.xml
         mvn -B package --file pom.xml
+        mvn -B javadoc:javadoc --file pom.xml
 
 
   check:

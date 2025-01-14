@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload the Javadoc
-          path: './doc/javadoc'
+          path: './doc/apidocs'
       
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
