@@ -114,6 +114,7 @@
         <version>3.6.0</version>
         <executions>
           <execution>
+            <?m2e execute onConfiguration,onIncremental?>
             <id>validate</id>
             <phase>validate</phase>
             <goals>
@@ -143,7 +144,7 @@
           <!-- Paramètre d'affichage -->
           <use>true</use>
           <windowtitle>${project.name}</windowtitle>
-          <doctitle>Documentaion ${project.name}</doctitle>
+          <doctitle>Documentation ${project.name}</doctitle>
           <doctitle>${project.name} ${project.version}</doctitle>
           <testDoctitle>Documentation des tests ${project.name}</testDoctitle>
 
