@@ -1,4 +1,4 @@
-package fr.m3acnl.hashi;
+package fr.m3acnl;
 
 /**
  * Main class of the Hashi game.
