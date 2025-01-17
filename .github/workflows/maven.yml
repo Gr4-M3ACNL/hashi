@@ -222,7 +222,7 @@ jobs:
       uses: actions/setup-java@v4
       with:
         java-version: '16'
-        distribution: 'temurin'
+        distribution: 'oracle'
     - name: Test with Maven
       run: mvn -B clean test --file pom.xml
 
