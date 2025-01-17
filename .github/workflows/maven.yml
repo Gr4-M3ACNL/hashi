@@ -37,6 +37,10 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
+
+    - name: clear old dependencies
+      if : steps.cache.outputs.cache-hit != 'true'
+      run: rm -rf ~/.m2/repository
     
     - name: download dependencies
       if : steps.cache.outputs.cache-hit != 'true'
