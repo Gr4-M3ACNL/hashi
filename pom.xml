@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
@@ -12,11 +13,11 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.release>17</maven.compiler.release>
-    <javafx.version>23.0.1</javafx.version>
-    <start-class>fr.m3acnl.hashi.Hashi</start-class>
+    <maven.compiler.source>16</maven.compiler.source>
+    <maven.compiler.target>16</maven.compiler.target>
+    <maven.compiler.release>16</maven.compiler.release>
+    <javafx.version>19.0.2</javafx.version>
+    <start-class>fr.m3acnl.Hashi</start-class>
   </properties>
 
 
@@ -94,14 +95,14 @@
     <defaultGoal>clean package</defaultGoal>
 
     <plugins>
-
       <plugin>
-      <!-- Compile with java 17 -->
+        <!-- Compile with java 16 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
+
         <version>3.13.0</version>
         <configuration>
-          <release>17</release>
+          <release>16</release>
         </configuration>
       </plugin>
 
@@ -109,9 +110,11 @@
         <!-- Vérifie la conformité du code par rapport au standard mis en place -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+
         <version>3.6.0</version>
         <executions>
           <execution>
+            <?m2e execute onConfiguration,onIncremental?>
             <id>validate</id>
             <phase>validate</phase>
             <goals>
@@ -132,6 +135,7 @@
         <!-- Création de la doc -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
+
         <version>3.11.2</version>
         <configuration>
           <!-- Paramètre de sélection -->
@@ -140,13 +144,12 @@
           <!-- Paramètre d'affichage -->
           <use>true</use>
           <windowtitle>${project.name}</windowtitle>
-          <doctitle>Documentaion ${project.name}</doctitle>
+          <doctitle>Documentation ${project.name}</doctitle>
           <doctitle>${project.name} ${project.version}</doctitle>
           <testDoctitle>Documentation des tests ${project.name}</testDoctitle>
 
           <!-- Chemin de génération -->
-          <reportOutputDirectory>${project.basedir}/doc</reportOutputDirectory>
-          <destDir>javadoc</destDir>
+          <outputDirectory>${project.basedir}/doc</outputDirectory>
           <docfilessubdirs>true</docfilessubdirs>
 
           <!-- Paramètre de génération -->
@@ -160,12 +163,13 @@
         <!-- Suppression de la doc dans le clean -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
+
         <version>3.4.0</version>
         <configuration>
           <filesets>
             <!-- Chemin du dossier relatif à la base du projet -->
             <fileset>
-              <directory>doc/javadoc</directory>
+              <directory>doc/apidocs</directory>
             </fileset>
             <fileset>
               <directory>doc/plantuml</directory>
@@ -185,6 +189,7 @@
         <!-- Implémentation de JavaFx pour les tests -->
         <groupId>org.openjfx</groupId>
         <artifactId>javafx-maven-plugin</artifactId>
+
         <version>0.0.8</version>
         <configuration>
           <mainClass>${start-class}</mainClass>
@@ -195,7 +200,8 @@
         <!-- Remise en forme du .jar -->
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <version>3.4.1</version>
+
+        <version>2.7.18</version>
         <configuration>
           <mainClass>${start-class}</mainClass>
           <layout>JAR</layout>
