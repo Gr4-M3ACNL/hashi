@@ -9,7 +9,7 @@ import java.util.Hashtable;
  * Il permet l'incrémentation et la decrémentation de son degré actuelle,
  * si il est valide ainsi que de récupérer ça position et son degré solution
  */
-public class Noeud{
+public class Noeud implements Comparable<Noeud>{
     private Coord position;
     private int degreSoluce;
     private int degreActuelle;
@@ -69,5 +69,15 @@ public class Noeud{
     public int getDegreSoluce() {
         return degreSoluce;
     }
-
+    
+    /**
+     * Comparaison entre 2 noeud
+     * 
+     * @param n2 le noeud avec qui comparé
+     * @return le résultat de la comparaison
+     */
+    @Override
+    public int compareTo(Noeud n2){
+        return this.position.compareTo(n2.position);
+    }
 }

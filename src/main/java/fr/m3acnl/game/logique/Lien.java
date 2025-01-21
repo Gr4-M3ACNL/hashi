@@ -75,5 +75,13 @@ public class Lien {
         return nbLien;
     }
 
-    
+    /**
+     * Vérifie si un noeud voulu est présent dans ce lien
+     * 
+     * @param n Le noeud a vérifier
+     * @return Le résultat de la vérification
+     */
+    public int noeudDansLien(Noeud n){
+        return n.compareTo(this.noeud1)+n.compareTo(this.noeud2);
+    }    
 }

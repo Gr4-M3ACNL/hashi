@@ -4,7 +4,7 @@ package fr.m3acnl.game.logique;
  * Cette classe représente les coordonnés en x et y,
  * et permet la création ainsi que la récupération du x et y
  */
-public class Coord{
+public class Coord implements Comparable<Coord>{
     private int x;
     private int y;
 
@@ -35,5 +35,14 @@ public class Coord{
     public int getY() {
         return y;
     }
-
+    
+    /**
+     * Comparaison entre 2 Coord
+     * 
+     * @param co2 le Coord avec qui comparé
+     * @return le résultat de la comparaison
+     */
+    public int compareTo(Coord co2){
+        return (Integer.compare(this.x, co2.x) & Integer.compare(this.y, co2.y));
+    }
 }
