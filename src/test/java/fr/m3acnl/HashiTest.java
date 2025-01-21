@@ -1,4 +1,4 @@
-package fr.m3acnl.hashi;
+package fr.m3acnl;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
