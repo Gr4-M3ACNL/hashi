@@ -30,5 +30,10 @@ public abstract class Tests {
     public static void printNameAtEnd(Class<? extends Tests> T){
         System.out.println("\033[31;1m================================  \033[36;1mFIN " + T.getSimpleName() + "  \033[31;1m================================\033[0m\n");
     }
+
+    /**
+     * Constructeur de la classe.
+     */
+    public Tests() {}
     
 }

@@ -49,4 +49,9 @@ public class VerifTest implements TestWatcher {
     public void testAborted(ExtensionContext context, Throwable cause) {
         System.out.println("[\033[34;1m" + context.getDisplayName() + "\033[0m] \033[33;1m\tAVORTÉ\033[0m");
     }
+
+    /**
+     * Constructeur de la classe.
+     */
+    public VerifTest() {}
 }
