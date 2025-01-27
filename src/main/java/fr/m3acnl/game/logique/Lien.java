@@ -1,25 +1,35 @@
-/**
- * @autor Luka COGNARD
- * @date 18-01-2025
- * @version 1.0
- * @description Contient la classe Lien
- *
- */
 package fr.m3acnl.game.logique;
 
 /**
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
- * lié, son nombre de lien et son nombre de lien de la solution
+ * lié, son nombre de lien et son nombre de lien de la solution.
+ * 
+ * @author COGNARD Luka
  */
 public class Lien {
 
+    /**
+     * 1er noeud du lien.
+     */
     private Noeud noeud1;
+
+    /**
+     * 2ème noeud du lien.
+     */
     private Noeud noeud2;
+
+    /**
+     * Nombre de lien actuelle.
+     */
     private int nbLien;
+
+    /**
+     * Le nombre soluce du lien.
+     */
     private int nbLienSoluce;
 
     /**
-     * Constructeur pour une nouvelle instance de Lien
+     * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
      * @param n2 deuxième Noeud
@@ -33,7 +43,7 @@ public class Lien {
     }
 
     /**
-     * Vérifie si le lien est valide
+     * Vérifie si le lien est valide.
      *
      * @return True si le lien est valide sinon false
      */
@@ -43,7 +53,7 @@ public class Lien {
 
     /**
      * Active le lien le faisant passer a son état suivant et met a jour le
-     * degré actuelle des noeud liés
+     * degré actuelle des noeud liés.
      */
     public void lienActiver() {
         if ((nbLien += 1) % 3 == 0) {
@@ -56,7 +66,7 @@ public class Lien {
     }
 
     /**
-     * Récupère le premier noeud
+     * Récupère le premier noeud.
      *
      * @return le premier noeud
      */
@@ -65,7 +75,7 @@ public class Lien {
     }
 
     /**
-     * Récupère le deuxième noeud
+     * Récupère le deuxième noeud.
      *
      * @return le deuxième noeud
      */
@@ -74,7 +84,7 @@ public class Lien {
     }
 
     /**
-     * Récupère le nombre de lien
+     * Récupère le nombre de lien.
      *
      * @return le nombre de lien
      */
@@ -83,7 +93,7 @@ public class Lien {
     }
 
     /**
-     * Vérifie si un noeud n est présent dans ce lien
+     * Vérifie si un noeud n est présent dans ce lien.
      *
      * @param n Le noeud a vérifier
      * @return Le résultat de la vérification

@@ -1,10 +1,3 @@
-/**
- * @autor Luka COGNARD
- * @date 18-01-2025
- * @version 1.0
- * @description Contient la classe Noeud
- *
- */
 package fr.m3acnl.game.logique;
 
 import java.util.Hashtable;
@@ -13,16 +6,33 @@ import java.util.Hashtable;
  * Cette classe représente un Noeud dans le jeu du hachi. Un noeud connait: sa
  * position, son degré actuelle, le degré de sa solution et une liste
  * d'adjacence stockant les noeuds auquel il est relié directement.
+ * 
+ * @author COGNARD Luka
  */
 public class Noeud implements Comparable<Noeud> {
 
+    /**
+     * La position en coordonnée du noeud.
+     */
     private Coord position;
+
+    /**
+     * Le degré solution du noeud.
+     */
     private int degreSoluce;
+
+    /**
+     * Le degré actuelle du noeud.
+     */
     private int degreActuelle;
+
+    /**
+     * La liste d'adjacence de la matrice.
+     */
     private Hashtable listeAdjacence;
 
     /**
-     * Constructeur pour créer une nouvelle instance d'un Noeud
+     * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
      * @param x la coordonnée x du noeud
      * @param y la coordonnée y du noeud
@@ -36,21 +46,21 @@ public class Noeud implements Comparable<Noeud> {
     }
 
     /**
-     * Incrémente le degré actuelle du noeud
+     * Incrémente le degré actuelle du noeud.
      */
     public void ajouterDegre() {
         degreActuelle += 1;
     }
 
     /**
-     * Décrémente le degré actuelle du noeud
+     * Décrémente le degré actuelle du noeud.
      */
     public void enleverDegre() {
         degreActuelle -= 2;
     }
 
     /**
-     * Vérifie si le noeud est valide
+     * Vérifie si le noeud est valide.
      *
      * @return 0 si valide
      */
@@ -59,7 +69,7 @@ public class Noeud implements Comparable<Noeud> {
     }
 
     /**
-     * Récupère la position du noeud
+     * Récupère la position du noeud.
      *
      * @return les coordonnées du noeud
      */
@@ -68,7 +78,7 @@ public class Noeud implements Comparable<Noeud> {
     }
 
     /**
-     * Récupère le degré solution
+     * Récupère le degré solution.
      *
      * @return le degré solution
      */

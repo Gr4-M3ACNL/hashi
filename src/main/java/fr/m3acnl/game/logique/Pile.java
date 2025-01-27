@@ -1,32 +1,29 @@
-/**
- * @autor Aymeric MABIRE
- * @date 20-01-2025
- * @version 1.0
- * @description Contient la classe Pile
- *
- */
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
 /**
- * Classe Pile
- *
- * Cette classe permet de gérer une pile
+ * Classe Pile.
+ * Cette classe permet de gérer une pile.
+ * 
+ * @author MABIRE Aymeric
  */
 public class Pile {
 
+    /**
+     * Tableau contenant la pile.
+     */
     private ArrayList<Object> tab;
 
     /*
-     * Constructeur de la classe Pile
+     * Constructeur de la classe Pile.
      */
     public Pile() {
         tab = new ArrayList<Object>();
     }
 
     /**
-     * Méthode pour retourner la taille d'une pile
+     * Méthode pour retourner la taille d'une pile.
      *
      * @return : la taille de la pile
      */
@@ -35,7 +32,7 @@ public class Pile {
     }
 
     /**
-     * Méthode pour savoir si une pile est vide
+     * Méthode pour savoir si une pile est vide.
      *
      * @return : true si la pile est vide, false sinon
      */
@@ -44,7 +41,7 @@ public class Pile {
     }
 
     /**
-     * Méthode pour empiler un objet dans une pile
+     * Méthode pour empiler un objet dans une pile.
      *
      * @param o : objet à empiler
      */
@@ -54,7 +51,7 @@ public class Pile {
     }
 
     /**
-     * Méthode pour dépiler un objet d'une pile
+     * Méthode pour dépiler un objet d'une pile.
      *
      * @return : l'objet dépilé
      */
@@ -68,7 +65,7 @@ public class Pile {
     }
 
     /**
-     * Méthode pour retourner l'objet au sommet de la pile
+     * Méthode pour retourner l'objet au sommet de la pile.
      *
      * @return : l'objet au sommet de la pile
      */
@@ -80,7 +77,7 @@ public class Pile {
     }
 
     /**
-     * Méthode pour vider entièrement une pile
+     * Méthode pour vider entièrement une pile.
      */
     public void vidange() {
         while (!estVide()) {
@@ -89,7 +86,7 @@ public class Pile {
     }
 
     /**
-     * Méthode pour afficher le contenu d'une pile
+     * Méthode pour afficher le contenu d'une pile.
      *
      * @return : le contenu de la pile
      */
