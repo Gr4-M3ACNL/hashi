@@ -1,3 +1,10 @@
+/**
+ * @autor Luka COGNARD
+ * @date 18-01-2025
+ * @version 1.0
+ * @description Contient la classe Lien
+ *
+ */
 package fr.m3acnl.game.logique;
 
 /**

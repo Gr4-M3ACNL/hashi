@@ -1,26 +1,35 @@
+/**
+ * @autor Luka COGNARD
+ * @date 18-01-2025
+ * @version 1.0
+ * @description Contient la classe Coord
+ *
+ */
 package fr.m3acnl.game.logique;
 
 /**
- * Cette classe représente les coordonnés en x et y,
- * et permet la création ainsi que la récupération du x et y
+ * Cette classe représente les coordonnés en x et y, et permet la création ainsi
+ * que la récupération du x et y
  */
-public class Coord implements Comparable<Coord>{
+public class Coord implements Comparable<Coord> {
+
     private int x;
     private int y;
 
     /**
      * Constructeur pour créer une nouvelle instance de Coord
-     * 
-     * @param px coordonnée x de la coordonnée 
+     *
+     * @param px coordonnée x de la coordonnée
      * @param py coordonnée y de la coordonnée
      */
-    public Coord(int px,int py){
-        x=px;
-        y=py;
+    public Coord(int px, int py) {
+        x = px;
+        y = py;
     }
+
     /**
      * Récupère la coordonnée x de l'instance
-     * 
+     *
      * @return la coordonnée x de l'instance
      */
     public int getX() {
@@ -29,20 +38,20 @@ public class Coord implements Comparable<Coord>{
 
     /**
      * Récupère la coordonnée y de l'instance
-     * 
+     *
      * @return la coordonnée y de l'instance
      */
     public int getY() {
         return y;
     }
-    
+
     /**
      * Comparaison entre 2 Coord
-     * 
+     *
      * @param co2 le Coord avec qui comparé
      * @return le résultat de la comparaison
      */
-    public int compareTo(Coord co2){
+    public int compareTo(Coord co2) {
         return (Integer.compare(this.x, co2.x) & Integer.compare(this.y, co2.y));
     }
 }
