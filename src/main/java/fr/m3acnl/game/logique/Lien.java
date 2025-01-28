@@ -76,7 +76,7 @@ public class Lien {
      * degré actuelle des noeud liés.
      */
     public void lienActiver() {
-        if ((nbLien += 1) % 3 == 0) {
+        if ((nbLien = (nbLien + 1) % 3) == 0) {
             noeud1.enleverDegre();
             noeud2.enleverDegre();
         } else {
@@ -127,6 +127,10 @@ public class Lien {
      * @return Le résultat de la vérification
      */
     public int noeudDansLien(Noeud n) {
-        return n.compareTo(this.noeud1) + n.compareTo(this.noeud2);
+        int res=noeud1.compareTo(n);
+        if(res!=0){
+            return noeud2.compareTo(n);
+        }
+        return res;
     }
 }
