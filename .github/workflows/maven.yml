@@ -151,6 +151,18 @@ jobs:
     - name: Generate documentation test
       run: mvn -B clean test javadoc:test-javadoc --file pom.xml
 
+  existence-test:
+
+    needs: check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: verification of the existence of the file
+      run: ./verificationTest.sh
+
   test_linux:
 
     needs: compile
@@ -229,7 +241,7 @@ jobs:
 
   package:
 
-    needs: [test_linux, test_windows, test_macos, documentation, documentation-test]
+    needs: [existence-test, test_linux, test_windows, test_macos, documentation, documentation-test]
     runs-on: ubuntu-latest
 
     steps:
