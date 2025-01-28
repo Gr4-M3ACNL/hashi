@@ -185,6 +185,7 @@
             <!-- Chemin du dossier relatif à la base du projet -->
             <fileset>
               <directory>doc/apidocs</directory>
+              <directory>doc/testapidocs</directory>
             </fileset>
             <fileset>
               <directory>doc/plantuml</directory>

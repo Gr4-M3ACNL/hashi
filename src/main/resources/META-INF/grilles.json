@@ -1,0 +1,32 @@
+{
+    "facile": [
+        {
+            "taille": 6,
+            "serialise": "1,2,3,4,5,6"
+        },
+        {
+            "taille": 6,
+            "serialise": "6,5,4,3,2,1"
+        }
+    ],
+    "moyen": [
+        {
+            "taille": 9,
+            "serialise": "1,2,3,4,5,6,7,8,9"
+        },
+        {
+            "taille": 9,
+            "serialise": "9,8,7,6,5,4,3,2,1"
+        }
+    ],
+    "difficile": [
+        {
+            "taille": 12,
+            "serialise": "1,2,3,4,5,6,7,8,9,10,11,12"
+        },
+        {
+            "taille": 12,
+            "serialise": "12,11,10,9,8,7,6,5,4,3,2,1"
+        }
+    ]
+}
