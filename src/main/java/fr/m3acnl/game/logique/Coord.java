@@ -57,7 +57,7 @@ public class Coord implements Comparable<Coord> {
     public int compareTo(Coord co2) {
         int res = Integer.compare(this.coordX, co2.getCoordX());
         if (res == 0) { 
-            return Integer.compare(this.coordX, co2.getCoordY());
+            return Integer.compare(this.coordY, co2.getCoordY());
         }
         return res;
     }
