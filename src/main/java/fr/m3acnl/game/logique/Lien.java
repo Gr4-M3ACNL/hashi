@@ -127,8 +127,8 @@ public class Lien {
      * @return Le résultat de la vérification
      */
     public int noeudDansLien(Noeud n) {
-        int res=noeud1.compareTo(n);
-        if(res!=0){
+        int res = noeud1.compareTo(n);
+        if (res != 0) {
             return noeud2.compareTo(n);
         }
         return res;
