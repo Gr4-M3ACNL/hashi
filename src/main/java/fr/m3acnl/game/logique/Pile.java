@@ -15,7 +15,7 @@ public class Pile {
      */
     private ArrayList<Object> tab;
 
-    /*
+    /**
      * Constructeur de la classe Pile.
      */
     public Pile() {
