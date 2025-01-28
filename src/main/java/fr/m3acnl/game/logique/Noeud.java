@@ -32,6 +32,13 @@ public class Noeud implements Comparable<Noeud> {
     private Hashtable listeAdjacence;
 
     /**
+     * Si le noeud est en surbrillance ou non.
+     */
+    private Boolean surbrillance;
+
+    
+
+    /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
      * @param x la coordonnée x du noeud
@@ -43,6 +50,21 @@ public class Noeud implements Comparable<Noeud> {
         degreSoluce = degS;
         degreActuelle = 0;
         listeAdjacence = new Hashtable<>();
+        surbrillance = false;
+    }
+
+    /**
+     * Active la surbrillance du noeud.
+     */
+    public void surbrillanceOn() {
+        surbrillance = true;
+    }
+
+    /**
+     * Désactive la surbrillance du noeud.
+     */
+    public void surbrillanceOff() {
+        surbrillance = false;
     }
 
     /**
@@ -84,6 +106,14 @@ public class Noeud implements Comparable<Noeud> {
      */
     public int getDegreSoluce() {
         return degreSoluce;
+    }
+    
+    /**
+     * Récupère la surbrillance.
+     * @return la surbrillance
+     */
+    public Boolean getSurbrillance() {
+        return surbrillance;
     }
 
     /**

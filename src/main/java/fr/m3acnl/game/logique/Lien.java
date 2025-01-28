@@ -29,6 +29,11 @@ public class Lien {
     private int nbLienSoluce;
 
     /**
+     * La surbrillance du lien.
+     */
+    private Boolean surbrillance;
+
+    /**
      * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
@@ -40,6 +45,21 @@ public class Lien {
         noeud2 = n2;
         nbLienSoluce = sol;
         nbLien = 0;
+        surbrillance = false;
+    }
+
+    /**
+     * Active la surbrillance du lien.
+     */
+    public void surbrillanceOn() {
+        surbrillance = true;
+    }
+
+    /**
+     * Désactive la surbrillance du lien.
+     */
+    public void surbrillanceOff() {
+        surbrillance = false;
     }
 
     /**
@@ -90,6 +110,14 @@ public class Lien {
      */
     public int getnbLien() {
         return nbLien;
+    }
+
+    /**
+     * Récupère la surbrillance.
+     * @return la surbrillance
+     */
+    public Boolean getSurbrillance() {
+        return surbrillance;
     }
 
     /**
