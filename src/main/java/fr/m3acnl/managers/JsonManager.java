@@ -2,6 +2,7 @@ package fr.m3acnl.managers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 
 /**
  * Classe permettant d'extraire et de sauvegarder des données au format JSON.
@@ -13,7 +14,12 @@ public class JsonManager {
     /**
      * Chemin du fichier JSON contenant les grilles de jeu.
      */
-    private static String niveau = "/META-INF/grilles.json";
+    private static String fichierNiveau = "/META-INF/grilles.json";
+
+    /**
+     * Le nom du fichier contenant les profils.
+     */
+    private static String fichierProfils = "profils.json";
     
     /**
      * Classe interne permettant de stocker les informations d'une grille.
@@ -30,7 +36,7 @@ public class JsonManager {
     public GrilleInfo getGrilleInfo(String difficulte, int index) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(niveau));
+            JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(fichierNiveau));
             
             JsonNode difficulteNode = rootNode.get(difficulte.toLowerCase());
             if (difficulteNode != null && index < difficulteNode.size()) {
@@ -40,10 +46,52 @@ public class JsonManager {
                     grilleNode.get("serialise").asText()
                 );
             }
-            return null;
+            throw new IllegalArgumentException("La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
+        } catch (Exception e) {
+            throw new IllegalArgumentException("La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
+        }
+    }
+
+    /**
+     * Récupère le nombre de grilles de jeu pour une difficulté donnée.
+     * 
+     * @param difficulte Difficulté des grilles
+     * @return Le nombre de grilles
+     * @throws IllegalArgumentException si la difficulté n'existe pas
+     */
+    public int getNbGrilles(String difficulte) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(fichierNiveau));
+            
+            JsonNode difficulteNode = rootNode.get(difficulte.toLowerCase());
+            if (difficulteNode == null) {
+                throw new IllegalArgumentException("La difficulté n'existe pas");
+            }
+            return difficulteNode.size();
+        } catch (Exception e) {
+            throw new IllegalArgumentException("La difficulté n'existe pas");
+        }
+    }
+
+    /**
+     * Récupère les différentes difficultés disponibles.
+     * 
+     * @return Les différentes difficultés
+     */
+    public String[] getDifficultes() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(fichierNiveau));
+
+            ArrayList<String> difficultes = new ArrayList<>(); // ArrayList pour pouvoir utiliser toArray
+
+            rootNode.fieldNames().forEachRemaining(difficultes::add); // Ajoute chaque difficulté à la liste
+
+            return difficultes.toArray(new String[0]);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return new String[0];
         }
     }
 }
