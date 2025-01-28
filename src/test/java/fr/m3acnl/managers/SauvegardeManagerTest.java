@@ -9,18 +9,38 @@ import fr.m3acnl.Tests;
 import java.nio.file.Path;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test pour la classe SauvegardeManager
+ * 
+ * @see SauvegardeManager
+ * @see Tests
+ * 
+ * @author PUREN Mewen
+ */
 public class SauvegardeManagerTest extends Tests {
 
+    /**
+     * Méthode d'initialisation de la classe de test
+     * @see Tests#printNameAtStart
+     */
     @BeforeAll
     public static void initAll() {
         printNameAtStart(SauvegardeManagerTest.class);
     }
 
+    /**
+     * Méthode de fin de la classe de test
+     * @see Tests#printNameAtEnd
+     */
     @AfterAll
     public static void endAll() {
         printNameAtEnd(SauvegardeManagerTest.class);
     }
 
+    /**
+     * Test de la méthode getInstance
+     * @see SauvegardeManager#getInstance
+     */
     @Test
     public void testGetInstance() {
         SauvegardeManager instance1 = SauvegardeManager.getInstance();
@@ -29,8 +49,12 @@ public class SauvegardeManagerTest extends Tests {
         assertSame(instance1, instance2, "Les deux instances doivent être les mêmes");
     }
 
+    /**
+     * Test de la méthode getRepertoireSauvegarde
+     * @see SauvegardeManager#getRepertoireSauvegarde
+     */
     @Test
-    public void testSaveDirectoryPath() {
+    public void testSaveCheminRepertoire() {
         SauvegardeManager manager = SauvegardeManager.getInstance();
         Path savePath = manager.getRepertoireSauvegarde();
         
@@ -52,6 +76,10 @@ public class SauvegardeManagerTest extends Tests {
         assertEquals(expectedPath, savePath, "Le chemin du répertoire de sauvegarde doit être correct");
     }
 
+    /**
+     * Test de la méthode initialiseRepertoire
+     * @see SauvegardeManager#initialiseRepertoire
+     */
     @Test
     public void testInitialiseRepertoire() {
         SauvegardeManager manager = SauvegardeManager.getInstance();
