@@ -36,24 +36,36 @@ public class DoubleLien {
     }
 
     /**
-     * Active le lien lié au noeud donné.
+     * Active le lien si il est activable lié au noeud donné.
      * @param n Le noeud lié
      */
     public void activeLien(Noeud n) {
         this.activeInterrupteur();
-        if (lien1.noeudDansLien(n) == 0 && lien2.getNbLien() == 0) {
+        int lienactivable = this.lienActivable(n);
+        if (lienactivable == 1) {
             lien1.lienActiver();
-        } else if (lien1.getNbLien() == 0) {
+        } else if (lienactivable == 2) {
             lien2.lienActiver();
         }
-        
+        this.desactiveInterrupteur();
     }
     
     /**
-     * Active l'interrupteur en inversant son état.
+     * Active l'interrupteur si il est désactiver.
      */
-    public void activeInterrupteur(){
-        interupteur= !interupteur;
+    public void activeInterrupteur() {
+        if (!interupteur) {
+            interupteur = true;
+        }
+    }
+
+    /**
+     * Désactive l'interrupteur si les lien1 et lien2 sont à 0 donc égaux.
+     */
+    public void desactiveInterrupteur() {
+        if (lien1.getNbLien() == lien2.getNbLien()) {
+            interupteur = false;
+        }
     }
 
     /**
@@ -62,5 +74,21 @@ public class DoubleLien {
      */
     public Boolean getInterupteur() {
         return interupteur;
+    }
+
+    /**
+     * Regarde si le lien contenant le noeud n est activable.
+     * @param n Le noeud lié
+     * @return le numéro de noeud a activer si pas activable 0
+     */
+    public int lienActivable(Noeud n) {
+        if (lien1.noeudDansLien(n) == 0) {
+            if (lien2.getNbLien() == 0) {
+                return 1;
+            }
+        } else if (lien1.getNbLien() == 0) {
+            return 2;
+        }
+        return 0;
     }
 }
