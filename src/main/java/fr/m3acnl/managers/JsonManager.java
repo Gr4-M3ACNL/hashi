@@ -19,12 +19,24 @@ public class JsonManager {
     /**
      * Le nom du fichier contenant les profils.
      */
-    private static String fichierProfils = "profils.json";
+    private static String NomfichierProfils = "profils.json";
+
+    /**
+     * Chemin du fichier JSON contenant les profils.
+     */
+    private static String fichierProfils = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(NomfichierProfils).toString();
     
     /**
      * Classe interne permettant de stocker les informations d'une grille.
+     * @param taille Taille de la grille
+     * @param serialise Grille sérialisée
      */
     public record GrilleInfo(int taille, String serialise) {}
+
+    /**
+     * Constructeur de la classe JsonManager.
+     */
+    public JsonManager() {}
     
     /**
      * Récupère les informations d'une grille de jeu.
@@ -79,19 +91,49 @@ public class JsonManager {
      * 
      * @return Les différentes difficultés
      */
-    public String[] getDifficultes() {
+    public ArrayList<String> getListeDifficultes() {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(fichierNiveau));
 
-            ArrayList<String> difficultes = new ArrayList<>(); // ArrayList pour pouvoir utiliser toArray
+            ArrayList<String> difficultes = new ArrayList<String>(); // ArrayList pour pouvoir utiliser toArray
 
             rootNode.fieldNames().forEachRemaining(difficultes::add); // Ajoute chaque difficulté à la liste
-
-            return difficultes.toArray(new String[0]);
+            return difficultes;
         } catch (Exception e) {
             e.printStackTrace();
-            return new String[0];
+            return new ArrayList<String>();
         }
     }
+
+    /**
+     * Récupère le chemin du fichier contenant les profils.
+     * 
+     * @return Le chemin du fichier contenant les profils
+     */
+    public String getCheminProfils() {
+        return fichierProfils;
+    }
+
+    /**
+     * Récupère la liste des profils sauvegardés.
+     * 
+     * @return La liste des profils
+     */
+    public ArrayList<String> getListeProfils() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            JsonNode rootNode = mapper.readTree(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(NomfichierProfils).toFile());
+
+            ArrayList<String> profils = new ArrayList<String>(); // ArrayList pour pouvoir utiliser toArray
+
+            rootNode.fieldNames().forEachRemaining(profils::add); // Ajoute chaque profil à la liste
+            System.out.println(profils);
+            return profils;
+        } catch (Exception e) {
+            throw new RuntimeException("Impossible de charger les profils");
+        }
+    }
+
+
 }

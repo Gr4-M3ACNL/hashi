@@ -1,0 +1,12 @@
+{
+    "jacoboni": {
+        "nom": "Jacoboni",
+        "prenom": "Pierre",
+        "volume": 100
+    },
+    "despres":{
+        "nom": "Després",
+        "prenom": "Christophe",
+        "volume": 50
+    }
+}
