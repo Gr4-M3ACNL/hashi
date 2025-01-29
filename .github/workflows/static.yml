@@ -34,6 +34,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Cache Maven packages
+        uses: actions/cache@v2
+        id: cache
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven
       
       # Set up JDK 17
       - name: Set up JDK 17
