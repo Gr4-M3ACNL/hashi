@@ -108,7 +108,7 @@ public class Lien {
      *
      * @return le nombre de lien
      */
-    public int getnbLien() {
+    public int getNbLien() {
         return nbLien;
     }
 
