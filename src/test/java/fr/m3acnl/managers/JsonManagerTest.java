@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -90,7 +90,7 @@ public class JsonManagerTest extends Tests {
     @Test
     public void testGetDifficultes() {
         JsonManager manager = new JsonManager();
-        ArrayList<String> difficultes = manager.getListeDifficultes();
+        List<String> difficultes = manager.getListeDifficultes();
         assertNotNull(difficultes, "Les difficultés ne devraient pas être nulles");
         assertEquals(3, difficultes.size(), "Il devrait y avoir 3 difficultés");
         assertEquals(difficultes.get(0), "facile", "La première difficulté devrait être facile");
@@ -99,45 +99,64 @@ public class JsonManagerTest extends Tests {
     }
 
     /**
+     * Méthode d'initialisation de test des profils.
+     * 
+     * Copie le fichier de profils deja existant da un autre endroit.
+     * puis supprime le fichier originale de profils dans le repertoire de sauvegarde.
+     */
+    private void initProfils(){
+        if (Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"))) {
+            try {
+                Files.copy(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"), SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        try{
+            Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void restoreProfils(){
+        try{
+            Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+            Files.move(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"), SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Test de la méthode getDifficultes de la classe JsonManager.
      * @see JsonManager#getListeProfils
      */
     @Test
     public void testGetListeProfils(){
-        try {
-            Files.deleteIfExists(switch (OsManager.getInstance().getOsType()) {
-                case WINDOWS -> Path.of(System.getenv("APPDATA"), "HashiParmentier", "profils.json");
-                case MAC -> Path.of(System.getProperty("user.home"), "Library", "Application Support", "HashiParmentier", "profils.json");
-                default -> Path.of(System.getProperty("user.home"), ".game", "HashiParmentier", "profils.json");
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        //initialisation des profils
+        initProfils();
         JsonManager manager = new JsonManager();
+        
+        // vérifie que le fichier de profils n'existe pas
         assertThrows(RuntimeException.class, () -> manager.getListeProfils(), "Le fichier de profils n'existe pas");
+        
         try{
-            //copie le fichier dans le repertoire ressources au bon endroit
-            Files.copy(this.getClass().getResourceAsStream("/fr/m3acnl/managers/profils.json"), switch (OsManager.getInstance().getOsType()) {
-                case WINDOWS -> Path.of(System.getenv("APPDATA"), "HashiParmentier", "profils.json");
-                case MAC -> Path.of(System.getProperty("user.home"), "Library", "Application Support", "HashiParmentier", "profils.json");
-                default -> Path.of(System.getProperty("user.home"), ".game", "HashiParmentier", "profils.json");
-            });
+            //copie le fichier de test dans le repertoire ressources au bon endroit
+            Files.copy(this.getClass().getResourceAsStream("/fr/m3acnl/managers/profils.json"), SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
         }catch(Exception e){
             e.printStackTrace();
             fail("Impossible de copier le fichier de profils");  
         }
+        // vérifie que le fichier de profils existe
         assertNotNull(manager.getListeProfils(), "La liste des profils ne devrait pas être nulle");
-    }
+        List<String> profils = manager.getListeProfils();
+        assertEquals(2, profils.size(), "Il devrait y avoir 2 profils");
+        assertEquals("jacoboni", profils.get(0), "Le premier profil devrait être jacoboni");
+        assertEquals("despres", profils.get(1), "Le deuxième profil devrait être despres");
 
-    /**
-     * Test de la méthode getCheminProfils de la classe JsonManager.
-     * @see JsonManager#getCheminProfils
-     */
-    @Test
-    public void testGetCheminProfils(){
-        JsonManager manager = new JsonManager();
-        assertNotNull(manager.getCheminProfils(), "Le chemin des profils ne devrait pas être nul");
+        //restauration des profils
+        restoreProfils();
     }
     
 }

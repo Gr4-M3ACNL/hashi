@@ -1,12 +1,18 @@
 {
     "jacoboni": {
         "nom": "Jacoboni",
-        "prenom": "Pierre",
-        "volume": 100
+        "parametre": {
+            "niveauAide": "0",
+            "volumeEffetsSonore": "0.5",
+            "effetVisuel": "true"
+        }
     },
     "despres":{
         "nom": "Després",
-        "prenom": "Christophe",
-        "volume": 50
+        "parametre": {
+            "niveauAide": "2",
+            "volumeEffetsSonore": "0",
+            "effetVisuel": "false"
+        }
     }
 }
