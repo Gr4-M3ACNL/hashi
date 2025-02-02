@@ -98,18 +98,5 @@ public class Pile {
         return s;
     }
 
-    public static void main(String[] args) {
-        Pile p = new Pile();
-        System.out.println(p.depiler());
-        p.empiler(1);
-        p.empiler(2);
-        p.empiler(3);
-        System.out.println(p.to_s());
-        System.out.println(p.depiler());
-        System.out.println(p.to_s());
-        System.out.println(p.sommet());
-        System.out.println(p.taille());
-        p.vidange();
-        System.out.println(p.to_s());
-    }
+    
 }
