@@ -3,14 +3,12 @@ package fr.m3acnl.managers;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import fr.m3acnl.Tests;
+import fr.m3acnl.profile.Profile;
 
 /**
  * Classe de test de la classe JsonManager.
@@ -119,6 +117,11 @@ public class JsonManagerTest extends Tests {
         }
     }
 
+    /**
+     * Méthode de restauration des profils.
+     * 
+     * Supprime le fichier de profils actuel et le remplace par le fichier de profils sauvegardé.
+     */
     private void restoreProfils(){
         try{
             Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
@@ -158,5 +161,28 @@ public class JsonManagerTest extends Tests {
         //restauration des profils
         restoreProfils();
     }
-    
+
+    /**
+     * Test de la méthode sauvegarderProfil de la classe JsonManager.
+     * @see JsonManager#sauvegarderProfil
+     * @see JsonManager#chargerProfil
+     */
+    @Test
+    public void testSauvegarderProfil(){
+        //initialisation des profils
+        initProfils();
+        JsonManager manager = new JsonManager();
+        Profile profile = new Profile("test");
+        manager.sauvegarderProfil(profile);
+        List<String> profils = manager.getListeProfils();
+        assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
+        assertEquals("test", profils.get(0), "Le premier profil devrait être test");
+
+        // test du chargement du profilnom
+        Profile profileCharge = manager.chargerProfil("test");
+        assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
+
+        //restauration des profils
+        restoreProfils();
+    }
 }

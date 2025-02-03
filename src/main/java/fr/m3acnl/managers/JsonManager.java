@@ -2,6 +2,8 @@ package fr.m3acnl.managers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.m3acnl.profile.Profile;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,12 +119,59 @@ public class JsonManager {
             List<String> profils = new ArrayList<String>(); // ArrayList pour pouvoir utiliser toArray
 
             rootNode.fieldNames().forEachRemaining(profils::add); // Ajoute chaque profil à la liste
-            System.out.println(profils);
             return profils;
         } catch (Exception e) {
             throw new RuntimeException("Impossible de charger les profils");
         }
     }
 
+    /**
+     * Sauvegarde un objet Profile dans le fichier de profils.
+     * 
+     * @param profile Profil à sauvegarder
+     * @throws RuntimeException si le profil ne peut pas être sauvegardé
+     * 
+     * @see Profile
+     * @see ObjectMapper
+     */
+    public void sauvegarderProfil(Profile profile) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
+            mapper.writeValue(cheminFichier.toFile(), profile);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Impossible de sauvegarder le profil");
+        }
+    }
 
+    /**
+     * Charge un profil à partir du fichier de profils.
+     * 
+     * @param nom Nom du profil à charger
+     * @return Le profil chargé
+     * @throws RuntimeException si le profil ne peut pas être chargé
+     * 
+     * @see Profile
+     * @see ObjectMapper
+     */
+    public Profile chargerProfil(String nom) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
+            JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
+            JsonNode profilNode = rootNode.get(nom);
+            if (profilNode == null) {
+                throw new RuntimeException("Le profil n'existe pas");
+            }
+
+            return mapper.treeToValue(profilNode, Profile.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Impossible de charger le profil");
+        }
+    }
+    
 }

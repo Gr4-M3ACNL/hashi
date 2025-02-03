@@ -1,11 +1,18 @@
 package fr.m3acnl.profile;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import java.io.IOException;
+
 /**
  * Profil d'un utilisateur.
  * 
  * @author PUREN Mewen
  */
-public class ParametreProfile {
+public class ParametreProfile implements JsonSerializable {
 
     /**
      * Limite du niveau d'aide.
@@ -88,5 +95,39 @@ public class ParametreProfile {
      */
     protected void setEffetVisuel(Boolean effetVisuel) {
         this.effetVisuel = effetVisuel;
+    }
+
+    /**
+     * Serialize les paramètres de profil pour un format JSON.
+     * 
+     * @param gen générateur de JSON
+     * @param serializers fournisseur de sérialisation
+     * 
+     * @throws IOException si une erreur d'entrée/sortie survient
+     * @see JsonSerializable#serialize
+     */
+    @Override
+    public void serialize(JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeStartObject();
+        gen.writeNumberField("niveauAide", this.niveauAide);
+        gen.writeNumberField("volumeEffetsSonore", this.volumeEffetsSonore);
+        gen.writeBooleanField("effetVisuel", this.effetVisuel);
+        gen.writeEndObject();
+    }
+
+    /**
+     * Serialize les paramètres de profil pour un format JSON avec un type.
+     * 
+     * @param gen générateur de JSON
+     * @param serializers fournisseur de sérialisation
+     * @param typeSer sérialiseur de type
+     * 
+     * @throws IOException si une erreur d'entrée/sortie survient
+     * @see #serialize
+     * @see JsonSerializable#serializeWithType
+     */
+    @Override
+    public void serializeWithType(JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
+        serialize(gen, serializers);
     }
 }

@@ -9,6 +9,12 @@ import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
 
+/**
+ * Classe de test de la classe ParametreProfile.
+ * 
+ * @see ParametreProfile
+ * @see Tests
+ */
 public class ParametreProfileTest extends Tests {
 
     /**
@@ -30,24 +36,36 @@ public class ParametreProfileTest extends Tests {
      */
     ParametreProfileTest() {}
 
+    /**
+     * Test de la méthode getEffetVisuel de la classe ParametreProfile.
+     */
     @Test
     void testGetEffetVisuel() {
         ParametreProfile parametreProfile = new ParametreProfile();
         assertEquals(true, parametreProfile.getEffetVisuel());
     }
 
+    /**
+     * Test de la méthode getNiveauAide de la classe ParametreProfile.
+     */
     @Test
     void testGetNiveauAide() {
         ParametreProfile parametreProfile = new ParametreProfile();
         assertEquals(0, parametreProfile.getNiveauAide());
     }
 
+    /**
+     * Test de la méthode getVolumeEffetsSonore de la classe ParametreProfile.
+     */
     @Test
     void testGetVolumeEffetsSonore() {
         ParametreProfile parametreProfile = new ParametreProfile();
         assertEquals(0.5f, parametreProfile.getVolumeEffetsSonore());
     }
 
+    /**
+     * Test du constructeur de la classe ParametreProfile.
+     */
     @Test
     void testSetEffetVisuel() {
         ParametreProfile parametreProfile = new ParametreProfile();
@@ -55,6 +73,9 @@ public class ParametreProfileTest extends Tests {
         assertEquals(false, parametreProfile.getEffetVisuel());
     }
 
+    /**
+     * Test de la méthode setNiveauAide de la classe ParametreProfile.
+     */
     @Test
     void testSetNiveauAide() {
         ParametreProfile parametreProfile = new ParametreProfile();
@@ -65,6 +86,9 @@ public class ParametreProfileTest extends Tests {
         assertThrows(IllegalArgumentException.class, () -> parametreProfile.setNiveauAide(3), "Le niveau d'aide ne peut pas être supérieur à 2");
     }
 
+    /**
+     * Test de la méthode setVolumeEffetsSonore de la classe ParametreProfile.
+     */
     @Test
     void testSetVolumeEffetsSonore() {
         ParametreProfile parametreProfile = new ParametreProfile();

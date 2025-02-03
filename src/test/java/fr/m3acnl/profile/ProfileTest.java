@@ -10,6 +10,12 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
 
+/**
+ * Classe de test de la classe Profile.
+ * 
+ * @see Profile
+ * @see Tests
+ */
 public class ProfileTest extends Tests {
 
     /**
@@ -31,13 +37,19 @@ public class ProfileTest extends Tests {
      */
     ProfileTest() {}
 
+    /**
+     * Test de la méthode getnom de la classe Profile.
+     */
     @Test
-    public void testProfileName() {
-        String name = "TestProfile";
-        Profile profile = new Profile(name);
-        assertEquals(name, profile.getName());
+    public void testProfilenom() {
+        String nom = "TestProfile";
+        Profile profile = new Profile(nom);
+        assertEquals(nom, profile.getnom());
     }
 
+    /**
+     * Test de la méthode getParametre de la classe Profile.
+     */
     @Test
     public void testProfileParametreNotNull() {
         Profile profile = new Profile("TestProfile");
