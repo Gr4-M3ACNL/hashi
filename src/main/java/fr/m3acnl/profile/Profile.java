@@ -25,6 +25,9 @@ public class Profile implements JsonSerializable {
      */
     private final ParametreProfile parametre;
 
+    /**
+     * Historique des parties jouées par un joueur.
+     */
     private final HistoriquePartieProfile historiquePartieProfile;
 
     /**
