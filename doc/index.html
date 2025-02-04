@@ -21,7 +21,7 @@
         }
         .background-logo {
             position: absolute;
-            width: 150px;
+            width: 100px;
             opacity: 1;
             z-index: -1;
         }
@@ -64,28 +64,68 @@
         <a href="/doc/testapidocs/index.html">Accéder aux tests API</a>
     </div>
     <script>
-        const logo = document.getElementById('bouncing-logo');
-        let x = 100, y = 100;
-        let dx = 2, dy = 2;
+        const numLogos = 5; // Nombre de logos
+        const logos = [];
+        const positions = [];
+        const velocities = [];
+
+        for (let i = 0; i < numLogos; i++) {
+            const logo = document.createElement('img');
+            logo.src = 'hashi.png';
+            logo.className = 'background-logo';
+            logo.style.position = 'absolute';
+            document.body.appendChild(logo);
+            logos.push(logo);
+
+            positions.push({ x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight });
+            velocities.push({ dx: (Math.random() - 0.5) * 10, dy: (Math.random() - 0.5) * 10 });
+        }
+
+        function detectCollision(rect1, rect2) {
+            return !(rect1.right < rect2.left || 
+                     rect1.left > rect2.right || 
+                     rect1.bottom < rect2.top || 
+                     rect1.top > rect2.bottom);
+        }
+
         function animate() {
             const rect = document.body.getBoundingClientRect();
-            const logoRect = logo.getBoundingClientRect();
-            
-            if (x + logoRect.width >= rect.width || x <= 0) {
-                dx = -dx;
-            }
-            if (y + logoRect.height >= rect.height || y <= 0) {
-                dy = -dy;
-            }
-            
-            x += dx;
-            y += dy;
-            
-            logo.style.left = `${x}px`;
-            logo.style.top = `${y}px`;
+
+            logos.forEach((logo, index) => {
+                const logoRect = logo.getBoundingClientRect();
+                let { x, y } = positions[index];
+                let { dx, dy } = velocities[index];
+
+                if (x + logoRect.width >= rect.width || x <= 0) {
+                    dx = -dx;
+                }
+                if (y + logoRect.height >= rect.height || y <= 0) {
+                    dy = -dy;
+                }
+
+                logos.forEach((otherLogo, otherIndex) => {
+                    if (index !== otherIndex) {
+                        const otherRect = otherLogo.getBoundingClientRect();
+                        if (detectCollision(logoRect, otherRect)) {
+                            dx = -dx;
+                            dy = -dy;
+                        }
+                    }
+                });
+
+                x += dx;
+                y += dy;
+
+                positions[index] = { x, y };
+                velocities[index] = { dx, dy };
+
+                logo.style.left = `${x}px`;
+                logo.style.top = `${y}px`;
+            });
+
             requestAnimationFrame(animate);
         }
-        
+
         animate();
     </script>
 </body>
