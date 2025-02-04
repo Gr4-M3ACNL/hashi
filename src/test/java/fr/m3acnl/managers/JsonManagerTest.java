@@ -104,11 +104,13 @@ public class JsonManagerTest extends Tests {
      */
     private void initProfils(){
         if (Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"))) {
-            try {
-                Files.copy(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"), SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            if (! Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"))) {
+                try {
+                    Files.copy(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"), SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } 
         }
         try{
             Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));

@@ -25,6 +25,8 @@ public class Profile implements JsonSerializable {
      */
     private final ParametreProfile parametre;
 
+    private final HistoriquePartieProfile historiquePartieProfile;
+
     /**
      * Constructeur d'un profil.
      *
@@ -33,6 +35,7 @@ public class Profile implements JsonSerializable {
     public Profile(String pseudo) {
         this.pseudo = pseudo;
         this.parametre = new ParametreProfile();
+        this.historiquePartieProfile = new HistoriquePartieProfile();
     }
 
     /**
@@ -48,9 +51,22 @@ public class Profile implements JsonSerializable {
      * Méthode pour connaître les paramètres du profil.
      *
      * @return les paramètres du profil
+     * 
+     * @see ParametreProfile
      */
     public ParametreProfile getParametre() {
         return this.parametre;
+    }
+
+    /**
+     * Méthode pour connaître l'historique des parties jouées par un joueur.
+     *
+     * @return l'historique des parties jouées par un joueur
+     * 
+     * @see HistoriquePartieProfile
+     */
+    public HistoriquePartieProfile getHistoriquePartieProfile() {
+        return this.historiquePartieProfile;
     }
 
     /**
@@ -69,6 +85,7 @@ public class Profile implements JsonSerializable {
         ObjectNode profilNode = mapper.createObjectNode();
         profilNode.put("pseudo", this.pseudo);
         profilNode.set("parametre", mapper.valueToTree(this.parametre));
+        profilNode.set("historiquePartieProfile", mapper.valueToTree(this.historiquePartieProfile));
 
         gen.writeStartObject();
         gen.writeObjectField(this.pseudo, profilNode);
@@ -104,6 +121,18 @@ public class Profile implements JsonSerializable {
     }
 
     /**
+     * Méthode pour modifier l'historique des parties jouées par un joueur.
+     * 
+     * @param historiquePartieProfile l'historique des parties jouées par un joueur
+     */
+    protected void setHistoriquePartieProfile(HistoriquePartieProfile historiquePartieProfile) {
+        this.historiquePartieProfile.setFacile(historiquePartieProfile.getFacile());
+        this.historiquePartieProfile.setMoyen(historiquePartieProfile.getMoyen());
+        this.historiquePartieProfile.setDifficile(historiquePartieProfile.getDifficile());
+        this.historiquePartieProfile.setExpert(historiquePartieProfile.getExpert());
+    }
+
+    /**
      * Méthode pour modifier le nom du profil.
      * 
      * @param pseudo le nom du profil
@@ -117,5 +146,6 @@ public class Profile implements JsonSerializable {
      */
     protected Profile() {
         this.parametre = new ParametreProfile();
+        this.historiquePartieProfile = new HistoriquePartieProfile();
     }
 }

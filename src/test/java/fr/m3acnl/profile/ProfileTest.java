@@ -41,7 +41,7 @@ public class ProfileTest extends Tests {
      * Test de la méthode getnom de la classe Profile.
      */
     @Test
-    public void testProfilenom() {
+    public void testProfileNom() {
         String nom = "TestProfile";
         Profile profile = new Profile(nom);
         assertEquals(nom, profile.getnom());
@@ -54,5 +54,14 @@ public class ProfileTest extends Tests {
     public void testProfileParametreNotNull() {
         Profile profile = new Profile("TestProfile");
         assertNotNull(profile.getParametre());
+    }
+
+    /**
+     * Test de la méthode getParametre de la classe Profile.
+     */
+    @Test
+    public void testGetHistoriquePartieProfile() {
+        Profile profile = new Profile("TestProfile");
+        assertNotNull(profile.getHistoriquePartieProfile(), "L'historique des parties jouées par un joueur ne doit pas être null.");
     }
 }
