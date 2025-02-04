@@ -16,8 +16,16 @@
             margin: 0;
             background-color: #f4f4f4;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
-        img {
+        .background-logo {
+            position: absolute;
+            width: 150px;
+            opacity: 1;
+            z-index: -1;
+        }
+        .center-logo {
             max-width: 150px;
             margin-bottom: 20px;
         }
@@ -34,12 +42,51 @@
         a:hover {
             background-color: #0056b3;
         }
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
-    <img src="favicon.ico" alt="Logo">
-    <h1>Documentation API</h1>
-    <a href="./apidocs/index.html">Accéder à l'API principale</a>
-    <a href="./testapidocs/index.html">Accéder aux tests API</a>
+    <img id="bouncing-logo" class="background-logo" src="hashi.png" alt="Background Logo">
+    <div class="container">
+        <img class="center-logo" src="favicon.ico" alt="Logo">
+        <div class="title-container">
+            <h1>Documentation API</h1>
+        </div>
+        <br>
+        <a href="/doc/apidoc/index.html">Accéder à l'API principale</a>
+        <a href="/doc/testapidocs/index.html">Accéder aux tests API</a>
+    </div>
+    <script>
+        const logo = document.getElementById('bouncing-logo');
+        let x = 100, y = 100;
+        let dx = 2, dy = 2;
+        function animate() {
+            const rect = document.body.getBoundingClientRect();
+            const logoRect = logo.getBoundingClientRect();
+            
+            if (x + logoRect.width >= rect.width || x <= 0) {
+                dx = -dx;
+            }
+            if (y + logoRect.height >= rect.height || y <= 0) {
+                dy = -dy;
+            }
+            
+            x += dx;
+            y += dy;
+            
+            logo.style.left = `${x}px`;
+            logo.style.top = `${y}px`;
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+    </script>
 </body>
 </html>
