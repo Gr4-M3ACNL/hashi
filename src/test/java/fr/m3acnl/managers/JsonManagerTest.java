@@ -144,8 +144,10 @@ public class JsonManagerTest extends Tests {
     private void restoreProfils() {
         try {
             Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
-            Files.move(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"),
-                    SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+            if (Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"))) {
+                Files.move(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"),
+                        SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -204,7 +206,6 @@ public class JsonManagerTest extends Tests {
         // test du chargement du profil nouvellement créé
         Profile profileCharge = manager.chargerProfil("test");
         assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
-
 
         // restauration des profils
         restoreProfils();
