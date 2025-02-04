@@ -173,5 +173,27 @@ public class JsonManager {
             throw new RuntimeException("Impossible de charger le profil");
         }
     }
-    
+
+    /**
+     * Supprime un profil du fichier de profils.
+     * 
+     * @param nom Nom du profil à supprimer
+     * @throws RuntimeException si le profil ne peut pas être supprimé
+     */
+    public void supprimerProfil(String nom) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
+            JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
+            if (rootNode.has(nom)) {
+                ((com.fasterxml.jackson.databind.node.ObjectNode) rootNode).remove(nom);
+                mapper.writeValue(cheminFichier.toFile(), rootNode);
+            } else {
+                throw new RuntimeException("Le profil n'existe pas");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Impossible de supprimer le profil");
+        }
+    }
 }

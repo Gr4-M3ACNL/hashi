@@ -44,7 +44,7 @@ public class ProfileTest extends Tests {
     public void testProfileNom() {
         String nom = "TestProfile";
         Profile profile = new Profile(nom);
-        assertEquals(nom, profile.getnom());
+        assertEquals(nom, profile.getNom());
     }
 
     /**

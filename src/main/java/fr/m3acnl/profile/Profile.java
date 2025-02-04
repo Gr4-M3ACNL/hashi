@@ -43,7 +43,7 @@ public class Profile implements JsonSerializable {
      *
      * @return le nom du profil
      */
-    public String getnom() {
+    public String getNom() {
         return this.pseudo;
     }
 
