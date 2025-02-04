@@ -53,9 +53,9 @@ public class HistoriquePartieProfileTest extends Tests {
     }
 
     /**
-     * Test de la méthode getfacile de la classe HistoriquePartieProfile.
+     * Test de la méthode getFacile de la classe HistoriquePartieProfile.
      * 
-     * @see HistoriquePartieProfile#getfacile
+     * @see HistoriquePartieProfile#getFacile
      */
     @Test
     public void testGetFacile() {
