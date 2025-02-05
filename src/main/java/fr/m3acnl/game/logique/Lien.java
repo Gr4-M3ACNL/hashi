@@ -11,12 +11,13 @@ package fr.m3acnl.game.logique;
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
  * lié, son nombre de lien et son nombre de lien de la solution
  */
-public class Lien {
+public class Lien implements GameElement {
 
     private Noeud noeud1;
     private Noeud noeud2;
     private int nbLien;
     private int nbLienSoluce;
+    private Boolean orientation;
 
     /**
      * Constructeur pour une nouvelle instance de Lien
@@ -90,5 +91,9 @@ public class Lien {
      */
     public int noeudDansLien(Noeud n) {
         return n.compareTo(this.noeud1) + n.compareTo(this.noeud2);
+    }
+
+    public void draw() {
+        System.out.print("L");
     }
 }
