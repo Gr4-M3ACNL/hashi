@@ -17,7 +17,7 @@ public class Lien implements GameElement {
     private Noeud noeud2;
     private int nbLien;
     private int nbLienSoluce;
-    private Boolean orientation;
+    private int orientation;
 
     /**
      * Constructeur pour une nouvelle instance de Lien
@@ -26,11 +26,12 @@ public class Lien implements GameElement {
      * @param n2 deuxième Noeud
      * @param sol le nombre de lien de la solution
      */
-    public Lien(Noeud n1, Noeud n2, int sol) {
+    public Lien(Noeud n1, Noeud n2, int or, int sol) {
         noeud1 = n1;
         noeud2 = n2;
         nbLienSoluce = sol;
         nbLien = 0;
+        orientation = or; // 1 Horizontale, 0 Verticale
     }
 
     /**
