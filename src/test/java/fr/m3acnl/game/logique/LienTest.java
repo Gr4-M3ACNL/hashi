@@ -44,7 +44,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testEstValide() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         assertEquals(false,l.estValide(),"Lien invalide renvoie false");
         l.lienActiver();
         assertEquals(true,l.estValide(),"Lien invalide renvoie false");
@@ -56,7 +56,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetNbLien() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         assertEquals(0,l.getNbLien(),"Lien créer pas de lien nbLien a 0");
     }
 
@@ -67,7 +67,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetNoeud1() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         assertEquals(0, l.getNoeud1().compareTo(new Noeud(5,2,1)),"comparaison entre le noeud1 récupéré et un autre identique rnevoie 0");
     }
 
@@ -78,7 +78,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetNoeud2() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         assertEquals(0, l.getNoeud2().compareTo(new Noeud(5,4,1)),"comparaison entre le noeud2 récupéré et un autre identique rnevoie 0");
     }
 
@@ -88,7 +88,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetSurbrillance() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         assertEquals(false, l.getSurbrillance(),"Surbrillance a false");
     }
 
@@ -102,7 +102,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testLienActiver() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1, new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1, new Jeu(5),1);
         l.lienActiver();
         assertEquals(1,l.getNbLien(),"Lien activé donc 1 ");
         assertEquals(0, l.getNoeud1().estValide(),"noeud incrémenter lié ");
@@ -123,7 +123,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testNoeudDansLien() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         Noeud n=new Noeud(5,2,1);
         assertEquals(0, l.noeudDansLien(n),"Recherche premier noeud identique renvoie 0");
         n=new Noeud(5,4,1);
@@ -142,7 +142,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testSurbrillanceOff() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         l.surbrillanceOn();
         l.surbrillanceOff();
         assertEquals(false, l.getSurbrillance(),"Surbrillance a false");
@@ -155,7 +155,7 @@ public class LienTest extends Tests {
      */
     @Test
     void testSurbrillanceOn() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5));
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
         l.surbrillanceOn();
         assertEquals(true, l.getSurbrillance(),"Surbrillance a true");
     }

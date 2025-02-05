@@ -51,14 +51,14 @@ public class Lien implements ElementJeu {
      * @param sol le nombre de lien de la solution
      * @param j Le jeu d'on-t-il fait parti
      */
-    public Lien(Noeud n1, Noeud n2, int sol, Jeu j) {
+    public Lien(Noeud n1, Noeud n2, int sol, Jeu j, int orient) {
         noeud1 = n1;
         noeud2 = n2;
         nbLienSoluce = sol;
         nbLien = 0;
         surbrillance = false;
         jeu = j;
-        orientation = 1;
+        orientation = orient;
     }
 
     /**
