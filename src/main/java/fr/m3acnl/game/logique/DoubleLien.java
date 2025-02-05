@@ -5,7 +5,7 @@ package fr.m3acnl.game.logique;
  * 
  * @author COGNARD Luka
  */
-public class DoubleLien {
+public class DoubleLien implements ElementJeu {
 
     /**
      * Le 1er lien.
@@ -81,5 +81,13 @@ public class DoubleLien {
      */
     public Boolean getInterupteur() {
         return interupteur;
+    }
+
+    /**
+     * Affiche le DoubleLien.
+     */
+    @Override
+    public void draw() {
+        System.out.println("D");
     }
 }

@@ -44,8 +44,8 @@ public class DoubleLienTest extends Tests{
      */
     @Test
     void testActiveInterrupteur() {
-        DoubleLien dl=new DoubleLien(new Lien(new Noeud(5, 2, 1), new Noeud(5, 4, 1), 1),
-                      new Lien(new Noeud(4, 3, 1), new Noeud(6, 3, 1), 1));
+        DoubleLien dl=new DoubleLien(new Lien(new Noeud(5, 2, 1), new Noeud(5, 4, 1), 1,new Jeu(5)),
+                      new Lien(new Noeud(4, 3, 1), new Noeud(6, 3, 1), 1,new Jeu(5)));
         dl.activeInterrupteur();
         assertEquals(true, dl.getInterupteur(),"Interrupteur activer a true");
         
@@ -62,7 +62,7 @@ public class DoubleLienTest extends Tests{
         Noeud n2 = new Noeud(5, 4, 1);
         Noeud n3 = new Noeud(4, 3, 1);
         Noeud n4 = new Noeud(6, 3, 1);
-        DoubleLien dl=new DoubleLien(new Lien(n1,n2, 1),new Lien(n3,n4, 1));
+        DoubleLien dl=new DoubleLien(new Lien(n1,n2, 1,new Jeu(5)),new Lien(n3,n4, 1,new Jeu(5)));
         dl.activeLien(n1);
         dl.activeLien(n2);
         assertEquals(-1, n1.estValide(),"Lien1 activer 2 fois le noeud lié a -1 deg soluce 1");
@@ -83,8 +83,8 @@ public class DoubleLienTest extends Tests{
      */
     @Test
     void testDesactiveInterrupteur() {
-        DoubleLien dl=new DoubleLien(new Lien(new Noeud(5, 2, 1), new Noeud(5, 4, 1), 1),
-                      new Lien(new Noeud(4, 3, 1), new Noeud(6, 3, 1), 1));
+        DoubleLien dl=new DoubleLien(new Lien(new Noeud(5, 2, 1), new Noeud(5, 4, 1), 1,new Jeu(5)),
+                      new Lien(new Noeud(4, 3, 1), new Noeud(6, 3, 1), 1,new Jeu(5)));
         dl.activeInterrupteur();
         dl.desactiveInterrupteur();
         assertEquals(false, dl.getInterupteur(),"Interrupteur désactiver a false");
@@ -96,8 +96,8 @@ public class DoubleLienTest extends Tests{
      */
     @Test
     void testGetInterupteur() {
-        DoubleLien dl=new DoubleLien(new Lien(new Noeud(5, 2, 1), new Noeud(5, 4, 1), 1),
-                      new Lien(new Noeud(4, 3, 1), new Noeud(6, 3, 1), 1));
+        DoubleLien dl=new DoubleLien(new Lien(new Noeud(5, 2, 1), new Noeud(5, 4, 1), 1,new Jeu(5)),
+                      new Lien(new Noeud(4, 3, 1), new Noeud(6, 3, 1), 1,new Jeu(5)));
         assertEquals(false, dl.getInterupteur(),"Interrupteur de base desactiver a false");
     }
 }

@@ -9,7 +9,7 @@ import java.util.Hashtable;
  * 
  * @author COGNARD Luka
  */
-public class Noeud implements Comparable<Noeud> {
+public class Noeud implements Comparable<Noeud>, ElementJeu {
 
     /**
      * La position en coordonnée du noeud.
@@ -125,5 +125,13 @@ public class Noeud implements Comparable<Noeud> {
     @Override
     public int compareTo(Noeud n2) {
         return this.position.compareTo(n2.position);
+    }
+
+    /**
+     * Affiche le Noeud.
+     */
+    @Override
+    public void draw() {
+        System.out.println("N");
     }
 }

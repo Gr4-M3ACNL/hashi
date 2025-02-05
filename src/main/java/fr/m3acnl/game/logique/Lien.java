@@ -6,7 +6,12 @@ package fr.m3acnl.game.logique;
  * 
  * @author COGNARD Luka
  */
-public class Lien {
+public class Lien implements ElementJeu {
+
+    /**
+     * Le jeu pour récupérer le plateau.
+     */
+    private Jeu jeu;
 
     /**
      * 1er noeud du lien.
@@ -34,18 +39,26 @@ public class Lien {
     private Boolean surbrillance;
 
     /**
+     * L'orientation du lien.
+     */
+    private int orientation;
+
+    /**
      * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
      * @param n2 deuxième Noeud
      * @param sol le nombre de lien de la solution
+     * @param j Le jeu d'on-t-il fait parti
      */
-    public Lien(Noeud n1, Noeud n2, int sol) {
+    public Lien(Noeud n1, Noeud n2, int sol, Jeu j) {
         noeud1 = n1;
         noeud2 = n2;
         nbLienSoluce = sol;
         nbLien = 0;
         surbrillance = false;
+        jeu = j;
+        orientation = 1;
     }
 
     /**
@@ -76,6 +89,15 @@ public class Lien {
      * degré actuelle des noeud liés.
      */
     public void lienActiver() {
+        if (orientation == 1) {
+            if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                return;
+            }
+        } else {
+            if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                return;
+            }
+        }
         if ((nbLien = (nbLien + 1) % 3) == 0) {
             noeud1.enleverDegre();
             noeud2.enleverDegre();
@@ -121,6 +143,15 @@ public class Lien {
     }
 
     /**
+     * Modifie le nombre de lien soluce.
+     * 
+     * @param nbLienSoluce Le nombre de lien soluce
+     */
+    public void setNbLienSoluce(int nbLienSoluce) {
+        this.nbLienSoluce = nbLienSoluce;
+    }
+
+    /**
      * Vérifie si un noeud n est présent dans ce lien.
      *
      * @param n Le noeud a vérifier
@@ -132,5 +163,13 @@ public class Lien {
             return noeud2.compareTo(n);
         }
         return res;
+    }
+
+    /**
+     * Affiche le Lien.
+     */
+    @Override
+    public void draw() {
+        System.out.println("L");
     }
 }
