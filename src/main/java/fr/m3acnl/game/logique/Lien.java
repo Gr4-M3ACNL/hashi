@@ -11,7 +11,7 @@ package fr.m3acnl.game.logique;
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
  * lié, son nombre de lien et son nombre de lien de la solution
  */
-public class Lien implements GameElement {
+public class Lien implements ElementJeu {
 
     private Noeud noeud1;
     private Noeud noeud2;

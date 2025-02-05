@@ -14,7 +14,7 @@ import java.util.Hashtable;
  * position, son degré actuelle, le degré de sa solution et une liste
  * d'adjacence stockant les noeuds auquel il est relié directement.
  */
-public class Noeud implements GameElement, Comparable<Noeud> {
+public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     private Coord position;
     private int degreSoluce;

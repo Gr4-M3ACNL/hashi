@@ -5,7 +5,7 @@ package fr.m3acnl.game.logique;
  *
  * @author COGNARD Luka
  */
-public class DoubleLien implements GameElement {
+public class DoubleLien implements ElementJeu {
 
     /**
      * Le 1er lien.

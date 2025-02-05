@@ -1,19 +1,33 @@
+/**
+ * @autor Aymeric MABIRE
+ * @date 05-02-2025
+ * @version 1.0
+ * @description Contient la classe Proof of Concept pour la matrice du jeu
+ *
+ */
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
+import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Lien;
 import fr.m3acnl.game.logique.Noeud;
-import main.java.fr.m3acnl.game.logique.GameElement;
+import main.java.fr.m3acnl.game.logique.ElementJeu;
 
 public class Poc {
 
-    private ArrayList<ArrayList<GameElement>> matrice;
+    private ArrayList<ArrayList<ElementJeu>> matrice;
 
+    /**
+     * Constructeur pour une nouvelle instance de Lien
+     *
+     * @param lignes Nombre de lignes de la matrice
+     * @param cols Nombre de colonnes de la matrice
+     */
     public Poc(int lignes, int cols) {
         matrice = new ArrayList<>();
         for (int i = 0; i < lignes; i++) {
-            ArrayList<GameElement> ligne = new ArrayList<>();
+            ArrayList<ElementJeu> ligne = new ArrayList<>();
             for (int j = 0; j < cols; j++) {
                 ligne.add(null); // Initialize with null or any default value
             }
@@ -21,18 +35,35 @@ public class Poc {
         }
     }
 
-    public GameElement getElement(int ligne, int col) {
+    /**
+     * Récupère un élément de la matrice a la position donnée
+     *
+     * @param ligne La ligne de l'élément
+     * @param col La colonne de l'élément
+     * @return L'élément a la position donnée
+     */
+    public ElementJeu getElement(int ligne, int col) {
         return matrice.get(ligne).get(col);
     }
 
-    public void setElement(int ligne, int col, GameElement element) {
+    /**
+     * Modifie un élément de la matrice a la position donnée
+     *
+     * @param ligne La ligne de l'élément
+     * @param col La colonne de l'élément
+     * @param element L'élément a mettre a la position donnée
+     */
+    public void setElement(int ligne, int col, ElementJeu element) {
         matrice.get(ligne).set(col, element);
     }
 
     //public void genMatrice(); //Genere la matrice grâce au fichier Json
+    /**
+     * Dessine la matrice
+     */
     public void draw() {
-        for (ArrayList<GameElement> ligne : matrice) {
-            for (GameElement element : ligne) {
+        for (ArrayList<ElementJeu> ligne : matrice) {
+            for (ElementJeu element : ligne) {
                 if (element != null) {
                     element.draw();
                 } else {
@@ -43,6 +74,9 @@ public class Poc {
         }
     }
 
+    /**
+     * Génère les liens de la matrice
+     */
     public void genLink() {
         for (int i = 0; i < matrice.size(); i++) {
             for (int j = 0; j < matrice.get(i).size() - 1; j++) {
@@ -54,13 +88,19 @@ public class Poc {
         }
     }
 
+    /**
+     * Vérifie si il y a un noeud a droite et crée un lien entre les deux noeuds
+     *
+     * @param y La colonne de l'élément
+     * @param x La ligne de l'élément
+     */
     private void verifHorizontale(int y, int x) {
         //verif si il y a un noeud a droite
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
-        GameElement current = matrice.get(y).get(x);
+        ElementJeu current = matrice.get(y).get(x);
         for (int i = y; i < matrice.size(); i++) {
             for (int j = x; j < matrice.get(i).size() - 1; j++) {
-                GameElement right = matrice.get(i).get(j + 1);
+                ElementJeu right = matrice.get(i).get(j + 1);
 
                 if (current instanceof Noeud && right instanceof Noeud) {
                     // Create a link between the two nodes
@@ -82,13 +122,20 @@ public class Poc {
         }
     }
 
+    /**
+     * Vérifie si il y a un noeud en dessous et crée un lien entre les deux
+     * noeuds
+     *
+     * @param y La colonne de l'élément
+     * @param x La ligne de l'élément
+     */
     private void verifVerticale(int y, int x) {
         //verif si il y a un noeud en bas
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
-        GameElement current = matrice.get(y).get(x);
+        ElementJeu current = matrice.get(y).get(x);
         for (int i = y; i < matrice.size(); i++) {
             for (int j = x; j < matrice.get(i).size() - 1; j++) {
-                GameElement bot = matrice.get(i + 1).get(j);
+                ElementJeu bot = matrice.get(i + 1).get(j);
 
                 if (current instanceof Noeud && bot instanceof Noeud) {
                     // Create a link between the two nodes
