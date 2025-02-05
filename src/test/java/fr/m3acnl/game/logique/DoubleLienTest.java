@@ -8,6 +8,15 @@ import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
 
+/**
+ * Test pour la classe DoubleLien
+ * 
+ * @see DoubleLien
+ * @see Tests
+ * @see Noeud
+ * 
+ * @author COGNARD Luka
+ */
 public class DoubleLienTest extends Tests{
 
     /**

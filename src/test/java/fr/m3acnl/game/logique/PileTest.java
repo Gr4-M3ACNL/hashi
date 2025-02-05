@@ -8,6 +8,14 @@ import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
 
+/**
+ * Test pour la classe DoubleLien
+ * 
+ * @see Pile
+ * @see Tests
+ * 
+ * @author MABIRE Aymeric
+ */
 public class PileTest extends Tests{
 
     /**

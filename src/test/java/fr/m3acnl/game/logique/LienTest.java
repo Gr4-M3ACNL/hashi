@@ -8,6 +8,15 @@ import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
 
+/**
+ * Test pour la classe Lien
+ * 
+ * @see Lien
+ * @see Tests
+ * @see Noeud
+ * 
+ * @author COGNARD Luka
+ */
 public class LienTest extends Tests {
 
     /**
@@ -54,7 +63,7 @@ public class LienTest extends Tests {
     /**
      * Test de la méthode getNoeud1
      * @see Lien#getNoeud1()
-     * @see Noeud#compareTo()
+     * @see Noeud#compareTo(Noeud)
      */
     @Test
     void testGetNoeud1() {
@@ -65,7 +74,7 @@ public class LienTest extends Tests {
     /**
      * Test de la méthode getNoeud2
      * @see Lien#getNoeud2()
-     * @see Noeud#compareTo()
+     * @see Noeud#compareTo(Noeud)
      */
     @Test
     void testGetNoeud2() {
@@ -110,7 +119,7 @@ public class LienTest extends Tests {
 
     /**
      * Test de la méthode noeudDansLien
-     * @see Lien#noeudDansLien()
+     * @see Lien#noeudDansLien(Noeud)
      */
     @Test
     void testNoeudDansLien() {
