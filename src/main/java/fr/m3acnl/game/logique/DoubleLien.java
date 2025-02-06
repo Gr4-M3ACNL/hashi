@@ -2,7 +2,8 @@ package fr.m3acnl.game.logique;
 
 /**
  * Cette classe gère les double lien.
- * 
+
+ *
  * @author COGNARD Luka
  */
 public class DoubleLien implements ElementJeu {
@@ -21,11 +22,11 @@ public class DoubleLien implements ElementJeu {
      * Interrupteur quand un lien est activer.
      */
     private Boolean interupteur;
-    
-    
+
 
     /**
      * Constructeur pour créer une instance de DoubleLien.
+     *
      * @param l1 Le 1er lien
      * @param l2 Le 2ème lien
      */
@@ -37,6 +38,7 @@ public class DoubleLien implements ElementJeu {
 
     /**
      * Active le lien si il est activable lié au noeud donné.
+     *
      * @param n Le noeud lié
      */
     public void activeLien(Noeud n) {
@@ -58,7 +60,8 @@ public class DoubleLien implements ElementJeu {
             this.desactiveInterrupteur();
         }
     }
-    
+
+
     /**
      * Active l'interrupteur.
      */
@@ -77,6 +80,8 @@ public class DoubleLien implements ElementJeu {
 
     /**
      * Récupère l'état de l'interrupteur.
+
+     *
      * @return L'état de l'interrupteur
      */
     public Boolean getInterupteur() {
@@ -89,5 +94,6 @@ public class DoubleLien implements ElementJeu {
     @Override
     public void draw() {
         System.out.println("D");
+
     }
 }
