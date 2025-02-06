@@ -1,41 +1,86 @@
-/**
- * @autor Luka COGNARD
- * @date 18-01-2025
- * @version 1.0
- * @description Contient la classe Lien
- *
- */
 package fr.m3acnl.game.logique;
 
 /**
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
- * lié, son nombre de lien et son nombre de lien de la solution
+ * lié, son nombre de lien et son nombre de lien de la solution.
+ * 
+ * @author COGNARD Luka
  */
 public class Lien implements ElementJeu {
 
+    /**
+     * Le jeu pour récupérer le plateau.
+     */
+    private Jeu jeu;
+
+
+    /**
+     * 1er noeud du lien.
+     */
     private Noeud noeud1;
+
+    /**
+     * 2ème noeud du lien.
+     */
     private Noeud noeud2;
+
+    /**
+     * Nombre de lien actuelle.
+     */
     private int nbLien;
+
+    /**
+     * Le nombre soluce du lien.
+     */
     private int nbLienSoluce;
     private int orientation;
 
     /**
-     * Constructeur pour une nouvelle instance de Lien
+     * La surbrillance du lien.
+     */
+    private Boolean surbrillance;
+
+    /**
+     * L'orientation du lien.
+     */
+    private int orientation;
+
+    /**
+     * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
      * @param n2 deuxième Noeud
      * @param sol le nombre de lien de la solution
+     * @param j Le jeu d'on-t-il fait parti
      */
-    public Lien(Noeud n1, Noeud n2, int or, int sol) {
+    public Lien(Noeud n1, Noeud n2, int sol, Jeu j, int orient) {
         noeud1 = n1;
         noeud2 = n2;
         nbLienSoluce = sol;
         nbLien = 0;
-        orientation = or; // 1 Horizontale, 0 Verticale
+
+        surbrillance = false;
+        jeu = j;
+        orientation = orient;
+
     }
 
     /**
-     * Vérifie si le lien est valide
+     * Active la surbrillance du lien.
+     */
+    public void surbrillanceOn() {
+        surbrillance = true;
+    }
+
+    /**
+     * Désactive la surbrillance du lien.
+     */
+    public void surbrillanceOff() {
+        surbrillance = false;
+    }
+
+    /**
+     * Vérifie si le lien est valide.
      *
      * @return True si le lien est valide sinon false
      */
@@ -45,10 +90,19 @@ public class Lien implements ElementJeu {
 
     /**
      * Active le lien le faisant passer a son état suivant et met a jour le
-     * degré actuelle des noeud liés
+     * degré actuelle des noeud liés.
      */
     public void lienActiver() {
-        if ((nbLien += 1) % 3 == 0) {
+        if (orientation == 1) {
+            if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                return;
+            }
+        } else {
+            if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                return;
+            }
+        }
+        if ((nbLien = (nbLien + 1) % 3) == 0) {
             noeud1.enleverDegre();
             noeud2.enleverDegre();
         } else {
@@ -58,7 +112,7 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Récupère le premier noeud
+     * Récupère le premier noeud.
      *
      * @return le premier noeud
      */
@@ -67,7 +121,7 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Récupère le deuxième noeud
+     * Récupère le deuxième noeud.
      *
      * @return le deuxième noeud
      */
@@ -76,22 +130,51 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Récupère le nombre de lien
+     * Récupère le nombre de lien.
      *
      * @return le nombre de lien
      */
-    public int getnbLien() {
+    public int getNbLien() {
         return nbLien;
     }
 
     /**
-     * Vérifie si un noeud n est présent dans ce lien
+     * Récupère la surbrillance.
+     * @return la surbrillance
+     */
+    public Boolean getSurbrillance() {
+        return surbrillance;
+    }
+
+    /**
+     * Modifie le nombre de lien soluce.
+     * 
+     * @param nbLienSoluce Le nombre de lien soluce
+     */
+    public void setNbLienSoluce(int nbLienSoluce) {
+        this.nbLienSoluce = nbLienSoluce;
+    }
+
+    /**
+     * Vérifie si un noeud n est présent dans ce lien.
      *
      * @param n Le noeud a vérifier
      * @return Le résultat de la vérification
      */
     public int noeudDansLien(Noeud n) {
-        return n.compareTo(this.noeud1) + n.compareTo(this.noeud2);
+        int res = noeud1.compareTo(n);
+        if (res != 0) {
+            return noeud2.compareTo(n);
+        }
+        return res;
+    }
+
+    /**
+     * Affiche le Lien.
+     */
+    @Override
+    public void draw() {
+        System.out.println("L");
     }
 
     public void draw() {

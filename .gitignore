@@ -9,6 +9,7 @@
 target/
 doc/javadoc/
 doc/apidocs
+doc/testapidocs
 
 ######
 # images en double de plantUML
