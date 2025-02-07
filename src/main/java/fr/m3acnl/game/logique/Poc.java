@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Lien;
 import fr.m3acnl.game.logique.Noeud;
-import main.java.fr.m3acnl.game.logique.ElementJeu;
+import fr.m3acnl.game.logique.ElementJeu;
 
 public class Poc {
 
@@ -104,7 +104,7 @@ public class Poc {
 
                 if (current instanceof Noeud && right instanceof Noeud) {
                     // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) right, 1, 1);
+                    Lien lien = new Lien((Noeud) current, (Noeud) right, 1, new Jeu(5), 1);
                     // Add the link to the matrix
                     for (int k = x; k < j; k++) {
                         if (matrice.get(i).get(k) == null) {
@@ -139,7 +139,7 @@ public class Poc {
 
                 if (current instanceof Noeud && bot instanceof Noeud) {
                     // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) bot, 0, 1);
+                    Lien lien = new Lien((Noeud) current, (Noeud) bot, 0, new Jeu(5), 1);
                     // Add the link to the matrix
                     for (int k = y; k < i; k++) {
                         if (matrice.get(k).get(j) == null) {

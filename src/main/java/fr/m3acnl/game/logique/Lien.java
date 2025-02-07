@@ -1,3 +1,7 @@
+/**
+ * @
+ */
+
 package fr.m3acnl.game.logique;
 
 /**
@@ -33,7 +37,6 @@ public class Lien implements ElementJeu {
      * Le nombre soluce du lien.
      */
     private int nbLienSoluce;
-    private int orientation;
 
     /**
      * La surbrillance du lien.
@@ -175,9 +178,5 @@ public class Lien implements ElementJeu {
     @Override
     public void draw() {
         System.out.println("L");
-    }
-
-    public void draw() {
-        System.out.print("L");
     }
 }
