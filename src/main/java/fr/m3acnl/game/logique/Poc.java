@@ -1,5 +1,5 @@
 /**
- * @autor Aymeric MABIRE
+ * @autor MABIRE Aymeric
  * @date 05-02-2025
  * @version 1.0
  * @description Contient la classe Proof of Concept pour la matrice du jeu
@@ -8,11 +8,6 @@
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
-
-import fr.m3acnl.game.logique.DoubleLien;
-import fr.m3acnl.game.logique.Lien;
-import fr.m3acnl.game.logique.Noeud;
-import fr.m3acnl.game.logique.ElementJeu;
 
 public class Poc {
 
