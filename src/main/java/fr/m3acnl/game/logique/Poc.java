@@ -21,7 +21,7 @@ public class Poc {
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
      */
-    public Poc(int lignes, int cols) {
+    public Poc(int lignes, int cols, int mat[][]) {
         matrice = new ArrayList<>();
         listeLien = new ArrayList<Lien>();
         for (int i = 0; i < lignes; i++) {
@@ -31,6 +31,17 @@ public class Poc {
             }
             matrice.add(ligne);
         }
+        matrice2 = new ArrayList<>();
+        for (int i = 0; i < lignes; i++) {
+            ArrayList<Integer> ligne = new ArrayList<>();
+            for (int j = 0; j < cols; j++) {
+                ligne.add(mat[i][j]); // Initialize with null or any default value
+            }
+            matrice2.add(ligne);
+        }
+
+        genMatrice();
+
     }
 
     /**
