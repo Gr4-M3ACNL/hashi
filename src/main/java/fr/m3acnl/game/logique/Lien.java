@@ -5,7 +5,6 @@
  * @description Contient la classe Lien
  *
  */
-
 package fr.m3acnl.game.logique;
 
 /**
@@ -18,7 +17,6 @@ public class Lien implements ElementJeu {
      * Le jeu pour récupérer le plateau.
      */
     private Jeu jeu;
-
 
     /**
      * 1er noeud du lien.
@@ -145,6 +143,7 @@ public class Lien implements ElementJeu {
 
     /**
      * Récupère la surbrillance.
+     *
      * @return la surbrillance
      */
     public Boolean getSurbrillance() {
@@ -153,7 +152,7 @@ public class Lien implements ElementJeu {
 
     /**
      * Modifie le nombre de lien soluce.
-     * 
+     *
      * @param nbLienSoluce Le nombre de lien soluce
      */
     public void setNbLienSoluce(int nbLienSoluce) {
@@ -179,6 +178,10 @@ public class Lien implements ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.println("L");
+        if (orientation == 1) {
+            System.out.print("H");
+        } else {
+            System.out.print("V");
+        }
     }
 }
