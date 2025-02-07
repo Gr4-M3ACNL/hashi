@@ -11,7 +11,9 @@ import java.util.ArrayList;
 
 public class Poc {
 
-    private ArrayList<ArrayList<ElementJeu>> matrice;
+    private ArrayList<ArrayList<ElementJeu>> matrice; //Matrice avec les objets
+    private ArrayList<ArrayList<Int>> matrice2; //Matrice par default
+    private ArrayList<Int> listeLien; //Ligne par default
 
     /**
      * Constructeur pour une nouvelle instance de Lien
@@ -52,7 +54,6 @@ public class Poc {
         matrice.get(ligne).set(col, element);
     }
 
-    //public void genMatrice(); //Genere la matrice grâce au fichier Json
     /**
      * Dessine la matrice
      */
@@ -67,6 +68,22 @@ public class Poc {
             }
             System.out.println();
         }
+    }
+
+    /**
+     * Génère la matrice avec les noeuds et les liens
+     */
+    public void genMatrice() {
+        // Generate the nodes
+        for (int i = 0; i < matrice2.size(); i++) {
+            for (int j = 0; j < matrice2.get(i).size(); j++) {
+                if (matrice2.get(i).get(j) < 0) {
+                    matrice2.get(i).set(j, new Noeud(i, j, -matrice2.get(i).get(j)));
+                }
+            }
+        }
+
+        genLink();
     }
 
     /**
@@ -99,7 +116,7 @@ public class Poc {
 
                 if (current instanceof Noeud && right instanceof Noeud) {
                     // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) right, 1, new Jeu(5), 1);
+                    Lien lien = new Lien((Noeud) current, (Noeud) right, matrice2.get(i).get(j - 1), new Jeu(5), 1);
                     // Add the link to the matrix
                     for (int k = x; k < j; k++) {
                         if (matrice.get(i).get(k) == null) {
@@ -111,6 +128,7 @@ public class Poc {
                         }
 
                     }
+                    listeLien.add(lien);
                     return;
                 }
             }
@@ -134,7 +152,7 @@ public class Poc {
 
                 if (current instanceof Noeud && bot instanceof Noeud) {
                     // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) bot, 0, new Jeu(5), 1);
+                    Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(j), new Jeu(5), 1);
                     // Add the link to the matrix
                     for (int k = y; k < i; k++) {
                         if (matrice.get(k).get(j) == null) {
@@ -146,6 +164,7 @@ public class Poc {
                         }
 
                     }
+                    listeLien.add(lien);
                     return;
                 }
             }
