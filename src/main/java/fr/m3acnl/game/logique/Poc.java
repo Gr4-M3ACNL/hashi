@@ -12,8 +12,8 @@ import java.util.ArrayList;
 public class Poc {
 
     private ArrayList<ArrayList<ElementJeu>> matrice; //Matrice avec les objets
-    private ArrayList<ArrayList<Int>> matrice2; //Matrice par default
-    private ArrayList<Int> listeLien; //Ligne par default
+    private ArrayList<ArrayList<Integer>> matrice2; //Matrice par default
+    private ArrayList<Lien> listeLien; //Ligne par default
 
     /**
      * Constructeur pour une nouvelle instance de Lien
@@ -78,7 +78,7 @@ public class Poc {
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
                 if (matrice2.get(i).get(j) < 0) {
-                    matrice2.get(i).set(j, new Noeud(i, j, -matrice2.get(i).get(j)));
+                    matrice.get(i).set(j, new Noeud(i, j, -matrice2.get(i).get(j)));
                 }
             }
         }
