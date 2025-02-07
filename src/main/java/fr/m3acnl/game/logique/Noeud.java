@@ -1,3 +1,10 @@
+/**
+ * @autor COGNARD Luka
+ * @date 24-01-2025
+ * @version 1.0
+ * @description Contient la classe Noeud
+ *
+ */
 package fr.m3acnl.game.logique;
 
 import java.util.Hashtable;
@@ -6,8 +13,6 @@ import java.util.Hashtable;
  * Cette classe représente un Noeud dans le jeu du hachi. Un noeud connait: sa
  * position, son degré actuelle, le degré de sa solution et une liste
  * d'adjacence stockant les noeuds auquel il est relié directement.
- * 
- * @author COGNARD Luka
  */
 
 public class Noeud implements ElementJeu, Comparable<Noeud> {

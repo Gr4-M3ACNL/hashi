@@ -1,5 +1,9 @@
 /**
- * @
+ * @autor COGNARD Luka
+ * @date 27-01-2024
+ * @version 1.0
+ * @description Contient la classe Lien
+ *
  */
 
 package fr.m3acnl.game.logique;
@@ -7,8 +11,6 @@ package fr.m3acnl.game.logique;
 /**
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
  * lié, son nombre de lien et son nombre de lien de la solution.
- * 
- * @author COGNARD Luka
  */
 public class Lien implements ElementJeu {
 

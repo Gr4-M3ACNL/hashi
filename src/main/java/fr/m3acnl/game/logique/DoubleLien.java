@@ -1,10 +1,14 @@
+/**
+ * @autor COGNARD Luka
+ * @date 28-01-2025
+ * @version 1.0
+ * @description Contient la classe DoubleLien
+ *
+ */
 package fr.m3acnl.game.logique;
 
 /**
  * Cette classe gère les double lien.
-
- *
- * @author COGNARD Luka
  */
 public class DoubleLien implements ElementJeu {
 

@@ -1,3 +1,10 @@
+/**
+ * @autor COGNARD Luka
+ * @date 03-02-2025
+ * @version 1.0
+ * @description Contient la classe Jeu
+ *
+ */
 package fr.m3acnl.game.logique;
 
 import java.time.Instant;
@@ -5,8 +12,6 @@ import java.util.ArrayList;
 
 /**
  * Cette classe gère le jeu.
- * 
- * @author COGNARD Luka
  */
 public class Jeu {
 
