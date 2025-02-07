@@ -23,6 +23,7 @@ public class Poc {
      */
     public Poc(int lignes, int cols) {
         matrice = new ArrayList<>();
+        listeLien = new ArrayList<Lien>();
         for (int i = 0; i < lignes; i++) {
             ArrayList<ElementJeu> ligne = new ArrayList<>();
             for (int j = 0; j < cols; j++) {
