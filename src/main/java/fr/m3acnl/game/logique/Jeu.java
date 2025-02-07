@@ -18,7 +18,7 @@ public class Jeu {
     /**
      * Le plateau de jeu.
      */
-    private ArrayList<ArrayList<ElementJeu>> plateau;
+    private Poc plateau;
 
     /**
      * Temp au début.
@@ -29,11 +29,6 @@ public class Jeu {
      * Temp fin de partie.
      */
     private long tempFinal;
-
-    /**
-     * Liste des lien dans la matrice.
-     */
-    private ArrayList<Lien> listeLien;
 
     /**
      * Pile des coup jouer.
@@ -58,11 +53,9 @@ public class Jeu {
     public Jeu(int clef) {
         clefFichier = clef;
         instantDebut = Instant.now();
-        listeLien = new ArrayList<>();
         coupJouer = new Pile();
         coupJouerBuff = new Pile();
-        plateau = new ArrayList<>();
-        plateau.add(new ArrayList<ElementJeu>());
+        plateau = new Poc(10,10);
         tempFinal = 0;
     }
 
@@ -80,7 +73,7 @@ public class Jeu {
         int x = noeud1.getPosition().getCoordX();
         if (y1 < y2) {
             for (int i = y1; i < y2; i++) {
-                ElementJeu elem = plateau.get(x).get(i);
+                ElementJeu elem = plateau.getElement(x, i);
                 if (elem instanceof DoubleLien) {
                     if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
                         return 1;
@@ -89,7 +82,7 @@ public class Jeu {
             }
         } else {
             for (int i = y1; i > y2; i--) {
-                ElementJeu elem = plateau.get(x).get(i);
+                ElementJeu elem = plateau.getElement(x, i);
                 if (elem instanceof DoubleLien) {
                     if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
                         return 1;
@@ -114,7 +107,7 @@ public class Jeu {
         int y = noeud1.getPosition().getCoordY();
         if (x1 < x2) {
             for (int i = x1; i < x2; i++) {
-                ElementJeu elem = plateau.get(i).get(y);
+                ElementJeu elem = plateau.getElement(i, y);
                 if (elem instanceof DoubleLien) {
                     if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
                         return 1;
@@ -123,7 +116,7 @@ public class Jeu {
             }
         } else {
             for (int i = x1; i > x2; i--) {
-                ElementJeu elem = plateau.get(i).get(y);
+                ElementJeu elem = plateau.getElement(i, y);
                 if (elem instanceof DoubleLien) {
                     if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
                         return 1;
@@ -139,7 +132,7 @@ public class Jeu {
      * 
      * @return Le plateau
      */
-    public ArrayList<ArrayList<ElementJeu>> getPlateau() {
+    public Poc getPlateau() {
         return plateau;
     }
 }
