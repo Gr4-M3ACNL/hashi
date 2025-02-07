@@ -55,7 +55,7 @@ public class Jeu {
         instantDebut = Instant.now();
         coupJouer = new Pile();
         coupJouerBuff = new Pile();
-        plateau = new Poc(10,10);
+        plateau = new Poc(7,7);
         tempFinal = 0;
     }
 
