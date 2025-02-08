@@ -1,10 +1,12 @@
 /**
+ * Classe Poc.
  * @autor MABIRE Aymeric
  * @date 05-02-2025
  * @version 1.0
  * @description Contient la classe Proof of Concept pour la matrice du jeu
  *
  */
+
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
@@ -16,12 +18,12 @@ public class Poc {
     private ArrayList<Lien> listeLien; //Ligne par default
 
     /**
-     * Constructeur pour une nouvelle instance de Lien
+     * Constructeur pour une nouvelle instance de Lien.
      *
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
      */
-    public Poc(int lignes, int cols, int mat[][], Jeu jeu) {
+    public Poc(int lignes, int cols, int[][] mat, Jeu jeu) {
         matrice = new ArrayList<>();
         listeLien = new ArrayList<Lien>();
         for (int i = 0; i < lignes; i++) {
@@ -45,7 +47,7 @@ public class Poc {
     }
 
     /**
-     * Récupère un élément de la matrice a la position donnée
+     * Récupère un élément de la matrice a la position donnée.
      *
      * @param ligne La ligne de l'élément
      * @param col La colonne de l'élément
@@ -56,7 +58,7 @@ public class Poc {
     }
 
     /**
-     * Modifie un élément de la matrice a la position donnée
+     * Modifie un élément de la matrice a la position donnée.
      *
      * @param ligne La ligne de l'élément
      * @param col La colonne de l'élément
@@ -67,7 +69,7 @@ public class Poc {
     }
 
     /**
-     * Dessine la matrice
+     * Dessine la matrice.
      */
     public void draw() {
         for (ArrayList<ElementJeu> ligne : matrice) {
@@ -83,7 +85,7 @@ public class Poc {
     }
 
     /**
-     * Génère la matrice avec les noeuds et les liens
+     * Génère la matrice avec les noeuds et les liens.
      */
     public void genMatrice(Jeu jeu) {
         // Generate the nodes
@@ -99,7 +101,7 @@ public class Poc {
     }
 
     /**
-     * Génère les liens de la matrice
+     * Génère les liens de la matrice.
      */
     public void genLink(Jeu jeu) {
         for (int i = 0; i < matrice.size(); i++) {
@@ -113,7 +115,7 @@ public class Poc {
     }
 
     /**
-     * Vérifie si il y a un noeud a droite et crée un lien entre les deux noeuds
+     * Vérifie si il y a un noeud a droite et crée un lien entre les deux noeuds.
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
@@ -122,17 +124,17 @@ public class Poc {
         //verif si il y a un noeud a droite
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu current = matrice.get(x).get(y);
-        for (int i = y+1; i < matrice.get(x).size(); i++) {
+        for (int i = y + 1; i < matrice.get(x).size(); i++) {
             ElementJeu right = matrice.get(x).get(i);
             if (current instanceof Noeud && right instanceof Noeud) {
                 // Create a link between the two nodes
                 Lien lien = new Lien((Noeud) current, (Noeud) right, matrice2.get(x).get(i - 1), jeu, 1);
                 // Add the link to the matrix
-                for (int k = y+1; k < i; k++) {
+                for (int k = y + 1; k < i; k++) {
                     if (matrice.get(x).get(k) == null) {
                         matrice.get(x).set(k, lien);
                     } else if (matrice.get(x).get(k) instanceof Lien) {
-                        DoubleLien dl = new DoubleLien(lien,(Lien) matrice.get(x).get(k));
+                        DoubleLien dl = new DoubleLien(lien, (Lien) matrice.get(x).get(k));
                         matrice.get(x).set(k, dl);
                     }
                 }
@@ -168,7 +170,7 @@ public class Poc {
 
     /**
      * Vérifie si il y a un noeud en dessous et crée un lien entre les deux
-     * noeuds
+     * noeuds.
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
@@ -177,18 +179,18 @@ public class Poc {
         //verif si il y a un noeud en bas
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu current = matrice.get(x).get(y);
-        for (int i = x+1; i < matrice.size(); i++) {
+        for (int i = x + 1; i < matrice.size(); i++) {
             ElementJeu bot = matrice.get(i).get(y);
 
             if (current instanceof Noeud && bot instanceof Noeud) {
                 // Create a link between the two nodes
                 Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(y), jeu, 0);
                 // Add the link to the matrix
-                for (int k = x+1; k < i; k++) {
+                for (int k = x + 1; k < i; k++) {
                     if (matrice.get(k).get(y) == null) {
                         matrice.get(k).set(y, lien);
                     } else if (matrice.get(k).get(y) instanceof Lien) {
-                        DoubleLien dl = new DoubleLien(lien,(Lien) matrice.get(k).get(y));
+                        DoubleLien dl = new DoubleLien(lien, (Lien) matrice.get(k).get(y));
                         matrice.get(k).set(y, dl);
                     }
 
@@ -224,15 +226,19 @@ public class Poc {
         }*/
     }
 
+    /**
+     * Main pour tester la génération de la matrice.
+     * @param args argumet en commande
+     */
     public static void main(String[] args) {
-        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
-                        {2, -3, 1, -3, 2, 2, -3},
-                        {-3, 2, 0, 0, 0, 0, 1},
-                        {1, -6, 2, -4, 2, -3, 1},
-                        {0, 2, 0, 0, 0, 1, -1},
-                        {1, -4, 2, 2, -2, 1, 0},
-                        {-2, 1, 1, -2, 1, -2, 0}};
-        Poc test = new Poc(7,7,mat,new Jeu(5, mat));
+        int[][] mat = {{-4, 2, -4, 2, -2, 0, 0},
+                       {2, -3, 1, -3, 2, 2, -3},
+                       {-3, 2, 0, 0, 0, 0, 1},
+                       {1, -6, 2, -4, 2, -3, 1},
+                       {0, 2, 0, 0, 0, 1, -1},
+                       {1, -4, 2, 2, -2, 1, 0},
+                       {-2, 1, 1, -2, 1, -2, 0}};
+        Poc test = new Poc(7, 7, mat, new Jeu(5, mat));
         test.draw();
 
     }

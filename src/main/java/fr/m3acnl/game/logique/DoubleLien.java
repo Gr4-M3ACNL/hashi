@@ -1,10 +1,12 @@
 /**
+ * Class DoubleLien.
  * @autor COGNARD Luka
  * @date 28-01-2025
  * @version 1.0
  * @description Contient la classe DoubleLien
  *
  */
+
 package fr.m3acnl.game.logique;
 
 /**
@@ -65,6 +67,14 @@ public class DoubleLien implements ElementJeu {
         }
     }
 
+    /**
+     * Méthode non utiliser.
+     */
+    @Override
+    public void activer() {
+        return;
+    }
+
 
     /**
      * Active l'interrupteur.
@@ -99,13 +109,5 @@ public class DoubleLien implements ElementJeu {
     public void draw() {
         System.out.print("D ");
 
-    }
-
-    /**
-     * Méthode non utiliser.
-     */
-    @Override
-    public void activer(){
-        return;
     }
 }

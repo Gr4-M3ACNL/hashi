@@ -1,10 +1,12 @@
 /**
+ * Class Pile.
  * @autor MABIRE Aymeric
  * @date 24-01-2025
  * @version 1.0
  * @description Contient la classe Pile
  *
  */
+
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;

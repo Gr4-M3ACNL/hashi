@@ -1,10 +1,12 @@
 /**
+ * Class Noeud.
  * @autor COGNARD Luka
  * @date 24-01-2025
  * @version 1.0
  * @description Contient la classe Noeud
  *
  */
+
 package fr.m3acnl.game.logique;
 
 import java.util.Hashtable;
@@ -144,10 +146,10 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Activer le noeud
+     * Activer le noeud.
      */
     @Override
-    public void activer(){
+    public void activer() {
         return;
     }
 }
