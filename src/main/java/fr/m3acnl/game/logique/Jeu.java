@@ -1,5 +1,7 @@
+
 /**
  * Classe jeu.
+ *
  * @autor COGNARD Luka
  * @date 03-02-2025
  * @version 1.0
@@ -7,8 +9,7 @@
  *
  */
 
-package fr.m3acnl.game.logique;
-
+//package fr.m3acnl.game.logique;
 import java.time.Instant;
 
 /**
@@ -48,7 +49,7 @@ public class Jeu {
 
     /**
      * Constructeur pour une instance d'objet Jeu.
-     * 
+     *
      * @param clef clef de la matrice dans le fichier json
      * @param mat La matrice du jeu
      */
@@ -63,7 +64,7 @@ public class Jeu {
 
     /**
      * Vérification si le lien horizontal n'est pas couper sur son chemin.
-     * 
+     *
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
      * @param nbLien Le nombre de lien actuel
@@ -97,7 +98,7 @@ public class Jeu {
 
     /**
      * Vérification si le lien vertical n'est pas couper sur son chemin.
-     * 
+     *
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
      * @param nbLien Le nombre de lien actuel
@@ -131,6 +132,7 @@ public class Jeu {
 
     /**
      * Active l'élement de jeu selectionner.
+     *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      */
@@ -149,7 +151,7 @@ public class Jeu {
 
     /**
      * Méthode de récupération du plateau.
-     * 
+     *
      * @return Le plateau
      */
     public Poc getPlateau() {

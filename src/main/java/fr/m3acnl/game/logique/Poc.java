@@ -1,14 +1,14 @@
+
 /**
  * Classe Poc.
+ *
  * @autor MABIRE Aymeric
  * @date 05-02-2025
  * @version 1.0
  * @description Contient la classe Proof of Concept pour la matrice du jeu
  *
  */
-
-package fr.m3acnl.game.logique;
-
+//package fr.m3acnl.game.logique;
 import java.util.ArrayList;
 
 public class Poc {
@@ -72,12 +72,16 @@ public class Poc {
      * Dessine la matrice.
      */
     public void draw() {
+        int count = 0;
+        System.out.println("    0     1     2     3     4     5     6");
         for (ArrayList<ElementJeu> ligne : matrice) {
+            System.out.print(count++ + " ");
             for (ElementJeu element : ligne) {
+
                 if (element != null) {
                     element.draw();
                 } else {
-                    System.out.print("_ ");
+                    System.out.print("NONE  ");
                 }
             }
             System.out.println();
@@ -115,7 +119,8 @@ public class Poc {
     }
 
     /**
-     * Vérifie si il y a un noeud a droite et crée un lien entre les deux noeuds.
+     * Vérifie si il y a un noeud a droite et crée un lien entre les deux
+     * noeuds.
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
@@ -199,7 +204,7 @@ public class Poc {
                 return;
             }
         }
-        
+
         /*ElementJeu current = matrice.get(y).get(x);
         for (int i = y; i < matrice.size(); i++) {
             for (int j = x; j < matrice.get(i).size() - 1; j++) {
@@ -228,19 +233,77 @@ public class Poc {
 
     /**
      * Main pour tester la génération de la matrice.
+     *
      * @param args argumet en commande
      */
     public static void main(String[] args) {
         int[][] mat = {{-4, 2, -4, 2, -2, 0, 0},
-                       {2, -3, 1, -3, 2, 2, -3},
-                       {-3, 2, 0, 0, 0, 0, 1},
-                       {1, -6, 2, -4, 2, -3, 1},
-                       {0, 2, 0, 0, 0, 1, -1},
-                       {1, -4, 2, 2, -2, 1, 0},
-                       {-2, 1, 1, -2, 1, -2, 0}};
+        {2, -3, 1, -3, 2, 2, -3},
+        {-3, 2, 0, 0, 0, 0, 1},
+        {1, -6, 2, -4, 2, -3, 1},
+        {0, 2, 0, 0, 0, 1, -1},
+        {1, -4, 2, 2, -2, 1, 0},
+        {-2, 1, 1, -2, 1, -2, 0}};
         Poc test = new Poc(7, 7, mat, new Jeu(5, mat));
         test.draw();
 
+        System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
+        test.matrice.get(0).get(1).activer();
+        test.draw();
+
+        System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
+        test.matrice.get(0).get(1).activer();
+        test.draw();
+
+        System.out.println("\n\nTest activation du Lien 1,0 en état 2\n\n");
+        test.matrice.get(1).get(0).activer();
+        test.matrice.get(1).get(0).activer();
+        test.draw();
+
+        System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
+        test.matrice.get(0).get(1).activer();
+        test.draw();
+
+        System.out.println("\n\nTest completion de la matrice\n\n");
+        //Lien 0,1 Etat 2
+        test.matrice.get(0).get(1).activer();
+        test.matrice.get(0).get(1).activer();
+        //Lien 0,3 Etat 2
+        test.matrice.get(0).get(3).activer();
+        test.matrice.get(0).get(3).activer();
+        //Lien 1,2 Etat 1
+        test.matrice.get(1).get(2).activer();
+        //Lien 1,6 Etat 2
+        test.matrice.get(1).get(5).activer();
+        test.matrice.get(1).get(5).activer();
+        //Lien 2,1 Etat 2
+        test.matrice.get(2).get(1).activer();
+        test.matrice.get(2).get(1).activer();
+        //Lien 3,0 Etat 1
+        test.matrice.get(3).get(0).activer();
+        //Lien 3,2 Etat 2
+        test.matrice.get(3).get(2).activer();
+        test.matrice.get(3).get(2).activer();
+        //Lien 3,4 Etat 2
+        test.matrice.get(3).get(4).activer();
+        test.matrice.get(3).get(4).activer();
+        //Lien 4,1 Etat 2
+        test.matrice.get(4).get(1).activer();
+        test.matrice.get(4).get(1).activer();
+        //Lien 4,3 Etat 2
+        test.matrice.get(4).get(3).activer();
+        test.matrice.get(4).get(3).activer();
+        //Lien 4,5 Etat 1
+        test.matrice.get(4).get(5).activer();
+        //Lien 5,2 Etat 2
+        test.matrice.get(5).get(2).activer();
+        test.matrice.get(5).get(2).activer();
+        //Lien 6,1 Etat 1
+        test.matrice.get(6).get(1).activer();
+        //Lien 6,4 Etat 1
+        test.matrice.get(6).get(4).activer();
+
+        test.draw();
     }
 }
 

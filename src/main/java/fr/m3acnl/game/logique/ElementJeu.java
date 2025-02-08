@@ -1,5 +1,7 @@
+
 /**
  * Interface ElementJeu.
+ *
  * @autor Aymeric MABIRE
  * @date 05-02-2025
  * @version 1.0
@@ -7,8 +9,7 @@
  *
  */
 
-package fr.m3acnl.game.logique;
-
+//package fr.m3acnl.game.logique;
 public interface ElementJeu {
 
     /**

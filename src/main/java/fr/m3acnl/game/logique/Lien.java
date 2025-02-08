@@ -1,13 +1,14 @@
+
 /**
  * Classe Lien.
+ *
  * @autor COGNARD Luka
  * @date 27-01-2024
  * @version 1.0
  * @description Contient la classe Lien
  *
  */
-
-package fr.m3acnl.game.logique;
+//package fr.m3acnl.game.logique;
 
 /**
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
@@ -97,6 +98,7 @@ public class Lien implements ElementJeu {
      * Active le lien le faisant passer a son état suivant et met a jour le
      * degré actuelle des noeud liés.
      */
+    @Override
     public void activer() {
         if (orientation == 1) {
             if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
@@ -181,9 +183,9 @@ public class Lien implements ElementJeu {
     @Override
     public void draw() {
         if (orientation == 1) {
-            System.out.print("H ");
+            System.out.print("H" + nbLien + "(" + nbLienSoluce + ") ");
         } else {
-            System.out.print("V ");
+            System.out.print("V" + nbLien + "(" + nbLienSoluce + ") ");
         }
     }
 }

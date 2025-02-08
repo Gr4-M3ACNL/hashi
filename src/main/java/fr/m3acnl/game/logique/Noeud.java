@@ -1,13 +1,14 @@
+
 /**
  * Class Noeud.
+ *
  * @autor COGNARD Luka
  * @date 24-01-2025
  * @version 1.0
  * @description Contient la classe Noeud
  *
  */
-
-package fr.m3acnl.game.logique;
+//package fr.m3acnl.game.logique;
 
 import java.util.Hashtable;
 
@@ -16,7 +17,6 @@ import java.util.Hashtable;
  * position, son degré actuelle, le degré de sa solution et une liste
  * d'adjacence stockant les noeuds auquel il est relié directement.
  */
-
 public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     /**
@@ -43,8 +43,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      * Si le noeud est en surbrillance ou non.
      */
     private Boolean surbrillance;
-
-    
 
     /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
@@ -115,9 +113,10 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public int getDegreSoluce() {
         return degreSoluce;
     }
-    
+
     /**
      * Récupère la surbrillance.
+     *
      * @return la surbrillance
      */
     public Boolean getSurbrillance() {
@@ -135,13 +134,12 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         return this.position.compareTo(n2.position);
     }
 
-
     /**
      * Affiche le Noeud.
      */
     @Override
     public void draw() {
-        System.out.print("N ");
+        System.out.print("N" + degreSoluce + "(" + degreActuelle + ") ");
 
     }
 
