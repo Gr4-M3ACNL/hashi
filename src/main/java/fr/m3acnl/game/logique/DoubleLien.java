@@ -106,6 +106,6 @@ public class DoubleLien implements ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.print("D     ");
+        System.out.print(" D"+"("+lien1.getNbLienSoluce()+"|"+lien2.getNbLienSoluce()+") ");
     }
 }

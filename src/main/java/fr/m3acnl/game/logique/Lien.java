@@ -155,6 +155,14 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Récupère le nombre soluce du lien.
+     * @return le nombre soluce
+     */
+    public int getNbLienSoluce() {
+        return nbLienSoluce;
+    }
+
+    /**
      * Modifie le nombre de lien soluce.
      *
      * @param nbLienSoluce Le nombre de lien soluce
@@ -183,9 +191,9 @@ public class Lien implements ElementJeu {
     @Override
     public void draw() {
         if (orientation == 1) {
-            System.out.print("H" + nbLien + "(" + nbLienSoluce + ") ");
+            System.out.print(" H" + nbLien + "(" + nbLienSoluce + ")  ");
         } else {
-            System.out.print("V" + nbLien + "(" + nbLienSoluce + ") ");
+            System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
         }
     }
 }

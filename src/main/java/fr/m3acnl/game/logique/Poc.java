@@ -73,7 +73,7 @@ public class Poc {
      */
     public void draw() {
         int count = 0;
-        System.out.println("    0     1     2     3     4     5     6");
+        System.out.println("     0       1       2       3       4       5       6");
         for (ArrayList<ElementJeu> ligne : matrice) {
             System.out.print(count++ + " ");
             for (ElementJeu element : ligne) {
@@ -81,7 +81,7 @@ public class Poc {
                 if (element != null) {
                     element.draw();
                 } else {
-                    System.out.print("NONE  ");
+                    System.out.print(" NONE   ");
                 }
             }
             System.out.println();
@@ -271,6 +271,9 @@ public class Poc {
         //Lien 0,3 Etat 2
         test.matrice.get(0).get(3).activer();
         test.matrice.get(0).get(3).activer();
+        //Lien 1,0 Etat 2
+        test.matrice.get(1).get(0).activer();
+        test.matrice.get(1).get(0).activer();
         //Lien 1,2 Etat 1
         test.matrice.get(1).get(2).activer();
         //Lien 1,6 Etat 2
@@ -279,14 +282,16 @@ public class Poc {
         //Lien 2,1 Etat 2
         test.matrice.get(2).get(1).activer();
         test.matrice.get(2).get(1).activer();
+        //Lien 2,6 Etat 1
+        test.matrice.get(2).get(6).activer();
         //Lien 3,0 Etat 1
         test.matrice.get(3).get(0).activer();
         //Lien 3,2 Etat 2
         test.matrice.get(3).get(2).activer();
         test.matrice.get(3).get(2).activer();
         //Lien 3,4 Etat 2
-        test.matrice.get(3).get(4).activer();
-        test.matrice.get(3).get(4).activer();
+        ((DoubleLien) test.matrice.get(3).get(4)).activer((Noeud) test.matrice.get(3).get(5));
+        ((DoubleLien) test.matrice.get(3).get(4)).activer((Noeud) test.matrice.get(3).get(5));
         //Lien 4,1 Etat 2
         test.matrice.get(4).get(1).activer();
         test.matrice.get(4).get(1).activer();
