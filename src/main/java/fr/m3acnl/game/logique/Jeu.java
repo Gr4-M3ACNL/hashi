@@ -1,4 +1,3 @@
-
 /**
  * Classe jeu.
  *
@@ -78,8 +77,12 @@ public class Jeu {
             for (int i = y1; i < y2; i++) {
                 ElementJeu elem = plateau.getElement(x, i);
                 if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
-                        return 1;
+                    if (((DoubleLien) elem).getInterupteur()) {
+                        if (nbLien == 0) {
+                            return 1;
+                        }
+                    } else {
+                        ((DoubleLien) elem).activeInterrupteur();
                     }
                 }
             }
@@ -87,8 +90,12 @@ public class Jeu {
             for (int i = y1; i > y2; i--) {
                 ElementJeu elem = plateau.getElement(x, i);
                 if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
-                        return 1;
+                    if (((DoubleLien) elem).getInterupteur()) {
+                        if (nbLien == 0) {
+                            return 1;
+                        }
+                    } else {
+                        ((DoubleLien) elem).activeInterrupteur();
                     }
                 }
             }
@@ -112,8 +119,12 @@ public class Jeu {
             for (int i = x1; i < x2; i++) {
                 ElementJeu elem = plateau.getElement(i, y);
                 if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
-                        return 1;
+                    if (((DoubleLien) elem).getInterupteur()) {
+                        if (nbLien == 0) {
+                            return 1;
+                        }
+                    } else {
+                        ((DoubleLien) elem).activeInterrupteur();
                     }
                 }
             }
@@ -121,8 +132,12 @@ public class Jeu {
             for (int i = x1; i > x2; i--) {
                 ElementJeu elem = plateau.getElement(i, y);
                 if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur() && nbLien == 0) {
-                        return 1;
+                    if (((DoubleLien) elem).getInterupteur()) {
+                        if (nbLien == 0) {
+                            return 1;
+                        }
+                    } else {
+                        ((DoubleLien) elem).activeInterrupteur();
                     }
                 }
             }
