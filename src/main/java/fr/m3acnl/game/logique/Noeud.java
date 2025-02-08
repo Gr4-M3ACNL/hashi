@@ -142,4 +142,12 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         System.out.println("N");
 
     }
+
+    /**
+     * Activer le noeud
+     */
+    @Override
+    public void activer(){
+        return;
+    }
 }

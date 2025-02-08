@@ -21,7 +21,7 @@ public class Poc {
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
      */
-    public Poc(int lignes, int cols, int mat[][]) {
+    public Poc(int lignes, int cols, int mat[][], Jeu jeu) {
         matrice = new ArrayList<>();
         listeLien = new ArrayList<Lien>();
         for (int i = 0; i < lignes; i++) {
@@ -40,7 +40,7 @@ public class Poc {
             matrice2.add(ligne);
         }
 
-        this.genMatrice();
+        this.genMatrice(jeu);
 
     }
 
@@ -85,7 +85,7 @@ public class Poc {
     /**
      * Génère la matrice avec les noeuds et les liens
      */
-    public void genMatrice() {
+    public void genMatrice(Jeu jeu) {
         // Generate the nodes
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
@@ -95,18 +95,18 @@ public class Poc {
             }
         }
 
-        genLink();
+        genLink(jeu);
     }
 
     /**
      * Génère les liens de la matrice
      */
-    public void genLink() {
+    public void genLink(Jeu jeu) {
         for (int i = 0; i < matrice.size(); i++) {
             for (int j = 0; j < matrice.get(i).size() - 1; j++) {
                 if (matrice.get(i).get(j) instanceof Noeud) {
-                    verifHorizontale(j, i);
-                    verifVerticale(j, i);
+                    verifHorizontale(j, i, jeu);
+                    verifVerticale(j, i, jeu);
                 }
             }
         }
@@ -118,7 +118,7 @@ public class Poc {
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
      */
-    private void verifHorizontale(int y, int x) {
+    private void verifHorizontale(int y, int x, Jeu jeu) {
         //verif si il y a un noeud a droite
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu current = matrice.get(y).get(x);
@@ -128,7 +128,7 @@ public class Poc {
 
                 if (current instanceof Noeud && right instanceof Noeud) {
                     // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) right, matrice2.get(i).get(j - 1), new Jeu(5), 1);
+                    Lien lien = new Lien((Noeud) current, (Noeud) right, matrice2.get(i).get(j - 1), jeu, 1);
                     // Add the link to the matrix
                     for (int k = x; k < j; k++) {
                         if (matrice.get(i).get(k) == null) {
@@ -154,7 +154,7 @@ public class Poc {
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
      */
-    private void verifVerticale(int y, int x) {
+    private void verifVerticale(int y, int x, Jeu jeu) {
         //verif si il y a un noeud en bas
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu current = matrice.get(y).get(x);
@@ -164,7 +164,7 @@ public class Poc {
 
                 if (current instanceof Noeud && bot instanceof Noeud) {
                     // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(j), new Jeu(5), 1);
+                    Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(j), jeu, 1);
                     // Add the link to the matrix
                     for (int k = y; k < i; k++) {
                         if (matrice.get(k).get(j) == null) {
@@ -191,7 +191,7 @@ public class Poc {
                         {0, 2, 0, 0, 0, 1, -1},
                         {1, -4, 2, 2, -2, 1, 0},
                         {-2, 1, 1, -2, 1, -2, 0}};
-        Poc test = new Poc(7,7,mat);
+        Poc test = new Poc(7,7,mat,new Jeu(5));
         test.draw();
 
     }

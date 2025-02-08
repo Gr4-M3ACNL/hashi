@@ -95,7 +95,7 @@ public class Lien implements ElementJeu {
      * Active le lien le faisant passer a son état suivant et met a jour le
      * degré actuelle des noeud liés.
      */
-    public void lienActiver() {
+    public void activer() {
         if (orientation == 1) {
             if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
                 return;

@@ -55,7 +55,7 @@ public class Jeu {
         instantDebut = Instant.now();
         coupJouer = new Pile();
         coupJouerBuff = new Pile();
-        plateau = new Poc(7,7, null);
+        plateau = new Poc(7,7, null, this);
         tempFinal = 0;
     }
 
@@ -125,6 +125,24 @@ public class Jeu {
             }
         }
         return 0;
+    }
+
+    /**
+     * Active l'élement de jeu selectionner.
+     * @param x Coordonnée en x
+     * @param y Coordonnée en y
+     */
+    public void activeElem(int x, int y){
+        ElementJeu elem = plateau.getElement(x, y);
+        if (elem instanceof DoubleLien) {
+            ((DoubleLien)elem).activer(null);
+            coupJouer.empiler(elem);
+        } else if (elem != null) {
+            elem.activer();
+            if (elem instanceof Lien) {
+                coupJouer.empiler(elem);
+            }
+        }
     }
 
     /**

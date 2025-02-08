@@ -52,25 +52,25 @@ public class DoubleLienTest extends Tests{
     }
 
     /**
-     * Test de la méthode activeLien
-     * @see DoubleLien#activeLien(Noeud)
+     * Test de la méthode activer
+     * @see DoubleLien#activer(Noeud)
      * @see Noeud#estValide()
      */
     @Test
-    void testActiveLien() {
+    void testactiver() {
         Noeud n1 = new Noeud(5, 2, 1);
         Noeud n2 = new Noeud(5, 4, 1);
         Noeud n3 = new Noeud(4, 3, 1);
         Noeud n4 = new Noeud(6, 3, 1);
         DoubleLien dl=new DoubleLien(new Lien(n1,n2, 1,new Jeu(5),1),new Lien(n3,n4, 1,new Jeu(5),1));
-        dl.activeLien(n1);
-        dl.activeLien(n2);
+        dl.activer(n1);
+        dl.activer(n2);
         assertEquals(-1, n1.estValide(),"Lien1 activer 2 fois le noeud lié a -1 deg soluce 1");
-        dl.activeLien(n3);
+        dl.activer(n3);
         assertEquals(1, n4.estValide(),"Aucune activationdu lien2, Lien1 déja actif renvoie 1");
-        dl.activeLien(n2);
-        dl.activeLien(n3);
-        dl.activeLien(n4);
+        dl.activer(n2);
+        dl.activer(n3);
+        dl.activer(n4);
         assertEquals(-1, n4.estValide(),"Lien2 activer 2 fois le noeud lié a -1 deg soluce 1");
 
     }

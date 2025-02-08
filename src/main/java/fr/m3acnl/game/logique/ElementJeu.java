@@ -13,4 +13,6 @@ public interface ElementJeu {
      * Méthode pour dessiner un élément de jeu
      */
     public void draw();
+
+    public void activer();
 }
