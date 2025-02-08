@@ -97,7 +97,7 @@ public class DoubleLien implements ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.println("D");
+        System.out.print("D ");
 
     }
 

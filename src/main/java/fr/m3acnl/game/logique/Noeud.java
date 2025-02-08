@@ -139,7 +139,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public void draw() {
-        System.out.println("N");
+        System.out.print("N ");
 
     }
 

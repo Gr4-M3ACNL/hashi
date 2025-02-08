@@ -179,9 +179,9 @@ public class Lien implements ElementJeu {
     @Override
     public void draw() {
         if (orientation == 1) {
-            System.out.print("H");
+            System.out.print("H ");
         } else {
-            System.out.print("V");
+            System.out.print("V ");
         }
     }
 }
