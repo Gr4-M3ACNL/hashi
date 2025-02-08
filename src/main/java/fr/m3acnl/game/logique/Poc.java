@@ -232,7 +232,7 @@ public class Poc {
                         {0, 2, 0, 0, 0, 1, -1},
                         {1, -4, 2, 2, -2, 1, 0},
                         {-2, 1, 1, -2, 1, -2, 0}};
-        Poc test = new Poc(7,7,mat,new Jeu(5));
+        Poc test = new Poc(7,7,mat,new Jeu(5, mat));
         test.draw();
 
     }

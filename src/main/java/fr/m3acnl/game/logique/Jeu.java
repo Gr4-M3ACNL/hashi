@@ -50,12 +50,12 @@ public class Jeu {
      * 
      * @param clef clef de la matrice dans le fichier json
      */
-    public Jeu(int clef) {
+    public Jeu(int clef, int mat[][]) {
         clefFichier = clef;
         instantDebut = Instant.now();
         coupJouer = new Pile();
         coupJouerBuff = new Pile();
-        plateau = new Poc(7,7, null, this);
+        plateau = new Poc(7,7, mat, this);
         tempFinal = 0;
     }
 

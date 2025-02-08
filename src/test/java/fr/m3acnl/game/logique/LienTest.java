@@ -44,7 +44,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testEstValide() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         assertEquals(false,l.estValide(),"Lien invalide renvoie false");
         l.activer();
         assertEquals(true,l.estValide(),"Lien invalide renvoie false");
@@ -56,7 +63,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetNbLien() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         assertEquals(0,l.getNbLien(),"Lien créer pas de lien nbLien a 0");
     }
 
@@ -67,7 +81,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetNoeud1() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         assertEquals(0, l.getNoeud1().compareTo(new Noeud(5,2,1)),"comparaison entre le noeud1 récupéré et un autre identique rnevoie 0");
     }
 
@@ -78,7 +99,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetNoeud2() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         assertEquals(0, l.getNoeud2().compareTo(new Noeud(5,4,1)),"comparaison entre le noeud2 récupéré et un autre identique rnevoie 0");
     }
 
@@ -88,7 +116,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testGetSurbrillance() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         assertEquals(false, l.getSurbrillance(),"Surbrillance a false");
     }
 
@@ -102,7 +137,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testActiver() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1, new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1, new Jeu(5,mat),1);
         l.activer();
         assertEquals(1,l.getNbLien(),"Lien activé donc 1 ");
         assertEquals(0, l.getNoeud1().estValide(),"noeud incrémenter lié ");
@@ -123,7 +165,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testNoeudDansLien() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         Noeud n=new Noeud(5,2,1);
         assertEquals(0, l.noeudDansLien(n),"Recherche premier noeud identique renvoie 0");
         n=new Noeud(5,4,1);
@@ -142,7 +191,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testSurbrillanceOff() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         l.surbrillanceOn();
         l.surbrillanceOff();
         assertEquals(false, l.getSurbrillance(),"Surbrillance a false");
@@ -155,7 +211,14 @@ public class LienTest extends Tests {
      */
     @Test
     void testSurbrillanceOn() {
-        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5),1);
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
         l.surbrillanceOn();
         assertEquals(true, l.getSurbrillance(),"Surbrillance a true");
     }
