@@ -109,7 +109,7 @@ public class Poc {
      */
     public void genLink(Jeu jeu) {
         for (int i = 0; i < matrice.size(); i++) {
-            for (int j = 0; j < matrice.get(i).size() - 1; j++) {
+            for (int j = 0; j < matrice.get(i).size(); j++) {
                 if (matrice.get(i).get(j) instanceof Noeud) {
                     verifHorizontale(j, i, jeu);
                     verifVerticale(j, i, jeu);
@@ -186,7 +186,6 @@ public class Poc {
         ElementJeu current = matrice.get(x).get(y);
         for (int i = x + 1; i < matrice.size(); i++) {
             ElementJeu bot = matrice.get(i).get(y);
-
             if (current instanceof Noeud && bot instanceof Noeud) {
                 // Create a link between the two nodes
                 Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(y), jeu, 0);
@@ -203,6 +202,7 @@ public class Poc {
                 listeLien.add(lien);
                 return;
             }
+
         }
 
         /*ElementJeu current = matrice.get(y).get(x);
