@@ -205,6 +205,14 @@ public class Jeu {
     }
 
     /**
+     * Modification du temps final.
+     * @param temp Le temp final
+     */
+    public void setTempsFinal(long temp) {
+        tempsFinal = temp;
+    }
+
+    /**
      * Affiche le jeu.
      */
     public void drawJeu() {
