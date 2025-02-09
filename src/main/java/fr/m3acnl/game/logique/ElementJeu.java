@@ -9,7 +9,9 @@
  *
  */
 
-//package fr.m3acnl.game.logique;
+
+package fr.m3acnl.game.logique;
+
 public interface ElementJeu {
 
     /**

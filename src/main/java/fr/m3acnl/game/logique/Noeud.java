@@ -8,7 +8,9 @@
  * @description Contient la classe Noeud
  *
  */
-//package fr.m3acnl.game.logique;
+
+package fr.m3acnl.game.logique;
+
 import java.util.ArrayList;
 
 /**

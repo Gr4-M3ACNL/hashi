@@ -8,7 +8,9 @@
  * @description Contient la classe DoubleLien
  *
  */
-//package fr.m3acnl.game.logique;
+
+package fr.m3acnl.game.logique;
+
 /**
  * Cette classe gère les double lien.
  */

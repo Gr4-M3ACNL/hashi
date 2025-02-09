@@ -1,4 +1,3 @@
-
 /**
  * Classe Matrice.
  *
@@ -8,14 +7,14 @@
  * @description Contient la classe Proof of Concept pour la matrice du jeu
  *
  */
-//package fr.m3acnl.game.logique;
+
+package fr.m3acnl.game.logique;
+
 import java.util.ArrayList;
 
 public class Matrice {
+    //Variables de la classe Matrice.
 
-    /**
-     * Variables de la classe Matrice.
-     */
     /**
      * Contient la matrice du jeu avec les objets de type ElementJeu.
      */

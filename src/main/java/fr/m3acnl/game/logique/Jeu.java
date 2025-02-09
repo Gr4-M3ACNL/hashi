@@ -8,7 +8,9 @@
  * @description Contient la classe Jeu
  *
  */
-//package fr.m3acnl.game.logique;
+
+package fr.m3acnl.game.logique;
+
 import java.time.Instant;
 import java.util.ArrayList;
 

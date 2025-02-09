@@ -191,6 +191,47 @@ public class LienTest extends Tests {
     }
 
     /**
+     * Test de la méthode retourArriere()
+     * @see Lien#activer()
+     * @see Lien#getNbLien()
+     * @see Lien#getNoeud1()
+     * @see Lien#getNoeud2()
+     * @see Noeud#estValide()
+     * @see Lien#retourArriere()
+     */
+    @Test
+    void testRetourArriere() {
+        Double[][] mat = {
+            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
+            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
+            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
+            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
+            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
+            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
+            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
+        };
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1, new Jeu(5,mat),1);
+        l.activer();
+        l.retourArriere();
+        assertEquals(0,l.getNbLien(),"Lien activé donc 1 ");
+        assertEquals(1, l.getNoeud1().estValide(),"noeud incrémenter lié ");
+        assertEquals(1, l.getNoeud2().estValide(),"noeud incrémenter lié ");
+        l.activer();
+        l.activer();
+        l.retourArriere();
+        assertEquals(1,l.getNbLien(),"Lien activé 2 fois donc 2 ");
+        assertEquals(0, l.getNoeud1().estValide(),"noeud incrémenter lié ");
+        assertEquals(0, l.getNoeud2().estValide(),"noeud incrémenter lié ");
+        l.activer();
+        l.activer();
+        l.retourArriere();
+        assertEquals(2,l.getNbLien(),"Lien activé 3 fois donc 0 ");
+        assertEquals(-1, l.getNoeud1().estValide(),"noeud incrémenter lié ");
+        assertEquals(-1, l.getNoeud2().estValide(),"noeud incrémenter lié ");
+    }
+    
+
+    /**
      * Test de la méthode noeudDansLien
      * @see Lien#noeudDansLien(Noeud)
      */
