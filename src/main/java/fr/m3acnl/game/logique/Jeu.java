@@ -11,6 +11,7 @@
 
 package fr.m3acnl.game.logique;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
@@ -27,12 +28,12 @@ public class Jeu {
     /**
      * Temps au début.
      */
-    private final Instant instantDebut;
+    private Instant instantDebut;
 
     /**
      * Temps fin de partie.
      */
-    private final long tempsFinal;
+    private  long tempsFinal;
 
     /**
      * Pile des coup jouer.
@@ -166,7 +167,41 @@ public class Jeu {
      * @return true si le joueur a gagner
      */
     public Boolean gagner() {
-        return plateau.validationMatrice();
+        if (plateau.validationMatrice()) {
+            tempsFinal = getTempsEcouler();
+            return true;
+        }
+        return false;   
+    }
+
+    /**
+     * Méthode stoppant le chrono.
+     */
+    public void stopChrono() {
+        tempsFinal += Duration.between(instantDebut, Instant.now()).toSeconds();
+    }
+
+    /**
+     * Méthode remettant le chrono en marche.
+     */
+    public void reprendreChrono() {
+        instantDebut = Instant.now();
+    }
+
+    /**
+     * Done le temp écouler actuellement.
+     * @return le temp écouler
+     */
+    public Long getTempsEcouler() {
+        return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
+    }
+
+    /**
+     * Récupère le temps final.
+     * @return le temp final
+     */
+    public Long getTempsFinal() {
+        return tempsFinal;
     }
 
     /**
