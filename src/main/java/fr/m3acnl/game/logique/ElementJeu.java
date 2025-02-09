@@ -7,8 +7,12 @@
  * @description Contient l'interface ElementJeu
  *
  */
+
 //package fr.m3acnl.game.logique;
 
+/**
+ * Interface des éléments du jeu.
+ */
 public interface ElementJeu {
 
     /**
@@ -18,6 +22,7 @@ public interface ElementJeu {
 
     /**
      * Méthode d'activation d'un élément de jeu.
+     * @return true si il a été activer false sinon
      */
     public Boolean activer();
 }

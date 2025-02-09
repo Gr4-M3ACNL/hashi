@@ -187,7 +187,7 @@ public class NoeudTest extends Tests{
 
     /**
      * Test de la méthode ajouterNoeudAdjacence
-     * @see Noeud#ajouterNoeudAdjacence()
+     * @see Noeud#ajouterNoeudAdjacence(Noeud)
      * @see Noeud#getListeAdjacence()
      */
     @Test
@@ -199,7 +199,7 @@ public class NoeudTest extends Tests{
 
     /**
      * Test de la méthode retirerNoeudAdjacence
-     * @see Noeud#retirerNoeudAdjacence()
+     * @see Noeud#retirerNoeudAdjacence(Noeud)
      */
     @Test
     void testRetirerNoeudAdjacence(){

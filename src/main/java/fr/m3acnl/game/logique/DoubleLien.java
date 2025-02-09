@@ -7,6 +7,7 @@
  * @description Contient la classe DoubleLien
  *
  */
+
 //package fr.m3acnl.game.logique;
 
 /**
@@ -45,6 +46,7 @@ public class DoubleLien implements ElementJeu {
      * Active le lien si il est activable lié au noeud donné.
      *
      * @param n Le noeud lié
+     * @return Le lien qui a été activer return null si pas de lien activer
      */
     public Lien activer(Noeud n) {
         if (!interrupteur) {

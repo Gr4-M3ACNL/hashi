@@ -1,4 +1,3 @@
-
 /**
  * Classe jeu.
  *
@@ -8,7 +7,9 @@
  * @description Contient la classe Jeu
  *
  */
+
 //package fr.m3acnl.game.logique;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -163,6 +164,9 @@ public class Jeu {
         }
     }
 
+    /**
+     * Avance en effectuant le coup suivant.
+     */
     public void avancer() {
         if (!coupsJouerBuff.estVide()) {
             coupsJouer.empiler(coupsJouerBuff.sommet());

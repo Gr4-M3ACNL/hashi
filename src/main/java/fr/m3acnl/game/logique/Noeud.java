@@ -1,14 +1,15 @@
-
 /**
  * Class Noeud.
  *
- * @autor COGNARD Luka
+ * @autor MABIRE Aymeric
  * @date 24-01-2025
  * @version 1.0
  * @description Contient la classe Noeud
  *
  */
+
 //package fr.m3acnl.game.logique;
+
 import java.util.ArrayList;
 
 /**

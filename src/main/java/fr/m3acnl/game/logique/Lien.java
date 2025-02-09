@@ -1,4 +1,3 @@
-
 /**
  * Classe Lien.
  *
@@ -8,6 +7,7 @@
  * @description Contient la classe Lien
  *
  */
+
 //package fr.m3acnl.game.logique;
 
 /**
@@ -57,6 +57,7 @@ public class Lien implements ElementJeu {
      * @param n1 premier Noeud
      * @param n2 deuxième Noeud
      * @param sol le nombre de lien de la solution
+     * @param orient L'orientation du Lien
      * @param j Le jeu d'on-t-il fait parti
      */
     public Lien(Noeud n1, Noeud n2, int sol, Jeu j, int orient) {
@@ -132,6 +133,9 @@ public class Lien implements ElementJeu {
         return true;
     }
 
+    /**
+     * Effectue le retour a l'état précédent du Lien et des noeuds.
+     */
     public void retourArriere() {
         nbLien = (nbLien + 2) % 3;
         if (nbLien < 2) {

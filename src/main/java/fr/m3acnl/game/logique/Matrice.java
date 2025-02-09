@@ -1,4 +1,3 @@
-
 /**
  * Classe Matrice.
  *
@@ -8,9 +7,14 @@
  * @description Contient la classe Proof of Concept pour la matrice du jeu
  *
  */
+
 //package fr.m3acnl.game.logique;
+
 import java.util.ArrayList;
 
+/**
+ * La classe Matrice représentant le plateau de jeu.
+ */
 public class Matrice {
     //Variables de la classe Matrice.
 
@@ -34,6 +38,8 @@ public class Matrice {
      *
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
+     * @param mat La matrice pour générer le jeu
+     * @param jeu Le jeu au quel la matrice appartient
      */
     public Matrice(int lignes, int cols, Double[][] mat, Jeu jeu) {
         matrice = new ArrayList<>();
@@ -126,6 +132,7 @@ public class Matrice {
 
     /**
      * Génère la matrice avec les noeuds et les liens.
+     * @param jeu Le jeu au quel la matrice appartient
      */
     public void genMatrice(Jeu jeu) {
         // Generate the nodes
@@ -142,6 +149,7 @@ public class Matrice {
 
     /**
      * Génère les liens de la matrice.
+     * @param jeu le jeu au quel la matrice et les liens appartiennent
      */
     private void genLink(Jeu jeu) {
         for (int i = 0; i < matrice.size(); i++) {
@@ -160,6 +168,7 @@ public class Matrice {
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
+     * @param jeu le jeu au quel la matrice et les liens appartiennent
      */
     private void verifHorizontale(int y, int x, Jeu jeu) {
         //verif si il y a un noeud a droite
@@ -191,6 +200,7 @@ public class Matrice {
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
+     * @param jeu le jeu au quel la matrice et les liens appartiennent
      */
     private void verifVerticale(int y, int x, Jeu jeu) {
         //verif si il y a un noeud en bas
