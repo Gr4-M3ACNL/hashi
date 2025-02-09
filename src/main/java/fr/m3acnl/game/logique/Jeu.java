@@ -154,7 +154,9 @@ public class Jeu {
      * Reviens en arrière en revenant au coup précédent.
      */
     public void retour() {
-        ((Lien) coupJouer.depiler()).retourArriere();
+        if (!coupJouer.estVide()) {
+            ((Lien) coupJouer.depiler()).retourArriere();
+        }
     }
 
     /**
