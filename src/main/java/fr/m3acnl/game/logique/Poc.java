@@ -13,8 +13,22 @@ import java.util.ArrayList;
 
 public class Poc {
 
-    private ArrayList<ArrayList<ElementJeu>> matrice; //Matrice avec les objets
-    private ArrayList<ArrayList<Integer>> matrice2; //Matrice par default
+    /**
+     * Variables de la classe Poc.
+     */
+    /**
+     * Contient la matrice du jeu avec les objets de type ElementJeu.
+     */
+    private ArrayList<ArrayList<ElementJeu>> matrice;
+
+    /**
+     * Contient la matrice de départ du jeu avec les valeurs de type Double.
+     */
+    private ArrayList<ArrayList<Double>> matrice2; //Matrice par default
+
+    /**
+     * Contient la liste des liens de la matrice.
+     */
     private ArrayList<Lien> listeLien; //Ligne par default
 
     /**
@@ -23,27 +37,49 @@ public class Poc {
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
      */
-    public Poc(int lignes, int cols, int[][] mat, Jeu jeu) {
+    public Poc(int lignes, int cols, Double[][] mat, Jeu jeu) {
         matrice = new ArrayList<>();
         listeLien = new ArrayList<Lien>();
         for (int i = 0; i < lignes; i++) {
             ArrayList<ElementJeu> ligne = new ArrayList<>();
             for (int j = 0; j < cols; j++) {
-                ligne.add(null); // Initialize with null or any default value
+                ligne.add(null);
             }
             matrice.add(ligne);
         }
         matrice2 = new ArrayList<>();
         for (int i = 0; i < lignes; i++) {
-            ArrayList<Integer> ligne = new ArrayList<>();
+            ArrayList<Double> ligne = new ArrayList<>();
             for (int j = 0; j < cols; j++) {
-                ligne.add(mat[i][j]); // Initialize with null or any default value
+                ligne.add(mat[i][j]);
             }
             matrice2.add(ligne);
         }
 
         this.genMatrice(jeu);
 
+    }
+
+    /**
+     * Récupère la partie entière d'un nombre. La partie entière représente la
+     * solution vertical du lien.
+     *
+     * @param val Le nombre a traiter
+     * @return La partie entière du nombre
+     */
+    private double horiz(double val) {
+        return Math.round((val - Math.floor(val)) * 10);
+    }
+
+    /**
+     * Récupère la partie décimale d'un nombre. La partie décimale représente la
+     * solution horizontal du lien.
+     *
+     * @param val Le nombre a traiter
+     * @return La partie décimale du nombre
+     */
+    private double vertic(double val) {
+        return Math.floor(val);
     }
 
     /**
@@ -86,6 +122,8 @@ public class Poc {
             }
             System.out.println();
         }
+        System.out.println("V/H[nbLien](nbLienSoluce)");
+        System.out.println("N[nbSoluce](nbActuelle)");
     }
 
     /**
@@ -96,7 +134,7 @@ public class Poc {
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
                 if (matrice2.get(i).get(j) < 0) {
-                    matrice.get(i).set(j, new Noeud(i, j, -matrice2.get(i).get(j)));
+                    matrice.get(i).set(j, new Noeud(i, j, -matrice2.get(i).get(j).intValue()));
                 }
             }
         }
@@ -107,7 +145,7 @@ public class Poc {
     /**
      * Génère les liens de la matrice.
      */
-    public void genLink(Jeu jeu) {
+    private void genLink(Jeu jeu) {
         for (int i = 0; i < matrice.size(); i++) {
             for (int j = 0; j < matrice.get(i).size(); j++) {
                 if (matrice.get(i).get(j) instanceof Noeud) {
@@ -129,12 +167,12 @@ public class Poc {
         //verif si il y a un noeud a droite
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu current = matrice.get(x).get(y);
+        Double sol;
         for (int i = y + 1; i < matrice.get(x).size(); i++) {
             ElementJeu right = matrice.get(x).get(i);
             if (current instanceof Noeud && right instanceof Noeud) {
-                // Create a link between the two nodes
-                Lien lien = new Lien((Noeud) current, (Noeud) right, matrice2.get(x).get(i - 1), jeu, 1);
-                // Add the link to the matrix
+                sol = horiz(matrice2.get(x).get(i - 1));
+                Lien lien = new Lien((Noeud) current, (Noeud) right, sol.intValue(), jeu, 1);
                 for (int k = y + 1; k < i; k++) {
                     if (matrice.get(x).get(k) == null) {
                         matrice.get(x).set(k, lien);
@@ -147,30 +185,6 @@ public class Poc {
                 return;
             }
         }
-        /*ElementJeu current = matrice.get(y).get(x);
-        for (int i = y; i < matrice.size(); i++) {
-            for (int j = x; j < matrice.get(i).size() - 1; j++) {
-                ElementJeu right = matrice.get(i).get(j + 1);
-
-                if (current instanceof Noeud && right instanceof Noeud) {
-                    // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) right, matrice2.get(i).get(j - 1), jeu, 1);
-                    // Add the link to the matrix
-                    for (int k = x; k < j; k++) {
-                        if (matrice.get(i).get(k) == null) {
-                            matrice.get(i).set(k, lien);
-                        } else if (matrice.get(i).get(k) instanceof Lien) {
-                            Lien lien2 = (Lien) matrice.get(i).get(k);
-                            DoubleLien dl = new DoubleLien(lien, lien2);
-                            matrice.get(i).set(k, dl);
-                        }
-
-                    }
-                    listeLien.add(lien);
-                    return;
-                }
-            }
-        }*/
     }
 
     /**
@@ -184,11 +198,13 @@ public class Poc {
         //verif si il y a un noeud en bas
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu current = matrice.get(x).get(y);
+        Double sol;
         for (int i = x + 1; i < matrice.size(); i++) {
             ElementJeu bot = matrice.get(i).get(y);
             if (current instanceof Noeud && bot instanceof Noeud) {
                 // Create a link between the two nodes
-                Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(y), jeu, 0);
+                sol = vertic(matrice2.get(i - 1).get(y));
+                Lien lien = new Lien((Noeud) current, (Noeud) bot, sol.intValue(), jeu, 0);
                 // Add the link to the matrix
                 for (int k = x + 1; k < i; k++) {
                     if (matrice.get(k).get(y) == null) {
@@ -204,31 +220,15 @@ public class Poc {
             }
 
         }
+    }
 
-        /*ElementJeu current = matrice.get(y).get(x);
-        for (int i = y; i < matrice.size(); i++) {
-            for (int j = x; j < matrice.get(i).size() - 1; j++) {
-                ElementJeu bot = matrice.get(i + 1).get(j);
-
-                if (current instanceof Noeud && bot instanceof Noeud) {
-                    // Create a link between the two nodes
-                    Lien lien = new Lien((Noeud) current, (Noeud) bot, matrice2.get(i - 1).get(j), jeu, 1);
-                    // Add the link to the matrix
-                    for (int k = y; k < i; k++) {
-                        if (matrice.get(k).get(j) == null) {
-                            matrice.get(k).set(j, lien);
-                        } else if (matrice.get(k).get(j) instanceof Lien) {
-                            Lien lien2 = (Lien) matrice.get(k).get(j);
-                            DoubleLien dl = new DoubleLien(lien, lien2);
-                            matrice.get(j).set(j, dl);
-                        }
-
-                    }
-                    listeLien.add(lien);
-                    return;
-                }
+    public Boolean validationMatrice() {
+        for (Lien lien : listeLien) {
+            if (!lien.estValide()) {
+                return false;
             }
-        }*/
+        }
+        return true;
     }
 
     /**
@@ -237,13 +237,15 @@ public class Poc {
      * @param args argumet en commande
      */
     public static void main(String[] args) {
-        int[][] mat = {{-4, 2, -4, 2, -2, 0, 0},
-        {2, -3, 1, -3, 2, 2, -3},
-        {-3, 2, 0, 0, 0, 0, 1},
-        {1, -6, 2, -4, 2, -3, 1},
-        {0, 2, 0, 0, 0, 1, -1},
-        {1, -4, 2, 2, -2, 1, 0},
-        {-2, 1, 1, -2, 1, -2, 0}};
+        Double[][] mat = {
+            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
+            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
+            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
+            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
+            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
+            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
+            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
+        };
         Poc test = new Poc(7, 7, mat, new Jeu(5, mat));
         test.draw();
 
@@ -271,9 +273,6 @@ public class Poc {
         //Lien 0,3 Etat 2
         test.matrice.get(0).get(3).activer();
         test.matrice.get(0).get(3).activer();
-        //Lien 1,0 Etat 2
-        test.matrice.get(1).get(0).activer();
-        test.matrice.get(1).get(0).activer();
         //Lien 1,2 Etat 1
         test.matrice.get(1).get(2).activer();
         //Lien 1,6 Etat 2
@@ -295,9 +294,7 @@ public class Poc {
         //Lien 4,1 Etat 2
         test.matrice.get(4).get(1).activer();
         test.matrice.get(4).get(1).activer();
-        //Lien 4,3 Etat 2
-        test.matrice.get(4).get(3).activer();
-        test.matrice.get(4).get(3).activer();
+
         //Lien 4,5 Etat 1
         test.matrice.get(4).get(5).activer();
         //Lien 5,2 Etat 2
@@ -309,6 +306,14 @@ public class Poc {
         test.matrice.get(6).get(4).activer();
 
         test.draw();
+        System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");
+
+        //Lien 2,4 Etat 2
+        System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
+        test.matrice.get(2).get(4).activer();
+        test.matrice.get(2).get(4).activer();
+        test.draw();
+        System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");
     }
 }
 

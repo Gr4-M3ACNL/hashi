@@ -1,3 +1,4 @@
+
 /**
  * Classe jeu.
  *
@@ -52,7 +53,7 @@ public class Jeu {
      * @param clef clef de la matrice dans le fichier json
      * @param mat La matrice du jeu
      */
-    public Jeu(int clef, int[][] mat) {
+    public Jeu(int clef, Double[][] mat) {
         clefFichier = clef;
         instantDebut = Instant.now();
         coupJouer = new Pile();
