@@ -1,4 +1,3 @@
-
 /**
  * Class DoubleLien.
  *
@@ -8,7 +7,6 @@
  * @description Contient la classe DoubleLien
  *
  */
-
 package fr.m3acnl.game.logique;
 
 /**

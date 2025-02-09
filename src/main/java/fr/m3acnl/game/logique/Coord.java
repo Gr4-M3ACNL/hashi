@@ -1,4 +1,3 @@
-
 /**
  * Class Coord.
  *
@@ -8,7 +7,6 @@
  * @description Contient la classe Coord
  *
  */
-
 package fr.m3acnl.game.logique;
 
 /**

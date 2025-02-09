@@ -1,4 +1,3 @@
-
 /**
  * Classe jeu.
  *
@@ -8,7 +7,6 @@
  * @description Contient la classe Jeu
  *
  */
-
 package fr.m3acnl.game.logique;
 
 import java.time.Duration;
@@ -33,7 +31,7 @@ public class Jeu {
     /**
      * Temps fin de partie.
      */
-    private  long tempsFinal;
+    private long tempsFinal;
 
     /**
      * Pile des coup jouer.
@@ -171,7 +169,7 @@ public class Jeu {
             tempsFinal = getTempsEcouler();
             return true;
         }
-        return false;   
+        return false;
     }
 
     /**
@@ -190,6 +188,7 @@ public class Jeu {
 
     /**
      * Done le temp écouler actuellement.
+     *
      * @return le temp écouler
      */
     public Long getTempsEcouler() {
@@ -198,6 +197,7 @@ public class Jeu {
 
     /**
      * Récupère le temps final.
+     *
      * @return le temp final
      */
     public Long getTempsFinal() {

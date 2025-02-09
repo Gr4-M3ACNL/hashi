@@ -7,7 +7,6 @@
  * @description Contient la classe Lien
  *
  */
-
 package fr.m3acnl.game.logique;
 
 /**
@@ -119,9 +118,15 @@ public class Lien implements ElementJeu {
         if (nbLien == 0) {
             noeud1.suppressionDegre();
             noeud2.suppressionDegre();
+
+            noeud1.retirerNoeudAdjacence(noeud2);
+            noeud2.retirerNoeudAdjacence(noeud1);
         } else {
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
+
+            noeud1.ajouterNoeudAdjacence(noeud2);
+            noeud2.ajouterNoeudAdjacence(noeud1);
         }
         return true;
     }

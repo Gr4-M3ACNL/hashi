@@ -1,4 +1,3 @@
-
 /**
  * Class Noeud.
  *
@@ -8,7 +7,6 @@
  * @description Contient la classe Noeud
  *
  */
-
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
@@ -179,12 +177,31 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Activer le noeud.
+     * Affiche le réseaux de connection du noeud.
      *
      * @return false pour l'instant
      */
     @Override
     public Boolean activer() {
-        return false;
+        afficherReseau();
+        return true;
+    }
+
+    /**
+     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     */
+    public void afficherReseau() {
+        afficherReseau(new ArrayList<>());
+    }
+
+    private void afficherReseau(ArrayList<Noeud> visites) {
+        if (visites.contains(this)) {
+            return;
+        }
+        visites.add(this);
+        this.draw();
+        for (Noeud noeud : listeAdjacence) {
+            noeud.afficherReseau(visites);
+        }
     }
 }

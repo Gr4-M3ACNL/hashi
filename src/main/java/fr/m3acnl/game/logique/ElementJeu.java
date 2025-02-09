@@ -1,4 +1,3 @@
-
 /**
  * Interface ElementJeu.
  *
@@ -8,8 +7,6 @@
  * @description Contient l'interface ElementJeu
  *
  */
-
-
 package fr.m3acnl.game.logique;
 
 public interface ElementJeu {

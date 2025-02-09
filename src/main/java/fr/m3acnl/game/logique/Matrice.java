@@ -7,7 +7,6 @@
  * @description Contient la classe Proof of Concept pour la matrice du jeu
  *
  */
-
 package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
@@ -165,13 +164,13 @@ public class Matrice {
     private void verifHorizontale(int y, int x, Jeu jeu) {
         //verif si il y a un noeud a droite
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
-        ElementJeu current = matrice.get(x).get(y);
+        ElementJeu actuel = matrice.get(x).get(y);
         Double sol;
         for (int i = y + 1; i < matrice.get(x).size(); i++) {
-            ElementJeu right = matrice.get(x).get(i);
-            if (current instanceof Noeud && right instanceof Noeud) {
+            ElementJeu droite = matrice.get(x).get(i);
+            if (actuel instanceof Noeud && droite instanceof Noeud) {
                 sol = horiz(matrice2.get(x).get(i - 1));
-                Lien lien = new Lien((Noeud) current, (Noeud) right, sol.intValue(), jeu, 1);
+                Lien lien = new Lien((Noeud) actuel, (Noeud) droite, sol.intValue(), jeu, 1);
                 for (int k = y + 1; k < i; k++) {
                     if (matrice.get(x).get(k) == null) {
                         matrice.get(x).set(k, lien);
@@ -196,14 +195,14 @@ public class Matrice {
     private void verifVerticale(int y, int x, Jeu jeu) {
         //verif si il y a un noeud en bas
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
-        ElementJeu current = matrice.get(x).get(y);
+        ElementJeu actuel = matrice.get(x).get(y);
         Double sol;
         for (int i = x + 1; i < matrice.size(); i++) {
-            ElementJeu bot = matrice.get(i).get(y);
-            if (current instanceof Noeud && bot instanceof Noeud) {
+            ElementJeu bas = matrice.get(i).get(y);
+            if (actuel instanceof Noeud && bas instanceof Noeud) {
                 // Create a link between the two nodes
                 sol = vertic(matrice2.get(i - 1).get(y));
-                Lien lien = new Lien((Noeud) current, (Noeud) bot, sol.intValue(), jeu, 0);
+                Lien lien = new Lien((Noeud) actuel, (Noeud) bas, sol.intValue(), jeu, 0);
                 // Add the link to the matrix
                 for (int k = x + 1; k < i; k++) {
                     if (matrice.get(k).get(y) == null) {
@@ -221,6 +220,11 @@ public class Matrice {
         }
     }
 
+    /**
+     * Vérifie si la matrice est valide.
+     *
+     * @return true si la matrice est valide, false sinon
+     */
     public Boolean validationMatrice() {
         for (Lien lien : listeLien) {
             if (!lien.estValide()) {
