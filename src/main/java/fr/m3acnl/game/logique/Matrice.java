@@ -9,7 +9,6 @@
  *
  */
 //package fr.m3acnl.game.logique;
-
 import java.util.ArrayList;
 
 public class Matrice {
@@ -317,6 +316,7 @@ public class Matrice {
         jeu.drawJeu();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
 
+        jeu.activeElem(0, 0, null);
         /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
         test.draw();
 
