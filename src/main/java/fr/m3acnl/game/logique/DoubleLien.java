@@ -9,7 +9,6 @@
  *
  */
 //package fr.m3acnl.game.logique;
-
 /**
  * Cette classe gère les double lien.
  */
@@ -18,17 +17,17 @@ public class DoubleLien implements ElementJeu {
     /**
      * Le 1er lien.
      */
-    private Lien lien1;
+    private final Lien lien1;
 
     /**
      * Le 2ème lien.
      */
-    private Lien lien2;
+    private final Lien lien2;
 
     /**
      * Interrupteur quand un lien est activer.
      */
-    private Boolean interupteur;
+    private Boolean interrupteur;
 
     /**
      * Constructeur pour créer une instance de DoubleLien.
@@ -39,7 +38,7 @@ public class DoubleLien implements ElementJeu {
     public DoubleLien(Lien l1, Lien l2) {
         lien1 = l1;
         lien2 = l2;
-        interupteur = false;
+        interrupteur = false;
     }
 
     /**
@@ -48,7 +47,7 @@ public class DoubleLien implements ElementJeu {
      * @param n Le noeud lié
      */
     public Lien activer(Noeud n) {
-        if (!interupteur) {
+        if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.activer()) {
                     this.activeInterrupteur();
@@ -75,7 +74,8 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Méthode non utiliser.
+     * Méthode non utilisée.
+     *
      * @return false
      */
     @Override
@@ -87,7 +87,7 @@ public class DoubleLien implements ElementJeu {
      * Active l'interrupteur.
      */
     public void activeInterrupteur() {
-        interupteur = true;
+        interrupteur = true;
     }
 
     /**
@@ -95,7 +95,7 @@ public class DoubleLien implements ElementJeu {
      */
     public void desactiveInterrupteur() {
         if (lien1.getNbLien() == lien2.getNbLien()) {
-            interupteur = false;
+            interrupteur = false;
         }
     }
 
@@ -105,8 +105,8 @@ public class DoubleLien implements ElementJeu {
      *
      * @return L'état de l'interrupteur
      */
-    public Boolean getInterupteur() {
-        return interupteur;
+    public Boolean getInterrupteur() {
+        return interrupteur;
     }
 
     /**
@@ -114,6 +114,6 @@ public class DoubleLien implements ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.print(" D"+"("+lien1.getNbLienSoluce()+"|"+lien2.getNbLienSoluce()+") ");
+        System.out.print(" D" + "(" + lien1.getNbLienSoluce() + "|" + lien2.getNbLienSoluce() + ") ");
     }
 }

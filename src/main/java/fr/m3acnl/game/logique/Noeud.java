@@ -9,8 +9,7 @@
  *
  */
 //package fr.m3acnl.game.logique;
-
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 /**
  * Cette classe représente un Noeud dans le jeu du hachi. Un noeud connait: sa
@@ -22,12 +21,12 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     /**
      * La position en coordonnée du noeud.
      */
-    private Coord position;
+    private final Coord position;
 
     /**
      * Le degré solution du noeud.
      */
-    private int degreSoluce;
+    private final int degreSoluce;
 
     /**
      * Le degré actuelle du noeud.
@@ -37,7 +36,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     /**
      * La liste d'adjacence de la matrice.
      */
-    private Hashtable listeAdjacence;
+    private final ArrayList<Noeud> listeAdjacence;
 
     /**
      * Si le noeud est en surbrillance ou non.
@@ -55,7 +54,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         position = new Coord(x, y);
         degreSoluce = degS;
         degreActuelle = 0;
-        listeAdjacence = new Hashtable<>();
+        listeAdjacence = new ArrayList<>();
         surbrillance = false;
     }
 
@@ -131,6 +130,33 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Ajoute un noeud à la liste d'adjacence.
+     *
+     * @param n le noeud à ajouter
+     */
+    public void ajouterNoeudAdjacence(Noeud n) {
+        listeAdjacence.add(n);
+    }
+
+    /**
+     * Récupère la liste d'adjacence.
+     *
+     * @return la liste d'adjacence
+     */
+    public ArrayList<Noeud> getListeAdjacence() {
+        return listeAdjacence;
+    }
+
+    /**
+     * Retire un noeud de la liste d'adjacence.
+     *
+     * @param n le noeud à retirer
+     */
+    public void retirerNoeudAdjacence(Noeud n) {
+        listeAdjacence.remove(n);
+    }
+
+    /**
      * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
      *
      * @param n2 le noeud avec qui comparé
@@ -152,6 +178,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     /**
      * Activer le noeud.
+     *
      * @return false pour l'instant
      */
     @Override

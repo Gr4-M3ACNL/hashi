@@ -8,7 +8,6 @@
  * @description Contient la classe Pile
  *
  */
-
 //package fr.m3acnl.game.logique;
 import java.util.ArrayList;
 
@@ -17,13 +16,13 @@ public class Pile {
     /**
      * Tableau contenant la pile.
      */
-    private ArrayList<Object> tab;
+    private final ArrayList<Object> tab;
 
     /**
      * Constructeur de la classe Pile.
      */
     public Pile() {
-        tab = new ArrayList<Object>();
+        tab = new ArrayList<>();
     }
 
     /**

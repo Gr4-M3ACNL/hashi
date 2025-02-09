@@ -9,7 +9,6 @@
  *
  */
 //package fr.m3acnl.game.logique;
-
 /**
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
  * lié, son nombre de lien et son nombre de lien de la solution.
@@ -19,17 +18,17 @@ public class Lien implements ElementJeu {
     /**
      * Le jeu pour récupérer le plateau.
      */
-    private Jeu jeu;
+    private final Jeu jeu;
 
     /**
      * 1er noeud du lien.
      */
-    private Noeud noeud1;
+    private final Noeud noeud1;
 
     /**
      * 2ème noeud du lien.
      */
-    private Noeud noeud2;
+    private final Noeud noeud2;
 
     /**
      * Nombre de lien actuelle.
@@ -39,7 +38,7 @@ public class Lien implements ElementJeu {
     /**
      * Le nombre soluce du lien.
      */
-    private int nbLienSoluce;
+    private final int nbLienSoluce;
 
     /**
      * La surbrillance du lien.
@@ -49,7 +48,7 @@ public class Lien implements ElementJeu {
     /**
      * L'orientation du lien.
      */
-    private int orientation;
+    private final int orientation;
 
     /**
      * Constructeur pour une nouvelle instance de Lien.
@@ -95,8 +94,9 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Active le lien le faisant passer a son état suivant et met a jour le
+     * Active le lien le faisant passer à son état suivant et met à jour le
      * degré actuelle des noeud liés.
+     *
      * @return true si le lien a été activer false sinon
      */
     @Override
@@ -114,7 +114,7 @@ public class Lien implements ElementJeu {
                     return false;
                 }
             }
-        }  
+        }
         if (nbLien == 0) {
             noeud1.suppressionDegre();
             noeud2.suppressionDegre();
@@ -126,7 +126,7 @@ public class Lien implements ElementJeu {
     }
 
     public void retourArriere() {
-        nbLien = (nbLien+2)%3;
+        nbLien = (nbLien + 2) % 3;
         if (nbLien < 2) {
             if (nbLien == 0) {
                 if (orientation == 1) {
@@ -188,6 +188,7 @@ public class Lien implements ElementJeu {
 
     /**
      * Récupère le nombre soluce du lien.
+     *
      * @return le nombre soluce
      */
     public int getNbLienSoluce() {

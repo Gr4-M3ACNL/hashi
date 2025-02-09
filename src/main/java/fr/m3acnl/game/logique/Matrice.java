@@ -1,6 +1,6 @@
 
 /**
- * Classe Poc.
+ * Classe Matrice.
  *
  * @autor MABIRE Aymeric
  * @date 05-02-2025
@@ -11,25 +11,25 @@
 //package fr.m3acnl.game.logique;
 import java.util.ArrayList;
 
-public class Poc {
+public class Matrice {
 
     /**
-     * Variables de la classe Poc.
+     * Variables de la classe Matrice.
      */
     /**
      * Contient la matrice du jeu avec les objets de type ElementJeu.
      */
-    private ArrayList<ArrayList<ElementJeu>> matrice;
+    private final ArrayList<ArrayList<ElementJeu>> matrice;
 
     /**
      * Contient la matrice de départ du jeu avec les valeurs de type Double.
      */
-    private ArrayList<ArrayList<Double>> matrice2; //Matrice par default
+    private final ArrayList<ArrayList<Double>> matrice2;
 
     /**
      * Contient la liste des liens de la matrice.
      */
-    private ArrayList<Lien> listeLien; //Ligne par default
+    private final ArrayList<Lien> listeLien;
 
     /**
      * Constructeur pour une nouvelle instance de Lien.
@@ -37,9 +37,9 @@ public class Poc {
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
      */
-    public Poc(int lignes, int cols, Double[][] mat, Jeu jeu) {
+    public Matrice(int lignes, int cols, Double[][] mat, Jeu jeu) {
         matrice = new ArrayList<>();
-        listeLien = new ArrayList<Lien>();
+        listeLien = new ArrayList<>();
         for (int i = 0; i < lignes; i++) {
             ArrayList<ElementJeu> ligne = new ArrayList<>();
             for (int j = 0; j < cols; j++) {
@@ -247,24 +247,24 @@ public class Poc {
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
         Jeu jeu = new Jeu(0, mat);
-        jeu.drawGame();
+        jeu.drawJeu();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
         jeu.activeElem(0, 1, null);
-        jeu.drawGame();
+        jeu.drawJeu();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
         jeu.activeElem(0, 1, null);
-        jeu.drawGame();
+        jeu.drawJeu();
 
         System.out.println("\n\nTest activation du Lien 1,0 en état 2\n\n");
         jeu.activeElem(1, 0, null);
         jeu.activeElem(1, 0, null);
-        jeu.drawGame();
+        jeu.drawJeu();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
         jeu.activeElem(0, 1, null);
-        jeu.drawGame();
+        jeu.drawJeu();
 
         System.out.println("\n\nTest completion de la matrice\n\n");
         //Lien 0,1 Etat 2
@@ -304,16 +304,16 @@ public class Poc {
         //Lien 6,4 Etat 1
         jeu.activeElem(6, 4, null);
 
-        jeu.drawGame();
+        jeu.drawJeu();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
 
         System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
         jeu.activeElem(2, 4, null);
         jeu.activeElem(2, 4, null);
-        jeu.drawGame();
+        jeu.drawJeu();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
 
-        /*Poc test = new Poc(7, 7, mat, new Jeu(5, mat));
+        /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
         test.draw();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");

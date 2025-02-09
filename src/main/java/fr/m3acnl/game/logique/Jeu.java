@@ -8,7 +8,6 @@
  * @description Contient la classe Jeu
  *
  */
-
 //package fr.m3acnl.game.logique;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -21,32 +20,32 @@ public class Jeu {
     /**
      * Le plateau de jeu.
      */
-    private Poc plateau;
+    private final Matrice plateau;
 
     /**
-     * Temp au début.
+     * Temps au début.
      */
-    private Instant instantDebut;
+    private final Instant instantDebut;
 
     /**
-     * Temp fin de partie.
+     * Temps fin de partie.
      */
-    private long tempFinal;
+    private final long tempsFinal;
 
     /**
      * Pile des coup jouer.
      */
-    private Pile coupJouer;
+    private final Pile coupsJouer;
 
     /**
      * Pile des coup jouer en buffeur pour le retour.
      */
-    private Pile coupJouerBuff;
+    private final Pile coupsJouerBuff;
 
     /**
      * Clef de la matrice.
      */
-    private int clefFichier;
+    private final int clefFichier;
 
     /**
      * Constructeur pour une instance d'objet Jeu.
@@ -57,10 +56,10 @@ public class Jeu {
     public Jeu(int clef, Double[][] mat) {
         clefFichier = clef;
         instantDebut = Instant.now();
-        coupJouer = new Pile();
-        coupJouerBuff = new Pile();
-        plateau = new Poc(7, 7, mat, this);
-        tempFinal = 0;
+        coupsJouer = new Pile();
+        coupsJouerBuff = new Pile();
+        plateau = new Matrice(7, 7, mat, this);
+        tempsFinal = 0;
     }
 
     /**
@@ -79,7 +78,7 @@ public class Jeu {
         for (int i = y1; i < y2; i++) {
             ElementJeu elem = plateau.getElement(x, i);
             if (elem instanceof DoubleLien) {
-                if (((DoubleLien) elem).getInterupteur()) {
+                if (((DoubleLien) elem).getInterrupteur()) {
                     if (nbLien == 1) {
                         return 1;
                     } else if (nbLien == 0) {
@@ -90,7 +89,7 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++){
+        for (int i = 0; i < doubleLienPossible.size(); i++) {
             doubleLienPossible.get(i).activeInterrupteur();
         }
         return 0;
@@ -112,7 +111,7 @@ public class Jeu {
         for (int i = x1; i < x2; i++) {
             ElementJeu elem = plateau.getElement(i, y);
             if (elem instanceof DoubleLien) {
-                if (((DoubleLien) elem).getInterupteur()) {
+                if (((DoubleLien) elem).getInterrupteur()) {
                     if (nbLien == 1) {
                         return 1;
                     } else if (nbLien == 0) {
@@ -123,7 +122,7 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++){
+        for (int i = 0; i < doubleLienPossible.size(); i++) {
             doubleLienPossible.get(i).activeInterrupteur();
         }
         return 0;
@@ -141,11 +140,11 @@ public class Jeu {
         if (elem instanceof DoubleLien) {
             Lien lienActiver = ((DoubleLien) elem).activer(n);
             if (lienActiver != null) {
-                coupJouer.empiler(lienActiver);
+                coupsJouer.empiler(lienActiver);
             }
         } else if (elem != null) {
             if (elem instanceof Lien && elem.activer()) {
-                coupJouer.empiler(elem);
+                coupsJouer.empiler(elem);
             }
         }
     }
@@ -154,13 +153,14 @@ public class Jeu {
      * Reviens en arrière en revenant au coup précédent.
      */
     public void retour() {
-        if (!coupJouer.estVide()) {
-            ((Lien) coupJouer.depiler()).retourArriere();
+        if (!coupsJouer.estVide()) {
+            ((Lien) coupsJouer.depiler()).retourArriere();
         }
     }
 
     /**
      * Vérifie si le jeu est gagner.
+     *
      * @return true si le joueur a gagner
      */
     public Boolean gagner() {
@@ -170,15 +170,16 @@ public class Jeu {
     /**
      * Affiche le jeu.
      */
-    public void drawGame() {
+    public void drawJeu() {
         plateau.draw();
     }
 
     /**
      * Récupère le plateau.
+     *
      * @return Le plateau
      */
-    public Poc getPlateau() {
+    public Matrice getPlateau() {
         return plateau;
     }
 }
