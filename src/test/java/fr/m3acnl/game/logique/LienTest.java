@@ -75,6 +75,23 @@ public class LienTest extends Tests {
     }
 
     /**
+     * Test de la méthode getNbLienSoluce
+     * @see Lien#getNbLienSoluce()
+     */
+    @Test
+    void testGetNbLienSoluce() {
+        int mat[][] = {{-4, 2, -4, 2, -2, 0, 0},
+                        {2, -3, 1, -3, 2, 2, -3},
+                        {-3, 2, 0, 0, 0, 0, 1},
+                        {1, -6, 2, -4, 2, -3, 1},
+                        {0, 2, 0, 0, 0, 1, -1},
+                        {1, -4, 2, 2, -2, 1, 0},
+                        {-2, 1, 1, -2, 1, -2, 0}};
+        Lien l=new Lien(new Noeud(5,2,1),new Noeud(5, 4, 1),1,new Jeu(5,mat),1);
+        assertEquals(1,l.getNbLienSoluce(),"Lien créer pas de lien nbLien a 0");
+    }
+
+    /**
      * Test de la méthode getNoeud1
      * @see Lien#getNoeud1()
      * @see Noeud#compareTo(Noeud)

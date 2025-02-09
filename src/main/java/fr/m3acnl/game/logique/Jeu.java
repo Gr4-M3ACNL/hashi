@@ -11,6 +11,7 @@
 
 //package fr.m3acnl.game.logique;
 import java.time.Instant;
+import java.util.ArrayList;
 
 /**
  * Cette classe gère le jeu.
@@ -74,32 +75,23 @@ public class Jeu {
         int y1 = noeud1.getPosition().getCoordY();
         int y2 = noeud2.getPosition().getCoordY();
         int x = noeud1.getPosition().getCoordX();
-        if (y1 < y2) {
-            for (int i = y1; i < y2; i++) {
-                ElementJeu elem = plateau.getElement(x, i);
-                if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur()) {
-                        if (nbLien == 0) {
-                            return 1;
-                        }
-                    } else {
-                        ((DoubleLien) elem).activeInterrupteur();
+        ArrayList<DoubleLien> doubleLienPossible = new ArrayList<>();
+        for (int i = y1; i < y2; i++) {
+            ElementJeu elem = plateau.getElement(x, i);
+            if (elem instanceof DoubleLien) {
+                if (((DoubleLien) elem).getInterupteur()) {
+                    if (nbLien == 1) {
+                        return 1;
+                    } else if (nbLien == 0) {
+                        ((DoubleLien) elem).desactiveInterrupteur();
                     }
+                } else {
+                    doubleLienPossible.add(((DoubleLien) elem));
                 }
             }
-        } else {
-            for (int i = y1; i > y2; i--) {
-                ElementJeu elem = plateau.getElement(x, i);
-                if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur()) {
-                        if (nbLien == 0) {
-                            return 1;
-                        }
-                    } else {
-                        ((DoubleLien) elem).activeInterrupteur();
-                    }
-                }
-            }
+        }
+        for (int i = 0; i < doubleLienPossible.size(); i++){
+            doubleLienPossible.get(i).activeInterrupteur();
         }
         return 0;
     }
@@ -116,32 +108,23 @@ public class Jeu {
         int x1 = noeud1.getPosition().getCoordX();
         int x2 = noeud2.getPosition().getCoordX();
         int y = noeud1.getPosition().getCoordY();
-        if (x1 < x2) {
-            for (int i = x1; i < x2; i++) {
-                ElementJeu elem = plateau.getElement(i, y);
-                if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur()) {
-                        if (nbLien == 0) {
-                            return 1;
-                        }
-                    } else {
-                        ((DoubleLien) elem).activeInterrupteur();
+        ArrayList<DoubleLien> doubleLienPossible = new ArrayList<>();
+        for (int i = x1; i < x2; i++) {
+            ElementJeu elem = plateau.getElement(i, y);
+            if (elem instanceof DoubleLien) {
+                if (((DoubleLien) elem).getInterupteur()) {
+                    if (nbLien == 1) {
+                        return 1;
+                    } else if (nbLien == 0) {
+                        ((DoubleLien) elem).desactiveInterrupteur();
                     }
+                } else {
+                    doubleLienPossible.add(((DoubleLien) elem));
                 }
             }
-        } else {
-            for (int i = x1; i > x2; i--) {
-                ElementJeu elem = plateau.getElement(i, y);
-                if (elem instanceof DoubleLien) {
-                    if (((DoubleLien) elem).getInterupteur()) {
-                        if (nbLien == 0) {
-                            return 1;
-                        }
-                    } else {
-                        ((DoubleLien) elem).activeInterrupteur();
-                    }
-                }
-            }
+        }
+        for (int i = 0; i < doubleLienPossible.size(); i++){
+            doubleLienPossible.get(i).activeInterrupteur();
         }
         return 0;
     }
@@ -151,23 +134,46 @@ public class Jeu {
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
+     * @param n Le noeud du lien a activer dans le doubleLien
      */
-    public void activeElem(int x, int y) {
+    public void activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
         if (elem instanceof DoubleLien) {
-            ((DoubleLien) elem).activer(null);
-            coupJouer.empiler(elem);
+            Lien lienActiver = ((DoubleLien) elem).activer(n);
+            if (lienActiver != null) {
+                coupJouer.empiler(lienActiver);
+            }
         } else if (elem != null) {
-            elem.activer();
-            if (elem instanceof Lien) {
+            if (elem instanceof Lien && elem.activer()) {
                 coupJouer.empiler(elem);
             }
         }
     }
 
     /**
-     * Méthode de récupération du plateau.
-     *
+     * Reviens en arrière en revenant au coup précédent.
+     */
+    public void retour() {
+        ((Lien) coupJouer.depiler()).retourArriere();
+    }
+
+    /**
+     * Vérifie si le jeu est gagner.
+     * @return true si le joueur a gagner
+     */
+    public Boolean gagner() {
+        return plateau.validationMatrice();
+    }
+
+    /**
+     * Affiche le jeu.
+     */
+    public void drawGame() {
+        plateau.draw();
+    }
+
+    /**
+     * Récupère le plateau.
      * @return Le plateau
      */
     public Poc getPlateau() {

@@ -97,22 +97,54 @@ public class Lien implements ElementJeu {
     /**
      * Active le lien le faisant passer a son état suivant et met a jour le
      * degré actuelle des noeud liés.
+     * @return true si le lien a été activer false sinon
      */
     @Override
-    public void activer() {
-        if (orientation == 1) {
-            if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
-                return;
+    public Boolean activer() {
+        nbLien = (nbLien + 1) % 3;
+        if (nbLien != 2) {
+            if (orientation == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
+            } else {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
             }
+        }  
+        if (nbLien == 0) {
+            noeud1.suppressionDegre();
+            noeud2.suppressionDegre();
         } else {
-            if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
-                return;
-            }
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
         }
-        if ((nbLien = (nbLien + 1) % 3) == 0) {
-            noeud1.enleverDegre();
-            noeud2.enleverDegre();
+        return true;
+    }
+
+    public void retourArriere() {
+        nbLien = (nbLien+2)%3;
+        if (nbLien < 2) {
+            if (nbLien == 0) {
+                if (orientation == 1) {
+                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                } else {
+                    jeu.verificationVertical(noeud1, noeud2, nbLien);
+                }
+            }
+            noeud1.diminuerDegre();
+            noeud2.diminuerDegre();
         } else {
+            if (orientation == 1) {
+                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+            } else {
+                jeu.verificationVertical(noeud1, noeud2, nbLien);
+            }
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
         }
@@ -160,15 +192,6 @@ public class Lien implements ElementJeu {
      */
     public int getNbLienSoluce() {
         return nbLienSoluce;
-    }
-
-    /**
-     * Modifie le nombre de lien soluce.
-     *
-     * @param nbLienSoluce Le nombre de lien soluce
-     */
-    public void setNbLienSoluce(int nbLienSoluce) {
-        this.nbLienSoluce = nbLienSoluce;
     }
 
     /**

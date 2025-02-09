@@ -47,32 +47,40 @@ public class DoubleLien implements ElementJeu {
      *
      * @param n Le noeud lié
      */
-    public void activer(Noeud n) {
+    public Lien activer(Noeud n) {
         if (!interupteur) {
-            this.activeInterrupteur();
             if (lien1.noeudDansLien(n) == 0) {
-                lien1.activer();
+                if (lien1.activer()) {
+                    this.activeInterrupteur();
+                    return lien1;
+                }
             } else {
-                lien2.activer();
+                if (lien2.activer()) {
+                    this.activeInterrupteur();
+                    return lien2;
+                }
             }
         } else {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.getNbLien() != 0) {
                     lien1.activer();
+                    return lien1;
                 }
             } else if (lien2.getNbLien() != 0) {
                 lien2.activer();
+                return lien2;
             }
-            this.desactiveInterrupteur();
         }
+        return null;
     }
 
     /**
      * Méthode non utiliser.
+     * @return false
      */
     @Override
-    public void activer() {
-        return;
+    public Boolean activer() {
+        return false;
     }
 
     /**

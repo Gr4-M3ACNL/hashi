@@ -20,5 +20,5 @@ public interface ElementJeu {
     /**
      * Méthode d'activation d'un élément de jeu.
      */
-    public void activer();
+    public Boolean activer();
 }

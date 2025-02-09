@@ -81,10 +81,17 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Décrémente le degré actuelle du noeud.
+     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
      */
-    public void enleverDegre() {
+    public void suppressionDegre() {
         degreActuelle -= 2;
+    }
+
+    /**
+     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
+     */
+    public void diminuerDegre() {
+        degreActuelle -= 1;
     }
 
     /**
@@ -145,9 +152,10 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     /**
      * Activer le noeud.
+     * @return false pour l'instant
      */
     @Override
-    public void activer() {
-        return;
+    public Boolean activer() {
+        return false;
     }
 }

@@ -246,7 +246,74 @@ public class Poc {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Poc test = new Poc(7, 7, mat, new Jeu(5, mat));
+        Jeu jeu = new Jeu(0, mat);
+        jeu.drawGame();
+
+        System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
+        jeu.activeElem(0, 1, null);
+        jeu.drawGame();
+
+        System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
+        jeu.activeElem(0, 1, null);
+        jeu.drawGame();
+
+        System.out.println("\n\nTest activation du Lien 1,0 en état 2\n\n");
+        jeu.activeElem(1, 0, null);
+        jeu.activeElem(1, 0, null);
+        jeu.drawGame();
+
+        System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
+        jeu.activeElem(0, 1, null);
+        jeu.drawGame();
+
+        System.out.println("\n\nTest completion de la matrice\n\n");
+        //Lien 0,1 Etat 2
+        jeu.activeElem(0, 1, null);
+        jeu.activeElem(0, 1, null);
+        //Lien 0,3 Etat 2
+        jeu.activeElem(0, 3, null);
+        jeu.activeElem(0, 3, null);
+        //Lien 1,2 Etat 1
+        jeu.activeElem(1, 2, null);
+        //Lien 1,6 Etat 2
+        jeu.activeElem(1, 5, null);
+        jeu.activeElem(1, 5, null);
+        //Lien 2,1 Etat 2
+        jeu.activeElem(2, 1, null);
+        jeu.activeElem(2, 1, null);
+        //Lien 2,6 Etat 1
+        jeu.activeElem(2, 6, null);
+        //Lien 3,0 Etat 1
+        jeu.activeElem(3, 0, null);
+        //Lien 3,2 Etat 2
+        jeu.activeElem(3, 2, null);
+        jeu.activeElem(3, 2, null);
+        //Lien 3,4 Etat 2
+        jeu.activeElem(3, 4, (Noeud) jeu.getPlateau().getElement(3, 5));
+        jeu.activeElem(3, 4, (Noeud) jeu.getPlateau().getElement(3, 5));
+        //Lien 4,1 Etat 2
+        jeu.activeElem(4, 1, null);
+        jeu.activeElem(4, 1, null);
+        //Lien 4,5 Etat 1
+        jeu.activeElem(4, 5, null);
+        //Lien 5,2 Etat 2
+        jeu.activeElem(5, 2, null);
+        jeu.activeElem(5, 2, null);
+        //Lien 6,1 Etat 1
+        jeu.activeElem(6, 1, null);
+        //Lien 6,4 Etat 1
+        jeu.activeElem(6, 4, null);
+
+        jeu.drawGame();
+        System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
+
+        System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
+        jeu.activeElem(2, 4, null);
+        jeu.activeElem(2, 4, null);
+        jeu.drawGame();
+        System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
+
+        /*Poc test = new Poc(7, 7, mat, new Jeu(5, mat));
         test.draw();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
@@ -313,7 +380,7 @@ public class Poc {
         test.matrice.get(2).get(4).activer();
         test.matrice.get(2).get(4).activer();
         test.draw();
-        System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");
+        System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");*/
     }
 }
 
