@@ -1,3 +1,4 @@
+
 /**
  * Class Pile.
  *
@@ -7,7 +8,7 @@
  * @description Contient la classe Pile
  *
  */
-package fr.m3acnl.game.logique;
+//package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 

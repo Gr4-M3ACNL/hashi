@@ -1,3 +1,4 @@
+
 /**
  * Classe Lien.
  *
@@ -7,7 +8,7 @@
  * @description Contient la classe Lien
  *
  */
-package fr.m3acnl.game.logique;
+//package fr.m3acnl.game.logique;
 
 /**
  * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds

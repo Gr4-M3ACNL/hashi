@@ -7,7 +7,7 @@
  * @description Contient la classe Coord
  *
  */
-package fr.m3acnl.game.logique;
+//package fr.m3acnl.game.logique;
 
 /**
  * Cette classe représente les coordonnés en x et y, et permet la création ainsi
