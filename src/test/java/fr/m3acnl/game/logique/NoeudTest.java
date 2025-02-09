@@ -73,19 +73,19 @@ public class NoeudTest extends Tests{
      * @see Noeud#estValide
      */
     @Test
-    void testEnleverDegre() {
+    void testsuppressionDegre() {
         Noeud n= new Noeud(5, 2, 4);
         for(int i=0; i<6;i++){
             n.ajouterDegre();
         }
-        n.enleverDegre();
+        n.suppressionDegre();
         assertEquals(0, n.estValide(),"Valide car degré=degréSoluce via enleverdegré");
     }
 
     /**
      * Test pour la méthode estvalide
      * @see Noeud#ajouterDegre
-     * @see Noeud#enleverDegre
+     * @see Noeud#suppressionDegre()
      * @see Noeud#estValide
      */
     @Test
@@ -95,9 +95,9 @@ public class NoeudTest extends Tests{
             n.ajouterDegre();
         }
         assertEquals(-2, n.estValide(),"invalide -2 car degré supérieur de 2 au degré soluce");
-        n.enleverDegre();
+        n.suppressionDegre();
         assertEquals(0, n.estValide(),"valide 0 car degré égale au degré soluce");
-        n.enleverDegre();
+        n.suppressionDegre();
         assertEquals(2, n.estValide(),"invalide 2 car degré inférieur de 2 au degré soluce");
     }
 
