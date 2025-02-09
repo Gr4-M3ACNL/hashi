@@ -255,7 +255,7 @@ public class Matrice {
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
         jeu.activeElem(0, 1, null);
         jeu.drawJeu();
-
+        jeu.activeElem(0, 0, null);
         System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
         jeu.activeElem(0, 1, null);
         jeu.drawJeu();
@@ -264,7 +264,7 @@ public class Matrice {
         jeu.activeElem(1, 0, null);
         jeu.activeElem(1, 0, null);
         jeu.drawJeu();
-
+        jeu.activeElem(0, 0, null);
         System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
         jeu.activeElem(0, 1, null);
         jeu.drawJeu();
@@ -316,7 +316,6 @@ public class Matrice {
         jeu.drawJeu();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
 
-        jeu.activeElem(0, 0, null);
         /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
         test.draw();
 

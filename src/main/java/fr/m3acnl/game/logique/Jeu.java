@@ -1,3 +1,4 @@
+
 /**
  * Classe jeu.
  *
@@ -146,6 +147,8 @@ public class Jeu {
         } else if (elem != null) {
             if (elem instanceof Lien && elem.activer()) {
                 coupsJouer.empiler(elem);
+            } else {
+                elem.activer();
             }
         }
     }
