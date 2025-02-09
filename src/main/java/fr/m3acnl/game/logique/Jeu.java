@@ -9,7 +9,6 @@
  *
  */
 //package fr.m3acnl.game.logique;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -139,6 +138,7 @@ public class Jeu {
      */
     public void activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
+        coupsJouerBuff.vidange();
         if (elem instanceof DoubleLien) {
             Lien lienActiver = ((DoubleLien) elem).activer(n);
             if (lienActiver != null) {
@@ -158,7 +158,15 @@ public class Jeu {
      */
     public void retour() {
         if (!coupsJouer.estVide()) {
+            coupsJouerBuff.empiler(coupsJouer.sommet());
             ((Lien) coupsJouer.depiler()).retourArriere();
+        }
+    }
+
+    public void avancer() {
+        if (!coupsJouerBuff.estVide()) {
+            coupsJouer.empiler(coupsJouerBuff.sommet());
+            ((Lien) coupsJouerBuff.depiler()).activer();
         }
     }
 
@@ -209,6 +217,7 @@ public class Jeu {
 
     /**
      * Modification du temps final.
+     *
      * @param temp Le temp final
      */
     public void setTempsFinal(long temp) {
