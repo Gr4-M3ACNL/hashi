@@ -2,11 +2,13 @@ package fr.m3acnl.managers;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.nio.file.Files;
+import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import fr.m3acnl.Tests;
+import fr.m3acnl.profile.Profile;
 
 /**
  * Classe de test de la classe JsonManager.
@@ -18,20 +20,33 @@ public class JsonManagerTest extends Tests {
 
     /**
      * Méthode d'initialisation de la classe de test
+     * 
      * @see Tests#printNameAtStart
      */
     @BeforeAll
-    public static void initAll() {printNameAtStart(JsonManagerTest.class);}
+    public static void initAll() {
+        printNameAtStart(JsonManagerTest.class);
+    }
 
     /**
      * Méthode de fin de la classe de test
+     * 
      * @see Tests#printNameAtEnd
      */
     @AfterAll
-    public static void endAll() {printNameAtEnd(JsonManagerTest.class);}
+    public static void endAll() {
+        printNameAtEnd(JsonManagerTest.class);
+    }
+
+    /**
+     * Constructeur de la classe de test JsonManagerTest.
+     */
+    JsonManagerTest() {
+    }
 
     /**
      * Test de la méthode getGrilleInfo de la classe JsonManager.
+     * 
      * @see JsonManager#getGrilleInfo
      */
     @Test
@@ -45,16 +60,19 @@ public class JsonManagerTest extends Tests {
 
     /**
      * Test de la méthode getGrilleInfo de la classe JsonManager.
+     * 
      * @see JsonManager#getGrilleInfo
      */
     @Test
     public void testGetGrilleInfoGrilleInexistante() {
         JsonManager manager = new JsonManager();
-        assertThrows(IllegalArgumentException.class, () -> manager.getGrilleInfo("Inexistante", 100), "La grille n'existe pas");
+        assertThrows(IllegalArgumentException.class, () -> manager.getGrilleInfo("Inexistante", 100),
+                "La grille n'existe pas");
     }
 
     /**
      * Test de la méthode getNbGrilles de la classe JsonManager.
+     * 
      * @see JsonManager#getNbGrilles
      */
     @Test
@@ -66,27 +84,152 @@ public class JsonManagerTest extends Tests {
 
     /**
      * Test de la méthode getNbGrilles de la classe JsonManager.
+     * 
      * @see JsonManager#getNbGrilles
      */
     @Test
     public void testGetNbGrillesDifficulteInexistante() {
         JsonManager manager = new JsonManager();
-        assertThrows(IllegalArgumentException.class, () -> manager.getNbGrilles("Inexistante"), "La difficulté n'existe pas");
+        assertThrows(IllegalArgumentException.class, () -> manager.getNbGrilles("Inexistante"),
+                "La difficulté n'existe pas");
     }
 
     /**
      * Test de la méthode getDifficultes de la classe JsonManager.
-     * @see JsonManager#getDifficultes
+     * 
+     * @see JsonManager#getListeDifficultes
      */
     @Test
     public void testGetDifficultes() {
         JsonManager manager = new JsonManager();
-        String[] difficultes = manager.getDifficultes();
+        List<String> difficultes = manager.getListeDifficultes();
         assertNotNull(difficultes, "Les difficultés ne devraient pas être nulles");
-        assertEquals(3, difficultes.length, "Il devrait y avoir 3 difficultés");
-        assertEquals(difficultes[0], "facile", "La première difficulté devrait être facile");
-        assertEquals(difficultes[1], "moyen", "La deuxième difficulté devrait être moyen");
-        assertEquals(difficultes[2], "difficile", "La troisième difficulté devrait être difficile");
+        assertEquals(3, difficultes.size(), "Il devrait y avoir 3 difficultés");
+        assertEquals(difficultes.get(0), "facile", "La première difficulté devrait être facile");
+        assertEquals(difficultes.get(1), "moyen", "La deuxième difficulté devrait être moyen");
+        assertEquals(difficultes.get(2), "difficile", "La troisième difficulté devrait être difficile");
     }
-    
+
+    /**
+     * Méthode d'initialisation de test des profils.
+     * 
+     * Copie le fichier de profils deja existant da un autre endroit.
+     * puis supprime le fichier originale de profils dans le repertoire de
+     * sauvegarde.
+     */
+    private void initProfils() {
+        if (Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"))) {
+            if (!Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"))) {
+                try {
+                    Files.copy(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"),
+                            SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        try {
+            Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Méthode de restauration des profils.
+     * 
+     * Supprime le fichier de profils actuel et le remplace par le fichier de
+     * profils sauvegardé.
+     */
+    private void restoreProfils() {
+        try {
+            Files.deleteIfExists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+            if (Files.exists(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"))) {
+                Files.move(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json.bak"),
+                        SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Test de la méthode getDifficultes de la classe JsonManager.
+     * 
+     * @see JsonManager#getListeProfils
+     */
+    @Test
+    public void testGetListeProfils() {
+        // initialisation des profils
+        initProfils();
+        JsonManager manager = new JsonManager();
+
+        // vérifie que le fichier de profils n'existe pas
+        assertThrows(RuntimeException.class, () -> manager.getListeProfils(), "Le fichier de profils n'existe pas");
+
+        try {
+            // copie le fichier de test dans le repertoire ressources au bon endroit
+            Files.copy(this.getClass().getResourceAsStream("/fr/m3acnl/managers/profils.json"),
+                    SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Impossible de copier le fichier de profils");
+        }
+        // vérifie que le fichier de profils existe
+        assertNotNull(manager.getListeProfils(), "La liste des profils ne devrait pas être nulle");
+        List<String> profils = manager.getListeProfils();
+        assertEquals(2, profils.size(), "Il devrait y avoir 2 profils");
+        assertEquals("jacoboni", profils.get(0), "Le premier profil devrait être jacoboni");
+        assertEquals("despres", profils.get(1), "Le deuxième profil devrait être despres");
+
+        // restauration des profils
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode sauvegarderProfil de la classe JsonManager.
+     * 
+     * @see JsonManager#sauvegarderProfil
+     * @see JsonManager#chargerProfil
+     */
+    @Test
+    public void testSauvegarderProfil() {
+        // initialisation des profils
+        initProfils();
+        JsonManager manager = new JsonManager();
+        Profile profile = new Profile("test");
+        manager.sauvegarderProfil(profile);
+        List<String> profils = manager.getListeProfils();
+        assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
+        assertEquals("test", profils.get(0), "Le premier profil devrait être test");
+
+        // test du chargement du profil nouvellement créé
+        Profile profileCharge = manager.chargerProfil("test");
+        assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
+
+        // restauration des profils
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode supprimerProfil de la classe JsonManager.
+     * 
+     * @see JsonManager#supprimerProfil
+     */
+    @Test
+    public void testSupprimerProfil() {
+        // initialisation des profils
+        initProfils();
+        JsonManager manager = new JsonManager();
+        Profile profile = new Profile("test");
+        manager.sauvegarderProfil(profile);
+
+        // test de la suppression du profil
+        manager.supprimerProfil("test");
+        List<String> profils = manager.getListeProfils();
+        assertEquals(0, profils.size(), "Il ne devrait y avoir aucun profil");
+
+        // restauration des profils
+        restoreProfils();
+    }
 }
