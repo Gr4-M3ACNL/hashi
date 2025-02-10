@@ -1,3 +1,5 @@
+
+//package fr.m3acnl.game.logique;
 /**
  * Interface ElementJeu.
  *
@@ -7,12 +9,6 @@
  * @description Contient l'interface ElementJeu
  *
  */
-
-//package fr.m3acnl.game.logique;
-
-/**
- * Interface des éléments du jeu.
- */
 public interface ElementJeu {
 
     /**
@@ -21,8 +17,9 @@ public interface ElementJeu {
     public void draw();
 
     /**
-     * Méthode d'activation d'un élément de jeu.
-     * @return true si il a été activer false sinon
+     * Méthode pour activer un élément de jeu.
+     *
+     * @return true si l'élément est activé, false sinon.
      */
     public Boolean activer();
 }

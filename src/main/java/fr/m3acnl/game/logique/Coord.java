@@ -1,18 +1,13 @@
+//package fr.m3acnl.game.logique;
+
 /**
  * Class Coord.
  *
  * @autor COGNARD Luka
  * @date 24-01-2025
  * @version 1.0
- * @description Contient la classe Coord
+ * @description Contient la classe Coord pour une représentation de coordonnée.
  *
- */
-
-//package fr.m3acnl.game.logique;
-
-/**
- * Cette classe représente les coordonnés en x et y, et permet la création ainsi
- * que la récupération du x et y.
  */
 public class Coord implements Comparable<Coord> {
 

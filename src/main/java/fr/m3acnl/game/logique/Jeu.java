@@ -1,13 +1,3 @@
-/**
- * Classe jeu.
- *
- * @autor COGNARD Luka
- * @date 03-02-2025
- * @version 1.0
- * @description Contient la classe Jeu
- *
- */
-
 //package fr.m3acnl.game.logique;
 
 import java.time.Duration;
@@ -15,7 +5,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 
 /**
- * Cette classe gère le jeu.
+ * Classe jeu.
+ *
+ * @autor COGNARD Luka
+ * @date 03-02-2025
+ * @version 1.0
+ * @description Contient la classe Jeu pour une représentation du jeu.
+ *
  */
 public class Jeu {
 

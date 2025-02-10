@@ -1,19 +1,15 @@
+//package fr.m3acnl.game.logique;
+
+import java.util.ArrayList;
+
 /**
  * Classe Matrice.
  *
  * @autor MABIRE Aymeric
  * @date 05-02-2025
  * @version 1.0
- * @description Contient la classe Proof of Concept pour la matrice du jeu
+ * @description Contient la matrice du jeu
  *
- */
-
-//package fr.m3acnl.game.logique;
-
-import java.util.ArrayList;
-
-/**
- * La classe Matrice représentant le plateau de jeu.
  */
 public class Matrice {
     //Variables de la classe Matrice.
@@ -132,6 +128,7 @@ public class Matrice {
 
     /**
      * Génère la matrice avec les noeuds et les liens.
+     *
      * @param jeu Le jeu au quel la matrice appartient
      */
     public void genMatrice(Jeu jeu) {
@@ -149,6 +146,7 @@ public class Matrice {
 
     /**
      * Génère les liens de la matrice.
+     *
      * @param jeu le jeu au quel la matrice et les liens appartiennent
      */
     private void genLink(Jeu jeu) {

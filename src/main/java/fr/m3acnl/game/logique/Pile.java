@@ -1,3 +1,7 @@
+//package fr.m3acnl.game.logique;
+
+import java.util.ArrayList;
+
 /**
  * Class Pile.
  *
@@ -6,14 +10,6 @@
  * @version 1.0
  * @description Contient la classe Pile
  *
- */
-
-//package fr.m3acnl.game.logique;
-
-import java.util.ArrayList;
-
-/**
- * La classe Pile représentant une pile d'objets.
  */
 public class Pile {
 

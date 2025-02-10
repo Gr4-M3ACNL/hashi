@@ -1,17 +1,14 @@
+
+//package fr.m3acnl.game.logique;
 /**
  * Class DoubleLien.
  *
  * @autor COGNARD Luka
  * @date 28-01-2025
  * @version 1.0
- * @description Contient la classe DoubleLien
+ * @description Contient la classe DoubleLien. Un doubleLien est une composition
+ * de 2 liens.
  *
- */
-
-//package fr.m3acnl.game.logique;
-
-/**
- * Cette classe gère les double lien.
  */
 public class DoubleLien implements ElementJeu {
 

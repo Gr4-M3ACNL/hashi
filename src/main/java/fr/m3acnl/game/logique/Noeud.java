@@ -1,3 +1,7 @@
+//package fr.m3acnl.game.logique;
+
+import java.util.ArrayList;
+
 /**
  * Class Noeud.
  *
@@ -6,16 +10,6 @@
  * @version 1.0
  * @description Contient la classe Noeud
  *
- */
-
-//package fr.m3acnl.game.logique;
-
-import java.util.ArrayList;
-
-/**
- * Cette classe représente un Noeud dans le jeu du hachi. Un noeud connait: sa
- * position, son degré actuelle, le degré de sa solution et une liste
- * d'adjacence stockant les noeuds auquel il est relié directement.
  */
 public class Noeud implements ElementJeu, Comparable<Noeud> {
 
