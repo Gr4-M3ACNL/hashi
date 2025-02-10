@@ -1,14 +1,10 @@
+package fr.m3acnl.game.logique;
 
-//package fr.m3acnl.game.logique;
 /**
- * Class DoubleLien.
+ * Classe DoubleLien Pour gérer les liens croisé.
  *
- * @autor COGNARD Luka
- * @date 28-01-2025
+ * @author COGNARD Luka
  * @version 1.0
- * @description Contient la classe DoubleLien. Un doubleLien est une composition
- * de 2 liens.
- *
  */
 public class DoubleLien implements ElementJeu {
 

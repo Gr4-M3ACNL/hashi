@@ -1,13 +1,10 @@
+package fr.m3acnl.game.logique;
 
-//package fr.m3acnl.game.logique;
 /**
- * Interface ElementJeu.
+ * Interface ElementJeu pour représenter les éléments du jeu.
  *
- * @autor Aymeric MABIRE
- * @date 05-02-2025
+ * @author Aymeric MABIRE
  * @version 1.0
- * @description Contient l'interface ElementJeu
- *
  */
 public interface ElementJeu {
 

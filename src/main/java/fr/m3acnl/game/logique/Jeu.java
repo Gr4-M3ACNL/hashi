@@ -1,17 +1,14 @@
-//package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
 /**
- * Classe jeu.
+ * Classe Jeu pour une représentation du jeu et gérer le jeu.
  *
- * @autor COGNARD Luka
- * @date 03-02-2025
+ * @author COGNARD Luka
  * @version 1.0
- * @description Contient la classe Jeu pour une représentation du jeu.
- *
  */
 public class Jeu {
 
@@ -127,7 +124,7 @@ public class Jeu {
     }
 
     /**
-     * Active l'élement de jeu selectionner.
+     * Active l’élément de jeu selectionner.
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
@@ -218,7 +215,7 @@ public class Jeu {
     /**
      * Modification du temps final.
      *
-     * @param temp Le temp final
+     * @param temps Le temp final
      */
     public void setTempsFinal(long temps) {
         tempsFinal = temps;

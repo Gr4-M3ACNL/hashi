@@ -1,15 +1,12 @@
-//package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
 /**
- * Class Noeud.
+ * Classe Noeud a lié dans le jeu.
  *
- * @autor MABIRE Aymeric
- * @date 24-01-2025
+ * @author MABIRE Aymeric
  * @version 1.0
- * @description Contient la classe Noeud
- *
  */
 public class Noeud implements ElementJeu, Comparable<Noeud> {
 

@@ -1,13 +1,10 @@
-//package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique;
 
 /**
- * Classe Lien.
+ * Classe Lien, afin de les utilisés pour lié 2 noeuds.
  *
- * @autor COGNARD Luka
- * @date 27-01-2024
+ * @author COGNARD Luka
  * @version 1.0
- * @description Contient la classe Lien, un lien existe entre 2 noeuds.
- *
  */
 public class Lien implements ElementJeu {
 

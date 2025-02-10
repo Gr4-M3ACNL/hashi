@@ -1,15 +1,12 @@
-//package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
 /**
- * Classe Matrice.
+ * Classe matrice du jeu pour gérer ça création et ça validité.
  *
- * @autor MABIRE Aymeric
- * @date 05-02-2025
+ * @author MABIRE Aymeric
  * @version 1.0
- * @description Contient la matrice du jeu
- *
  */
 public class Matrice {
     //Variables de la classe Matrice.
@@ -169,7 +166,7 @@ public class Matrice {
      * @param jeu le jeu au quel la matrice et les liens appartiennent
      */
     private void verifHorizontale(int y, int x, Jeu jeu) {
-        //verif si il y a un noeud a droite
+        //verification si il y a un noeud a droite
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu actuel = matrice.get(x).get(y);
         Double sol;
@@ -201,17 +198,17 @@ public class Matrice {
      * @param jeu le jeu au quel la matrice et les liens appartiennent
      */
     private void verifVerticale(int y, int x, Jeu jeu) {
-        //verif si il y a un noeud en bas
+        //verification si il y a un noeud en bas
         //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu actuel = matrice.get(x).get(y);
         Double sol;
         for (int i = x + 1; i < matrice.size(); i++) {
             ElementJeu bas = matrice.get(i).get(y);
             if (actuel instanceof Noeud && bas instanceof Noeud) {
-                // Create a link between the two nodes
+                // Créer un lien entre 2 noeuds
                 sol = vertic(matrice2.get(i - 1).get(y));
                 Lien lien = new Lien((Noeud) actuel, (Noeud) bas, sol.intValue(), jeu, 0);
-                // Add the link to the matrix
+                // Ajoute le lien dans la matrice
                 for (int k = x + 1; k < i; k++) {
                     if (matrice.get(k).get(y) == null) {
                         matrice.get(k).set(y, lien);
@@ -245,7 +242,7 @@ public class Matrice {
     /**
      * Main pour tester la génération de la matrice.
      *
-     * @param args argumet en commande
+     * @param args argument en commande
      */
     public static void main(String[] args) {
         Double[][] mat = {
@@ -278,41 +275,41 @@ public class Matrice {
         jeu.drawJeu();
 
         System.out.println("\n\nTest completion de la matrice\n\n");
-        //Lien 0,1 Etat 2
+        //Lien 0,1 état 2
         jeu.activeElem(0, 1, null);
         jeu.activeElem(0, 1, null);
-        //Lien 0,3 Etat 2
+        //Lien 0,3 état 2
         jeu.activeElem(0, 3, null);
         jeu.activeElem(0, 3, null);
-        //Lien 1,2 Etat 1
+        //Lien 1,2 état 1
         jeu.activeElem(1, 2, null);
-        //Lien 1,6 Etat 2
+        //Lien 1,6 état 2
         jeu.activeElem(1, 5, null);
         jeu.activeElem(1, 5, null);
-        //Lien 2,1 Etat 2
+        //Lien 2,1 état 2
         jeu.activeElem(2, 1, null);
         jeu.activeElem(2, 1, null);
-        //Lien 2,6 Etat 1
+        //Lien 2,6 état 1
         jeu.activeElem(2, 6, null);
-        //Lien 3,0 Etat 1
+        //Lien 3,0 état 1
         jeu.activeElem(3, 0, null);
-        //Lien 3,2 Etat 2
+        //Lien 3,2 état 2
         jeu.activeElem(3, 2, null);
         jeu.activeElem(3, 2, null);
-        //Lien 3,4 Etat 2
+        //Lien 3,4 état 2
         jeu.activeElem(3, 4, (Noeud) jeu.getPlateau().getElement(3, 5));
         jeu.activeElem(3, 4, (Noeud) jeu.getPlateau().getElement(3, 5));
-        //Lien 4,1 Etat 2
+        //Lien 4,1 état 2
         jeu.activeElem(4, 1, null);
         jeu.activeElem(4, 1, null);
-        //Lien 4,5 Etat 1
+        //Lien 4,5 état 1
         jeu.activeElem(4, 5, null);
-        //Lien 5,2 Etat 2
+        //Lien 5,2 état 2
         jeu.activeElem(5, 2, null);
         jeu.activeElem(5, 2, null);
-        //Lien 6,1 Etat 1
+        //Lien 6,1 état 1
         jeu.activeElem(6, 1, null);
-        //Lien 6,4 Etat 1
+        //Lien 6,4 état 1
         jeu.activeElem(6, 4, null);
 
         jeu.drawJeu();
@@ -345,48 +342,48 @@ public class Matrice {
         test.draw();
 
         System.out.println("\n\nTest completion de la matrice\n\n");
-        //Lien 0,1 Etat 2
+        //Lien 0,1 état 2
         test.matrice.get(0).get(1).activer();
         test.matrice.get(0).get(1).activer();
-        //Lien 0,3 Etat 2
+        //Lien 0,3 état 2
         test.matrice.get(0).get(3).activer();
         test.matrice.get(0).get(3).activer();
-        //Lien 1,2 Etat 1
+        //Lien 1,2 état 1
         test.matrice.get(1).get(2).activer();
-        //Lien 1,6 Etat 2
+        //Lien 1,6 état 2
         test.matrice.get(1).get(5).activer();
         test.matrice.get(1).get(5).activer();
-        //Lien 2,1 Etat 2
+        //Lien 2,1 état 2
         test.matrice.get(2).get(1).activer();
         test.matrice.get(2).get(1).activer();
-        //Lien 2,6 Etat 1
+        //Lien 2,6 état 1
         test.matrice.get(2).get(6).activer();
-        //Lien 3,0 Etat 1
+        //Lien 3,0 état 1
         test.matrice.get(3).get(0).activer();
-        //Lien 3,2 Etat 2
+        //Lien 3,2 état 2
         test.matrice.get(3).get(2).activer();
         test.matrice.get(3).get(2).activer();
-        //Lien 3,4 Etat 2
+        //Lien 3,4 état 2
         ((DoubleLien) test.matrice.get(3).get(4)).activer((Noeud) test.matrice.get(3).get(5));
         ((DoubleLien) test.matrice.get(3).get(4)).activer((Noeud) test.matrice.get(3).get(5));
-        //Lien 4,1 Etat 2
+        //Lien 4,1 état 2
         test.matrice.get(4).get(1).activer();
         test.matrice.get(4).get(1).activer();
 
-        //Lien 4,5 Etat 1
+        //Lien 4,5 état 1
         test.matrice.get(4).get(5).activer();
-        //Lien 5,2 Etat 2
+        //Lien 5,2 état 2
         test.matrice.get(5).get(2).activer();
         test.matrice.get(5).get(2).activer();
-        //Lien 6,1 Etat 1
+        //Lien 6,1 état 1
         test.matrice.get(6).get(1).activer();
-        //Lien 6,4 Etat 1
+        //Lien 6,4 état 1
         test.matrice.get(6).get(4).activer();
 
         test.draw();
         System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");
 
-        //Lien 2,4 Etat 2
+        //Lien 2,4 état 2
         System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
         test.matrice.get(2).get(4).activer();
         test.matrice.get(2).get(4).activer();
@@ -402,7 +399,7 @@ public class Matrice {
  * 
  * 
  * Méthodes:
- * Initalisation-start
+ * Initialisation-start
  * seek-possibilité
  * check-double
  * 

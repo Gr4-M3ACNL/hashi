@@ -1,13 +1,10 @@
-//package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique;
 
 /**
- * Class Coord.
+ * Classe Coord pour une représentation de coordonnée.
  *
- * @autor COGNARD Luka
- * @date 24-01-2025
+ * @author COGNARD Luka
  * @version 1.0
- * @description Contient la classe Coord pour une représentation de coordonnée.
- *
  */
 public class Coord implements Comparable<Coord> {
 
