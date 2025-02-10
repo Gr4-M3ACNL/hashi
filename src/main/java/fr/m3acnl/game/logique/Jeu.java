@@ -220,8 +220,8 @@ public class Jeu {
      *
      * @param temp Le temp final
      */
-    public void setTempsFinal(long temp) {
-        tempsFinal = temp;
+    public void setTempsFinal(long temps) {
+        tempsFinal = temps;
     }
 
     /**
