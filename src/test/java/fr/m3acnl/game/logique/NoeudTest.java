@@ -19,6 +19,11 @@ import fr.m3acnl.Tests;
 public class NoeudTest extends Tests{
 
     /**
+     * Constructeur de la classe de test
+     */
+    public NoeudTest() {}
+
+    /**
      * Méthode d'initialisation de la classe de test
      * @see Tests#printNameAtStart
      */

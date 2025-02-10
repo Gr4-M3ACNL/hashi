@@ -32,12 +32,6 @@ public class JsonManager {
      * Ce fichier est situé dans le dossier de sauvegarde(sur le client).
      */
     private static String nomFichierProfils = "profils.json";
-
-    /**
-     * Constructeur de la classe JsonManager.
-     */
-    public JsonManager() {}
-    
     /**
      * Classe interne permettant de stocker les informations d'une grille.
      * @param taille Taille de la grille

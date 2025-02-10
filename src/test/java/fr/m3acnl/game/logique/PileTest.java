@@ -19,6 +19,11 @@ import fr.m3acnl.Tests;
 public class PileTest extends Tests{
 
     /**
+     * Constructeur de la classe de test
+     */
+    public PileTest() {}
+
+    /**
      * Méthode d'initialisation de la classe de test
      * @see Tests#printNameAtStart
      */

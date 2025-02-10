@@ -20,6 +20,11 @@ import fr.m3acnl.Tests;
 public class LienTest extends Tests {
 
     /**
+     * Constructeur de la classe de test
+     */
+    public LienTest() {}
+
+    /**
      * Méthode d'initialisation de la classe de test
      * @see Tests#printNameAtStart
      */

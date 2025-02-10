@@ -20,6 +20,12 @@ import fr.m3acnl.Tests;
 public class DoubleLienTest extends Tests{
 
     /**
+     * Constructeur de la classe de test
+     */
+    public DoubleLienTest() {
+    }
+
+    /**
      * Méthode d'initialisation de la classe de test
      * @see Tests#printNameAtStart
      */
