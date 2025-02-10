@@ -22,7 +22,14 @@ public class JsonManager {
     private static String fichierProfils = "profils.json";
     
     /**
+     * Constructeur de la classe JsonManager.
+     */
+    public JsonManager() {}
+    
+    /**
      * Classe interne permettant de stocker les informations d'une grille.
+     * @param taille Taille de la grille
+     * @param serialise Grille sérialisée
      */
     public record GrilleInfo(int taille, String serialise) {}
     
