@@ -195,7 +195,7 @@ public class Jeu {
     }
 
     /**
-     * Done le temp écouler actuellement.
+     * Done le temp écouler actuellement en seconde.
      *
      * @return le temp écouler
      */

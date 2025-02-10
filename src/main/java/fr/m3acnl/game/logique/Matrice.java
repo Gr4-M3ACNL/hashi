@@ -128,7 +128,7 @@ public class Matrice {
      *
      * @param jeu Le jeu au quel la matrice appartient
      */
-    public void genMatrice(Jeu jeu) {
+    private void genMatrice(Jeu jeu) {
         // Generate the nodes
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
@@ -283,7 +283,7 @@ public class Matrice {
         jeu.activeElem(0, 3, null);
         //Lien 1,2 état 1
         jeu.activeElem(1, 2, null);
-        //Lien 1,6 état 2
+        //Lien 1,5 état 2
         jeu.activeElem(1, 5, null);
         jeu.activeElem(1, 5, null);
         //Lien 2,1 état 2
