@@ -8,8 +8,8 @@
 # Fichiers produit par Maven
 target/
 doc/javadoc/
-doc/apidocs
-doc/testapidocs
+doc/apidocs/
+doc/testapidocs/
 
 ######
 # images en double de plantUML
