@@ -1,0 +1,18 @@
+{
+    "jacoboni": {
+        "nom": "Jacoboni",
+        "parametre": {
+            "niveauAide": "0",
+            "volumeEffetsSonore": "0.5",
+            "effetVisuel": "true"
+        }
+    },
+    "despres":{
+        "nom": "Després",
+        "parametre": {
+            "niveauAide": "2",
+            "volumeEffetsSonore": "0",
+            "effetVisuel": "false"
+        }
+    }
+}
