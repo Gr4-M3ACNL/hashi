@@ -36,9 +36,9 @@ public class JsonManager {
     /**
      * Classe interne permettant de stocker les informations d'une grille.
      * @param taille Taille de la grille
-     * @param serialise Grille sérialisée
+     * @param serialise Grille sérialisée sous forme de tableau 2D de Double
      */
-    public record GrilleInfo(int taille, String serialise) {}
+    public record GrilleInfo(int taille, Double[][] serialise) {}
 
     /**
      * Constructeur de la classe JsonManager.
@@ -62,7 +62,7 @@ public class JsonManager {
                 JsonNode grilleNode = difficulteNode.get(index);
                 return new GrilleInfo(
                     grilleNode.get("taille").asInt(),
-                    grilleNode.get("serialise").asText()
+                    mapper.convertValue(grilleNode.get("serialise"), Double[][].class)
                 );
             }
             throw new IllegalArgumentException("La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
