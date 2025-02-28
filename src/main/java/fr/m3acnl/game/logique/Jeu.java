@@ -130,21 +130,48 @@ public class Jeu {
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
      */
-    public void activeElem(int x, int y, Noeud n) {
+    private Lien activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
-        coupsJouerBuff.vidange();
         if (elem instanceof DoubleLien) {
             Lien lienActiver = ((DoubleLien) elem).activer(n);
             if (lienActiver != null) {
-                coupsJouer.empiler(lienActiver);
+                return lienActiver;
             }
         } else if (elem != null) {
             if (elem instanceof Lien && elem.activer()) {
-                coupsJouer.empiler(elem);
+                return (Lien) elem;
             } else {
                 elem.activer();
+                return null;
             }
         }
+        return null;
+    }
+
+    /**
+     * Active Element du jeu sélectionner par le joueur.
+     * 
+     * @param x Coordonnée en x
+     * @param y Coordonnée en y
+     * @param n Le noeud du lien a activer dans le doubleLien
+     */
+    public void activeElemJeu(int x, int y, Noeud n) {
+        Lien elem = activeElem(x, y, n);
+        if (elem != null) {
+            coupsJouerBuff.vidange();
+            coupsJouer.empiler(elem);
+        }
+    }
+
+    /**
+     * Active Element du jeu pour les aide.
+     * 
+     * @param x Coordonnée en x
+     * @param y Coordonnée en y
+     * @param n Le noeud du lien a activer dans le doubleLien
+     */
+    public void activeElemAide(int x, int y, Noeud n) {
+        activeElem(x, y, n);
     }
 
     /**

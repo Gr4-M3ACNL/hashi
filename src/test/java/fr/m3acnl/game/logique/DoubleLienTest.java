@@ -70,7 +70,7 @@ public class DoubleLienTest extends Tests{
      * Test de la méthode activer
      * @see DoubleLien#activer(Noeud)
      * @see Noeud#estValide()
-     * @see Jeu#activeElem(int, int, Noeud)
+     * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
      * @see Matrice#getElement(int, int)
      */
@@ -87,23 +87,23 @@ public class DoubleLienTest extends Tests{
         };
         Jeu jeu = new Jeu(5,mat);
         
-        jeu.activeElem(5, 3, (Noeud) jeu.getPlateau().getElement(5, 4));
-        jeu.activeElem(5, 3, (Noeud) jeu.getPlateau().getElement(5, 4));
+        jeu.activeElemJeu(5, 3, (Noeud) jeu.getPlateau().getElement(5, 4));
+        jeu.activeElemJeu(5, 3, (Noeud) jeu.getPlateau().getElement(5, 4));
 
         assertEquals(0, ((Noeud) jeu.getPlateau().getElement(5, 4)).estValide(),"Lien1 activer 2 fois le noeud lié a -1 deg soluce 1");
         assertEquals(true, ((DoubleLien) jeu.getPlateau().getElement(5, 3)).getInterrupteur(), "interrupteur actif");
 
-        jeu.activeElem(5, 3, (Noeud) jeu.getPlateau().getElement(6, 3));
+        jeu.activeElemJeu(5, 3, (Noeud) jeu.getPlateau().getElement(6, 3));
 
         assertEquals(2, ((Noeud) jeu.getPlateau().getElement(6, 3)).estValide(),"Aucune activation du lien2, Lien1 déja actif renvoie 1");
         assertEquals(true,((DoubleLien) jeu.getPlateau().getElement(5, 3)).getInterrupteur(), "interrupteur actif");
 
-        jeu.activeElem(5, 3, (Noeud) jeu.getPlateau().getElement(5, 4));
+        jeu.activeElemJeu(5, 3, (Noeud) jeu.getPlateau().getElement(5, 4));
 
         assertEquals(false,((DoubleLien) jeu.getPlateau().getElement(5, 3)).getInterrupteur(), "interrupteur inactif");
 
-        jeu.activeElem(5, 3, (Noeud) jeu.getPlateau().getElement(6, 3));
-        jeu.activeElem(5, 3, (Noeud) jeu.getPlateau().getElement(6, 3));
+        jeu.activeElemJeu(5, 3, (Noeud) jeu.getPlateau().getElement(6, 3));
+        jeu.activeElemJeu(5, 3, (Noeud) jeu.getPlateau().getElement(6, 3));
         
         assertEquals(0, ((Noeud) jeu.getPlateau().getElement(6, 3)).estValide(),"Aucune activation du lien2, Lien1 déja actif renvoie 1");
 
