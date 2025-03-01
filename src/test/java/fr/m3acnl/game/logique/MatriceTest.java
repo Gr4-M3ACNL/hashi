@@ -1,7 +1,12 @@
 package fr.m3acnl.game.logique;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import fr.m3acnl.Tests;
 
 /**
  * Classe de test de la classe Matrice.
@@ -12,7 +17,33 @@ import org.junit.jupiter.api.Test;
  *
  * @author MABIRE AYMERIC
  */
-public class MatriceTest {
+public class MatriceTest extends Tests {
+
+    /**
+     * Méthode d'initialisation de la classe de test
+     * 
+     * @see Tests#printNameAtStart
+     */
+    @BeforeAll
+    public static void initAll() {
+        printNameAtStart(JeuTest.class);
+    }
+
+    /**
+     * Méthode de fin de la classe de test
+     * 
+     * @see Tests#printNameAtEnd
+     */
+    @AfterAll
+    public static void endAll() {
+        printNameAtEnd(JeuTest.class);
+    }
+
+    /**
+     * Constructeur de la classe de test
+     */
+    MatriceTest() {
+    }
 
     /**
      * Test de la méthode getElement
