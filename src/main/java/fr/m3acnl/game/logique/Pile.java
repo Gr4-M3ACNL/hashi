@@ -13,7 +13,7 @@ public class Pile {
     /**
      * Tableau contenant la pile.
      */
-    private final ArrayList<Object> tab;
+    private final ArrayList<Lien> tab;
 
     /**
      * Constructeur de la classe Pile.
@@ -45,7 +45,7 @@ public class Pile {
      *
      * @param o : objet à empiler
      */
-    public void empiler(Object o) {
+    public void empiler(Lien o) {
         tab.add(o);
 
     }
@@ -55,9 +55,9 @@ public class Pile {
      *
      * @return : l'objet dépilé
      */
-    public Object depiler() {
+    public Lien depiler() {
         if (!estVide()) {
-            Object value = tab.get(this.taille() - 1);
+            Lien value = tab.get(this.taille() - 1);
             tab.remove(this.taille() - 1);
             return value;
         }
@@ -69,7 +69,7 @@ public class Pile {
      *
      * @return : l'objet au sommet de la pile
      */
-    public Object sommet() {
+    public Lien sommet() {
         if (!estVide()) {
             return tab.get(this.taille() - 1);
         }

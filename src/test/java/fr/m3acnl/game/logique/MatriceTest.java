@@ -2,20 +2,52 @@ package fr.m3acnl.game.logique;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import fr.m3acnl.Tests;
 
 /**
  * Classe de test de la classe Matrice.
+ *
  * @see Matrice
  * @see Lien
  * @see DoubleLien
- * 
+ *
  * @author MABIRE AYMERIC
  */
-public class MatriceTest {
+public class MatriceTest extends Tests {
+
+    /**
+     * Méthode d'initialisation de la classe de test
+     * 
+     * @see Tests#printNameAtStart
+     */
+    @BeforeAll
+    public static void initAll() {
+        printNameAtStart(JeuTest.class);
+    }
+
+    /**
+     * Méthode de fin de la classe de test
+     * 
+     * @see Tests#printNameAtEnd
+     */
+    @AfterAll
+    public static void endAll() {
+        printNameAtEnd(JeuTest.class);
+    }
+
+    /**
+     * Constructeur de la classe de test
+     */
+    MatriceTest() {
+    }
 
     /**
      * Test de la méthode getElement
+     *
      * @see Matrice#getElement(int, int)
      */
     @Test
@@ -29,12 +61,13 @@ public class MatriceTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Matrice mat1 = new Matrice(7, 7, mat, new Jeu(5, mat));
+        Matrice mat1 = new Matrice(7, 7, mat, new Jeu(7, mat));
         assertEquals(Noeud.class, mat1.getElement(6, 0).getClass(), "Matrice générer correctement Lien en 6,0");
     }
 
     /**
      * Test de la méthode setElement
+     *
      * @see Matrice#setElement(int, int, ElementJeu)
      * @see Matrice#getElement(int, int)
      */
@@ -49,13 +82,14 @@ public class MatriceTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Matrice mat1 = new Matrice(7, 7, mat, new Jeu(5, mat));
+        Matrice mat1 = new Matrice(7, 7, mat, new Jeu(7, mat));
         mat1.setElement(0, 0, null);
         assertEquals(null, mat1.getElement(0, 0), "Matrice modifier en 0,0 a null");
     }
 
     /**
      * Test de la méthode validationMatrice
+     *
      * @see Matrice#validationMatrice()
      * @see Matrice#getElement(int, int)
      * @see Lien#activer()
@@ -72,9 +106,9 @@ public class MatriceTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Matrice mat1 = new Matrice(7, 7, mat, new Jeu(5, mat));
+        Matrice mat1 = new Matrice(7, 7, mat, new Jeu(7, mat));
         assertEquals(false, mat1.validationMatrice(), "Matrice non résolu false");
-        
+
         //Complétion de la matrice
         //Lien 0,1 état 2
         mat1.getElement(0, 1).activer();

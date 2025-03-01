@@ -104,6 +104,15 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Récupère le degré actuelle.
+     *
+     * @return le degré actuelle
+     */
+    public int getDegreActuelle() {
+        return degreActuelle;
+    }
+
+    /**
      * Récupère le degré solution.
      *
      * @return le degré solution
