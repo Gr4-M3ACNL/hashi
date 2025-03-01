@@ -45,6 +45,7 @@ public class Jeu {
     /**
      * Constructeur pour une instance d'objet Jeu.
      *
+     * @param taille La taille de la matrice (carré)
      * @param mat La matrice du jeu
      */
     public Jeu(int taille, Double[][] mat) {
@@ -128,6 +129,8 @@ public class Jeu {
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
+     * 
+     * @return le lien activer
      */
     private Lien activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
