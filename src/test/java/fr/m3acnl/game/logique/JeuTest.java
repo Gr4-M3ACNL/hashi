@@ -2,22 +2,23 @@ package fr.m3acnl.game.logique;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-
 import org.junit.jupiter.api.Test;
 
 /**
  * Classe test de la classe Jeu.
+ *
  * @see Jeu
  * @see Matrice
  * @see Lien
  * @see Thread
- * 
+ *
  * @author COGNARD Luka
  */
 public class JeuTest {
 
     /**
      * Test de la méthode activeElemJeu.
+     *
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
      * @see Matrice#getElement(int, int)
@@ -34,7 +35,7 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(0, 1, null);
         jeu.activeElemJeu(0, 1, null);
         assertEquals(true, ((Lien) jeu.getPlateau().getElement(0, 1)).estValide(), "Lien 0,1 activer 2 fois donc valide");
@@ -42,6 +43,7 @@ public class JeuTest {
 
     /**
      * Test de la méthode avancer.
+     *
      * @see Jeu#avancer()
      * @see Jeu#retour()
      * @see Jeu#activeElemJeu(int, int, Noeud)
@@ -60,7 +62,7 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(0, 1, null);
         jeu.activeElemJeu(0, 1, null);
         jeu.retour();
@@ -73,6 +75,7 @@ public class JeuTest {
 
     /**
      * Test de la méthode gagner.
+     *
      * @see Jeu#gagner()
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
@@ -89,19 +92,19 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         assertEquals(false, jeu.gagner(), "Le jeu n'est pas gagner");
         jeu.activeElemJeu(0, 1, null);
-          
+
         jeu.activeElemJeu(0, 0, null);
         jeu.activeElemJeu(0, 1, null);
-          
+
         jeu.activeElemJeu(1, 0, null);
         jeu.activeElemJeu(1, 0, null);
-          
+
         jeu.activeElemJeu(0, 0, null);
         jeu.activeElemJeu(0, 1, null);
-          
+
         //Lien 0,1 état 2
         jeu.activeElemJeu(0, 1, null);
         jeu.activeElemJeu(0, 1, null);
@@ -144,6 +147,7 @@ public class JeuTest {
 
     /**
      * Test de la méthode getTempsFinal
+     *
      * @see Jeu#getTempsFinal()
      */
     @Test
@@ -157,12 +161,13 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         assertEquals(0, jeu.getTempsFinal(), "Jeu en cours sans pause non fini temps final a 0");
     }
 
     /**
      * Test de la méthode reprendreChrono.
+     *
      * @see Jeu#reprendreChrono()
      * @see Jeu#stopChrono()
      * @see Jeu#getTempsFinal()
@@ -179,16 +184,18 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
         jeu.stopChrono();
         jeu.reprendreChrono();
-        long temp=jeu.getTempsFinal();
+        long temp = jeu.getTempsFinal();
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
         jeu.stopChrono();
         jeu.reprendreChrono();
         assertNotEquals(temp, jeu.getTempsFinal(), "Jeu avec 2 pause temps final non égale a son temp avant la première pause");
@@ -196,6 +203,7 @@ public class JeuTest {
 
     /**
      * Test de la méthode Retour.
+     *
      * @see Jeu#retour()
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
@@ -213,7 +221,7 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(0, 1, null);
         jeu.activeElemJeu(0, 1, null);
         jeu.retour();
@@ -224,6 +232,7 @@ public class JeuTest {
 
     /**
      * Test de la méthode stopChrono.
+     *
      * @see Jeu#reprendreChrono()
      * @see Jeu#stopChrono()
      * @see Jeu#getTempsFinal()
@@ -240,10 +249,11 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {}
+        } catch (InterruptedException e) {
+        }
         jeu.stopChrono();
         jeu.reprendreChrono();
         assertNotEquals(0, jeu.getTempsFinal(), "Jeu avec une pause temps final non a 0");
@@ -251,6 +261,7 @@ public class JeuTest {
 
     /**
      * Test de la méthode verificationHorizontal.
+     *
      * @see Jeu#verificationHorizontal(Noeud, Noeud, int)
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
@@ -267,13 +278,14 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(4, 3, null);
         assertEquals(1, jeu.verificationHorizontal((Noeud) jeu.getPlateau().getElement(5, 1), (Noeud) jeu.getPlateau().getElement(5, 4), 1), "Lien horizontal non activable renvoie 1");
     }
 
     /**
      * Test de la méthode verificationVertical.
+     *
      * @see Jeu#verificationVertical(Noeud, Noeud, int)
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
@@ -290,7 +302,7 @@ public class JeuTest {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(5, 2, null);
         assertEquals(1, jeu.verificationVertical((Noeud) jeu.getPlateau().getElement(3, 3), (Noeud) jeu.getPlateau().getElement(6, 3), 1), "Lien verticale non activable renvoie 1");
     }

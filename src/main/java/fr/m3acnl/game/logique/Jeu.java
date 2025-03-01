@@ -38,22 +38,21 @@ public class Jeu {
     private final Pile coupsJouerBuff;
 
     /**
-     * Clef de la matrice.
+     * Taille du plateau.
      */
-    private final int clefFichier;
+    private final int taille;
 
     /**
      * Constructeur pour une instance d'objet Jeu.
      *
-     * @param clef clef de la matrice dans le fichier json
      * @param mat La matrice du jeu
      */
-    public Jeu(int clef, Double[][] mat) {
-        clefFichier = clef;
+    public Jeu(int taille, Double[][] mat) {
+        this.taille = taille;
         instantDebut = Instant.now();
         coupsJouer = new Pile();
         coupsJouerBuff = new Pile();
-        plateau = new Matrice(7, 7, mat, this);
+        plateau = new Matrice(this.taille, this.taille, mat, this);
         tempsFinal = 0;
     }
 
@@ -150,7 +149,7 @@ public class Jeu {
 
     /**
      * Active Element du jeu sélectionner par le joueur.
-     * 
+     *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
@@ -165,7 +164,7 @@ public class Jeu {
 
     /**
      * Active Element du jeu pour les aide.
-     * 
+     *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien

@@ -183,6 +183,7 @@ public class Matrice {
                         matrice.get(x).set(k, dl);
                     }
                 }
+                lien.setIndex(listeLien.size());
                 listeLien.add(lien);
                 return;
             }
@@ -218,6 +219,7 @@ public class Matrice {
                     }
 
                 }
+                lien.setIndex(listeLien.size());
                 listeLien.add(lien);
                 return;
             }
@@ -254,7 +256,7 @@ public class Matrice {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
+        Jeu jeu = new Jeu(7, mat);
         jeu.drawJeu();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
