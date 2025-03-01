@@ -38,6 +38,11 @@ public class SauvegardeManagerTest extends Tests {
     }
 
     /**
+     * Constructeur de la classe de test SauvegardeManagerTest
+     */
+    SauvegardeManagerTest(){}
+
+    /**
      * Test de la méthode getInstance
      * @see SauvegardeManager#getInstance
      */

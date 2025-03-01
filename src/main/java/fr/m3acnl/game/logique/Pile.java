@@ -3,23 +3,23 @@ package fr.m3acnl.game.logique;
 import java.util.ArrayList;
 
 /**
- * Classe Pile.
- * Cette classe permet de gérer une pile.
- * 
+ * Classe Pile représentant une Pile d'objets.
+ *
  * @author MABIRE Aymeric
+ * @version 1.0
  */
 public class Pile {
 
     /**
      * Tableau contenant la pile.
      */
-    private ArrayList<Object> tab;
+    private final ArrayList<Lien> tab;
 
     /**
      * Constructeur de la classe Pile.
      */
     public Pile() {
-        tab = new ArrayList<Object>();
+        tab = new ArrayList<>();
     }
 
     /**
@@ -45,7 +45,7 @@ public class Pile {
      *
      * @param o : objet à empiler
      */
-    public void empiler(Object o) {
+    public void empiler(Lien o) {
         tab.add(o);
 
     }
@@ -55,9 +55,9 @@ public class Pile {
      *
      * @return : l'objet dépilé
      */
-    public Object depiler() {
+    public Lien depiler() {
         if (!estVide()) {
-            Object value = tab.get(this.taille() - 1);
+            Lien value = tab.get(this.taille() - 1);
             tab.remove(this.taille() - 1);
             return value;
         }
@@ -69,7 +69,7 @@ public class Pile {
      *
      * @return : l'objet au sommet de la pile
      */
-    public Object sommet() {
+    public Lien sommet() {
         if (!estVide()) {
             return tab.get(this.taille() - 1);
         }
@@ -98,5 +98,4 @@ public class Pile {
         return s;
     }
 
-    
 }

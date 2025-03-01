@@ -36,6 +36,11 @@ public class HashiParmentierTest extends Tests {
     }
 
     /**
+     * Constructeur de la classe de test HashiParmentierTest
+     */
+    HashiParmentierTest(){}
+
+    /**
      * Test de la méthode init
      * @see HashiParmentier#init
      */

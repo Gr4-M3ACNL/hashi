@@ -1,27 +1,27 @@
 package fr.m3acnl.game.logique;
 
 /**
- * Cette classe représente un lien entre deux noeuds. Il connait les deux noeuds
- * lié, son nombre de lien et son nombre de lien de la solution.
- * 
+ * Classe Lien, afin de les utilisés pour lié 2 noeuds.
+ *
  * @author COGNARD Luka
+ * @version 1.0
  */
 public class Lien implements ElementJeu {
 
     /**
      * Le jeu pour récupérer le plateau.
      */
-    private Jeu jeu;
+    private final Jeu jeu;
 
     /**
      * 1er noeud du lien.
      */
-    private Noeud noeud1;
+    private final Noeud noeud1;
 
     /**
      * 2ème noeud du lien.
      */
-    private Noeud noeud2;
+    private final Noeud noeud2;
 
     /**
      * Nombre de lien actuelle.
@@ -31,7 +31,7 @@ public class Lien implements ElementJeu {
     /**
      * Le nombre soluce du lien.
      */
-    private int nbLienSoluce;
+    private final int nbLienSoluce;
 
     /**
      * La surbrillance du lien.
@@ -41,7 +41,12 @@ public class Lien implements ElementJeu {
     /**
      * L'orientation du lien.
      */
-    private int orientation;
+    private final int orientation;
+
+    /**
+     * L'index du lien dans la liste de lien.
+     */
+    private int index;
 
     /**
      * Constructeur pour une nouvelle instance de Lien.
@@ -49,6 +54,7 @@ public class Lien implements ElementJeu {
      * @param n1 premier Noeud
      * @param n2 deuxième Noeud
      * @param sol le nombre de lien de la solution
+     * @param orient L'orientation du Lien
      * @param j Le jeu d'on-t-il fait parti
      */
     public Lien(Noeud n1, Noeud n2, int sol, Jeu j, int orient) {
@@ -56,9 +62,29 @@ public class Lien implements ElementJeu {
         noeud2 = n2;
         nbLienSoluce = sol;
         nbLien = 0;
+
         surbrillance = false;
         jeu = j;
         orientation = orient;
+
+    }
+
+    /**
+     * Défini l'index du lien.
+     *
+     * @param i L'index du lien
+     */
+    public void setIndex(int i) {
+        index = i;
+    }
+
+    /**
+     * Récupère l'index du lien.
+     *
+     * @return L'index du lien
+     */
+    public int getIndex() {
+        return index;
     }
 
     /**
@@ -85,23 +111,66 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Active le lien le faisant passer a son état suivant et met a jour le
+     * Active le lien le faisant passer à son état suivant et met à jour le
      * degré actuelle des noeud liés.
+     *
+     * @return true si le lien a été activer false sinon
      */
-    public void lienActiver() {
-        if (orientation == 1) {
-            if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
-                return;
-            }
-        } else {
-            if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
-                return;
+    @Override
+    public Boolean activer() {
+        nbLien = (nbLien + 1) % 3;
+        if (nbLien != 2) {
+            if (orientation == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
+            } else {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
             }
         }
-        if ((nbLien = (nbLien + 1) % 3) == 0) {
-            noeud1.enleverDegre();
-            noeud2.enleverDegre();
+        if (nbLien == 0) {
+            noeud1.suppressionDegre();
+            noeud2.suppressionDegre();
+
+            noeud1.retirerNoeudAdjacence(noeud2);
+            noeud2.retirerNoeudAdjacence(noeud1);
         } else {
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+
+            noeud1.ajouterNoeudAdjacence(noeud2);
+            noeud2.ajouterNoeudAdjacence(noeud1);
+        }
+        return true;
+    }
+
+    /**
+     * Effectue le retour a l'état précédent du Lien et des noeuds.
+     */
+    public void retourArriere() {
+        nbLien = (nbLien + 2) % 3;
+        if (nbLien < 2) {
+            if (nbLien == 0) {
+                if (orientation == 1) {
+                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                } else {
+                    jeu.verificationVertical(noeud1, noeud2, nbLien);
+                }
+            }
+            noeud1.diminuerDegre();
+            noeud2.diminuerDegre();
+        } else {
+            if (orientation == 1) {
+                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+            } else {
+                jeu.verificationVertical(noeud1, noeud2, nbLien);
+            }
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
         }
@@ -126,6 +195,15 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Récupère l'orientation du lien.
+     *
+     * @return l'orientation du lien
+     */
+    public int getOrientation() {
+        return orientation;
+    }
+
+    /**
      * Récupère le nombre de lien.
      *
      * @return le nombre de lien
@@ -136,6 +214,7 @@ public class Lien implements ElementJeu {
 
     /**
      * Récupère la surbrillance.
+     *
      * @return la surbrillance
      */
     public Boolean getSurbrillance() {
@@ -143,12 +222,12 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Modifie le nombre de lien soluce.
-     * 
-     * @param nbLienSoluce Le nombre de lien soluce
+     * Récupère le nombre soluce du lien.
+     *
+     * @return le nombre soluce
      */
-    public void setNbLienSoluce(int nbLienSoluce) {
-        this.nbLienSoluce = nbLienSoluce;
+    public int getNbLienSoluce() {
+        return nbLienSoluce;
     }
 
     /**
@@ -170,6 +249,10 @@ public class Lien implements ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.println("L");
+        if (orientation == 1) {
+            System.out.print(" H" + nbLien + "(" + nbLienSoluce + ")  ");
+        } else {
+            System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
+        }
     }
 }

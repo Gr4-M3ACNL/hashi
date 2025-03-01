@@ -19,6 +19,11 @@ import fr.m3acnl.Tests;
 public class NoeudTest extends Tests{
 
     /**
+     * Constructeur de la classe de test
+     */
+    public NoeudTest() {}
+
+    /**
      * Méthode d'initialisation de la classe de test
      * @see Tests#printNameAtStart
      */
@@ -38,8 +43,8 @@ public class NoeudTest extends Tests{
 
     /**
      * Test de la méthode ajouterDegre
-     * @see Noeud#ajouterDegre
-     * @see Noeud#estValide
+     * @see Noeud#ajouterDegre()
+     * @see Noeud#estValide()
      */
     @Test
     void testAjouterDegre() {
@@ -48,6 +53,23 @@ public class NoeudTest extends Tests{
         n.ajouterDegre();
         n.ajouterDegre();
         n.ajouterDegre();
+        assertEquals(0, n.estValide(),"Valide car degré=degréSoluce via ajouterDegre");
+    }
+
+    /**
+     * Test de la méthode diminuerDegre
+     * @see Noeud#diminuerDegre()
+     * @see Noeud#estValide()
+     */
+    @Test
+    void testDiminuerDegre() {
+        Noeud n= new Noeud(5, 2, 4);
+        n.ajouterDegre();
+        n.ajouterDegre();
+        n.ajouterDegre();
+        n.ajouterDegre();
+        n.ajouterDegre();
+        n.diminuerDegre();
         assertEquals(0, n.estValide(),"Valide car degré=degréSoluce via ajouterDegre");
     }
 
@@ -68,24 +90,24 @@ public class NoeudTest extends Tests{
 
     /**
      * Test pour la méthode enleverDegre
-     * @see Noeud#ajouterDegre
-     * @see Noeud#enleverDegre
-     * @see Noeud#estValide
+     * @see Noeud#ajouterDegre()
+     * @see Noeud#suppressionDegre()
+     * @see Noeud#estValide()
      */
     @Test
-    void testEnleverDegre() {
+    void testSuppressionDegre() {
         Noeud n= new Noeud(5, 2, 4);
-        for(int i=0; i<6;i++){
+        for (int i=0; i<6;i++) {
             n.ajouterDegre();
         }
-        n.enleverDegre();
+        n.suppressionDegre();
         assertEquals(0, n.estValide(),"Valide car degré=degréSoluce via enleverdegré");
     }
 
     /**
      * Test pour la méthode estvalide
      * @see Noeud#ajouterDegre
-     * @see Noeud#enleverDegre
+     * @see Noeud#suppressionDegre()
      * @see Noeud#estValide
      */
     @Test
@@ -95,9 +117,9 @@ public class NoeudTest extends Tests{
             n.ajouterDegre();
         }
         assertEquals(-2, n.estValide(),"invalide -2 car degré supérieur de 2 au degré soluce");
-        n.enleverDegre();
+        n.suppressionDegre();
         assertEquals(0, n.estValide(),"valide 0 car degré égale au degré soluce");
-        n.enleverDegre();
+        n.suppressionDegre();
         assertEquals(2, n.estValide(),"invalide 2 car degré inférieur de 2 au degré soluce");
     }
 
@@ -156,5 +178,40 @@ public class NoeudTest extends Tests{
         Noeud n=new Noeud(5, 2, 4);
         n.surbrillanceOn();
         assertEquals(true, n.getSurbrillance(), "Surbeillance à été activé donc true");
+    }
+
+    /**
+     * Test de la méthode getListAdjacence
+     * @see Noeud#getListeAdjacence()
+     */
+    @Test
+    void testGetListAdjacence(){
+        Noeud n=new Noeud(5, 2, 4);
+        assertEquals(0, n.getListeAdjacence().size(), "Liste d'ajacence vide taille 0");
+    }
+
+    /**
+     * Test de la méthode ajouterNoeudAdjacence
+     * @see Noeud#ajouterNoeudAdjacence(Noeud)
+     * @see Noeud#getListeAdjacence()
+     */
+    @Test
+    void testAjouterNoeudAdjacence(){
+        Noeud n=new Noeud(5, 2, 4);
+        n.ajouterNoeudAdjacence(new Noeud(5, 3, 4));
+        assertEquals(1, n.getListeAdjacence().size(), "Liste d'ajacence vide taille 0");
+    }
+
+    /**
+     * Test de la méthode retirerNoeudAdjacence
+     * @see Noeud#retirerNoeudAdjacence(Noeud)
+     */
+    @Test
+    void testRetirerNoeudAdjacence(){
+        Noeud n=new Noeud(5, 2, 4);
+        Noeud n2=new Noeud(5, 3, 4);
+        n.ajouterNoeudAdjacence(n2);
+        n.retirerNoeudAdjacence(n2);
+        assertEquals(0, n.getListeAdjacence().size(), "Liste d'ajacence vide taille 0");
     }
 }

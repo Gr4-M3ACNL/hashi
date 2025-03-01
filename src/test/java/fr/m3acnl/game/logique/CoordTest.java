@@ -19,6 +19,12 @@ import fr.m3acnl.Tests;
 public class CoordTest extends Tests {
 
     /**
+     * Constructeur de la classe de test
+     */
+    public CoordTest() {
+    }
+
+    /**
      * Méthode d'initialisation de la classe test
      * @see Tests#printNameAtStart
      */

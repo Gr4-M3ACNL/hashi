@@ -1,69 +1,88 @@
 package fr.m3acnl.game.logique;
 
 /**
- * Cette classe gère les double lien.
- * 
+ * Classe DoubleLien Pour gérer les liens croisé.
+ *
  * @author COGNARD Luka
+ * @version 1.0
  */
 public class DoubleLien implements ElementJeu {
 
     /**
      * Le 1er lien.
      */
-    private Lien lien1;
+    private final Lien lien1;
 
     /**
      * Le 2ème lien.
      */
-    private Lien lien2;
+    private final Lien lien2;
 
     /**
      * Interrupteur quand un lien est activer.
      */
-    private Boolean interupteur;
-    
-    
+    private Boolean interrupteur;
 
     /**
      * Constructeur pour créer une instance de DoubleLien.
+     *
      * @param l1 Le 1er lien
      * @param l2 Le 2ème lien
      */
     public DoubleLien(Lien l1, Lien l2) {
         lien1 = l1;
         lien2 = l2;
-        interupteur = false;
+        interrupteur = false;
     }
 
     /**
      * Active le lien si il est activable lié au noeud donné.
+     *
      * @param n Le noeud lié
+     * @return Le lien qui a été activer return null si pas de lien activer
      */
-    public void activeLien(Noeud n) {
-        if (!interupteur) {
-            this.activeInterrupteur();
+    public Lien activer(Noeud n) {
+        if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
-                lien1.lienActiver();
+                if (lien1.activer()) {
+                    this.activeInterrupteur();
+                    return lien1;
+                }
             } else {
-                lien2.lienActiver();
+                if (lien2.activer()) {
+                    this.activeInterrupteur();
+                    return lien2;
+                }
             }
         } else {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.getNbLien() != 0) {
-                    lien1.lienActiver();
+                    lien1.activer();
+                    return lien1;
                 }
             } else if (lien2.getNbLien() != 0) {
-                lien2.lienActiver();
+                lien2.activer();
+                return lien2;
             }
-            this.desactiveInterrupteur();
         }
+        return null;
     }
-    
+
+    /**
+     * Méthode non utilisée.
+     *
+     * @return false
+     */
+    @Override
+    public Boolean activer() {
+        return false;
+    }
+
     /**
      * Active l'interrupteur.
      */
     public void activeInterrupteur() {
-        interupteur = true;
+        interrupteur = true;
     }
 
     /**
@@ -71,16 +90,18 @@ public class DoubleLien implements ElementJeu {
      */
     public void desactiveInterrupteur() {
         if (lien1.getNbLien() == lien2.getNbLien()) {
-            interupteur = false;
+            interrupteur = false;
         }
     }
 
     /**
      * Récupère l'état de l'interrupteur.
+     *
+     *
      * @return L'état de l'interrupteur
      */
-    public Boolean getInterupteur() {
-        return interupteur;
+    public Boolean getInterrupteur() {
+        return interrupteur;
     }
 
     /**
@@ -88,6 +109,6 @@ public class DoubleLien implements ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.println("D");
+        System.out.print(" D" + "(" + lien1.getNbLienSoluce() + "|" + lien2.getNbLienSoluce() + ") ");
     }
 }

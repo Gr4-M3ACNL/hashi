@@ -1,25 +1,24 @@
 package fr.m3acnl.game.logique;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
 
 /**
- * Cette classe représente un Noeud dans le jeu du hachi. Un noeud connait: sa
- * position, son degré actuelle, le degré de sa solution et une liste
- * d'adjacence stockant les noeuds auquel il est relié directement.
- * 
- * @author COGNARD Luka
+ * Classe Noeud a lié dans le jeu.
+ *
+ * @author MABIRE Aymeric
+ * @version 1.0
  */
-public class Noeud implements Comparable<Noeud>, ElementJeu {
+public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     /**
      * La position en coordonnée du noeud.
      */
-    private Coord position;
+    private final Coord position;
 
     /**
      * Le degré solution du noeud.
      */
-    private int degreSoluce;
+    private final int degreSoluce;
 
     /**
      * Le degré actuelle du noeud.
@@ -29,14 +28,12 @@ public class Noeud implements Comparable<Noeud>, ElementJeu {
     /**
      * La liste d'adjacence de la matrice.
      */
-    private Hashtable listeAdjacence;
+    private final ArrayList<Noeud> listeAdjacence;
 
     /**
      * Si le noeud est en surbrillance ou non.
      */
     private Boolean surbrillance;
-
-    
 
     /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
@@ -49,7 +46,7 @@ public class Noeud implements Comparable<Noeud>, ElementJeu {
         position = new Coord(x, y);
         degreSoluce = degS;
         degreActuelle = 0;
-        listeAdjacence = new Hashtable<>();
+        listeAdjacence = new ArrayList<>();
         surbrillance = false;
     }
 
@@ -75,10 +72,17 @@ public class Noeud implements Comparable<Noeud>, ElementJeu {
     }
 
     /**
-     * Décrémente le degré actuelle du noeud.
+     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
      */
-    public void enleverDegre() {
+    public void suppressionDegre() {
         degreActuelle -= 2;
+    }
+
+    /**
+     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
+     */
+    public void diminuerDegre() {
+        degreActuelle -= 1;
     }
 
     /**
@@ -100,6 +104,15 @@ public class Noeud implements Comparable<Noeud>, ElementJeu {
     }
 
     /**
+     * Récupère le degré actuelle.
+     *
+     * @return le degré actuelle
+     */
+    public int getDegreActuelle() {
+        return degreActuelle;
+    }
+
+    /**
      * Récupère le degré solution.
      *
      * @return le degré solution
@@ -107,13 +120,41 @@ public class Noeud implements Comparable<Noeud>, ElementJeu {
     public int getDegreSoluce() {
         return degreSoluce;
     }
-    
+
     /**
      * Récupère la surbrillance.
+     *
      * @return la surbrillance
      */
     public Boolean getSurbrillance() {
         return surbrillance;
+    }
+
+    /**
+     * Ajoute un noeud à la liste d'adjacence.
+     *
+     * @param n le noeud à ajouter
+     */
+    public void ajouterNoeudAdjacence(Noeud n) {
+        listeAdjacence.add(n);
+    }
+
+    /**
+     * Récupère la liste d'adjacence.
+     *
+     * @return la liste d'adjacence
+     */
+    public ArrayList<Noeud> getListeAdjacence() {
+        return listeAdjacence;
+    }
+
+    /**
+     * Retire un noeud de la liste d'adjacence.
+     *
+     * @param n le noeud à retirer
+     */
+    public void retirerNoeudAdjacence(Noeud n) {
+        listeAdjacence.remove(n);
     }
 
     /**
@@ -132,6 +173,42 @@ public class Noeud implements Comparable<Noeud>, ElementJeu {
      */
     @Override
     public void draw() {
-        System.out.println("N");
+        System.out.print(" N" + degreSoluce + "(" + degreActuelle + ")  ");
+
+    }
+
+    /**
+     * Affiche le réseaux de connection du noeud.
+     *
+     * @return false pour l'instant
+     */
+    @Override
+    public Boolean activer() {
+        afficherReseau();
+        return true;
+    }
+
+    /**
+     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     */
+    public void afficherReseau() {
+        afficherReseau(new ArrayList<>());
+    }
+
+    /**
+     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     *
+     * @param visites la liste des noeuds déjà visités
+     */
+    private void afficherReseau(ArrayList<Noeud> visites) {
+        if (visites.contains(this)) {
+            return;
+        }
+        visites.add(this);
+        this.draw();
+        System.out.println(this.position.getCoordX() + " " + this.position.getCoordY());
+        for (Noeud noeud : listeAdjacence) {
+            noeud.afficherReseau(visites);
+        }
     }
 }

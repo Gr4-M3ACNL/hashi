@@ -1,11 +1,10 @@
-
 package fr.m3acnl.game.logique;
 
 /**
- * Cette classe représente les coordonnés en x et y, et permet la création ainsi
- * que la récupération du x et y.
- * 
+ * Classe Coord pour une représentation de coordonnée.
+ *
  * @author COGNARD Luka
+ * @version 1.0
  */
 public class Coord implements Comparable<Coord> {
 
@@ -56,7 +55,7 @@ public class Coord implements Comparable<Coord> {
      */
     public int compareTo(Coord co2) {
         int res = Integer.compare(this.coordX, co2.getCoordX());
-        if (res == 0) { 
+        if (res == 0) {
             return Integer.compare(this.coordY, co2.getCoordY());
         }
         return res;
