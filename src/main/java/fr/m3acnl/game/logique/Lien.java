@@ -3,7 +3,7 @@ package fr.m3acnl.game.logique;
 /**
  * Classe Lien, afin de les utilisés pour lié 2 noeuds.
  *
- * @author COGNARD Luka
+ * @author COGNARD Luka, PUREN Mewen(Numerisation)
  * @version 1.0
  */
 public class Lien implements ElementJeu {
@@ -254,5 +254,16 @@ public class Lien implements ElementJeu {
         } else {
             System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
         }
+    }
+
+    /**
+     * Récupère l'index du lien.
+     *
+     * @return l'index du lien
+     * 
+     * @see Pile#serialize
+     */
+    protected int toInt() {
+        return index;
     }
 }
