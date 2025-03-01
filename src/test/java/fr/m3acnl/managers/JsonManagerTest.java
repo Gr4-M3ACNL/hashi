@@ -114,10 +114,11 @@ public class JsonManagerTest extends Tests {
         JsonManager manager = new JsonManager();
         List<String> difficultes = manager.getListeDifficultes();
         assertNotNull(difficultes, "Les difficultés ne devraient pas être nulles");
-        assertEquals(3, difficultes.size(), "Il devrait y avoir 3 difficultés");
+        assertEquals(4, difficultes.size(), "Il devrait y avoir 3 difficultés");
         assertEquals(difficultes.get(0), "facile", "La première difficulté devrait être facile");
         assertEquals(difficultes.get(1), "moyen", "La deuxième difficulté devrait être moyen");
         assertEquals(difficultes.get(2), "difficile", "La troisième difficulté devrait être difficile");
+        assertEquals(difficultes.get(3), "expert", "La quatrième difficulté devrait être expert");
     }
 
     /**

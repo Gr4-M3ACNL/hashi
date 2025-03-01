@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import fr.m3acnl.game.Difficulte;
+import fr.m3acnl.managers.JsonManager;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -38,6 +39,23 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * Liste des temps des parties jouées en mode expert.
      */
     private List<Time> expert;
+
+    /**
+     * Index de la grille de la dernière partie finie en facile.
+     */
+    private int indexFacile;
+    /**
+     * Index de la grille de la dernière partie finie en moyen.
+     */
+    private int indexMoyen;
+    /**
+     * Index de la grille de la dernière partie finie en difficile.
+     */
+    private int indexDifficile;
+    /**
+     * Index de la grille de la dernière partie finie en expert.
+     */
+    private int indexExpert;
 
     /**
      * Constructeur par défaut.
@@ -85,6 +103,43 @@ public class HistoriquePartieProfile implements JsonSerializable {
         return this.expert;
     }
 
+
+    /**
+     * Retourne l'index de la grille de la dernière partie finie en facile.
+     * 
+     * @return l'index de la grille de la dernière partie finie en facile.
+     */
+    public int getIndexFacile() {
+        return this.indexFacile;
+    }
+
+    /**
+     * Retourne l'index de la grille de la dernière partie finie en moyen.
+     * 
+     * @return l'index de la grille de la dernière partie finie en moyen.
+     */
+    public int getIndexMoyen() {
+        return this.indexMoyen;
+    }
+
+    /**
+     * Retourne l'index de la grille de la dernière partie finie en difficile.
+     * 
+     * @return l'index de la grille de la dernière partie finie en difficile.
+     */
+    public int getIndexDifficile() {
+        return this.indexDifficile;
+    }
+
+    /**
+     * Retourne l'index de la grille de la dernière partie finie en expert.
+     * 
+     * @return l'index de la grille de la dernière partie finie en expert.
+     */
+    public int getIndexExpert() {
+        return this.indexExpert;
+    }
+
     /**
      * Retourne la liste des temps des parties jouées en fonction de la difficulté.
      * 
@@ -103,6 +158,29 @@ public class HistoriquePartieProfile implements JsonSerializable {
                 return this.difficile;
             case expert:
                 return this.expert;
+            default:
+                throw new IllegalArgumentException("Difficulté inconnue");
+        }
+    }
+
+    /**
+     * Retourne l'index de la grille de la dernière partie finie en fonction de la difficulté.
+     * 
+     * @param difficulte la difficulté des parties.
+     * @return l'index de la grille de la dernière partie finie en fonction de la difficulté.
+     * 
+     * @throws IllegalArgumentException si la difficulté est inconnue.
+     */
+    public int getIndex(Difficulte difficulte) throws IllegalArgumentException {
+        switch (difficulte) {
+            case facile:
+                return this.indexFacile;
+            case moyen:
+                return this.indexMoyen;
+            case difficile:
+                return this.indexDifficile;
+            case expert:
+                return this.indexExpert;
             default:
                 throw new IllegalArgumentException("Difficulté inconnue");
         }
@@ -140,30 +218,39 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
     public void ajouterTemps(Difficulte difficulte, Time temps) throws IllegalArgumentException {
+        JsonManager jsonManager = new JsonManager();
         switch (difficulte) {
             case facile:
                 this.facile.add(temps);
                 if (this.facile.size() > tailleHistorique) {
                     this.facile.remove(0);
                 }
+                this.indexFacile++;
+                this.indexFacile %= jsonManager.getNbGrilles("facile");
                 break;
             case moyen:
                 this.moyen.add(temps);
                 if (this.moyen.size() > tailleHistorique) {
                     this.moyen.remove(0);
                 }
+                this.indexMoyen++;
+                this.indexMoyen %= jsonManager.getNbGrilles("moyen");
                 break;
             case difficile:
                 this.difficile.add(temps);
                 if (this.difficile.size() > tailleHistorique) {
                     this.difficile.remove(0);
                 }
+                this.indexDifficile++;
+                this.indexDifficile %= jsonManager.getNbGrilles("difficile");
                 break;
             case expert:
                 this.expert.add(temps);
                 if (this.expert.size() > tailleHistorique) {
                     this.expert.remove(0);
                 }
+                this.indexExpert++;
+                this.indexExpert %= jsonManager.getNbGrilles("expert");
                 break;
             default:
                 throw new IllegalArgumentException("Difficulté inconnue");
@@ -189,6 +276,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
+        gen.writeNumberField("indexFacile", indexFacile);
         
         gen.writeFieldName("moyen");
         gen.writeStartArray();
@@ -196,6 +284,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
+        gen.writeNumberField("indexMoyen", indexMoyen);
         
         gen.writeFieldName("difficile");
         gen.writeStartArray();
@@ -203,6 +292,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
+        gen.writeNumberField("indexDifficile", indexDifficile);
         
         gen.writeFieldName("expert");
         gen.writeStartArray();
@@ -210,6 +300,8 @@ public class HistoriquePartieProfile implements JsonSerializable {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
+        gen.writeNumberField("indexExpert", indexExpert);
+
         gen.writeEndObject();
     }
 

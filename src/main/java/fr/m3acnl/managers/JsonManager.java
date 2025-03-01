@@ -32,6 +32,12 @@ public class JsonManager {
      * Ce fichier est situé dans le dossier de sauvegarde(sur le client).
      */
     private static String nomFichierProfils = "profils.json";
+
+    /**
+     * Le nom du fichier contenant les parties en cours.
+     * Ce fichier est situé dans le dossier de sauvegarde(sur le client).
+     */
+    private static String nomFichierPartie = "partie.json";
     
     /**
      * Classe interne permettant de stocker les informations d'une grille.
@@ -118,7 +124,7 @@ public class JsonManager {
      * 
      * @return La liste des profils
      */
-    public List<String> getListeProfils() {
+    protected List<String> getListeProfils() {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils).toFile());
@@ -141,7 +147,7 @@ public class JsonManager {
      * @see Profile
      * @see ObjectMapper
      */
-    public void sauvegarderProfil(Profile profile) {
+    protected void sauvegarderProfil(Profile profile) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
@@ -163,7 +169,7 @@ public class JsonManager {
      * @see Profile
      * @see ObjectMapper
      */
-    public Profile chargerProfil(String nom) {
+    protected Profile chargerProfil(String nom) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
@@ -187,7 +193,7 @@ public class JsonManager {
      * @param nom Nom du profil à supprimer
      * @throws RuntimeException si le profil ne peut pas être supprimé
      */
-    public void supprimerProfil(String nom) {
+    protected void supprimerProfil(String nom) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
