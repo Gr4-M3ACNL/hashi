@@ -105,6 +105,7 @@ public class ProfileManager {
      * @param nom nom du profil à créer
      */
     public void creerProfil(String nom) {
+        //TODO: vérifier si un profil existe déjà avec ce nom
         profileActif = new Profile(nom);
         sauvegarder();
     }
