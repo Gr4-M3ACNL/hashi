@@ -226,7 +226,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
                     this.facile.remove(0);
                 }
                 this.indexFacile++;
-                this.indexFacile %= jsonManager.getNbGrilles("facile");
+                this.indexFacile %= jsonManager.getNbGrilles(Difficulte.facile);
                 break;
             case moyen:
                 this.moyen.add(temps);
@@ -234,7 +234,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
                     this.moyen.remove(0);
                 }
                 this.indexMoyen++;
-                this.indexMoyen %= jsonManager.getNbGrilles("moyen");
+                this.indexMoyen %= jsonManager.getNbGrilles(Difficulte.moyen);
                 break;
             case difficile:
                 this.difficile.add(temps);
@@ -242,7 +242,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
                     this.difficile.remove(0);
                 }
                 this.indexDifficile++;
-                this.indexDifficile %= jsonManager.getNbGrilles("difficile");
+                this.indexDifficile %= jsonManager.getNbGrilles(Difficulte.difficile);
                 break;
             case expert:
                 this.expert.add(temps);
@@ -250,7 +250,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
                     this.expert.remove(0);
                 }
                 this.indexExpert++;
-                this.indexExpert %= jsonManager.getNbGrilles("expert");
+                this.indexExpert %= jsonManager.getNbGrilles(Difficulte.expert);
                 break;
             default:
                 throw new IllegalArgumentException("Difficulté inconnue");

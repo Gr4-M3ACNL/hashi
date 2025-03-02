@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.profile.Profile;
 
 /**
@@ -52,7 +53,7 @@ public class JsonManagerTest extends Tests {
     @Test
     public void testGetGrilleInfo() {
         JsonManager manager = new JsonManager();
-        JsonManager.GrilleInfo grilleInfo = manager.getGrilleInfo("facile", 0);
+        JsonManager.GrilleInfo grilleInfo = manager.getGrilleInfo(Difficulte.facile, 0);
         assertNotNull(grilleInfo);
         assertEquals(7, grilleInfo.taille(), "La taille de la grille devrait être de 7");
         
@@ -69,18 +70,6 @@ public class JsonManagerTest extends Tests {
     }
 
     /**
-     * Test de la méthode getGrilleInfo de la classe JsonManager.
-     * 
-     * @see JsonManager#getGrilleInfo
-     */
-    @Test
-    public void testGetGrilleInfoGrilleInexistante() {
-        JsonManager manager = new JsonManager();
-        assertThrows(IllegalArgumentException.class, () -> manager.getGrilleInfo("Inexistante", 100),
-                "La grille n'existe pas");
-    }
-
-    /**
      * Test de la méthode getNbGrilles de la classe JsonManager.
      * 
      * @see JsonManager#getNbGrilles
@@ -88,20 +77,8 @@ public class JsonManagerTest extends Tests {
     @Test
     public void testGetNbGrilles() {
         JsonManager manager = new JsonManager();
-        int nbGrilles = manager.getNbGrilles("facile");
+        int nbGrilles = manager.getNbGrilles(Difficulte.facile);
         assertEquals(2, nbGrilles, "Le nombre de grilles pour la difficulté facile devrait être de 2");
-    }
-
-    /**
-     * Test de la méthode getNbGrilles de la classe JsonManager.
-     * 
-     * @see JsonManager#getNbGrilles
-     */
-    @Test
-    public void testGetNbGrillesDifficulteInexistante() {
-        JsonManager manager = new JsonManager();
-        assertThrows(IllegalArgumentException.class, () -> manager.getNbGrilles("Inexistante"),
-                "La difficulté n'existe pas");
     }
 
     /**
