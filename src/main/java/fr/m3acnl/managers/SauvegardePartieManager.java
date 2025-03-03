@@ -93,4 +93,13 @@ public class SauvegardePartieManager {
         
     }
 
+    /**
+     * Supprime la sauvegarde d'une partie.
+     *
+     * @param difficulte la difficulté de la partie à supprimer
+     */
+    public void supprimer(Difficulte difficulte) {
+        jsonManager.supprimerPartie(ProfileManager.getInstance().getProfileActif().getNom(), difficulte);
+    }
+
 }

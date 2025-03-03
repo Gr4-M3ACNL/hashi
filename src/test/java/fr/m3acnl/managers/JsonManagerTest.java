@@ -153,7 +153,7 @@ public class JsonManagerTest extends Tests {
         JsonManager manager = new JsonManager();
 
         // vérifie que le fichier de profils n'existe pas
-        assertThrows(RuntimeException.class, () -> manager.getListeProfils(), "Le fichier de profils n'existe pas");
+        assertNull(manager.getListeProfils(), "Le fichier de profils n'existe la liste devrai être null");
 
         try {
             // copie le fichier de test dans le repertoire ressources au bon endroit

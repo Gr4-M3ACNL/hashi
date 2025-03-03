@@ -2,6 +2,7 @@ package fr.m3acnl.managers;
 
 import fr.m3acnl.profile.Profile;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Classe singleton permettant de gérer les profils.
@@ -62,6 +63,14 @@ public class ProfileManager {
     }
 
     /**
+     * Décharge le profil actif.
+     */
+    public void desactiverProfileActif() {
+        sauvegarder();
+        this.profileActif = null;
+    }
+
+    /**
      * Retourne la liste de nom des profils.
      *
      * @return la liste des profils
@@ -74,7 +83,7 @@ public class ProfileManager {
      * Sauvegarde le profil actif.
      */
     public void sauvegarder() {
-        if (profileActif != null) {
+        if (Objects.nonNull(profileActif)) {
             jsonManager.sauvegarderProfil(profileActif);
         }
     }
@@ -86,6 +95,9 @@ public class ProfileManager {
      * @param nom nom du profil à supprimer
      */
     public void supprimerProfil(String nom) {
+        if (Objects.nonNull(profileActif) && profileActif.getNom().equals(nom)) {
+            profileActif = null;
+        }
         jsonManager.supprimerProfil(nom);
     }
     
@@ -96,6 +108,9 @@ public class ProfileManager {
      * @param profile profil à supprimer
      */
     public void supprimerProfil(Profile profile) {
+        if (Objects.nonNull(profileActif) && profileActif.equals(profile)) {
+            profileActif = null;
+        }
         jsonManager.supprimerProfil(profile.getNom());
     }
 
@@ -105,7 +120,10 @@ public class ProfileManager {
      * @param nom nom du profil à créer
      */
     public void creerProfil(String nom) {
-        //TODO: vérifier si un profil existe déjà avec ce nom
+        List<String> listeProfils = listeProfils();
+        if (Objects.nonNull(listeProfils) && listeProfils.contains(nom)) {
+            throw new IllegalArgumentException("Le profil existe déjà");
+        }
         profileActif = new Profile(nom);
         sauvegarder();
     }
