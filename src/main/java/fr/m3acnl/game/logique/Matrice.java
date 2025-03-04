@@ -3,7 +3,7 @@ package fr.m3acnl.game.logique;
 import java.util.ArrayList;
 
 /**
- * Classe matrice du jeu pour gérer ça création et ça validité.
+ * Classe matrice du jeu pour gérer sa création et sa validité.
  *
  * @author MABIRE Aymeric
  * @version 1.0
@@ -242,6 +242,31 @@ public class Matrice {
     }
 
     /**
+     * Remet la matrice a zero.
+     */
+    public void remiseAzero() {
+        for (Lien lien : listeLien) {
+            lien.remiseAzero();
+        }
+    }
+
+    /**
+     * Vérifie si les liens actif sont valide.
+     * 
+     * @return Renvoie true si les liens sont valide false sinon
+     */
+    public Boolean liensValide() {
+        for (Lien lien : listeLien) {
+            if (lien.getNbLien() > 0) {
+                if (lien.estValide() == false) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Main pour tester la génération de la matrice.
      *
      * @param args argument en commande
@@ -275,6 +300,8 @@ public class Matrice {
         System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
         jeu.activeElemJeu(0, 1, null);
         jeu.drawJeu();
+
+        jeu.sauvegarderManuellement();
 
         System.out.println("\n\nTest completion de la matrice\n\n");
         //Lien 0,1 état 2
@@ -322,7 +349,42 @@ public class Matrice {
         jeu.activeElemJeu(2, 4, null);
         jeu.drawJeu();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
+        System.out.println("Affichage du réseau du noeud 0,0");
+        ArrayList<Noeud> noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
+        for (Noeud n : noeuds) {
+            System.out.println(n);
+        }
 
+        System.out.println("\nTest chargement de save juste avant complétion\n\n");
+        jeu.chargerSauvegardeManuel();
+        jeu.retour();
+        jeu.activeElemJeu(0, 3, null);
+        jeu.activeElemJeu(0, 3, null);
+        jeu.activeElemJeu(2, 6, null);
+        jeu.activeElemJeu(4, 1, null);
+        
+        jeu.drawJeu();
+        System.out.println("Affichage du réseau du noeud 0,0 lié a 3 n");
+        noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
+        for (Noeud n : noeuds) {
+            System.out.println(n);
+        }
+        System.out.println("Affichage du réseau du noeud 1,6 lié a 1 n");
+        noeuds = ((Noeud) jeu.getPlateau().getElement(1, 6)).afficherReseau();
+        for (Noeud n : noeuds) {
+            System.out.println(n);
+        }
+        System.out.println("Affichage du réseau du noeud 6,0 lié a 0 n");
+        noeuds = ((Noeud) jeu.getPlateau().getElement(6, 0)).afficherReseau();
+        for (Noeud n : noeuds) {
+            System.out.println(n);
+        }
+        
+
+        System.out.println("\nTest chargement de save auto\n\n");
+        jeu.chargerSauvegardeAuto();
+        jeu.retour();
+        jeu.drawJeu();
         /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
         test.draw();
 

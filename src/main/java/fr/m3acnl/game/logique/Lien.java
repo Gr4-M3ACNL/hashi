@@ -245,6 +245,18 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Remet le lien à zéro .
+     */
+    public void remiseAzero() {
+        if (nbLien == 1) {
+            this.retourArriere();
+        }
+        if (nbLien == 2) {
+            this.activer();
+        }
+    }
+
+    /**
      * Affiche le Lien.
      */
     @Override

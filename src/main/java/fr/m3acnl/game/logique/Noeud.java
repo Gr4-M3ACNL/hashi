@@ -190,19 +190,24 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     /**
      * Affiche récursivement tous les noeuds connectés à ce noeud.
+     * 
+     * @return Renvoie la liste des noeud dans le réseau
      */
-    public void afficherReseau() {
-        afficherReseau(new ArrayList<>());
+    public ArrayList<Noeud> afficherReseau() {
+        ArrayList<Noeud> listeNoeud = new ArrayList<Noeud>();
+        afficherReseau(listeNoeud);
+        return listeNoeud;
     }
 
     /**
      * Affiche récursivement tous les noeuds connectés à ce noeud.
      *
      * @param visites la liste des noeuds déjà visités
+     * @return Renvoie la liste des noeuds visités
      */
-    private void afficherReseau(ArrayList<Noeud> visites) {
+    private ArrayList<Noeud> afficherReseau(ArrayList<Noeud> visites) {
         if (visites.contains(this)) {
-            return;
+            return visites;
         }
         visites.add(this);
         this.draw();
@@ -210,5 +215,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         for (Noeud noeud : listeAdjacence) {
             noeud.afficherReseau(visites);
         }
+        return visites;
     }
 }

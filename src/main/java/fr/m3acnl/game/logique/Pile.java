@@ -13,7 +13,7 @@ public class Pile {
     /**
      * Tableau contenant la pile.
      */
-    private final ArrayList<Lien> tab;
+    private ArrayList<Lien> tab;
 
     /**
      * Constructeur de la classe Pile.
@@ -98,4 +98,19 @@ public class Pile {
         return s;
     }
 
+    /**
+     * Récupère une copie du tableau.
+     * @return Le tableau copier de la pile.
+     */
+    public ArrayList<Lien> copieTab() {
+        return new ArrayList<Lien>(tab);
+    }
+
+    /**
+     * Initialisation d'un nouveau tableau pour la pile.
+     * @param t Le tableau a initialisé.
+     */
+    public void setTab(ArrayList<Lien> t) {
+        tab = new ArrayList<>(t);
+    }
 }
