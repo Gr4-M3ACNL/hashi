@@ -267,4 +267,12 @@ public class Lien implements ElementJeu {
             System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
         }
     }
+
+    /**
+     * Permet de faire l'affichage de la classe
+     */
+    @Override
+    public String toString() {
+        return "Lien{" + "noeud1=" + noeud1 + ", noeud2=" + noeud2 + ", nbLien=" + nbLien + ", nbLienSoluce=" + nbLienSoluce + ", orientation=" + orientation + ", index=" + index + '}';
+    }
 }

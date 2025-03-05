@@ -111,4 +111,12 @@ public class DoubleLien implements ElementJeu {
     public void draw() {
         System.out.print(" D" + "(" + lien1.getNbLienSoluce() + "|" + lien2.getNbLienSoluce() + ") ");
     }
+
+    /**
+     * Permet de faire l'affichage de la classe
+     */
+    @Override
+    public String toString() {
+        return " D" + "(" + lien1 + "|" + lien2 + ") ";
+    }
 }
