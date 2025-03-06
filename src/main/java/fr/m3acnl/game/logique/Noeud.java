@@ -217,7 +217,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Permet de faire l'affichage de la classe
+     * Permet de faire l'affichage de la classe.
      */
     @Override
     public String toString() {

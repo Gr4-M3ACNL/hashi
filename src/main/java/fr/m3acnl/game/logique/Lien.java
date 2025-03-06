@@ -269,10 +269,13 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Permet de faire l'affichage de la classe
+     * Permet de faire l'affichage de la classe.
      */
     @Override
     public String toString() {
-        return "Lien{" + "noeud1=" + noeud1 + ", noeud2=" + noeud2 + ", nbLien=" + nbLien + ", nbLienSoluce=" + nbLienSoluce + ", orientation=" + orientation + ", index=" + index + '}';
+        String toString = "Lien{" + "noeud1=" + noeud1 + ", noeud2=" + noeud2 + ", nbLien=" + nbLien + ", nbLienSoluce="
+                + nbLienSoluce;
+        toString += ", surbrillance=" + surbrillance + ", orientation=" + orientation + ", index=" + index + '}';
+        return toString;
     }
 }

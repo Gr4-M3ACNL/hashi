@@ -113,7 +113,7 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Permet de faire l'affichage de la classe
+     * Permet de faire l'affichage de la classe.
      */
     @Override
     public String toString() {
