@@ -8,7 +8,7 @@
   <artifactId>hashi</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>hashi</name>
+  <name>hashiParmentier </name>
 
 
   <properties>
@@ -17,6 +17,7 @@
     <maven.compiler.target>16</maven.compiler.target>
     <maven.compiler.release>16</maven.compiler.release>
     <javafx.version>19.0.2</javafx.version>
+    <juint.version>5.8.1</juint.version>
     <start-class>fr.m3acnl.Hashi</start-class>
   </properties>
 
@@ -73,9 +74,23 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.11.4</version>
+      <version>${juint.version}</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-api</artifactId>
+      <version>${juint.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-engine</artifactId>
+      <version>${juint.version}</version>
+      <scope>test</scope>
+    </dependency>
+
 
     <!-- JSON dependencies -->
     <dependency>
@@ -170,6 +185,7 @@
             <!-- Chemin du dossier relatif à la base du projet -->
             <fileset>
               <directory>doc/apidocs</directory>
+              <directory>doc/testapidocs</directory>
             </fileset>
             <fileset>
               <directory>doc/plantuml</directory>
@@ -194,6 +210,13 @@
         <configuration>
           <mainClass>${start-class}</mainClass>
         </configuration>
+      </plugin>
+
+      <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.5.2</version>
       </plugin>
 
       <plugin>

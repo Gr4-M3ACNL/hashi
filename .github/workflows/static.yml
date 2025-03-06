@@ -54,7 +54,7 @@ jobs:
       
       # Build with Maven
       - name: Build with Maven
-        run: mvn clean javadoc:javadoc --file pom.xml
+        run: mvn clean javadoc:javadoc javadoc:test-javadoc --file pom.xml
       
       # Configure GitHub Pages
       - name: Setup Pages
@@ -65,7 +65,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload the Javadoc
-          path: './doc/apidocs'
+          path: './doc'
       
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
