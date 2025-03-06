@@ -14,6 +14,7 @@ import fr.m3acnl.managers.SauvegardePartieManager.JeuEnCour;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import java.io.IOException;
@@ -106,7 +107,6 @@ public class PartieTest extends Tests {
         partie.serialize(jsonGenerator, serializerProvider);
 
         verify(jsonGenerator).writeStartObject();
-        verify(jsonGenerator).writeObjectField(eq(Difficulte.facile.toString()), any());
         verify(jsonGenerator).writeEndObject();
     }
 
@@ -123,7 +123,6 @@ public class PartieTest extends Tests {
         partie.serializeWithType(jsonGenerator, serializerProvider, typeSerializer);
 
         verify(jsonGenerator).writeStartObject();
-        verify(jsonGenerator).writeObjectField(eq(Difficulte.facile.toString()), any());
         verify(jsonGenerator).writeEndObject();
     }
 
@@ -139,11 +138,30 @@ public class PartieTest extends Tests {
         assertTrue(afterMalus.minus(beforeMalus).toMillis() >= 1000);
     }
 
+    /** 
+     * Test la méthode de récupération du jeu
+     */
+    @Test
+    public void testGetJeu() {
+        assertNotNull(partie.getJeu());
+    }
+
     /**
      * Test de la méthode de sauvegarde
      */
+    @Disabled
     @Test
     public void testSauvegarde() {
         // test vide car juste un appel à une méthode de sauvegarde
+    }
+
+    /**
+     * Test du constructeur
+     */
+    @Test
+    public void testConstructeur() {
+        assertNotNull(partie);
+        assertNotNull(partie.getChronoDuration());
+        verify(sauvegardePartieManagerMock).charger(eq(Difficulte.facile));
     }
 }

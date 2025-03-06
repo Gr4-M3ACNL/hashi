@@ -117,7 +117,7 @@ public class Pile implements JsonSerializable {
     public void serialize(JsonGenerator gen, SerializerProvider serializers) throws IOException {
         gen.writeStartArray();
         for (Lien lien : tab) {
-            gen.writeNumber(lien.toInt());
+            gen.writeNumber(lien.getIndex());
         }
         gen.writeEndArray();
     }

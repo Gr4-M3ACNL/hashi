@@ -255,15 +255,4 @@ public class Lien implements ElementJeu {
             System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
         }
     }
-
-    /**
-     * Récupère l'index du lien.
-     *
-     * @return l'index du lien
-     * 
-     * @see Pile#serialize
-     */
-    protected int toInt() {
-        return index;
-    }
 }

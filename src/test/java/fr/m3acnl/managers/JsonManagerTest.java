@@ -7,8 +7,14 @@ import java.util.List;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import fr.m3acnl.Tests;
 import fr.m3acnl.game.Difficulte;
+import fr.m3acnl.game.Partie;
+import fr.m3acnl.game.logique.Lien;
+import fr.m3acnl.game.logique.Pile;
 import fr.m3acnl.profile.Profile;
 
 /**
@@ -218,6 +224,185 @@ public class JsonManagerTest extends Tests {
         assertEquals(0, profils.size(), "Il ne devrait y avoir aucun profil");
 
         // restauration des profils
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode chargerProfil avec un profil inexistant.
+     * 
+     * @see JsonManager#chargerProfil
+     */
+    @Test
+    public void testChargerProfilInexistant() {
+        // initialisation des profils
+        initProfils();
+        JsonManager manager = new JsonManager();
+        
+        Profile profileInexistant = manager.chargerProfil("inexistant");
+        assertNull(profileInexistant, "Le profil inexistant devrait être null");
+        
+        // restauration des profils
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode chargerProfil avec un profil existant.
+     * 
+     * @see JsonManager#chargerProfil
+     */
+    @Test
+    public void testChargerProfilExistant() {
+        // initialisation des profils
+        initProfils();
+        JsonManager manager = new JsonManager();
+        
+        // Création et sauvegarde d'un profil test
+        Profile profileOriginal = new Profile("testExistant");
+        manager.sauvegarderProfil(profileOriginal);
+        
+        // Chargement et vérification du profil
+        Profile profileCharge = manager.chargerProfil("testExistant");
+        assertNotNull(profileCharge, "Le profil chargé ne devrait pas être null");
+        assertEquals("testExistant", profileCharge.getNom(), "Le nom du profil devrait être testExistant");
+        
+        // restauration des profils
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode getNbGrilles avec différentes difficultés.
+     * 
+     * @see JsonManager#getNbGrilles
+     */
+    @Test
+    public void testGetNbGrillesAllDifficulties() {
+        JsonManager manager = new JsonManager();
+        
+        assertEquals(2, manager.getNbGrilles(Difficulte.facile), "Nombre incorrect de grilles faciles");
+        assertEquals(2, manager.getNbGrilles(Difficulte.moyen), "Nombre incorrect de grilles moyennes");
+        assertEquals(2, manager.getNbGrilles(Difficulte.difficile), "Nombre incorrect de grilles difficiles");
+        assertEquals(2, manager.getNbGrilles(Difficulte.expert), "Nombre incorrect de grilles expert");
+    }
+
+    /**
+     * Test de la méthode getGrilleInfo pour toutes les difficultés et indices.
+     * 
+     * @see JsonManager#getGrilleInfo
+     */
+    @Test
+    public void testGetGrilleInfoAllDifficulties() {
+        JsonManager manager = new JsonManager();
+        
+        // Test pour chaque difficulté
+        for (Difficulte diff : Difficulte.values()) {
+            int nbGrilles = manager.getNbGrilles(diff);
+            for (int i = 0; i < nbGrilles; i++) {
+                JsonManager.GrilleInfo grilleInfo = manager.getGrilleInfo(diff, i);
+                assertNotNull(grilleInfo, "La grille " + i + " de difficulté " + diff + " ne devrait pas être nulle");
+                assertTrue(grilleInfo.taille() > 0, "La taille de la grille devrait être positive");
+                assertNotNull(grilleInfo.serialise(), "La grille sérialisée ne devrait pas être nulle");
+            }
+        }
+    }
+
+    /**
+     * Test de la méthode getGrilleInfo avec un indice invalide.
+     * 
+     * @see JsonManager#getGrilleInfo
+     */
+    @Test
+    public void testGetGrilleInfoInvalidIndex() {
+        JsonManager manager = new JsonManager();
+        
+        assertThrows(IllegalArgumentException.class, () -> manager.getGrilleInfo(Difficulte.facile, -1),
+                "L'indice -1 devrait lancer une exception");
+        assertThrows(IllegalArgumentException.class, () -> manager.getGrilleInfo(Difficulte.facile, 999),
+                "L'indice 2 devrait lancer une exception");
+    }
+
+    /**
+     * Test de la méthode sauvegardePartie de la classe JsonManager.
+     * 
+     * @see JsonManager#sauvegardePartie
+     */
+    @Test
+    public void testSauvegardePartie() {
+        // initialisation des profils
+        initProfils();
+        ProfileManager.getInstance().creerProfil("testUser");
+        JsonManager manager = new JsonManager();
+        
+        // Création d'une partie test
+        Partie partie = new Partie(Difficulte.facile);
+        assertDoesNotThrow(() -> manager.sauvegardePartie(partie, "testUser"),
+                "La sauvegarde de la partie devrait fonctionner");
+        
+        // Vérification que la partie a été sauvegardée
+        JsonNode partieChargee = manager.chargerPartie("testUser", Difficulte.facile);
+        assertNotNull(partieChargee, "La partie chargée ne devrait pas être nulle");
+        
+        // restauration des profils
+        ProfileManager.getInstance().supprimerProfil("testUser");
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode chargerPartie de la classe JsonManager.
+     * 
+     * @see JsonManager#chargerPartie
+     */
+    @Test
+    public void testChargerPartie() {
+        // initialisation des profils
+        initProfils();
+        ProfileManager.getInstance().creerProfil("testUser");
+        JsonManager manager = new JsonManager();
+        
+        // Test avec un profil inexistant
+        assertNull(manager.chargerPartie("inexistant", Difficulte.facile),
+                "La partie d'un profil inexistant devrait être nulle");
+        
+        // Création et sauvegarde d'une partie test
+        Partie partie = new Partie(Difficulte.facile);
+        partie.getJeu().getCoupsJouer().empiler(partie.getJeu().getPlateau().getListeLien().get(0));
+        partie.getJeu().getCoupsJouer().empiler(partie.getJeu().getPlateau().getListeLien().get(3));
+        partie.sauvegarde();
+        
+        // Test du chargement
+        JsonNode partieChargee = manager.chargerPartie("testUser", Difficulte.facile);
+        assertNotNull(partieChargee, "La partie chargée ne devrait pas être nulle");
+        
+        // restauration des profils
+        ProfileManager.getInstance().supprimerProfil("testUser");
+        restoreProfils();
+    }
+
+    /**
+     * Test de la méthode supprimerPartie de la classe JsonManager.
+     * 
+     * @see JsonManager#supprimerPartie
+     */
+    @Test
+    public void testSupprimerPartie() {
+        // initialisation des profils
+        initProfils();
+        ProfileManager.getInstance().creerProfil("testUser");
+        JsonManager manager = new JsonManager();
+        
+        // Création et sauvegarde d'une partie test
+        Partie partie = new Partie(Difficulte.facile);
+        manager.sauvegardePartie(partie, "testUser");
+        
+        // Test de la suppression
+        assertDoesNotThrow(() -> manager.supprimerPartie("testUser", Difficulte.facile),
+                "La suppression de la partie devrait fonctionner");
+        
+        // Vérification que la partie a été supprimée
+        assertNull(manager.chargerPartie("testUser", Difficulte.facile),
+                "La partie supprimée devrait être nulle");
+        
+        // restauration des profils
+        ProfileManager.getInstance().supprimerProfil("testUser");
         restoreProfils();
     }
 }

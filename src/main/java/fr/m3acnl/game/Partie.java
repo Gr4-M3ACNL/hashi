@@ -85,7 +85,7 @@ public class Partie implements JsonSerializable {
         partieNode.put("Chrono", getChronoDuration().toMillis());
 
         gen.writeStartObject();
-        gen.writeObjectField(difficulte.toString(), partieNode);
+        gen.writeObjectField("partie", partieNode);
         gen.writeEndObject();
     }
 
@@ -116,9 +116,27 @@ public class Partie implements JsonSerializable {
     }
 
     /**
+     * Méthode pour obtenir le jeu de la partie.
+     * 
+     * @return le jeu de la partie
+     */
+    public Jeu getJeu() {
+        return jeu;
+    }
+
+    /**
      * Méthode sauvegardant la partie.
      */
     public void sauvegarde() {
         SauvegardePartieManager.getInstance().sauvegarde(this);
     }
+
+    /**
+     * Méthode pour obtenir la difficulté de la partie.
+     * 
+     * @return la difficulté de la partie
+     */
+    public Difficulte getDifficulte() {
+        return difficulte;
+    }    
 }

@@ -2,6 +2,7 @@ package fr.m3acnl.managers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
 import fr.m3acnl.profile.Profile;
@@ -9,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Classe permettant d'extraire et de sauvegarder des données au format JSON.
@@ -41,42 +43,46 @@ public class JsonManager {
      * Ce fichier est situé dans le dossier de sauvegarde(sur le client).
      */
     private static String nomFichierPartie = "partie.json";
-    
+
     /**
      * Classe interne permettant de stocker les informations d'une grille.
-     * @param taille Taille de la grille
+     * 
+     * @param taille    Taille de la grille
      * @param serialise Grille sérialisée sous forme de tableau 2D de Double
      */
-    public record GrilleInfo(int taille, Double[][] serialise) {}
+    public record GrilleInfo(int taille, Double[][] serialise) {
+    }
 
     /**
      * Constructeur de la classe JsonManager.
      */
-    public JsonManager() {}
-    
+    public JsonManager() {
+    }
+
     /**
      * Récupère les informations d'une grille de jeu.
      * 
      * @param difficulte Difficulté de la grille
-     * @param index Index de la grille
+     * @param index      Index de la grille
      * @return Les informations de la grille
      */
     public GrilleInfo getGrilleInfo(Difficulte difficulte, int index) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(fichierNiveau));
-            
+
             JsonNode difficulteNode = rootNode.get(difficulte.toString());
             if (difficulteNode != null && index < difficulteNode.size()) {
                 JsonNode grilleNode = difficulteNode.get(index);
                 return new GrilleInfo(
-                    grilleNode.get("taille").asInt(),
-                    mapper.convertValue(grilleNode.get("serialise"), Double[][].class)
-                );
+                        grilleNode.get("taille").asInt(),
+                        mapper.convertValue(grilleNode.get("serialise"), Double[][].class));
             }
-            throw new IllegalArgumentException("La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
+            throw new IllegalArgumentException(
+                    "La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
         } catch (Exception e) {
-            throw new IllegalArgumentException("La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
+            throw new IllegalArgumentException(
+                    "La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
         }
     }
 
@@ -91,7 +97,7 @@ public class JsonManager {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(getClass().getResourceAsStream(fichierNiveau));
-            
+
             JsonNode difficulteNode = rootNode.get(difficulte.toString());
             if (difficulteNode == null) {
                 throw new IllegalArgumentException("La difficulté n'existe pas");
@@ -187,12 +193,12 @@ public class JsonManager {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
             if (!cheminFichier.toFile().exists()) {
-                throw new RuntimeException("Le fichier de profils n'existe pas");
+                return null;
             }
             JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
             JsonNode profilNode = rootNode.get(nom);
             if (profilNode == null) {
-                throw new RuntimeException("Le profil n'existe pas");
+                return null;
             }
 
             return mapper.treeToValue(profilNode, Profile.class);
@@ -220,6 +226,15 @@ public class JsonManager {
             } else {
                 throw new RuntimeException("Le profil n'existe pas");
             }
+            Path cheminFichierPartie = SauvegardeManager.getInstance().getRepertoireSauvegarde()
+                    .resolve(nomFichierPartie);
+            if (cheminFichierPartie.toFile().exists()) {
+                rootNode = mapper.readTree(cheminFichierPartie.toFile());
+                if (rootNode.has(nom)) {
+                    ((com.fasterxml.jackson.databind.node.ObjectNode) rootNode).remove(nom);
+                    mapper.writeValue(cheminFichierPartie.toFile(), rootNode);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Impossible de supprimer le profil");
@@ -230,19 +245,19 @@ public class JsonManager {
      * Sauvegarde une partie dans le fichier de parties.
      * l'organisation du fichier est la suivante :
      * {
-     *      "nomProfil1": {
-     *          "difficulte1": {Infos de la partie},
-     *          "difficulte2": {Infos de la partie}
-     *      },
-     *      "nomProfil2": {
-     *         "difficulte1": {Infos de la partie},
-     *         "difficulte2": {Infos de la partie},
-     *         "difficulte3": {Infos de la partie}
-     *      }
+     * "nomProfil1": {
+     * "difficulte1": {Infos de la partie},
+     * "difficulte2": {Infos de la partie}
+     * },
+     * "nomProfil2": {
+     * "difficulte1": {Infos de la partie},
+     * "difficulte2": {Infos de la partie},
+     * "difficulte3": {Infos de la partie}
+     * }
      * }
      * 
      * 
-     * @param partie Partie à sauvegarder
+     * @param partie    Partie à sauvegarder
      * @param nomProfil Nom du profil associé à la partie
      * 
      * @throws RuntimeException si la partie ne peut pas être sauvegardée
@@ -253,24 +268,26 @@ public class JsonManager {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierPartie);
-            
+
             // Création ou lecture du fichier JSON
             JsonNode rootNode;
             if (!cheminFichier.toFile().exists()) {
                 Files.createFile(cheminFichier);
                 rootNode = mapper.createObjectNode();
-            } else {
-                rootNode = mapper.readTree(cheminFichier.toFile());
+                mapper.writeValue(cheminFichier.toFile(), rootNode);
             }
-            
+            rootNode = mapper.readTree(cheminFichier.toFile());
+
             // Création ou récupération du nœud du profil
             if (!rootNode.has(nomProfil)) {
-                ((com.fasterxml.jackson.databind.node.ObjectNode) rootNode).putObject(nomProfil);
+                ((ObjectNode) rootNode).putObject(nomProfil);
             }
-            
-            // Sérialisation de la partie
+
+            // ajoute ou met à jour le nœud de la partie dans le profil
+            JsonNode profilNode = rootNode.get(nomProfil);
+            ((ObjectNode) profilNode).set(partie.getDifficulte().toString(), mapper.valueToTree(partie));
+
             mapper.writeValue(cheminFichier.toFile(), rootNode);
-            
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Impossible de sauvegarder la partie");
@@ -279,8 +296,9 @@ public class JsonManager {
 
     /**
      * Charge une partie à partir du fichier de parties.
+     * <p> si la partie n'existe pas, retourne null </p>
      * 
-     * @param nomProfil Nom du profil associé à la partie
+     * @param nomProfil  Nom du profil associé à la partie
      * @param difficulte Difficulté de la partie
      * @return La partie chargée sous forme de JsonNode
      * @throws RuntimeException si la partie ne peut pas être chargée
@@ -295,29 +313,35 @@ public class JsonManager {
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierPartie);
             if (!cheminFichier.toFile().exists()) {
                 return null;
-            }      
+            }
             JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
+            if (Objects.isNull(rootNode) || !rootNode.has(nomProfil)) {
+                return null;
+            }
             JsonNode profilNode = rootNode.get(nomProfil);
             if (profilNode == null) {
-                throw new RuntimeException("Le profil n'existe pas");
+                return null;
             }
             JsonNode partieNode = profilNode.get(difficulte.toString());
-            return partieNode;
+            if (Objects.isNull(partieNode)) {
+                return null;
+            }
+            return partieNode.get("partie");
 
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Impossible de charger la partie");
         }
     }
-    
+
     /**
      * Supprime une partie du fichier de parties.
      * 
-     * @param nomProfil Nom du profil associé à la partie
+     * @param nomProfil  Nom du profil associé à la partie
      * @param difficulte Difficulté de la partie
      * @throws RuntimeException si la partie ne peut pas être supprimée
      */
-    protected void supprimerPartie(String nomProfil, Difficulte difficulte) {
+    protected void supprimerPartie(String nomProfil, Difficulte difficulte) throws IllegalArgumentException, RuntimeException {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierPartie);
@@ -328,8 +352,6 @@ public class JsonManager {
                     ((com.fasterxml.jackson.databind.node.ObjectNode) profilNode).remove(difficulte.toString());
                     mapper.writeValue(cheminFichier.toFile(), rootNode);
                 }
-            } else {
-                throw new RuntimeException("Le profil n'existe pas");
             }
         } catch (Exception e) {
             e.printStackTrace();
