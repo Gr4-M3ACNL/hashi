@@ -36,8 +36,7 @@ public class HashiParmentier extends Application {
         primaryStage.setTitle("Jeu - Menu Principal");
         
         // 📌 Charger l'image de fond
-        String imagePath = "file:src/main/img/DessinFondMenu.jpeg";
-        Image backgroundImage = new Image(imagePath);
+        Image backgroundImage = new Image(getClass().getResource("/META-INF/img/DessinFondMenu.jpeg").toExternalForm());
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                 new BackgroundSize(100, 100, true, true, false, true));
@@ -47,12 +46,12 @@ public class HashiParmentier extends Application {
         root.setBackground(new Background(background));
 
         // 📌 Icône utilisateur à gauche
-        ImageView userIcon = new ImageView(new Image("file:src/main/img/logo_user.png"));
+        ImageView userIcon = new ImageView(new Image(getClass().getResource("/META-INF/img/logo_user.png").toExternalForm()));
         userIcon.setFitWidth(50);
         userIcon.setFitHeight(50);
 
         // 📌 Icône réglages en haut à droite (⚙️)
-        ImageView settingsIcon = new ImageView(new Image("file:src/main/img/logo_pause.png"));
+        ImageView settingsIcon = new ImageView(new Image(getClass().getResource("/META-INF/img/logo_pause.png").toExternalForm()));
         settingsIcon.setFitWidth(50);
         settingsIcon.setFitHeight(50);
         Button settingsButton = new Button("", settingsIcon);
@@ -79,7 +78,6 @@ public class HashiParmentier extends Application {
         root.setCenter(centerBox);
         
         mainScene = new Scene(root, 500, 400);
-        mainScene.getStylesheets().add("file:src/main/resources/style.css");
 
         // 📌 PAGE DES RÉGLAGES
         VBox vboxSettings = new VBox(15);
