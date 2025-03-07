@@ -24,6 +24,7 @@ public class PartieAffichage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        System.out.println("Such a beautiful start!");
         Double[][] mat = {
             {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
             {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
@@ -33,16 +34,19 @@ public class PartieAffichage extends Application {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        jeu = new Jeu(0, mat);
+        jeu = new Jeu(7, mat);
 
         BorderPane root = new BorderPane();
 
         // GridPane pour le plateau de jeu
         GridPane gridPane = new GridPane();
         buttons = new Button[7][7];
-
+        System.out.println("Lets do the for Yppie!!");
+        System.out.println("I'll do "+jeu.getTaille()+" iterations !!");
         for (int i = 0; i < jeu.getTaille(); i++) {
+            System.out.println("Can I go in?");
             for (int j = 0; j < jeu.getTaille(); j++) {
+                System.out.print("Alright,I'm in!");
                 buttons[i][j] = new Button();
                 int x = i;
                 int y = j;
@@ -50,13 +54,16 @@ public class PartieAffichage extends Application {
 
                 // Définir l'image (bouton) en fonction de l'élément
                 String imagePath;
-                if (jeu.getPlateau().getElement(i, j) == null) {
-                    imagePath = getClass().getResource("META-INF/assetsGraphiques/link/blank.png").toExternalForm();
-                } else {
+                System.out.print("The Element is");
+                if (jeu.getPlateau().getElement(i, j) != null) {
                     imagePath = jeu.getPlateau().getElement(i, j).draw();
+                    System.out.println("Not Null");
+                } else {
+                    imagePath = getClass().getResource("META-INF/assetsGraphiques/link/blank.png").toExternalForm();
+                    System.out.println("Null");
                 }
-                Image image = new Image(getClass().getResourceAsStream(imagePath));
-                ImageView imageView = new ImageView(imagePath);
+                Image image = new Image(imagePath);
+                ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(50);
                 imageView.setFitHeight(50);
                 buttons[i][j].setGraphic(imageView);
