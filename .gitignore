@@ -12,6 +12,11 @@ doc/apidocs
 doc/testapidocs
 
 ######
+# Fichiers produit par java
+*.class
+*.jar
+
+######
 # images en double de plantUML
 doc/plantuml/**/*.png
 doc/plantuml/**/*.svg

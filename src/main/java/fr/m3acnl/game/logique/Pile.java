@@ -1,5 +1,10 @@
 package fr.m3acnl.game.logique;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -8,12 +13,12 @@ import java.util.ArrayList;
  * @author MABIRE Aymeric
  * @version 1.0
  */
-public class Pile {
+public class Pile implements JsonSerializable {
 
     /**
      * Tableau contenant la pile.
      */
-    private final ArrayList<Object> tab;
+    private ArrayList<Lien> tab;
 
     /**
      * Constructeur de la classe Pile.
@@ -45,7 +50,7 @@ public class Pile {
      *
      * @param o : objet à empiler
      */
-    public void empiler(Object o) {
+    public void empiler(Lien o) {
         tab.add(o);
 
     }
@@ -55,9 +60,9 @@ public class Pile {
      *
      * @return : l'objet dépilé
      */
-    public Object depiler() {
+    public Lien depiler() {
         if (!estVide()) {
-            Object value = tab.get(this.taille() - 1);
+            Lien value = tab.get(this.taille() - 1);
             tab.remove(this.taille() - 1);
             return value;
         }
@@ -69,7 +74,7 @@ public class Pile {
      *
      * @return : l'objet au sommet de la pile
      */
-    public Object sommet() {
+    public Lien sommet() {
         if (!estVide()) {
             return tab.get(this.taille() - 1);
         }
@@ -98,4 +103,55 @@ public class Pile {
         return s;
     }
 
+    /**
+     * Méthode pour sérialiser une pile de liens.
+     * 
+     * @param gen générateur de JSON
+     * @param serializers fournisseur de sérialisation
+     * 
+     * @throws IOException si une erreur d'entrée/sortie survient
+     * 
+     * @see JsonSerializable#serialize
+     */
+    @Override
+    public void serialize(JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeStartArray();
+        for (Lien lien : tab) {
+            gen.writeNumber(lien.getIndex());
+        }
+        gen.writeEndArray();
+    }
+
+    /**
+     * Méthode pour sérialiser une pile de liens avec le type.
+     * 
+     * @param gen générateur de JSON
+     * @param serializers fournisseur de sérialisation
+     * @param typeSer sérialiseur de type
+     * 
+     * @throws IOException si une erreur d'entrée/sortie survient
+     * 
+     * @see #serialize
+     * @see JsonSerializable#serializeWithType
+     */
+    @Override
+    public void serializeWithType(JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
+        serialize(gen, serializers);
+    }
+
+    /*
+     * Récupère une copie du tableau.
+     * @return Le tableau copier de la pile.
+     */
+    public ArrayList<Lien> copieTab() {
+        return new ArrayList<Lien>(tab);
+    }
+
+    /**
+     * Initialisation d'un nouveau tableau pour la pile.
+     * @param t Le tableau a initialisé.
+     */
+    public void setTab(ArrayList<Lien> t) {
+        tab = new ArrayList<>(t);
+    }
 }

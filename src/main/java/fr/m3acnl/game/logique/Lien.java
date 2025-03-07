@@ -44,6 +44,11 @@ public class Lien implements ElementJeu {
     private final int orientation;
 
     /**
+     * L'index du lien dans la liste de lien.
+     */
+    private int index;
+
+    /**
      * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
@@ -62,6 +67,24 @@ public class Lien implements ElementJeu {
         jeu = j;
         orientation = orient;
 
+    }
+
+    /**
+     * Défini l'index du lien.
+     *
+     * @param i L'index du lien
+     */
+    public void setIndex(int i) {
+        index = i;
+    }
+
+    /**
+     * Récupère l'index du lien.
+     *
+     * @return L'index du lien
+     */
+    public int getIndex() {
+        return index;
     }
 
     /**
@@ -172,6 +195,15 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Récupère l'orientation du lien.
+     *
+     * @return l'orientation du lien
+     */
+    public int getOrientation() {
+        return orientation;
+    }
+
+    /**
      * Récupère le nombre de lien.
      *
      * @return le nombre de lien
@@ -213,14 +245,50 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Remet le lien à zéro .
+     */
+    public void remiseAzero() {
+        if (nbLien == 1) {
+            this.retourArriere();
+        }
+        if (nbLien == 2) {
+            this.activer();
+        }
+    }
+
+    /**
      * Affiche le Lien.
      */
     @Override
-    public void draw() {
-        if (orientation == 1) {
-            System.out.print(" H" + nbLien + "(" + nbLienSoluce + ")  ");
-        } else {
-            System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
+    public String draw() {
+        String path;
+        if (orientation == 1) { //Horizontal
+            path = "/META-INF/assetsGraphiques/link/horizontal_";
+        } else { //Vertical
+            path = "/META-INF/assetsGraphiques/link/vertical_";
         }
+        switch (nbLien) {
+            case 1:
+                path = path + "uno.png";
+                break;
+            case 2:
+                path = path + "duo.png";
+                break;
+            default:
+                path = "/META-INF/assetsGraphiques/link/blank.png";
+                break;
+        }
+        return getClass().getResource(path).toExternalForm();
+    }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public String toString() {
+        String toString = "Lien{" + "noeud1=" + noeud1 + ", noeud2=" + noeud2 + ", nbLien=" + nbLien + ", nbLienSoluce="
+                + nbLienSoluce;
+        toString += ", surbrillance=" + surbrillance + ", orientation=" + orientation + ", index=" + index + '}';
+        return toString;
     }
 }

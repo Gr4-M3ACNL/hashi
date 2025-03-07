@@ -104,6 +104,15 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Récupère le degré actuelle.
+     *
+     * @return le degré actuelle
+     */
+    public int getDegreActuelle() {
+        return degreActuelle;
+    }
+
+    /**
      * Récupère le degré solution.
      *
      * @return le degré solution
@@ -163,9 +172,8 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      * Affiche le Noeud.
      */
     @Override
-    public void draw() {
-        System.out.print(" N" + degreSoluce + "(" + degreActuelle + ")  ");
-
+    public String draw() {
+        return "../../../../../ressources/META-INF/assetsGraphiques/pie/pie" + degreSoluce + ".png";
     }
 
     /**
@@ -181,25 +189,37 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
 
     /**
      * Affiche récursivement tous les noeuds connectés à ce noeud.
+     *
+     * @return Renvoie la liste des noeud dans le réseau
      */
-    public void afficherReseau() {
-        afficherReseau(new ArrayList<>());
+    public ArrayList<Noeud> afficherReseau() {
+        ArrayList<Noeud> listeNoeud = new ArrayList<Noeud>();
+        afficherReseau(listeNoeud);
+        return listeNoeud;
     }
 
     /**
      * Affiche récursivement tous les noeuds connectés à ce noeud.
      *
      * @param visites la liste des noeuds déjà visités
+     * @return Renvoie la liste des noeuds visités
      */
-    private void afficherReseau(ArrayList<Noeud> visites) {
+    private ArrayList<Noeud> afficherReseau(ArrayList<Noeud> visites) {
         if (visites.contains(this)) {
-            return;
+            return visites;
         }
         visites.add(this);
-        this.draw();
-        System.out.println(this.position.getCoordX() + " " + this.position.getCoordY());
         for (Noeud noeud : listeAdjacence) {
             noeud.afficherReseau(visites);
         }
+        return visites;
+    }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public String toString() {
+        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle + "}";
     }
 }

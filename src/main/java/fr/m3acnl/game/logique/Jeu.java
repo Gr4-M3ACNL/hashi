@@ -38,23 +38,35 @@ public class Jeu {
     private final Pile coupsJouerBuff;
 
     /**
-     * Clef de la matrice.
+     * Taille du plateau.
      */
-    private final int clefFichier;
+    private final int taille;
+
+    /**
+     * La pile des coups de la sauvegarde automatique quand le graphe est bon.
+     */
+    private ArrayList<Lien> sauvegardeAutomatique;
+
+    /**
+     * La pile des coups de la sauvegarde manuel par le joueur.
+     */
+    private ArrayList<Lien> pointDeSauvegarde;
 
     /**
      * Constructeur pour une instance d'objet Jeu.
      *
-     * @param clef clef de la matrice dans le fichier json
+     * @param taille La taille de la matrice
      * @param mat La matrice du jeu
      */
-    public Jeu(int clef, Double[][] mat) {
-        clefFichier = clef;
+    public Jeu(int taille, Double[][] mat) {
+        this.taille = taille;
         instantDebut = Instant.now();
         coupsJouer = new Pile();
         coupsJouerBuff = new Pile();
-        plateau = new Matrice(7, 7, mat, this);
+        plateau = new Matrice(this.taille, this.taille, mat, this);
         tempsFinal = 0;
+        sauvegardeAutomatique = null;
+        pointDeSauvegarde = null;
     }
 
     /**
@@ -91,6 +103,15 @@ public class Jeu {
     }
 
     /**
+     * Récupère la taille.
+     * 
+     * @return La taille du plateau.
+     */
+    public int getTaille() {
+        return taille;
+    }
+    
+    /**
      * Vérification si le lien vertical n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
@@ -124,27 +145,72 @@ public class Jeu {
     }
 
     /**
+     * Sauvegarde automatiquement seulement si le graphe est valide.
+     */
+    private void sauvegardeAuto() {
+        if (plateau.liensValide()) {
+            sauvegardeAutomatique = coupsJouer.copieTab();
+        }
+    }
+
+    /**
+     * Sauvegarde manuellement peut importe l'état du graphe.
+     */
+    public void sauvegarderManuellement() {
+        pointDeSauvegarde = coupsJouer.copieTab();
+    }
+
+    /**
      * Active l’élément de jeu selectionner.
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
+     * @return Renvoie le lien activer si il n'a pas été activer renvoie null
      */
-    public void activeElem(int x, int y, Noeud n) {
+    private Lien activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
-        coupsJouerBuff.vidange();
         if (elem instanceof DoubleLien) {
             Lien lienActiver = ((DoubleLien) elem).activer(n);
             if (lienActiver != null) {
-                coupsJouer.empiler(lienActiver);
+                return lienActiver;
             }
         } else if (elem != null) {
             if (elem instanceof Lien && elem.activer()) {
-                coupsJouer.empiler(elem);
+                return (Lien) elem;
             } else {
                 elem.activer();
+                return null;
             }
         }
+        return null;
+    }
+
+    /**
+     * Active Element du jeu sélectionner par le joueur.
+     *
+     * @param x Coordonnée en x
+     * @param y Coordonnée en y
+     * @param n Le noeud du lien a activer dans le doubleLien
+     */
+    public void activeElemJeu(int x, int y, Noeud n) {
+        Lien elem = activeElem(x, y, n);
+        if (elem != null) {
+            coupsJouerBuff.vidange();
+            coupsJouer.empiler(elem);
+            sauvegardeAuto();
+        }
+    }
+
+    /**
+     * Active Element du jeu pour les aide.
+     *
+     * @param x Coordonnée en x
+     * @param y Coordonnée en y
+     * @param n Le noeud du lien a activer dans le doubleLien
+     */
+    public void activeElemAide(int x, int y, Noeud n) {
+        activeElem(x, y, n);
     }
 
     /**
@@ -235,5 +301,69 @@ public class Jeu {
      */
     public Matrice getPlateau() {
         return plateau;
+    }
+
+    /**
+     * Récupère la pile des coups jouer.
+     *
+     * @return La pile des coups jouer
+     */
+    public Pile getCoupsJouer() {
+        return coupsJouer;
+    }
+
+    /**
+     * Récupère la pile des coups jouer en buffeur.
+     *
+     * @return La pile des coups jouer en buffeur
+     */
+    public Pile getCoupsJouerBuff() {
+        return coupsJouerBuff;
+    }
+  
+    /*
+     * Charge la sauvegarde donner.
+     * 
+     * @param sauvegarde la sauvegarde a charger.
+     */
+    private void chargerSauvegarde(ArrayList<Lien> sauvegarde) {
+        if (sauvegarde == null) {
+            return;
+        }
+        plateau.remiseAzero();
+        coupsJouer.vidange();
+        coupsJouerBuff.vidange();
+        for (Lien lien : sauvegarde) {
+            lien.activer();
+        }
+        coupsJouer.setTab(sauvegarde);
+    }
+
+    /**
+     * Charge la sauvegarde automatique.
+     */
+    public void chargerSauvegardeAuto() {
+        chargerSauvegarde(sauvegardeAutomatique);
+    }
+
+    /**
+     * Charge la sauvegarde manuel.
+     */
+    public void chargerSauvegardeManuel() {
+        chargerSauvegarde(pointDeSauvegarde);
+    }
+
+    /**
+     * Rejoue un coup du lien a l'index donner lors du chargement.
+     * 
+     * @param index L'index du lien a ajouter et empiler.
+     * @throws RuntimeException si le Lien ne c'est pas activer.
+     */
+    public void rejouer(int index) {
+        if (plateau.getCopListeLien().get(index).activer()) {
+            coupsJouer.empiler(plateau.getCopListeLien().get(index));  
+        } else {
+            throw new RuntimeException("Le lien n'a pas pu s'activer");
+        }
     }
 }
