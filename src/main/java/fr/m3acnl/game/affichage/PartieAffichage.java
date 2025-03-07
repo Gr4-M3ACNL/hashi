@@ -1,7 +1,12 @@
 package fr.m3acnl.game.affichage;
 
+import java.net.URL;
+
 import fr.m3acnl.game.logique.Jeu;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,18 +16,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.util.Duration;
-import javafx.geometry.Pos;
 
 /**
  * Classe PartieAffichage pour l'affichage de la Partie.
- * 
+ *
  * @author PESANTES Maelig
  * @see Application
  */
 public class PartieAffichage extends Application {
+
     /**
      * Jeu pour la partie.
      */
@@ -65,8 +68,6 @@ public class PartieAffichage extends Application {
         };
         jeu = new Jeu(7, mat);
 
-        
-
         // GridPane pour le plateau de jeu
         GridPane gridPane = new GridPane();
         buttons = new Button[7][7];
@@ -75,7 +76,7 @@ public class PartieAffichage extends Application {
         for (int i = 0; i < jeu.getTaille(); i++) {
             System.out.println("Can I go in?");
             for (int j = 0; j < jeu.getTaille(); j++) {
-                System.out.print("Alright,I'm in!");
+                System.out.println("Alright, I'm in!");
                 buttons[i][j] = new Button();
 
                 int x = i;
@@ -83,21 +84,25 @@ public class PartieAffichage extends Application {
                 buttons[i][j].setOnAction(e -> activerElement(x, y));
 
                 // Définir l'image (bouton) en fonction de l'élément
-                String imagePath;
-                System.out.print("The Element is");
+                URL resource;
+                System.out.println("The value is " + jeu.getPlateau().getElement(i, j));
+                System.out.print("The Element is ");
                 if (jeu.getPlateau().getElement(i, j) != null) {
-                    imagePath = jeu.getPlateau().getElement(i, j).draw();
-                    System.out.println("Not Null");
+                    resource = getClass().getResource(((String) jeu.getPlateau().getElement(i, j).draw()));
+                    System.out.println("Not Null : " + jeu.getPlateau().getElement(i, j).draw());
+                    System.out.println("The resource is " + resource);
                 } else {
-                    imagePath = getClass().getResource("META-INF/assetsGraphiques/link/blank.png").toExternalForm();
+                    resource = getClass().getResource("/META-INF/assetsGraphiques/link/blank.png");
+
                     System.out.println("Null");
                 }
+                String imagePath = resource.toExternalForm();
                 Image image = new Image(imagePath);
                 ImageView imageView = new ImageView(image);
                 imageView.setFitWidth(50);
                 imageView.setFitHeight(50);
                 buttons[i][j].setGraphic(imageView);
-                
+
                 gridPane.add(buttons[i][j], j, i);
             }
         }
@@ -111,15 +116,15 @@ public class PartieAffichage extends Application {
 
         Button undoButton = new Button("Retour");
         undoButton.setOnAction(e -> jeu.retour());
-        
+
         Button redoButton = new Button("Avancer");
         redoButton.setOnAction(e -> jeu.avancer());
-        
+
         Button checkWinButton = new Button("Vérifier victoire");
         checkWinButton.setOnAction(e -> checkWin());
-        
+
         timeLabel = new Label("Temps: 0s");
-        
+
         controlPanel.getChildren().addAll(undoButton, redoButton, checkWinButton, timeLabel);
         root.setBottom(controlPanel);
 
@@ -127,7 +132,7 @@ public class PartieAffichage extends Application {
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTime()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        
+
         Scene scene = new Scene(root, 600, 600);
         primaryStage.setTitle("Jeu Interface");
         primaryStage.setScene(scene);
@@ -142,7 +147,38 @@ public class PartieAffichage extends Application {
      */
     private void activerElement(int x, int y) {
         jeu.activeElemJeu(x, y, null);
-        buttons[x][y].setText("X");
+        mettreAJourAffichage();
+    }
+
+    /**
+     * Met à jour l'affichage du plateau de jeu en fonction de l'état actuel du
+     * jeu.
+     */
+    private void mettreAJourAffichage() {
+        for (int i = 0; i < jeu.getTaille(); i++) {
+            for (int j = 0; j < jeu.getTaille(); j++) {
+                URL resource;
+                if (jeu.getPlateau().getElement(i, j) != null) {
+                    resource = getClass().getResource(((String) jeu.getPlateau().getElement(i, j).draw()));
+                } else {
+                    resource = getClass().getResource("/META-INF/assetsGraphiques/link/blank.png");
+                }
+
+                // Vérification que le fichier existe bien
+                if (resource != null) {
+                    String imagePath = resource.toExternalForm();
+                    Image image = new Image(imagePath);
+                    ImageView imageView = new ImageView(image);
+                    imageView.setFitWidth(50);
+                    imageView.setFitHeight(50);
+
+                    // Mettre à jour le bouton avec la nouvelle image
+                    buttons[i][j].setGraphic(imageView);
+                } else {
+                    System.out.println("Image non trouvée pour x=" + i + ", y=" + j);
+                }
+            }
+        }
     }
 
     /**
@@ -159,7 +195,6 @@ public class PartieAffichage extends Application {
      */
     private void updateTime() {
         timeLabel.setText("Temps: " + jeu.getTempsEcouler() + "s");
-        
     }
 
     /**

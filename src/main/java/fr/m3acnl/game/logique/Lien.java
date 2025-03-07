@@ -275,10 +275,10 @@ public class Lien implements ElementJeu {
                 path = path + "duo.png";
                 break;
             default:
-                path = "/META-INF/assetsGraphiques/link/blank.png";
-                break;
+                return "/META-INF/assetsGraphiques/link/blank.png";
+
         }
-        return getClass().getResource(path).toExternalForm();
+        return path;
     }
 
     /**

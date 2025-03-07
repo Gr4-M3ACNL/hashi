@@ -111,6 +111,9 @@ public class DoubleLien implements ElementJeu {
      */
     @Override
     public String draw() {
+        if (this.lienActif() == null) {
+            return "/META-INF/assetsGraphiques/link/blank.png";
+        }
         return this.lienActif().draw();
     }
 
