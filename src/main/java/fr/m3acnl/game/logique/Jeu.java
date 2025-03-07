@@ -43,9 +43,19 @@ public class Jeu {
     private final int taille;
 
     /**
+     * La pile des coups de la sauvegarde automatique quand le graphe est bon.
+     */
+    private ArrayList<Lien> sauvegardeAutomatique;
+
+    /**
+     * La pile des coups de la sauvegarde manuel par le joueur.
+     */
+    private ArrayList<Lien> pointDeSauvegarde;
+
+    /**
      * Constructeur pour une instance d'objet Jeu.
      *
-     * @param taille La taille de la matrice (carré)
+     * @param taille La taille de la matrice
      * @param mat La matrice du jeu
      */
     public Jeu(int taille, Double[][] mat) {
@@ -55,6 +65,8 @@ public class Jeu {
         coupsJouerBuff = new Pile();
         plateau = new Matrice(this.taille, this.taille, mat, this);
         tempsFinal = 0;
+        sauvegardeAutomatique = null;
+        pointDeSauvegarde = null;
     }
 
     /**
@@ -91,6 +103,14 @@ public class Jeu {
     }
 
     /**
+     * Récupère la taille.
+     * 
+     * @return La taille du plateau.
+     */
+    public int getTaille() {
+        return taille;
+    }
+    /**
      * Vérification si le lien vertical n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
@@ -124,13 +144,28 @@ public class Jeu {
     }
 
     /**
+     * Sauvegarde automatiquement seulement si le graphe est valide.
+     */
+    private void sauvegardeAuto() {
+        if (plateau.liensValide()) {
+            sauvegardeAutomatique = coupsJouer.copieTab();
+        }
+    }
+
+    /**
+     * Sauvegarde manuellement peut importe l'état du graphe.
+     */
+    public void sauvegarderManuellement() {
+        pointDeSauvegarde = coupsJouer.copieTab();
+    }
+
+    /**
      * Active l’élément de jeu selectionner.
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
-     * 
-     * @return le lien activer
+     * @return Renvoie le lien activer si il n'a pas été activer renvoie null
      */
     private Lien activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
@@ -162,6 +197,7 @@ public class Jeu {
         if (elem != null) {
             coupsJouerBuff.vidange();
             coupsJouer.empiler(elem);
+            sauvegardeAuto();
         }
     }
 
@@ -282,5 +318,36 @@ public class Jeu {
      */
     public Pile getCoupsJouerBuff() {
         return coupsJouerBuff;
+    }
+  
+    /*
+     * Charge la sauvegarde donner.
+     * @param sauvegarde la sauvegarde a charger.
+     */
+    private void chargerSauvegarde(ArrayList<Lien> sauvegarde) {
+        if (sauvegarde == null) {
+            return;
+        }
+        plateau.remiseAzero();
+        coupsJouer.vidange();
+        coupsJouerBuff.vidange();
+        for (Lien lien : sauvegarde) {
+            lien.activer();
+        }
+        coupsJouer.setTab(sauvegarde);
+    }
+
+    /**
+     * Charge la sauvegarde automatique.
+     */
+    public void chargerSauvegardeAuto() {
+        chargerSauvegarde(sauvegardeAutomatique);
+    }
+
+    /**
+     * Charge la sauvegarde manuel.
+     */
+    public void chargerSauvegardeManuel() {
+        chargerSauvegarde(pointDeSauvegarde);
     }
 }
