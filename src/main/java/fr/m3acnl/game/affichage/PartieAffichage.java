@@ -1,94 +1,29 @@
 package fr.m3acnl.game.affichage;
 
 import fr.m3acnl.game.logique.Jeu;
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-import javax.swing.ImageIcon;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.geometry.Pos;
 
-public class PartieAffichage extends JFrame {
+public class PartieAffichage extends Application {
     private Jeu jeu;
-    private JLabel timeLabel;
-    private JButton[][] buttons;
+    private Label timeLabel;
+    private Button[][] buttons;
+    private Timeline timeline;
 
-    public PartieAffichage(Jeu jeu) {
-        this.jeu = jeu;
-        setTitle("Jeu Interface");
-        setSize(600, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-
-        // Fond d'écran
-        JLabel backgroundLabel = new JLabel(new ImageIcon(getClass().getResource("../../../../../ressources/META-INF/assetsGraphiques/hashiWallpaper.jpeg")));
-        backgroundLabel.setLayout(new BorderLayout());
-
-        JPanel gridPanel = new JPanel(new GridLayout(7, 7));
-        buttons = new JButton[7][7];
-        
-        // Remplir les boutons avec des images selon les nœuds
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                buttons[i][j] = new JButton();
-                int x = i;
-                int y = j;
-                buttons[i][j].addActionListener(e -> activerElement(x, y));
-                gridPanel.add(buttons[i][j]);
-
-                // Définir l'image en fonction du chiffre du nœud
-                //String nodeValue = String.valueOf(jeu.getPlateau().getElement(i, j).;
-                //String imagePath = "../../../../../ressources/META-INF/assetsGraphiques/pie/pie" + nodeValue + ".png";
-                String imagePath = jeu.getPlateau().getElement(i, j).draw();
-                buttons[i][j].setIcon(new ImageIcon(getClass().getResource(imagePath)));
-            }
-        }
-        
-        backgroundLabel.add(gridPanel, BorderLayout.CENTER);
-        add(backgroundLabel, BorderLayout.CENTER);
-
-        JPanel controlPanel = new JPanel();
-        JButton undoButton = new JButton("Retour");
-        undoButton.addActionListener(e -> jeu.retour());
-        controlPanel.add(undoButton);
-
-        JButton redoButton = new JButton("Avancer");
-        redoButton.addActionListener(e -> jeu.avancer());
-        controlPanel.add(redoButton);
-
-        JButton checkWinButton = new JButton("Vérifier victoire");
-        checkWinButton.addActionListener(e -> checkWin());
-        controlPanel.add(checkWinButton);
-
-        timeLabel = new JLabel("Temps: 0s");
-        controlPanel.add(timeLabel);
-        
-        add(controlPanel, BorderLayout.SOUTH);
-
-        new Timer(1000, e -> updateTime()).start();
-    }
-
-    private void activerElement(int x, int y) {
-        jeu.activeElem(x, y, null);
-        buttons[x][y].setText("X");
-    }
-
-    private void checkWin() {
-        if (jeu.gagner()) {
-            JOptionPane.showMessageDialog(this, "Vous avez gagné!");
-        }
-    }
-
-    private void updateTime() {
-        timeLabel.setText("Temps: " + jeu.getTempsEcouler() + "s");
-    }
-
-    public static void main(String[] args) {
+    @Override
+    public void start(Stage primaryStage) {
         Double[][] mat = {
             {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
             {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
@@ -98,7 +33,86 @@ public class PartieAffichage extends JFrame {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        Jeu jeu = new Jeu(0, mat);
-        SwingUtilities.invokeLater(() -> new PartieAffichage(jeu).setVisible(true));
+        jeu = new Jeu(0, mat);
+
+        BorderPane root = new BorderPane();
+
+        // GridPane pour le plateau de jeu
+        GridPane gridPane = new GridPane();
+        buttons = new Button[7][7];
+
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < 7; j++) {
+                buttons[i][j] = new Button();
+                int x = i;
+                int y = j;
+                buttons[i][j].setOnAction(e -> activerElement(x, y));
+
+                // Définir l'image (bouton) en fonction de l'élément
+                String imagePath;
+                if (jeu.getPlateau().getElement(i, j) == null) {
+                    imagePath = "/META-INF/assetsGraphiques/link/blank.png";
+                } else {
+                    imagePath = jeu.getPlateau().getElement(i, j).draw();
+                }
+                Image image = new Image(getClass().getResourceAsStream(imagePath));
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                buttons[i][j].setGraphic(imageView);
+                
+                gridPane.add(buttons[i][j], j, i);
+            }
+        }
+        root.setCenter(gridPane);
+
+        // Panneau de contrôle
+        HBox controlPanel = new HBox(10);
+        controlPanel.setAlignment(Pos.CENTER);
+
+        Button undoButton = new Button("Retour");
+        undoButton.setOnAction(e -> jeu.retour());
+        
+        Button redoButton = new Button("Avancer");
+        redoButton.setOnAction(e -> jeu.avancer());
+        
+        Button checkWinButton = new Button("Vérifier victoire");
+        checkWinButton.setOnAction(e -> checkWin());
+        
+        timeLabel = new Label("Temps: 0s");
+        
+        controlPanel.getChildren().addAll(undoButton, redoButton, checkWinButton, timeLabel);
+        root.setBottom(controlPanel);
+
+        // Timer pour la mise à jour du temps
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTime()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        
+        Scene scene = new Scene(root, 600, 600);
+        primaryStage.setTitle("Jeu Interface");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
+
+    private void activerElement(int x, int y) {
+        jeu.activeElem(x, y, null);
+        buttons[x][y].setText("X");
+    }
+
+    private void checkWin() {
+        if (jeu.gagner()) {
+            System.out.println("Vous avez gagné!");
+        }
+    }
+
+    private void updateTime() {
+        timeLabel.setText("Temps: " + jeu.getTempsEcouler() + "s");
+        
+    }
+
+    public static void main(String[] args) {
+        Application.launch(PartieAffichage.class, args);
+    }
+
 }

@@ -109,10 +109,10 @@ public class DoubleLien implements ElementJeu {
      * 
      * @return Le lien actif si aucun est actif renvoie null.
      */
-    public Lien lienActif(){
+    public Lien lienActif() {
         if (interrupteur) {
             if (lien1.getNbLien() == 0) {
-                if(lien2.getNbLien() == 0) {
+                if (lien2.getNbLien() == 0) {
                     return null;
                 } else {
                     return lien2;
