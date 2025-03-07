@@ -58,6 +58,15 @@ public class Matrice {
     }
 
     /**
+     * Récupère une copie de la liste des liens.
+     * 
+     * @return La copie de la liste de lien
+     */
+    public ArrayList<Lien> getCopListeLien(){
+        return new ArrayList<Lien>(listeLien);
+    }
+
+    /**
      * Récupère la partie entière d'un nombre. La partie entière représente la
      * solution vertical du lien.
      *
