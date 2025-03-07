@@ -110,6 +110,7 @@ public class Jeu {
     public int getTaille() {
         return taille;
     }
+    
     /**
      * Vérification si le lien vertical n'est pas couper sur son chemin.
      *
