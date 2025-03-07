@@ -3,7 +3,7 @@ package fr.m3acnl.managers;
 import java.nio.file.Path;
 
 /**
- * Cette classe est utilisée pour gérer les sauvegardes.
+ * Cette classe est utilisée pour gérer l'emplacement des sauvegardes.
  *
  * @see OsManager
  * @author PUREN Mewen
@@ -15,7 +15,7 @@ public class SauvegardeManager {
      */
     private static final SauvegardeManager instance = new SauvegardeManager();
     /**
-     * LE dossier de sauvegarde.
+     * Le dossier de sauvegarde.
      */
     private Path repertoireSauvegarde;
 
@@ -54,7 +54,7 @@ public class SauvegardeManager {
      * Retourne l'instance de la classe SauvegardeManager.
      * @return l'instance de la classe SauvegardeManager
      */
-    public static SauvegardeManager getInstance() {
+    protected static SauvegardeManager getInstance() {
         return instance;
     }
 
@@ -62,7 +62,7 @@ public class SauvegardeManager {
      * Retourne le dossier de sauvegarde.
      * @return le dossier de sauvegarde
      */
-    public Path getRepertoireSauvegarde() {
+    protected Path getRepertoireSauvegarde() {
         return repertoireSauvegarde;
     }
 }

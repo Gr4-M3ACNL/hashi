@@ -44,6 +44,11 @@ public class Lien implements ElementJeu {
     private final int orientation;
 
     /**
+     * L'index du lien dans la liste de lien.
+     */
+    private int index;
+
+    /**
      * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
@@ -62,6 +67,24 @@ public class Lien implements ElementJeu {
         jeu = j;
         orientation = orient;
 
+    }
+
+    /**
+     * Défini l'index du lien.
+     *
+     * @param i L'index du lien
+     */
+    public void setIndex(int i) {
+        index = i;
+    }
+
+    /**
+     * Récupère l'index du lien.
+     *
+     * @return L'index du lien
+     */
+    public int getIndex() {
+        return index;
     }
 
     /**
@@ -169,6 +192,15 @@ public class Lien implements ElementJeu {
      */
     public Noeud getNoeud2() {
         return noeud2;
+    }
+
+    /**
+     * Récupère l'orientation du lien.
+     *
+     * @return l'orientation du lien
+     */
+    public int getOrientation() {
+        return orientation;
     }
 
     /**
