@@ -102,6 +102,7 @@ public class PartieAffichage extends Application {
                 imageView.setFitWidth(50);
                 imageView.setFitHeight(50);
                 buttons[i][j].setGraphic(imageView);
+                buttons[x][y].setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
 
                 gridPane.add(buttons[i][j], j, i);
             }
