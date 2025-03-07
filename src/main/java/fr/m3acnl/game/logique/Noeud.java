@@ -173,7 +173,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public String draw() {
-        //return "/META-INF/assetsGraphiques/link/blank.png";
         return "/META-INF/assetsGraphiques/pie/pie" + degreSoluce + ".png";
     }
 

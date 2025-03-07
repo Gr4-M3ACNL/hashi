@@ -269,16 +269,15 @@ public class Lien implements ElementJeu {
         }
         switch (nbLien) {
             case 1:
-                path = path + "uno.png";
-                break;
+                return path + "uno.png";
+
             case 2:
-                path = path + "duo.png";
-                break;
+                return path + "duo.png";
+
             default:
                 return "/META-INF/assetsGraphiques/link/blank.png";
 
         }
-        return path;
     }
 
     /**
