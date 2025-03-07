@@ -41,8 +41,8 @@ public class PartieAffichage extends Application {
         GridPane gridPane = new GridPane();
         buttons = new Button[7][7];
 
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
+        for (int i = 0; i < jeu.getTaille(); i++) {
+            for (int j = 0; j < jeu.getTaille(); j++) {
                 buttons[i][j] = new Button();
                 int x = i;
                 int y = j;
@@ -51,12 +51,12 @@ public class PartieAffichage extends Application {
                 // Définir l'image (bouton) en fonction de l'élément
                 String imagePath;
                 if (jeu.getPlateau().getElement(i, j) == null) {
-                    imagePath = "/META-INF/assetsGraphiques/link/blank.png";
+                    imagePath = getClass().getResource("META-INF/assetsGraphiques/link/blank.png").toExternalForm();
                 } else {
                     imagePath = jeu.getPlateau().getElement(i, j).draw();
                 }
                 Image image = new Image(getClass().getResourceAsStream(imagePath));
-                ImageView imageView = new ImageView(image);
+                ImageView imageView = new ImageView(imagePath);
                 imageView.setFitWidth(50);
                 imageView.setFitHeight(50);
                 buttons[i][j].setGraphic(imageView);
@@ -96,7 +96,7 @@ public class PartieAffichage extends Application {
     }
 
     private void activerElement(int x, int y) {
-        jeu.activeElem(x, y, null);
+        jeu.activeElemJeu(x, y, null);
         buttons[x][y].setText("X");
     }
 

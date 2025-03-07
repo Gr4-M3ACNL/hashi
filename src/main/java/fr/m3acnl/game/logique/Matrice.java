@@ -62,7 +62,7 @@ public class Matrice {
      * 
      * @return La copie de la liste de lien
      */
-    public ArrayList<Lien> getCopListeLien(){
+    public ArrayList<Lien> getCopListeLien() {
         return new ArrayList<Lien>(listeLien);
     }
 
