@@ -103,6 +103,14 @@ public class Jeu {
     }
 
     /**
+     * Récupère la taille.
+     * 
+     * @return La taille du plateau.
+     */
+    public int getTaille() {
+        return taille;
+    }
+    /**
      * Vérification si le lien vertical n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
