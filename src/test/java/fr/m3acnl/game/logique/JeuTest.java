@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.Test;
 
+
+import fr.m3acnl.Tests;
+
 /**
  * Classe test de la classe Jeu.
  *

@@ -251,6 +251,15 @@ public class Matrice {
     }
 
     /**
+     * Récupère la liste des liens de la matrice.
+     * 
+     * @return la liste des liens de la matrice
+     */
+    public ArrayList<Lien> getListeLien() {
+        return listeLien;
+    }
+  
+    /*
      * Remet la matrice a zero.
      */
     public void remiseAzero() {

@@ -2,7 +2,7 @@ package fr.m3acnl.profile;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import java.sql.Time;
+import java.time.Duration;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -59,7 +59,7 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testGetFacile() {
-        List<Time> facile = historiquePartieProfile.getFacile();
+        List<Duration> facile = historiquePartieProfile.getFacile();
         assertTrue(facile.isEmpty());
     }
 
@@ -70,7 +70,7 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testGetMoyen() {
-        List<Time> moyen = historiquePartieProfile.getMoyen();
+        List<Duration> moyen = historiquePartieProfile.getMoyen();
         assertTrue(moyen.isEmpty());
     }
 
@@ -81,7 +81,7 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testGetDifficile() {
-        List<Time> difficile = historiquePartieProfile.getDifficile();
+        List<Duration> difficile = historiquePartieProfile.getDifficile();
         assertTrue(difficile.isEmpty());
     }
 
@@ -92,7 +92,7 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testGetExpert() {
-        List<Time> expert = historiquePartieProfile.getExpert();
+        List<Duration> expert = historiquePartieProfile.getExpert();
         assertTrue(expert.isEmpty());
     }
 
@@ -103,16 +103,16 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testGetTemps() {
-        List<Time> facile = historiquePartieProfile.getTemps(Difficulte.facile);
+        List<Duration> facile = historiquePartieProfile.getTemps(Difficulte.facile);
         assertTrue(facile.isEmpty());
 
-        List<Time> moyen = historiquePartieProfile.getTemps(Difficulte.moyen);
+        List<Duration> moyen = historiquePartieProfile.getTemps(Difficulte.moyen);
         assertTrue(moyen.isEmpty());
 
-        List<Time> difficile = historiquePartieProfile.getTemps(Difficulte.difficile);
+        List<Duration> difficile = historiquePartieProfile.getTemps(Difficulte.difficile);
         assertTrue(difficile.isEmpty());
 
-        List<Time> expert = historiquePartieProfile.getTemps(Difficulte.expert);
+        List<Duration> expert = historiquePartieProfile.getTemps(Difficulte.expert);
         assertTrue(expert.isEmpty());
     }
 
@@ -136,7 +136,7 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testAjouterTemps() {
-        Time time = new Time(System.currentTimeMillis());
+        Duration time = Duration.ofSeconds(10);
 
         historiquePartieProfile.ajouterTemps(Difficulte.facile, time);
         assertEquals(1, historiquePartieProfile.getNbPartieDifficulte(Difficulte.facile));
@@ -162,8 +162,8 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testSetFacile() {
-        List<Time> facile = historiquePartieProfile.getFacile();
-        facile.add(new Time(System.currentTimeMillis()));
+        List<Duration> facile = historiquePartieProfile.getFacile();
+        facile.add(Duration.ofSeconds(10));
         historiquePartieProfile.setFacile(facile);
         assertEquals(facile, historiquePartieProfile.getFacile());
     }
@@ -175,8 +175,8 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testSetMoyen() {
-        List<Time> moyen = historiquePartieProfile.getMoyen();
-        moyen.add(new Time(System.currentTimeMillis()));
+        List<Duration> moyen = historiquePartieProfile.getMoyen();
+        moyen.add(Duration.ofSeconds(10));
         historiquePartieProfile.setMoyen(moyen);
         assertEquals(moyen, historiquePartieProfile.getMoyen());
     }
@@ -188,8 +188,8 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testSetDifficile() {
-        List<Time> difficile = historiquePartieProfile.getDifficile();
-        difficile.add(new Time(System.currentTimeMillis()));
+        List<Duration> difficile = historiquePartieProfile.getDifficile();
+        difficile.add(Duration.ofSeconds(10));
         historiquePartieProfile.setDifficile(difficile);
         assertEquals(difficile, historiquePartieProfile.getDifficile());
     }
@@ -201,9 +201,82 @@ public class HistoriquePartieProfileTest extends Tests {
      */
     @Test
     public void testSetExpert() {
-        List<Time> expert = historiquePartieProfile.getExpert();
-        expert.add(new Time(System.currentTimeMillis()));
+        List<Duration> expert = historiquePartieProfile.getExpert();
+        expert.add(Duration.ofSeconds(10));
         historiquePartieProfile.setExpert(expert);
         assertEquals(expert, historiquePartieProfile.getExpert());
+    }
+
+    /**
+     * Test de la méthode getIndexFacile de la classe HistoriquePartieProfile.
+     * 
+     * @see HistoriquePartieProfile#getIndexFacile
+     */
+    @Test
+    public void testGetIndexFacile() {
+        assertEquals(0, historiquePartieProfile.getIndexFacile());
+        historiquePartieProfile.ajouterTemps(Difficulte.facile, Duration.ofSeconds(10));
+        assertEquals(1, historiquePartieProfile.getIndexFacile());
+    }
+
+    /**
+     * Test de la méthode getIndexMoyen de la classe HistoriquePartieProfile.
+     * 
+     * @see HistoriquePartieProfile#getIndexMoyen
+     */
+    @Test
+    public void testGetIndexMoyen() {
+        assertEquals(0, historiquePartieProfile.getIndexMoyen());
+        historiquePartieProfile.ajouterTemps(Difficulte.moyen, Duration.ofSeconds(10));
+        assertEquals(1, historiquePartieProfile.getIndexMoyen());
+    }
+
+    /**
+     * Test de la méthode getIndexDifficile de la classe HistoriquePartieProfile.
+     * 
+     * @see HistoriquePartieProfile#getIndexDifficile
+     */
+    @Test
+    public void testGetIndexDifficile() {
+        assertEquals(0, historiquePartieProfile.getIndexDifficile());
+        historiquePartieProfile.ajouterTemps(Difficulte.difficile, Duration.ofSeconds(10));
+        assertEquals(1, historiquePartieProfile.getIndexDifficile());
+    }
+
+    /**
+     * Test de la méthode getIndexExpert de la classe HistoriquePartieProfile.
+     * 
+     * @see HistoriquePartieProfile#getIndexExpert
+     */
+    @Test
+    public void testGetIndexExpert() {
+        assertEquals(0, historiquePartieProfile.getIndexExpert());
+        historiquePartieProfile.ajouterTemps(Difficulte.expert, Duration.ofSeconds(10));
+        assertEquals(1, historiquePartieProfile.getIndexExpert());
+    }
+
+    /**
+     * Test de la méthode getIndex de la classe HistoriquePartieProfile.
+     * 
+     * @see HistoriquePartieProfile#getIndex
+     */
+    @Test
+    public void testGetIndex() {
+        // Test initial values
+        assertEquals(0, historiquePartieProfile.getIndex(Difficulte.facile));
+        assertEquals(0, historiquePartieProfile.getIndex(Difficulte.moyen));
+        assertEquals(0, historiquePartieProfile.getIndex(Difficulte.difficile));
+        assertEquals(0, historiquePartieProfile.getIndex(Difficulte.expert));
+
+        // Test after adding times
+        historiquePartieProfile.ajouterTemps(Difficulte.facile, Duration.ofSeconds(10));
+        historiquePartieProfile.ajouterTemps(Difficulte.moyen, Duration.ofSeconds(10));
+        historiquePartieProfile.ajouterTemps(Difficulte.difficile, Duration.ofSeconds(10));
+        historiquePartieProfile.ajouterTemps(Difficulte.expert, Duration.ofSeconds(10));
+
+        assertEquals(1, historiquePartieProfile.getIndex(Difficulte.facile));
+        assertEquals(1, historiquePartieProfile.getIndex(Difficulte.moyen));
+        assertEquals(1, historiquePartieProfile.getIndex(Difficulte.difficile));
+        assertEquals(1, historiquePartieProfile.getIndex(Difficulte.expert));
     }
 }
