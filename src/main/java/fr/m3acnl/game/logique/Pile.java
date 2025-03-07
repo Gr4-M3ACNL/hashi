@@ -10,7 +10,7 @@ import java.util.ArrayList;
 /**
  * Classe Pile représentant une Pile d'objets.
  *
- * @author MABIRE Aymeric, PUREN Mewen(serialisation)
+ * @author MABIRE Aymeric
  * @version 1.0
  */
 public class Pile implements JsonSerializable {
