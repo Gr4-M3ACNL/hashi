@@ -1,8 +1,12 @@
 package fr.m3acnl.game.affichage;
 
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.game.logique.Noeud;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,16 +26,16 @@ public class PartieAffichage extends Application {
 
     private Jeu jeu;
     private Label labelTemps;
-    private Button[][] bouttons;
+    private Button[][] boutons;
     private GridPane gridPane;
+    private Map<Button, DoubleLien> mappingBoutonsDoubleLien = new HashMap<>();
     private static final double SUPERPOSITION_RATIO = 1.15;
     private static final Integer TAILLE_FOND = 800;
-    private static final double ASSOMBRISSEMENT = 0.65; // 65% de luminosité
+    private static final double ASSOMBRISSEMENT = 0.65;
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
-
         Double[][] mat = {
             {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
             {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
@@ -42,56 +46,18 @@ public class PartieAffichage extends Application {
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
         jeu = new Jeu(7, mat);
-
         gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(-10);
         gridPane.setVgap(-10);
 
-        ImageView imageFondView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/background.jpeg").toExternalForm()));
-        imageFondView.setFitWidth(TAILLE_FOND);
-        imageFondView.setFitHeight(TAILLE_FOND);
-        imageFondView.setPreserveRatio(false);
-        imageFondView.setSmooth(false);
-
-        Rectangle overlay = new Rectangle(TAILLE_FOND, TAILLE_FOND, Color.BLACK);
-        overlay.setOpacity(1 - ASSOMBRISSEMENT);
-
         StackPane root = new StackPane();
-        root.getChildren().addAll(imageFondView, overlay, gridPane);
+        root.getChildren().addAll(creerBackground(), gridPane);
 
-        bouttons = new Button[7][7];
-        for (int i = 0; i < jeu.getTaille(); i++) {
-            for (int j = 0; j < jeu.getTaille(); j++) {
-                bouttons[i][j] = new Button();
-                int x = i, y = j;
-                bouttons[i][j].setOnAction(e -> activerElement(x, y));
+        boutons = new Button[7][7];
+        initialiserBoutons();
 
-                URL resource = getResourceElement(i, j);
-                if (resource != null) {
-                    bouttons[i][j].setGraphic(creerImageView(resource, 100));
-                }
-
-                bouttons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-border-width: 0; -fx-background-insets: 0;");
-                gridPane.add(bouttons[i][j], j, i);
-            }
-        }
-
-        HBox controlPanel = new HBox(10);
-        controlPanel.setAlignment(Pos.CENTER);
-
-        Button buttonRetour = new Button("Retour");
-        buttonRetour.setOnAction(e -> jeu.retour());
-
-        Button bouttonAvancer = new Button("Avancer");
-        bouttonAvancer.setOnAction(e -> jeu.avancer());
-
-        Button bouttonCheck = new Button("Vérifier victoire");
-        bouttonCheck.setOnAction(e -> check());
-
-        labelTemps = new Label("Temps: 0s");
-
-        controlPanel.getChildren().addAll(buttonRetour, bouttonAvancer, bouttonCheck, labelTemps);
+        HBox controlPanel = creerPanneauDeControle();
         BorderPane mainLayout = new BorderPane();
         mainLayout.setCenter(root);
         mainLayout.setBottom(controlPanel);
@@ -106,8 +72,134 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Ajuste la taille des images des iles et des liens en fonction de la
-     * taille du background.
+     * Initialise les boutons du jeu.
+     */
+    private void initialiserBoutons() {
+        for (int i = 0; i < jeu.getTaille(); i++) {
+            for (int j = 0; j < jeu.getTaille(); j++) {
+                boutons[i][j] = new Button();
+                int x = i;
+                int y = j;
+                boutons[i][j].setOnAction(e -> activerElement(x, y));
+
+                if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
+                    mappingBoutonsDoubleLien.put(boutons[i][j], (DoubleLien) jeu.getPlateau().getElement(x, y));
+                }
+
+                URL resource = getResourceElement(i, j);
+                if (resource != null) {
+                    boutons[i][j].setGraphic(creerImageView(resource, 100));
+                }
+
+                boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+                gridPane.add(boutons[i][j], y, x);
+            }
+        }
+    }
+
+    /**
+     * Active un élément du jeu.
+     *
+     * @param x La coordonnée x
+     * @param y La coordonnée y
+     */
+    private void activerElement(int x, int y) {
+        if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
+            DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
+
+            // On suppose que le plateau stocke les Noeuds, ici on récupère un Noeud voisin pour référence
+            Noeud noeudReference = jeu.getPlateau().trouverNoeudLePlusProche(x, y);
+
+            if (noeudReference != null) {
+                Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
+                if (noeud != null) {
+                    doubleLien.activer(noeud);
+                }
+            }
+        } else {
+            jeu.activeElemJeu(x, y, null);
+        }
+        actualiserAffichage();
+    }
+
+    /**
+     * Trouve le nœud le plus proche d'un double lien.
+     *
+     * @param doubleLien Le double lien
+     * @param reference Le nœud de référence
+     * @return Le nœud le plus proche
+     */
+    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, Noeud reference) {
+        Noeud n1Lien1 = doubleLien.getLien1().getNoeud1();
+        Noeud n2Lien1 = doubleLien.getLien1().getNoeud2();
+        Noeud n1Lien2 = doubleLien.getLien2().getNoeud1();
+        Noeud n2Lien2 = doubleLien.getLien2().getNoeud2();
+
+        Noeud[] noeudsPossibles = {n1Lien1, n2Lien1, n1Lien2, n2Lien2};
+        Noeud noeudProche = noeudsPossibles[0];
+        double distanceMin = calculerDistance(reference, noeudProche);
+
+        for (Noeud noeud : noeudsPossibles) {
+            double distance = calculerDistance(reference, noeud);
+            if (distance < distanceMin) {
+                distanceMin = distance;
+                noeudProche = noeud;
+            }
+        }
+
+        return noeudProche;
+    }
+
+    /**
+     * Calcule la distance entre deux nœuds.
+     *
+     * @param n1 Le premier nœud
+     * @param n2 Le deuxième nœud
+     * @return La distance entre les deux nœuds
+     */
+    private double calculerDistance(Noeud n1, Noeud n2) {
+        double dx = n1.getPosition().getCoordX() - n2.getPosition().getCoordX();
+        double dy = n1.getPosition().getCoordY() - n2.getPosition().getCoordY();
+        return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    private StackPane creerBackground() {
+        ImageView imageFondView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/background.jpeg").toExternalForm()));
+        imageFondView.setFitWidth(TAILLE_FOND);
+        imageFondView.setFitHeight(TAILLE_FOND);
+
+        Rectangle overlay = new Rectangle(TAILLE_FOND, TAILLE_FOND, Color.BLACK);
+        overlay.setOpacity(1 - ASSOMBRISSEMENT);
+
+        return new StackPane(imageFondView, overlay);
+    }
+
+    /**
+     * Crée le panneau de contrôle.
+     *
+     * @return Le panneau de contrôle
+     */
+    private HBox creerPanneauDeControle() {
+        HBox controlPanel = new HBox(10);
+        controlPanel.setAlignment(Pos.CENTER);
+
+        Button buttonRetour = new Button("Retour");
+        buttonRetour.setOnAction(e -> retour());
+
+        Button bouttonAvancer = new Button("Avancer");
+        bouttonAvancer.setOnAction(e -> avancer());
+
+        Button bouttonCheck = new Button("Vérifier victoire");
+        bouttonCheck.setOnAction(e -> check());
+
+        labelTemps = new Label("Temps: 0s");
+
+        controlPanel.getChildren().addAll(buttonRetour, bouttonAvancer, bouttonCheck, labelTemps);
+        return controlPanel;
+    }
+
+    /**
+     * Ajuste la taille des images en fonction de la taille de la fenêtre.
      */
     private void ajusterTailleImages() {
         double taille = Math.min(TAILLE_FOND, TAILLE_FOND) / jeu.getTaille();
@@ -115,68 +207,76 @@ public class PartieAffichage extends Application {
         for (int i = 0; i < jeu.getTaille(); i++) {
             for (int j = 0; j < jeu.getTaille(); j++) {
                 ImageView imageView = creerImageView(getResourceElement(i, j), tailleImage);
-                bouttons[i][j].setGraphic(imageView);
-                bouttons[i][j].setMinSize(taille, taille);
-                bouttons[i][j].setMaxSize(taille, taille);
+                boutons[i][j].setGraphic(imageView);
+                boutons[i][j].setMinSize(taille, taille);
             }
         }
     }
 
     /**
-     * Crée une image view à partir d'une ressource et d'une taille.
+     * Récupère la ressource associée à un élément du jeu.
      *
-     * @param resource L'URL de la ressource
+     * @param i L'indice de ligne
+     * @param j L'indice de colonne
+     * @return L'URL de la ressource
+     */
+    private URL getResourceElement(int i, int j) {
+        return jeu.getPlateau().getElement(i, j) != null
+                ? getClass().getResource((String) jeu.getPlateau().getElement(i, j).draw())
+                : getClass().getResource("/META-INF/assetsGraphiques/link/blank.png");
+    }
+
+    /**
+     * Crée un ImageView à partir d'une ressource et d'une taille.
+     *
+     * @param resource La ressource à exploiter
      * @param size La taille de l'image
-     * @return L'image view
+     * @return L'ImageView créé
      */
     private ImageView creerImageView(URL resource, double size) {
-        Image image = new Image(resource.toExternalForm());
-        ImageView imageView = new ImageView(image);
+        ImageView imageView = new ImageView(new Image(resource.toExternalForm()));
         imageView.setFitWidth(size);
         imageView.setFitHeight(size);
-        imageView.setPreserveRatio(false);
         return imageView;
     }
 
     /**
-     * Récupère l'URL de la ressource pour un élément du jeu.
+     * Utilise la méthode retour et met a jour l'affichage.
      *
-     * @param i L'indice de la ligne
-     * @param j L'indice de la colonne
-     * @return L'URL de la ressource
+     * @see Jeu#retour()
      */
-    private URL getResourceElement(int i, int j) {
-        if (jeu.getPlateau().getElement(i, j) != null) {
-            return getClass().getResource((String) jeu.getPlateau().getElement(i, j).draw());
-        }
-        return getClass().getResource("/META-INF/assetsGraphiques/link/blank.png");
+    private void retour() {
+        jeu.retour();
+        actualiserAffichage();
     }
 
     /**
-     * Active un élément du jeu.
+     * Utilise la méthode avancer et met a jour l'affichage.
      *
-     * @param x L'indice de la ligne
-     * @param y L'indice de la colonne
+     * @see Jeu#avancer()
      */
-    private void activerElement(int x, int y) {
-        jeu.activeElemJeu(x, y, null);
-        mettreAJourAffichage();
-    }
-
-    /**
-     * Met à jour l'affichage du jeu.
-     */
-    private void mettreAJourAffichage() {
-        ajusterTailleImages();
+    private void avancer() {
+        jeu.avancer();
+        actualiserAffichage();
     }
 
     /**
      * Vérifie si le joueur a gagné.
+     *
+     * @see Jeu#gagner()
      */
     private void check() {
         if (jeu.gagner()) {
             System.out.println("Vous avez gagné!");
+
         }
+    }
+
+    /**
+     * Met à jour l'affichage.
+     */
+    private void actualiserAffichage() {
+        ajusterTailleImages();
     }
 
     public static void main(String[] args) {

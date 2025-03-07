@@ -282,6 +282,39 @@ public class Matrice {
         return true;
     }
 
+    public int getTaille() {
+        return matrice.size();
+    }
+
+    /**
+     * Permet de trouver le noeud le plus proche d'un point donné.
+     *
+     * @param x La coordonnée x
+     * @param y La coordonnée y
+     * @return Le noeud le plus proche
+     */
+    public Noeud trouverNoeudLePlusProche(int x, int y) {
+        Noeud noeudLePlusProche = null;
+        double distanceMin = Double.MAX_VALUE;
+
+        // Parcours tout le plateau pour trouver le Noeud le plus proche
+        for (int i = 0; i < getTaille(); i++) {
+            for (int j = 0; j < getTaille(); j++) {
+                ElementJeu elem = this.getElement(i, j);
+                if (elem instanceof Noeud) {
+                    Noeud noeud = (Noeud) elem;
+                    double distance = Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2));
+
+                    if (distance < distanceMin) {
+                        distanceMin = distance;
+                        noeudLePlusProche = noeud;
+                    }
+                }
+            }
+        }
+        return noeudLePlusProche;
+    }
+
     /**
      * Main pour tester la génération de la matrice.
      *
@@ -396,6 +429,7 @@ public class Matrice {
         jeu.chargerSauvegardeAuto();
         jeu.retour();
         jeu.drawJeuTerm();
+        System.out.println("Taille de la matrice: " + jeu.getPlateau().getTaille());
         /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
         test.draw();
 

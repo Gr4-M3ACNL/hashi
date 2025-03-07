@@ -1,7 +1,7 @@
 package fr.m3acnl.game.logique;
 
 /**
- * Classe DoubleLien Pour gérer les liens croisé.
+ * Classe DoubleLien pour gérer les liens croisés.
  *
  * @author COGNARD Luka
  * @version 1.0
@@ -19,7 +19,7 @@ public class DoubleLien implements ElementJeu {
     private final Lien lien2;
 
     /**
-     * Interrupteur quand un lien est activer.
+     * Interrupteur quand un lien est activé.
      */
     private Boolean interrupteur;
 
@@ -36,10 +36,10 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Active le lien si il est activable lié au noeud donné.
+     * Active le lien s'il est activable en fonction du nœud donné.
      *
-     * @param n Le noeud lié
-     * @return Le lien qui a été activer return null si pas de lien activer
+     * @param n Le nœud lié
+     * @return Le lien qui a été activé, retourne null si aucun lien est activé
      */
     public Lien activer(Noeud n) {
         if (!interrupteur) {
@@ -80,6 +80,14 @@ public class DoubleLien implements ElementJeu {
         return false;
     }
 
+    public Lien getLien1() {
+        return lien1;
+    }
+
+    public Lien getLien2() {
+        return lien2;
+    }
+
     /**
      * Active l'interrupteur.
      */
@@ -88,7 +96,7 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Désactive l'interrupteur si les lien1 et lien2 sont à 0 donc égaux.
+     * Désactive l'interrupteur si les liens sont égaux.
      */
     public void desactiveInterrupteur() {
         if (lien1.getNbLien() == lien2.getNbLien()) {
@@ -99,7 +107,6 @@ public class DoubleLien implements ElementJeu {
     /**
      * Récupère l'état de l'interrupteur.
      *
-     *
      * @return L'état de l'interrupteur
      */
     public Boolean getInterrupteur() {
@@ -107,7 +114,30 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Affiche le DoubleLien.
+     * Renvoie le lien actif dans le double lien.
+     *
+     * @return Le lien actif, retourne null si aucun n'est actif.
+     */
+    public Lien lienActif() {
+        if (interrupteur) {
+            if (lien1.getNbLien() == 0) {
+                if (lien2.getNbLien() == 0) {
+                    return null;
+                } else {
+                    return lien2;
+                }
+            } else {
+                return lien1;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Renvoie le chemin de l'image du DoubleLien.
+     *
+     * @return Le chemin de l'image correspondant à l'état du DoubleLien
      */
     @Override
     public String draw() {
@@ -126,31 +156,12 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Permet de faire l'affichage de la classe.
+     * Affiche une représentation textuelle du DoubleLien.
+     *
+     * @return Une chaîne de caractères représentant l'objet
      */
     @Override
     public String toString() {
         return " D" + "(" + lien1 + "|" + lien2 + ") ";
-    }
-
-    /**
-     * Renvoie le lien actif dans le double lien.
-     *
-     * @return Le lien actif si aucun est actif renvoie null.
-     */
-    public Lien lienActif() {
-        if (interrupteur) {
-            if (lien1.getNbLien() == 0) {
-                if (lien2.getNbLien() == 0) {
-                    return null;
-                } else {
-                    return lien2;
-                }
-            } else {
-                return lien1;
-            }
-        } else {
-            return null;
-        }
     }
 }
