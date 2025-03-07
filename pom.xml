@@ -16,7 +16,7 @@
     <maven.compiler.source>16</maven.compiler.source>
     <maven.compiler.target>16</maven.compiler.target>
     <maven.compiler.release>16</maven.compiler.release>
-    <javafx.version>19.0.2</javafx.version>
+    <javafx.version>23.0.2</javafx.version>
     <juint.version>5.8.1</juint.version>
     <start-class>fr.m3acnl.Hashi</start-class>
   </properties>
