@@ -271,11 +271,23 @@ public class Lien implements ElementJeu {
             case 0:
                 return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
             case 1:
-                return path+"uno.png";
+                return path + "uno.png";
             case 2:
-                return path+"duo.png";
+                return path + "duo.png";
             default:
                 return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
+        }
+    }
+
+    /**
+     * Affiche le Lien dans le terminal.
+     */
+    @Override
+    public void drawTerm() {
+        if (orientation == 1) {
+            System.out.print("H{" + nbLien + "/" + nbLienSoluce + "}   ");
+        } else {
+            System.out.print("V{" + nbLien + "/" + nbLienSoluce + "}   ");
         }
     }
 
