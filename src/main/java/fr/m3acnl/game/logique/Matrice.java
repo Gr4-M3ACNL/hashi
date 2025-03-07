@@ -257,7 +257,7 @@ public class Matrice {
         return listeLien;
     }
 
-    /*
+    /**
      * Remet la matrice a zero.
      */
     public void remiseAzero() {

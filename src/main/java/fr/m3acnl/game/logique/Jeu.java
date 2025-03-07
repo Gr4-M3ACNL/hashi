@@ -321,7 +321,7 @@ public class Jeu {
         return coupsJouerBuff;
     }
 
-    /*
+    /**
      * Charge la sauvegarde donner.
      * 
      * @param sauvegarde la sauvegarde a charger.
