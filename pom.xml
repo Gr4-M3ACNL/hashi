@@ -220,21 +220,33 @@
       </plugin>
 
       <plugin>
-        <!-- Remise en forme du .jar -->
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-
-        <version>2.7.18</version>
-        <configuration>
-          <mainClass>${start-class}</mainClass>
-          <layout>JAR</layout>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.4.1</version>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
-              <goal>repackage</goal>
+              <goal>shade</goal>
             </goals>
+            <configuration>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>${start-class}</mainClass>
+                </transformer>
+              </transformers>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>module-info.class</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+            </configuration>
           </execution>
         </executions>
       </plugin>
