@@ -40,6 +40,7 @@ public class Jeu {
     /**
      * Clef de la matrice.
      */
+    @SuppressWarnings("unused")
     private final int clefFichier;
 
     /**
