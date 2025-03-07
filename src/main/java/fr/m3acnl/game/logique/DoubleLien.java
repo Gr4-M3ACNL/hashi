@@ -115,6 +115,14 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
+     * Affiche le DoubleLien dans le terminal.
+     */
+    @Override
+    public void drawTerm() {
+        System.out.print("D{" + lien1.getNbLien() + "|" + lien2.getNbLien() + "}   ");
+    }
+
+    /**
      * Permet de faire l'affichage de la classe.
      */
     @Override
@@ -124,7 +132,7 @@ public class DoubleLien implements ElementJeu {
 
     /**
      * Renvoie le lien actif dans le double lien.
-     * 
+     *
      * @return Le lien actif si aucun est actif renvoie null.
      */
     public Lien lienActif() {

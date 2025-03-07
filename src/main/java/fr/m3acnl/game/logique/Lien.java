@@ -282,6 +282,18 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Affiche le Lien dans le terminal.
+     */
+    @Override
+    public void drawTerm() {
+        if (orientation == 1) {
+            System.out.print("H{" + nbLien + "/" + nbLienSoluce + "}   ");
+        } else {
+            System.out.print("V{" + nbLien + "/" + nbLienSoluce + "}   ");
+        }
+    }
+
+    /**
      * Permet de faire l'affichage de la classe.
      */
     @Override

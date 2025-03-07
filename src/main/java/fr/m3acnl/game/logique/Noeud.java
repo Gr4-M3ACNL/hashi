@@ -220,6 +220,15 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public String toString() {
-        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle + "}";
+        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle
+                + "}";
+    }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public void drawTerm() {
+        System.out.print("N{" + degreActuelle + "/" + degreSoluce + "}   ");
     }
 }

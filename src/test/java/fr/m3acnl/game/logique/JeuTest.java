@@ -41,6 +41,12 @@ public class JeuTest extends Tests{
     }
 
     /**
+     * Constructeur de la classe de test de la classe Jeu.
+     */
+    public JeuTest() {
+    }
+
+    /**
      * Test de la méthode activeElemJeu.
      *
      * @see Jeu#activeElemJeu(int, int, Noeud)

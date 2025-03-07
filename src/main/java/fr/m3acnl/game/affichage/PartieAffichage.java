@@ -48,6 +48,7 @@ public class PartieAffichage extends Application {
             for (int j = 0; j < jeu.getTaille(); j++) {
                 System.out.print("Alright,I'm in!");
                 buttons[i][j] = new Button();
+
                 int x = i;
                 int y = j;
                 buttons[i][j].setOnAction(e -> activerElement(x, y));
@@ -102,22 +103,39 @@ public class PartieAffichage extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Méthode pour activer un élément du jeu.
+     *
+     * @param x la position x
+     * @param y la position y
+     */
     private void activerElement(int x, int y) {
         jeu.activeElemJeu(x, y, null);
         buttons[x][y].setText("X");
     }
 
+    /**
+     * Méthode pour vérifier si le joueur a gagné.
+     */
     private void checkWin() {
         if (jeu.gagner()) {
             System.out.println("Vous avez gagné!");
         }
     }
 
+    /**
+     * Méthode pour mettre à jour le temps.
+     */
     private void updateTime() {
         timeLabel.setText("Temps: " + jeu.getTempsEcouler() + "s");
         
     }
 
+    /**
+     * Méthode main pour lancer l'application.
+     *
+     * @param args les arguments de la ligne de commande
+     */
     public static void main(String[] args) {
         Application.launch(PartieAffichage.class, args);
     }
