@@ -242,6 +242,15 @@ public class Matrice {
     }
 
     /**
+     * Récupère la liste des liens de la matrice.
+     * 
+     * @return la liste des liens de la matrice
+     */
+    public ArrayList<Lien> getListeLien() {
+        return listeLien;
+    }
+
+    /**
      * Main pour tester la génération de la matrice.
      *
      * @param args argument en commande

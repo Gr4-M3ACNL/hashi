@@ -265,4 +265,22 @@ public class Jeu {
     public Matrice getPlateau() {
         return plateau;
     }
+
+    /**
+     * Récupère la pile des coups jouer.
+     *
+     * @return La pile des coups jouer
+     */
+    public Pile getCoupsJouer() {
+        return coupsJouer;
+    }
+
+    /**
+     * Récupère la pile des coups jouer en buffeur.
+     *
+     * @return La pile des coups jouer en buffeur
+     */
+    public Pile getCoupsJouerBuff() {
+        return coupsJouerBuff;
+    }
 }

@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
-import fr.m3acnl.managers.JsonManagerTest;
 
 /**
  * Classe test de la classe Jeu.

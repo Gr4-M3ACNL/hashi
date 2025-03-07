@@ -6,6 +6,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -49,6 +52,44 @@ public class OsManagerTest extends Tests{
         OsManager osManager = OsManager.getInstance();
         OsManager.OsType osType = osManager.getOsType();
         assertNotNull(osType);
+    }
+
+    /**
+     * Test de la détection des différents systèmes d'exploitation
+     */
+    @Test
+    public void DetectionOS_DoitRetournerBonType() {
+        String osActuel = System.getProperty("os.name").toLowerCase();
+        OsManager osManager = OsManager.getInstance();
+        OsManager.OsType osType = osManager.getOsType();
+
+        if (osActuel.contains("windows")) {
+            assertEquals(OsManager.OsType.WINDOWS, osType);
+        } else if (osActuel.contains("mac") || osActuel.contains("darwin")) {
+            assertEquals(OsManager.OsType.MAC, osType);
+        } else if (osActuel.contains("linux") || osActuel.contains("unix")) {
+            assertEquals(OsManager.OsType.LINUX, osType);
+        }
+    }
+
+    /**
+     * Test de la détection avec un système d'exploitation inconnu
+     */
+    @Test
+    public void DetectionOS_SystemeInconnu_DoitRetournerNull() {
+        // On utilise la réflexion pour tester avec un OS inconnu
+        try {
+            Field osTypeField = OsManager.class.getDeclaredField("osType");
+            osTypeField.setAccessible(true);
+            
+            Method getOsParNom = OsManager.OsType.class.getDeclaredMethod("getOsParNom", String.class);
+            getOsParNom.setAccessible(true);
+            
+            Object resultat = getOsParNom.invoke(null, "systeme_inexistant");
+            assertNull(resultat);
+        } catch (Exception e) {
+            fail("Le test a échoué : " + e.getMessage());
+        }
     }
 
     /**
