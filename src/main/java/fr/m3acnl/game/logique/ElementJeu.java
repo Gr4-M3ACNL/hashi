@@ -10,8 +10,7 @@ public interface ElementJeu {
 
     /**
      * Méthode pour dessiner un élément de jeu.
-     *
-     * @return Retourne un string représentant l'élément de jeu.
+     * @return retourne le chemin d'accès de la texture de l'élément
      */
     public String draw();
 

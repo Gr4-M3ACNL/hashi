@@ -263,20 +263,22 @@ public class Lien implements ElementJeu {
     public String draw() {
         String path;
         if (orientation == 1) { //Horizontal
-            path = "../../../../../ressources/META-INF/assetsGraphiques/link/horizontal_";
+            path = "/META-INF/assetsGraphiques/link/horizontal_";
         } else { //Vertical
-            path = "../../../../../ressources/META-INF/assetsGraphiques/link/vertical_";
+            path = "/META-INF/assetsGraphiques/link/vertical_";
         }
         switch (nbLien) {
-            case 0:
-                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
             case 1:
-                return path + "uno.png";
+                path = path + "uno.png";
+                break;
             case 2:
-                return path + "duo.png";
+                path = path + "duo.png";
+                break;
             default:
-                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
+                path = "/META-INF/assetsGraphiques/link/blank.png";
+                break;
         }
+        return getClass().getResource(path).toExternalForm();
     }
 
     /**

@@ -1,102 +1,137 @@
 package fr.m3acnl.game.affichage;
 
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
-
 import fr.m3acnl.game.logique.Jeu;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.geometry.Pos;
 
 /**
- * Classe PartieAffichage pour l'affichage d'une partie.
+ * Classe PartieAffichage pour l'affichage de la Partie.
  * 
  * @author PESANTES Maelig
+ * @see Application
  */
-public class PartieAffichage extends JFrame {
-
+public class PartieAffichage extends Application {
     /**
-     * Jeu de la partie.
-     * @serial
+     * Jeu pour la partie.
      */
     private Jeu jeu;
-
     /**
      * Label pour le temps.
-     * @serial
      */
-    private JLabel timeLabel;
-    
+    private Label timeLabel;
     /**
-     * Tableau de boutons.
-     * @serial 
+     * Tableau de boutons pour le plateau de jeu.
      */
-    private JButton[][] buttons;
+    private Button[][] buttons;
+    /**
+     * Timeline pour la mise à jour du temps.
+     */
+    private Timeline timeline;
 
     /**
-     * Constructeur pour une nouvelle instance de PartieAffichage.
+     * Constructeur par défaut.
+     */
+    public PartieAffichage() {
+    }
+
+    /**
+     * Méthode pour démarrer l'application.
      *
-     * @param jeu le jeu de la partie
+     * @param primaryStage la scène principale
      */
-    public PartieAffichage(Jeu jeu) {
-        this.jeu = jeu;
-        setTitle("Jeu Interface");
-        setSize(600, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
+    @Override
+    public void start(Stage primaryStage) {
+        System.out.println("Such a beautiful start!");
+        Double[][] mat = {
+            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
+            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
+            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
+            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
+            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
+            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
+            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
+        };
+        jeu = new Jeu(7, mat);
 
-        // Fond d'écran
-        JLabel backgroundLabel = new JLabel(new ImageIcon(getClass().getResource("/ressources/META-INF/assetsGraphiques/hashiWallpaper.jpeg")));
-        backgroundLabel.setLayout(new BorderLayout());
+        
 
-        JPanel gridPanel = new JPanel(new GridLayout(7, 7));
-        buttons = new JButton[7][7];
+        // GridPane pour le plateau de jeu
+        GridPane gridPane = new GridPane();
+        buttons = new Button[7][7];
+        System.out.println("Lets do the for Yppie!!");
+        System.out.println("I'll do " + jeu.getTaille() + " iterations !!");
+        for (int i = 0; i < jeu.getTaille(); i++) {
+            System.out.println("Can I go in?");
+            for (int j = 0; j < jeu.getTaille(); j++) {
+                System.out.print("Alright,I'm in!");
+                buttons[i][j] = new Button();
 
-        // Remplir les boutons avec des images selon les nœuds
-        for (int i = 0; i < 7; i++) {
-            for (int j = 0; j < 7; j++) {
-                buttons[i][j] = new JButton();
                 int x = i;
                 int y = j;
-                buttons[i][j].addActionListener(e -> activerElement(x, y));
-                gridPanel.add(buttons[i][j]);
+                buttons[i][j].setOnAction(e -> activerElement(x, y));
 
-                // Définir l'image en fonction du chiffre du nœud
-                //String nodeValue = String.valueOf(jeu.getPlateau().getElement(i, j).;
-                //String imagePath = "../../../../../ressources/META-INF/assetsGraphiques/pie/pie" + nodeValue + ".png";
-                String imagePath = jeu.getPlateau().getElement(i, j).draw();
-                buttons[i][j].setIcon(new ImageIcon(getClass().getResource(imagePath)));
+                // Définir l'image (bouton) en fonction de l'élément
+                String imagePath;
+                System.out.print("The Element is");
+                if (jeu.getPlateau().getElement(i, j) != null) {
+                    imagePath = jeu.getPlateau().getElement(i, j).draw();
+                    System.out.println("Not Null");
+                } else {
+                    imagePath = getClass().getResource("META-INF/assetsGraphiques/link/blank.png").toExternalForm();
+                    System.out.println("Null");
+                }
+                Image image = new Image(imagePath);
+                ImageView imageView = new ImageView(image);
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+                buttons[i][j].setGraphic(imageView);
+                
+                gridPane.add(buttons[i][j], j, i);
             }
         }
 
-        backgroundLabel.add(gridPanel, BorderLayout.CENTER);
-        add(backgroundLabel, BorderLayout.CENTER);
+        BorderPane root = new BorderPane();
+        root.setCenter(gridPane);
 
-        JPanel controlPanel = new JPanel();
-        JButton undoButton = new JButton("Retour");
-        undoButton.addActionListener(e -> jeu.retour());
-        controlPanel.add(undoButton);
+        // Panneau de contrôle
+        HBox controlPanel = new HBox(10);
+        controlPanel.setAlignment(Pos.CENTER);
 
-        JButton redoButton = new JButton("Avancer");
-        redoButton.addActionListener(e -> jeu.avancer());
-        controlPanel.add(redoButton);
+        Button undoButton = new Button("Retour");
+        undoButton.setOnAction(e -> jeu.retour());
+        
+        Button redoButton = new Button("Avancer");
+        redoButton.setOnAction(e -> jeu.avancer());
+        
+        Button checkWinButton = new Button("Vérifier victoire");
+        checkWinButton.setOnAction(e -> checkWin());
+        
+        timeLabel = new Label("Temps: 0s");
+        
+        controlPanel.getChildren().addAll(undoButton, redoButton, checkWinButton, timeLabel);
+        root.setBottom(controlPanel);
 
-        JButton checkWinButton = new JButton("Vérifier victoire");
-        checkWinButton.addActionListener(e -> checkWin());
-        controlPanel.add(checkWinButton);
-
-        timeLabel = new JLabel("Temps: 0s");
-        controlPanel.add(timeLabel);
-
-        add(controlPanel, BorderLayout.SOUTH);
-
-        new Timer(1000, e -> updateTime()).start();
+        // Timer pour la mise à jour du temps
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateTime()));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        
+        Scene scene = new Scene(root, 600, 600);
+        primaryStage.setTitle("Jeu Interface");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     /**
@@ -115,7 +150,7 @@ public class PartieAffichage extends JFrame {
      */
     private void checkWin() {
         if (jeu.gagner()) {
-            JOptionPane.showMessageDialog(this, "Vous avez gagné!");
+            System.out.println("Vous avez gagné!");
         }
     }
 
@@ -124,6 +159,7 @@ public class PartieAffichage extends JFrame {
      */
     private void updateTime() {
         timeLabel.setText("Temps: " + jeu.getTempsEcouler() + "s");
+        
     }
 
     /**
@@ -132,16 +168,7 @@ public class PartieAffichage extends JFrame {
      * @param args les arguments de la ligne de commande
      */
     public static void main(String[] args) {
-        Double[][] mat = {
-            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
-            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
-            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
-            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
-            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
-            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
-            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
-        };
-        Jeu jeu = new Jeu(0, mat);
-        SwingUtilities.invokeLater(() -> new PartieAffichage(jeu).setVisible(true));
+        Application.launch(PartieAffichage.class, args);
     }
+
 }
