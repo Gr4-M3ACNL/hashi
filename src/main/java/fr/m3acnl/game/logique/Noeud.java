@@ -172,9 +172,8 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      * Affiche le Noeud.
      */
     @Override
-    public void draw() {
-        System.out.print(" N" + degreSoluce + "(" + degreActuelle + ")  ");
-
+    public String draw() {
+        return "../../../../../ressources/META-INF/assetsGraphiques/pie/pie" + degreSoluce + ".png";
     }
 
     /**

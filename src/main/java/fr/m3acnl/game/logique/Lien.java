@@ -248,11 +248,22 @@ public class Lien implements ElementJeu {
      * Affiche le Lien.
      */
     @Override
-    public void draw() {
-        if (orientation == 1) {
-            System.out.print(" H" + nbLien + "(" + nbLienSoluce + ")  ");
-        } else {
-            System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
+    public String draw() {
+        String path;
+        if (orientation == 1) { //Horizontal
+            path = "../../../../../ressources/META-INF/assetsGraphiques/link/horizontal_";
+        } else { //Vertical
+            path = "../../../../../ressources/META-INF/assetsGraphiques/link/vertical_";
+        }
+        switch (nbLien) {
+            case 0:
+                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
+            case 1:
+                return path+"uno.png";
+            case 2:
+                return path+"duo.png";
+            default:
+                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
         }
     }
 }

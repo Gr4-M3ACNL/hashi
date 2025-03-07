@@ -10,8 +10,9 @@ public interface ElementJeu {
 
     /**
      * Méthode pour dessiner un élément de jeu.
+     * @return 
      */
-    public void draw();
+    public String draw();
 
     /**
      * Méthode pour activer un élément de jeu.
