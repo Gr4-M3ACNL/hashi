@@ -107,32 +107,19 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Renvoie le lien actif dans le double lien.
-     * 
-     * @return Le lien actif si aucun est actif renvoie null.
-     */
-    public Lien lienActif(){
-        if (interrupteur) {
-            if (lien1.getNbLien() == 0) {
-                if(lien2.getNbLien() == 0) {
-                    return null;
-                } else {
-                    return lien2;
-                }
-            } else {
-                return lien1;
-            }
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Affiche le DoubleLien.
      */
     @Override
     public String draw() {
         return this.lienActif().draw();
+    }
+
+    /**
+     * Affiche le DoubleLien dans le terminal.
+     */
+    @Override
+    public void drawTerm() {
+        System.out.print("D{" + lien1.getNbLien() + "|" + lien2.getNbLien() + "}   ");
     }
 
     /**
@@ -145,13 +132,13 @@ public class DoubleLien implements ElementJeu {
 
     /**
      * Renvoie le lien actif dans le double lien.
-     * 
+     *
      * @return Le lien actif si aucun est actif renvoie null.
      */
-    public Lien lienActif(){
+    public Lien lienActif() {
         if (interrupteur) {
             if (lien1.getNbLien() == 0) {
-                if(lien2.getNbLien() == 0) {
+                if (lien2.getNbLien() == 0) {
                     return null;
                 } else {
                     return lien2;

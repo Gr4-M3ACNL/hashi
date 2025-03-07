@@ -104,12 +104,13 @@ public class Jeu {
 
     /**
      * Récupère la taille.
-     * 
+     *
      * @return La taille du plateau.
      */
     public int getTaille() {
         return taille;
     }
+
     /**
      * Vérification si le lien vertical n'est pas couper sur son chemin.
      *
@@ -289,8 +290,8 @@ public class Jeu {
     /**
      * Affiche le jeu.
      */
-    public void drawJeu() {
-        plateau.draw();
+    public void drawJeuTerm() {
+        plateau.drawTerm();
     }
 
     /**
@@ -319,9 +320,10 @@ public class Jeu {
     public Pile getCoupsJouerBuff() {
         return coupsJouerBuff;
     }
-  
-    /*
+
+    /**
      * Charge la sauvegarde donner.
+     * 
      * @param sauvegarde la sauvegarde a charger.
      */
     private void chargerSauvegarde(ArrayList<Lien> sauvegarde) {
@@ -349,5 +351,19 @@ public class Jeu {
      */
     public void chargerSauvegardeManuel() {
         chargerSauvegarde(pointDeSauvegarde);
+    }
+
+    /**
+     * Rejoue un coup du lien a l'index donner lors du chargement.
+     *
+     * @param index L'index du lien a ajouter et empiler.
+     * @throws RuntimeException si le Lien ne c'est pas activer.
+     */
+    public void rejouer(int index) {
+        if (plateau.getCopListeLien().get(index).activer()) {
+            coupsJouer.empiler(plateau.getCopListeLien().get(index));
+        } else {
+            throw new RuntimeException("Le lien n'a pas pu s'activer");
+        }
     }
 }

@@ -59,10 +59,10 @@ public class Matrice {
 
     /**
      * Récupère une copie de la liste des liens.
-     * 
+     *
      * @return La copie de la liste de lien
      */
-    public ArrayList<Lien> getCopListeLien(){
+    public ArrayList<Lien> getCopListeLien() {
         return new ArrayList<Lien>(listeLien);
     }
 
@@ -113,23 +113,21 @@ public class Matrice {
     /**
      * Dessine la matrice.
      */
-    public void draw() {
+    public void drawTerm() {
         int count = 0;
-        System.out.println("     0       1       2       3       4       5       6");
+        System.out.println("     0       1         2       3         4       5        6");
         for (ArrayList<ElementJeu> ligne : matrice) {
             System.out.print(count++ + " ");
             for (ElementJeu element : ligne) {
 
                 if (element != null) {
-                    element.draw();
+                    element.drawTerm();
                 } else {
-                    System.out.print(" NONE   ");
+                    System.out.print("NONE     ");
                 }
             }
             System.out.println();
         }
-        System.out.println("V/H[nbLien](nbLienSoluce)");
-        System.out.println("N[nbSoluce](nbActuelle)");
     }
 
     /**
@@ -252,14 +250,14 @@ public class Matrice {
 
     /**
      * Récupère la liste des liens de la matrice.
-     * 
+     *
      * @return la liste des liens de la matrice
      */
     public ArrayList<Lien> getListeLien() {
         return listeLien;
     }
-  
-    /*
+
+    /**
      * Remet la matrice a zero.
      */
     public void remiseAzero() {
@@ -300,11 +298,11 @@ public class Matrice {
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
         Jeu jeu = new Jeu(7, mat);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
         jeu.activeElemJeu(0, 1, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Activation du noeud 0 0");
         ArrayList<Noeud> noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
         for (Noeud n : noeuds) {
@@ -313,12 +311,12 @@ public class Matrice {
         jeu.activeElemJeu(0, 0, null);
         System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
         jeu.activeElemJeu(0, 1, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         System.out.println("\n\nTest activation du Lien 1,0 en état 2\n\n");
         jeu.activeElemJeu(1, 0, null);
         jeu.activeElemJeu(1, 0, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Activation du noeud 0 0");
         noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
         for (Noeud n : noeuds) {
@@ -328,7 +326,7 @@ public class Matrice {
         jeu.activeElemJeu(0, 0, null);
         System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
         jeu.activeElemJeu(0, 1, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         jeu.sauvegarderManuellement();
 
@@ -370,13 +368,13 @@ public class Matrice {
         //Lien 6,4 état 1
         jeu.activeElemJeu(6, 4, null);
 
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
 
         System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
         jeu.activeElemJeu(2, 4, null);
         jeu.activeElemJeu(2, 4, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
         System.out.println("Affichage du réseau du noeud 0,0");
         noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
@@ -392,12 +390,12 @@ public class Matrice {
         jeu.activeElemJeu(2, 6, null);
         jeu.activeElemJeu(4, 1, null);
 
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         System.out.println("\nTest chargement de save auto\n\n");
         jeu.chargerSauvegardeAuto();
         jeu.retour();
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
         test.draw();
 

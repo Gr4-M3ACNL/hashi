@@ -10,9 +10,15 @@ public interface ElementJeu {
 
     /**
      * Méthode pour dessiner un élément de jeu.
-     * @return 
+     *
+     * @return Retourne un string représentant l'élément de jeu.
      */
     public String draw();
+
+    /**
+     * Méthode pour dessiner un élément de jeu dans le terminal.
+     */
+    public void drawTerm();
 
     /**
      * Méthode pour activer un élément de jeu.
