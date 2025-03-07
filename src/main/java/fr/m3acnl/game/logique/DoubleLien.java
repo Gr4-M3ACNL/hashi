@@ -58,10 +58,12 @@ public class DoubleLien implements ElementJeu {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.getNbLien() != 0) {
                     lien1.activer();
+                    this.desactiveInterrupteur();
                     return lien1;
                 }
             } else if (lien2.getNbLien() != 0) {
                 lien2.activer();
+                this.desactiveInterrupteur();
                 return lien2;
             }
         }
@@ -105,6 +107,22 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
+     * Affiche le DoubleLien.
+     */
+    @Override
+    public String draw() {
+        return this.lienActif().draw();
+    }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public String toString() {
+        return " D" + "(" + lien1 + "|" + lien2 + ") ";
+    }
+
+    /**
      * Renvoie le lien actif dans le double lien.
      * 
      * @return Le lien actif si aucun est actif renvoie null.
@@ -123,13 +141,5 @@ public class DoubleLien implements ElementJeu {
         } else {
             return null;
         }
-    }
-
-    /**
-     * Affiche le DoubleLien.
-     */
-    @Override
-    public String draw() {
-        return this.lienActif().draw();
     }
 }

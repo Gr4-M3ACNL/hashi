@@ -245,6 +245,18 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Remet le lien à zéro .
+     */
+    public void remiseAzero() {
+        if (nbLien == 1) {
+            this.retourArriere();
+        }
+        if (nbLien == 2) {
+            this.activer();
+        }
+    }
+
+    /**
      * Affiche le Lien.
      */
     @Override
@@ -267,5 +279,16 @@ public class Lien implements ElementJeu {
                 break;
         }
         return getClass().getResource(path).toExternalForm();
+    }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public String toString() {
+        String toString = "Lien{" + "noeud1=" + noeud1 + ", noeud2=" + noeud2 + ", nbLien=" + nbLien + ", nbLienSoluce="
+                + nbLienSoluce;
+        toString += ", surbrillance=" + surbrillance + ", orientation=" + orientation + ", index=" + index + '}';
+        return toString;
     }
 }

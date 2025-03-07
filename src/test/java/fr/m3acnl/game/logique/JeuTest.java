@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+
 import fr.m3acnl.Tests;
 
 /**
@@ -19,32 +20,25 @@ import fr.m3acnl.Tests;
  *
  * @author COGNARD Luka
  */
-public class JeuTest extends Tests {
+public class JeuTest extends Tests{
 
     /**
-     * Méthode d'initialisation de la classe de test
-     * 
+     * Méthode d'initialisation de la classe test
      * @see Tests#printNameAtStart
      */
     @BeforeAll
-    public static void initAll() {
+    public static void initAll(){
         printNameAtStart(JeuTest.class);
     }
 
     /**
-     * Méthode de fin de la classe de test
-     * 
+     * Méthode de fin de la classe test
      * @see Tests#printNameAtEnd
      */
     @AfterAll
-    public static void endAll() {
+    public static void endAll(){
         printNameAtEnd(JeuTest.class);
     }
-
-    /**
-     * Constructeur de la classe de test.
-     */
-    public JeuTest() {}
 
     /**
      * Test de la méthode activeElemJeu.
