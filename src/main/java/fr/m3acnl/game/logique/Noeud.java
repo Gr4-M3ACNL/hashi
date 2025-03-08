@@ -36,6 +36,11 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     private Boolean surbrillance;
 
     /**
+     * Permet de savoir si le noeud est actif ou non.
+     */
+    private Boolean activer = false;
+
+    /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
      * @param x la coordonnée x du noeud
@@ -93,6 +98,10 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public ArrayList<Noeud> getListeAdjacence() {
         return listeAdjacence;
+    }
+
+    public void setActiver(Boolean activer) {
+        this.activer = activer;
     }
 
     /**
@@ -180,11 +189,13 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public Boolean activer() {
         ArrayList<Noeud> noeuds = afficherReseau();
         for (Noeud noeud : noeuds) {
+            noeud.setActiver(true);
             if (noeud.getSurbrillance()) {
                 noeud.surbrillanceOff();
             } else {
                 noeud.surbrillanceOn();
             }
+            noeud.setActiver(false);
         }
         return true;
     }
@@ -194,7 +205,9 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public void surbrillanceOn() {
-        surbrillance = true;
+        if (activer) {
+            surbrillance = true;
+        }
     }
 
     /**
@@ -202,7 +215,9 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public void surbrillanceOff() {
-        surbrillance = false;
+        if (activer) {
+            surbrillance = false;
+        }
     }
 
     /**

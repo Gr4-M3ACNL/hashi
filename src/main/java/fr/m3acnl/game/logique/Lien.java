@@ -197,9 +197,11 @@ public class Lien implements ElementJeu {
         } else {
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
+            if (nbLien == 1) {
+                noeud1.ajouterNoeudAdjacence(noeud2);
+                noeud2.ajouterNoeudAdjacence(noeud1);
+            }
 
-            noeud1.ajouterNoeudAdjacence(noeud2);
-            noeud2.ajouterNoeudAdjacence(noeud1);
         }
         return true;
     }
