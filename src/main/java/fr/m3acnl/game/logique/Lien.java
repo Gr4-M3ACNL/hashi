@@ -90,6 +90,7 @@ public class Lien implements ElementJeu {
     /**
      * Active la surbrillance du lien.
      */
+    @Override
     public void surbrillanceOn() {
         surbrillance = true;
     }
@@ -97,6 +98,7 @@ public class Lien implements ElementJeu {
     /**
      * Désactive la surbrillance du lien.
      */
+    @Override
     public void surbrillanceOff() {
         surbrillance = false;
     }
@@ -261,22 +263,45 @@ public class Lien implements ElementJeu {
      */
     @Override
     public String draw() {
-        String path;
-        if (orientation == 1) { //Horizontal
-            path = "/META-INF/assetsGraphiques/link/horizontal_";
-        } else { //Vertical
-            path = "/META-INF/assetsGraphiques/link/vertical_";
-        }
-        switch (nbLien) {
-            case 1:
-                return path + "uno.png";
+        String path = "/META-INF/assetsGraphiques/link/";
+        if (surbrillance) {
+            path += "surbrillance/";
+            if (orientation == 1) { //Horizontal
+                path += "horizontal_";
+            } else { //Vertical
+                path += "vertical_";
+            }
 
-            case 2:
-                return path + "duo.png";
+            switch (nbLien) {
+                case 0:
+                    return path + "uno.png";
 
-            default:
-                return "/META-INF/assetsGraphiques/link/blank.png";
+                case 1:
+                    return path + "duo.png";
+                case 2:
+                    return path + "duo.png";
+                default:
+                    return "/META-INF/assetsGraphiques/link/blank.png";
 
+            }
+        } else {
+            path += "standard/";
+            if (orientation == 1) { //Horizontal
+                path += "horizontal_";
+            } else { //Vertical
+                path += "vertical_";
+            }
+            switch (nbLien) {
+                case 1:
+                    return path + "uno.png";
+
+                case 2:
+                    return path + "duo.png";
+
+                default:
+                    return "/META-INF/assetsGraphiques/link/blank.png";
+
+            }
         }
     }
 

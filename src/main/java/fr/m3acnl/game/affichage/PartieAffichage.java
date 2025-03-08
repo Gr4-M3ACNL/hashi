@@ -92,9 +92,55 @@ public class PartieAffichage extends Application {
                 }
 
                 boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(x, y));
+                boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y));
+
                 gridPane.add(boutons[i][j], y, x);
             }
         }
+    }
+
+    private void previsualiserEtat(int x, int y) {
+        if (jeu.getPlateau().getElement(x, y) == null) {
+            return;
+        }
+        if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
+            DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
+            Noeud noeudReference = jeu.getPlateau().trouverNoeudLePlusProche(x, y);
+
+            if (noeudReference != null) {
+                Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
+                if (noeud != null) {
+                    // Simuler l'activation sans modifier l'état du jeu
+                    doubleLien.activerSurbrillance(noeud);
+                    System.out.println("\n\nSurbrillanceOn\n" + doubleLien);
+
+                }
+            }
+        } else {
+            jeu.getPlateau().getElement(x, y).surbrillanceOn();
+            System.out.println("\n\nSurbrillanceOn\n" + jeu.getPlateau().getElement(x, y));
+
+        }
+        actualiserAffichage();
+    }
+
+    /**
+     * Restaure l'état initial du bouton lorsque la souris quitte.
+     */
+    private void restaurerEtat(int x, int y) {
+        if (jeu.getPlateau().getElement(x, y) == null) {
+            return;
+        }
+        if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
+            DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
+            doubleLien.surbrillanceOff();
+            System.out.println("\n\nSurbrillanceOff\n" + doubleLien);
+        } else {
+            jeu.getPlateau().getElement(x, y).surbrillanceOff();
+            System.out.println("\n\nSurbrillanceOff\n" + jeu.getPlateau().getElement(x, y));
+        }
+        actualiserAffichage();
     }
 
     /**
@@ -164,7 +210,7 @@ public class PartieAffichage extends Application {
     }
 
     private StackPane creerBackground() {
-        ImageView imageFondView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/background.jpeg").toExternalForm()));
+        ImageView imageFondView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm()));
         imageFondView.setFitWidth(TAILLE_FOND);
         imageFondView.setFitHeight(TAILLE_FOND);
 

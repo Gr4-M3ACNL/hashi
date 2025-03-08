@@ -23,6 +23,8 @@ public class DoubleLien implements ElementJeu {
      */
     private Boolean interrupteur;
 
+    private int lienBrillance;
+
     /**
      * Constructeur pour créer une instance de DoubleLien.
      *
@@ -33,6 +35,7 @@ public class DoubleLien implements ElementJeu {
         lien1 = l1;
         lien2 = l2;
         interrupteur = false;
+        lienBrillance = 0;
     }
 
     /**
@@ -141,7 +144,20 @@ public class DoubleLien implements ElementJeu {
      */
     @Override
     public String draw() {
-        if (this.lienActif() == null) {
+        // if (this.lienActif() == null) {
+        //     return "/META-INF/assetsGraphiques/link/blank.png";
+        // } else if (lienBrillance == 1 || lien1.getSurbrillance()) {
+        //     return lien1.draw();
+        // } else if (lienBrillance == 2 || lien2.getSurbrillance()) {
+        //     return lien2.draw();
+        // }
+        // return this.lienActif().draw();
+
+        if (lien1.getSurbrillance() || lienBrillance == 1) {
+            return lien1.draw();
+        } else if (lien2.getSurbrillance() || lienBrillance == 2) {
+            return lien2.draw();
+        } else if (this.lienActif() == null) {
             return "/META-INF/assetsGraphiques/link/blank.png";
         }
         return this.lienActif().draw();
@@ -164,4 +180,53 @@ public class DoubleLien implements ElementJeu {
     public String toString() {
         return " D" + "(" + lien1 + "|" + lien2 + ") ";
     }
+
+    @Override
+    public void surbrillanceOn() {
+        if (lienActif() != null) {
+            lienActif().surbrillanceOn();
+        }
+    }
+
+    @Override
+    public void surbrillanceOff() {
+        if (lienBrillance == 1) {
+            lien1.surbrillanceOff();
+            lienBrillance = 0;
+        } else if (lienBrillance == 2) {
+            lien2.surbrillanceOff();
+            lienBrillance = 0;
+        }
+    }
+
+    /**
+     * Active le lien s'il est activable en fonction du nœud donné.
+     *
+     * @param n Le nœud lié
+     * @return Le lien qui a été activé, retourne null si aucun lien est activé
+     */
+    public void activerSurbrillance(Noeud n) {
+        if (!interrupteur) {
+            if (lien1.noeudDansLien(n) == 0) {
+                lien1.surbrillanceOn();
+                lienBrillance = 1;
+
+            } else {
+                lien2.surbrillanceOn();
+                lienBrillance = 2;
+            }
+        } else {
+            if (lien1.noeudDansLien(n) == 0) {
+                if (lien1.getNbLien() != 0) {
+                    lien1.surbrillanceOn();
+                    lienBrillance = 1;
+                }
+            } else if (lien2.getNbLien() != 0) {
+                lien2.surbrillanceOn();
+                lienBrillance = 2;
+
+            }
+        }
+    }
+
 }

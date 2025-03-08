@@ -10,6 +10,7 @@ public interface ElementJeu {
 
     /**
      * Méthode pour dessiner un élément de jeu.
+     *
      * @return retourne le chemin d'accès de la texture de l'élément
      */
     public String draw();
@@ -25,4 +26,8 @@ public interface ElementJeu {
      * @return true si l'élément est activé, false sinon.
      */
     public Boolean activer();
+
+    public void surbrillanceOn();
+
+    public void surbrillanceOff();
 }

@@ -53,6 +53,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     /**
      * Active la surbrillance du noeud.
      */
+    @Override
     public void surbrillanceOn() {
         surbrillance = true;
     }
@@ -60,6 +61,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     /**
      * Désactive la surbrillance du noeud.
      */
+    @Override
     public void surbrillanceOff() {
         surbrillance = false;
     }
