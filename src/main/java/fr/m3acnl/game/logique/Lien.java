@@ -70,21 +70,75 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Défini l'index du lien.
-     *
-     * @param i L'index du lien
-     */
-    public void setIndex(int i) {
-        index = i;
-    }
-
-    /**
      * Récupère l'index du lien.
      *
      * @return L'index du lien
      */
     public int getIndex() {
         return index;
+    }
+
+    /**
+     * Récupère le premier noeud.
+     *
+     * @return le premier noeud
+     */
+    public Noeud getNoeud1() {
+        return noeud1;
+    }
+
+    /**
+     * Récupère le deuxième noeud.
+     *
+     * @return le deuxième noeud
+     */
+    public Noeud getNoeud2() {
+        return noeud2;
+    }
+
+    /**
+     * Récupère l'orientation du lien.
+     *
+     * @return l'orientation du lien
+     */
+    public int getOrientation() {
+        return orientation;
+    }
+
+    /**
+     * Récupère le nombre de lien.
+     *
+     * @return le nombre de lien
+     */
+    public int getNbLien() {
+        return nbLien;
+    }
+
+    /**
+     * Récupère la surbrillance.
+     *
+     * @return la surbrillance
+     */
+    public Boolean getSurbrillance() {
+        return surbrillance;
+    }
+
+    /**
+     * Récupère le nombre soluce du lien.
+     *
+     * @return le nombre soluce
+     */
+    public int getNbLienSoluce() {
+        return nbLienSoluce;
+    }
+
+    /**
+     * Défini l'index du lien.
+     *
+     * @param i L'index du lien
+     */
+    public void setIndex(int i) {
+        index = i;
     }
 
     /**
@@ -176,60 +230,6 @@ public class Lien implements ElementJeu {
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
         }
-    }
-
-    /**
-     * Récupère le premier noeud.
-     *
-     * @return le premier noeud
-     */
-    public Noeud getNoeud1() {
-        return noeud1;
-    }
-
-    /**
-     * Récupère le deuxième noeud.
-     *
-     * @return le deuxième noeud
-     */
-    public Noeud getNoeud2() {
-        return noeud2;
-    }
-
-    /**
-     * Récupère l'orientation du lien.
-     *
-     * @return l'orientation du lien
-     */
-    public int getOrientation() {
-        return orientation;
-    }
-
-    /**
-     * Récupère le nombre de lien.
-     *
-     * @return le nombre de lien
-     */
-    public int getNbLien() {
-        return nbLien;
-    }
-
-    /**
-     * Récupère la surbrillance.
-     *
-     * @return la surbrillance
-     */
-    public Boolean getSurbrillance() {
-        return surbrillance;
-    }
-
-    /**
-     * Récupère le nombre soluce du lien.
-     *
-     * @return le nombre soluce
-     */
-    public int getNbLienSoluce() {
-        return nbLienSoluce;
     }
 
     /**

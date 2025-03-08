@@ -70,6 +70,69 @@ public class Jeu {
     }
 
     /**
+     * Récupère la taille.
+     *
+     * @return La taille du plateau.
+     */
+    public int getTaille() {
+        return taille;
+    }
+
+    /**
+     * Récupère le plateau.
+     *
+     * @return Le plateau
+     */
+    public Matrice getPlateau() {
+        return plateau;
+    }
+
+    /**
+     * Récupère la pile des coups jouer.
+     *
+     * @return La pile des coups jouer
+     */
+    public Pile getCoupsJouer() {
+        return coupsJouer;
+    }
+
+    /**
+     * Récupère la pile des coups jouer en buffeur.
+     *
+     * @return La pile des coups jouer en buffeur
+     */
+    public Pile getCoupsJouerBuff() {
+        return coupsJouerBuff;
+    }
+
+    /**
+     * Done le temp écouler actuellement en seconde.
+     *
+     * @return le temp écouler
+     */
+    public Long getTempsEcouler() {
+        return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
+    }
+
+    /**
+     * Récupère le temps final.
+     *
+     * @return le temp final
+     */
+    public Long getTempsFinal() {
+        return tempsFinal;
+    }
+
+    /**
+     * Modification du temps final.
+     *
+     * @param temps Le temp final
+     */
+    public void setTempsFinal(long temps) {
+        tempsFinal = temps;
+    }
+
+    /**
      * Vérification si le lien horizontal n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
@@ -100,15 +163,6 @@ public class Jeu {
             doubleLienPossible.get(i).activeInterrupteur();
         }
         return 0;
-    }
-
-    /**
-     * Récupère la taille.
-     *
-     * @return La taille du plateau.
-     */
-    public int getTaille() {
-        return taille;
     }
 
     /**
@@ -261,69 +315,8 @@ public class Jeu {
     }
 
     /**
-     * Done le temp écouler actuellement en seconde.
-     *
-     * @return le temp écouler
-     */
-    public Long getTempsEcouler() {
-        return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
-    }
-
-    /**
-     * Récupère le temps final.
-     *
-     * @return le temp final
-     */
-    public Long getTempsFinal() {
-        return tempsFinal;
-    }
-
-    /**
-     * Modification du temps final.
-     *
-     * @param temps Le temp final
-     */
-    public void setTempsFinal(long temps) {
-        tempsFinal = temps;
-    }
-
-    /**
-     * Affiche le jeu.
-     */
-    public void drawJeuTerm() {
-        plateau.drawTerm();
-    }
-
-    /**
-     * Récupère le plateau.
-     *
-     * @return Le plateau
-     */
-    public Matrice getPlateau() {
-        return plateau;
-    }
-
-    /**
-     * Récupère la pile des coups jouer.
-     *
-     * @return La pile des coups jouer
-     */
-    public Pile getCoupsJouer() {
-        return coupsJouer;
-    }
-
-    /**
-     * Récupère la pile des coups jouer en buffeur.
-     *
-     * @return La pile des coups jouer en buffeur
-     */
-    public Pile getCoupsJouerBuff() {
-        return coupsJouerBuff;
-    }
-
-    /**
      * Charge la sauvegarde donner.
-     * 
+     *
      * @param sauvegarde la sauvegarde a charger.
      */
     private void chargerSauvegarde(ArrayList<Lien> sauvegarde) {
@@ -365,5 +358,12 @@ public class Jeu {
         } else {
             throw new RuntimeException("Le lien n'a pas pu s'activer");
         }
+    }
+
+    /**
+     * Affiche le jeu.
+     */
+    public void drawJeuTerm() {
+        plateau.drawTerm();
     }
 }

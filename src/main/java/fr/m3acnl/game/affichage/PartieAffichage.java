@@ -1,8 +1,6 @@
 package fr.m3acnl.game.affichage;
 
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Jeu;
@@ -28,7 +26,6 @@ public class PartieAffichage extends Application {
     private Label labelTemps;
     private Button[][] boutons;
     private GridPane gridPane;
-    private Map<Button, DoubleLien> mappingBoutonsDoubleLien = new HashMap<>();
     private static final double SUPERPOSITION_RATIO = 1.15;
     private static final Integer TAILLE_FOND = 800;
     private static final double ASSOMBRISSEMENT = 0.65;
@@ -82,10 +79,6 @@ public class PartieAffichage extends Application {
                 int y = j;
                 boutons[i][j].setOnAction(e -> activerElement(x, y));
 
-                if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
-                    mappingBoutonsDoubleLien.put(boutons[i][j], (DoubleLien) jeu.getPlateau().getElement(x, y));
-                }
-
                 URL resource = getResourceElement(i, j);
                 if (resource != null) {
                     boutons[i][j].setGraphic(creerImageView(resource, 100));
@@ -100,6 +93,12 @@ public class PartieAffichage extends Application {
         }
     }
 
+    /**
+     * Prévisualise l'état d'un élément du jeu.
+     *
+     * @param x La coordonnée x
+     * @param y La coordonnée y
+     */
     private void previsualiserEtat(int x, int y) {
         if (jeu.getPlateau().getElement(x, y) == null) {
             return;

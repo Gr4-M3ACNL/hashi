@@ -51,52 +51,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Active la surbrillance du noeud.
-     */
-    @Override
-    public void surbrillanceOn() {
-        surbrillance = true;
-    }
-
-    /**
-     * Désactive la surbrillance du noeud.
-     */
-    @Override
-    public void surbrillanceOff() {
-        surbrillance = false;
-    }
-
-    /**
-     * Incrémente le degré actuelle du noeud.
-     */
-    public void ajouterDegre() {
-        degreActuelle += 1;
-    }
-
-    /**
-     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
-     */
-    public void suppressionDegre() {
-        degreActuelle -= 2;
-    }
-
-    /**
-     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
-     */
-    public void diminuerDegre() {
-        degreActuelle -= 1;
-    }
-
-    /**
-     * Vérifie si le noeud est valide.
-     *
-     * @return 0 si valide
-     */
-    public int estValide() {
-        return (degreSoluce - degreActuelle);
-    }
-
-    /**
      * Récupère la position du noeud.
      *
      * @return les coordonnées du noeud
@@ -133,21 +87,51 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Ajoute un noeud à la liste d'adjacence.
-     *
-     * @param n le noeud à ajouter
-     */
-    public void ajouterNoeudAdjacence(Noeud n) {
-        listeAdjacence.add(n);
-    }
-
-    /**
      * Récupère la liste d'adjacence.
      *
      * @return la liste d'adjacence
      */
     public ArrayList<Noeud> getListeAdjacence() {
         return listeAdjacence;
+    }
+
+    /**
+     * Incrémente le degré actuelle du noeud.
+     */
+    public void ajouterDegre() {
+        degreActuelle += 1;
+    }
+
+    /**
+     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
+     */
+    public void suppressionDegre() {
+        degreActuelle -= 2;
+    }
+
+    /**
+     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
+     */
+    public void diminuerDegre() {
+        degreActuelle -= 1;
+    }
+
+    /**
+     * Vérifie si le noeud est valide.
+     *
+     * @return 0 si valide
+     */
+    public int estValide() {
+        return (degreSoluce - degreActuelle);
+    }
+
+    /**
+     * Ajoute un noeud à la liste d'adjacence.
+     *
+     * @param n le noeud à ajouter
+     */
+    public void ajouterNoeudAdjacence(Noeud n) {
+        listeAdjacence.add(n);
     }
 
     /**
@@ -160,48 +144,12 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
-     *
-     * @param n2 le noeud avec qui comparé
-     * @return le résultat de la comparaison
-     */
-    @Override
-    public int compareTo(Noeud n2) {
-        return this.position.compareTo(n2.position);
-    }
-
-    /**
-     * Affiche le Noeud.
-     */
-    @Override
-    public String draw() {
-        if (degreActuelle < degreSoluce) {
-            return "/META-INF/assetsGraphiques/pie/standard/pie" + degreSoluce + ".png";
-        } else if (degreActuelle == degreSoluce) {
-            return "/META-INF/assetsGraphiques/pie/good/pie" + degreSoluce + ".png";
-        } else {
-            return "/META-INF/assetsGraphiques/pie/satured/pie" + degreSoluce + ".png";
-        }
-    }
-
-    /**
-     * Affiche le réseaux de connection du noeud.
-     *
-     * @return false pour l'instant
-     */
-    @Override
-    public Boolean activer() {
-        afficherReseau();
-        return true;
-    }
-
-    /**
      * Affiche récursivement tous les noeuds connectés à ce noeud.
      *
      * @return Renvoie la liste des noeud dans le réseau
      */
     public ArrayList<Noeud> afficherReseau() {
-        ArrayList<Noeud> listeNoeud = new ArrayList<Noeud>();
+        ArrayList<Noeud> listeNoeud = new ArrayList<>();
         afficherReseau(listeNoeud);
         return listeNoeud;
     }
@@ -224,12 +172,44 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Permet de faire l'affichage de la classe.
+     * Affiche le réseaux de connection du noeud.
+     *
+     * @return false pour l'instant
      */
     @Override
-    public String toString() {
-        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle
-                + "}";
+    public Boolean activer() {
+        afficherReseau();
+        return true;
+    }
+
+    /**
+     * Active la surbrillance du noeud.
+     */
+    @Override
+    public void surbrillanceOn() {
+        surbrillance = true;
+    }
+
+    /**
+     * Désactive la surbrillance du noeud.
+     */
+    @Override
+    public void surbrillanceOff() {
+        surbrillance = false;
+    }
+
+    /**
+     * Affiche le Noeud.
+     */
+    @Override
+    public String draw() {
+        if (degreActuelle < degreSoluce) {
+            return "/META-INF/assetsGraphiques/pie/standard/pie" + degreSoluce + ".png";
+        } else if (degreActuelle == degreSoluce) {
+            return "/META-INF/assetsGraphiques/pie/good/pie" + degreSoluce + ".png";
+        } else {
+            return "/META-INF/assetsGraphiques/pie/satured/pie" + degreSoluce + ".png";
+        }
     }
 
     /**
@@ -238,5 +218,25 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public void drawTerm() {
         System.out.print("N{" + degreActuelle + "/" + degreSoluce + "}   ");
+    }
+
+    /**
+     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
+     *
+     * @param n2 le noeud avec qui comparé
+     * @return le résultat de la comparaison
+     */
+    @Override
+    public int compareTo(Noeud n2) {
+        return this.position.compareTo(n2.position);
+    }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public String toString() {
+        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle
+                + "}";
     }
 }
