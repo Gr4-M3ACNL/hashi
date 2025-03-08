@@ -342,6 +342,7 @@ public class Matrice {
         jeu.activeElemJeu(0, 1, null);
         jeu.drawJeuTerm();
         System.out.println("Activation du noeud 0 0");
+        System.out.println("Affichage du réseau du noeud 0,0");
         ArrayList<Noeud> noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
         for (Noeud n : noeuds) {
             System.out.println(n);

@@ -112,13 +112,11 @@ public class PartieAffichage extends Application {
                 if (noeud != null) {
                     // Simuler l'activation sans modifier l'état du jeu
                     doubleLien.activerSurbrillance(noeud);
-                    System.out.println("\n\nSurbrillanceOn\n" + doubleLien);
 
                 }
             }
         } else {
             jeu.getPlateau().getElement(x, y).surbrillanceOn();
-            System.out.println("\n\nSurbrillanceOn\n" + jeu.getPlateau().getElement(x, y));
 
         }
         actualiserAffichage();
@@ -134,10 +132,8 @@ public class PartieAffichage extends Application {
         if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
             DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
             doubleLien.surbrillanceOff();
-            System.out.println("\n\nSurbrillanceOff\n" + doubleLien);
         } else {
             jeu.getPlateau().getElement(x, y).surbrillanceOff();
-            System.out.println("\n\nSurbrillanceOff\n" + jeu.getPlateau().getElement(x, y));
         }
         actualiserAffichage();
     }
@@ -149,6 +145,7 @@ public class PartieAffichage extends Application {
      * @param y La coordonnée y
      */
     private void activerElement(int x, int y) {
+        restaurerEtat(x, y);
         if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
             DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
 

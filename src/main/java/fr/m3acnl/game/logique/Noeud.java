@@ -144,31 +144,31 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     * Retourne la liste des noeuds connectés à ce noeud.
      *
-     * @return Renvoie la liste des noeud dans le réseau
+     * @return Liste des noeuds connectés.
      */
     public ArrayList<Noeud> afficherReseau() {
-        ArrayList<Noeud> listeNoeud = new ArrayList<>();
-        afficherReseau(listeNoeud);
-        return listeNoeud;
+        ArrayList<Noeud> listeNoeuds = new ArrayList<>();
+        afficherReseauRecursif(this, listeNoeuds);
+        return listeNoeuds;
     }
 
     /**
-     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     * Parcours récursif du réseau à partir d'un noeud.
      *
-     * @param visites la liste des noeuds déjà visités
-     * @return Renvoie la liste des noeuds visités
+     * @param noeud Noeud actuel
+     * @param visites Liste des noeuds déjà visités
      */
-    private ArrayList<Noeud> afficherReseau(ArrayList<Noeud> visites) {
-        if (visites.contains(this)) {
-            return visites;
+    private void afficherReseauRecursif(Noeud noeud, ArrayList<Noeud> visites) {
+        if (visites.contains(noeud)) {
+            return;
         }
-        visites.add(this);
-        for (Noeud noeud : listeAdjacence) {
-            noeud.afficherReseau(visites);
+        visites.add(noeud);
+
+        for (Noeud voisin : noeud.listeAdjacence) {
+            afficherReseauRecursif(voisin, visites);
         }
-        return visites;
     }
 
     /**
@@ -178,7 +178,14 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public Boolean activer() {
-        afficherReseau();
+        ArrayList<Noeud> noeuds = afficherReseau();
+        for (Noeud noeud : noeuds) {
+            if (noeud.getSurbrillance()) {
+                noeud.surbrillanceOff();
+            } else {
+                noeud.surbrillanceOn();
+            }
+        }
         return true;
     }
 
@@ -203,7 +210,9 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     @Override
     public String draw() {
-        if (degreActuelle < degreSoluce) {
+        if (getSurbrillance()) {
+            return "/META-INF/assetsGraphiques/pie/surbrillance/pie" + degreSoluce + ".png";
+        } else if (degreActuelle < degreSoluce) {
             return "/META-INF/assetsGraphiques/pie/standard/pie" + degreSoluce + ".png";
         } else if (degreActuelle == degreSoluce) {
             return "/META-INF/assetsGraphiques/pie/good/pie" + degreSoluce + ".png";
@@ -237,6 +246,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public String toString() {
         return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle
-                + "}";
+                + ", Surbrillance= " + surbrillance + "}";
     }
 }
