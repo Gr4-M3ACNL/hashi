@@ -16,8 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 /**
@@ -54,9 +52,13 @@ public class PartieAffichage extends Application {
     private static final double SUPERPOSITION_RATIO = 1.15;
 
     /**
-     * Les dimensions du background.
+     * La largeur du fond.
      */
     private static final Integer LARGEUR_BACKGROUND = 1080;
+
+    /**
+     * La longueur du fond.
+     */
     private static final Integer LONGUEUR_BACKGROUND = 1920;
 
     /**
@@ -68,6 +70,11 @@ public class PartieAffichage extends Application {
      * Le ratio d'assombrissement du fond.
      */
     private static final double ASSOMBRISSEMENT = 0.65;
+
+    /**
+     * Le StackPane pour le fond.
+     */
+    private StackPane backgroundPane;
 
     @Override
     public void start(Stage primaryStage) {
@@ -88,7 +95,8 @@ public class PartieAffichage extends Application {
         gridPane.setVgap(-10);
 
         StackPane root = new StackPane();
-        root.getChildren().addAll(creerBackground(), gridPane);
+        creerBackground();
+        root.getChildren().addAll(backgroundPane, gridPane);
 
         boutons = new Button[7][7];
         initialiserBoutons();
@@ -105,6 +113,7 @@ public class PartieAffichage extends Application {
 
         scene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
         scene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
+        actualiserAffichage();
     }
 
     /**
@@ -250,25 +259,29 @@ public class PartieAffichage extends Application {
     /**
      * Crée le fond de la fenêtre.
      *
-     * @return Le fond de la fenêtre
      */
-    private StackPane creerBackground() {
+    private void creerBackground() {
 
         Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm());
         ImageView imageBackgroundView = new ImageView(imageBackground);
+        imageBackgroundView.setPreserveRatio(false);
 
-        imageBackgroundView.setPreserveRatio(false); 
-        imageBackgroundView.fitWidthProperty().bind(gridPane.widthProperty());
-        imageBackgroundView.fitHeightProperty().bind(gridPane.heightProperty());
-        
         Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/table.png").toExternalForm());
         ImageView imageFondView = new ImageView(imageFond);
-        
         imageFondView.setPreserveRatio(true);
-        imageFondView.fitWidthProperty().bind(gridPane.widthProperty().multiply(0.8));
-        imageFondView.fitHeightProperty().bind(gridPane.heightProperty().multiply(0.8));
 
-        return new StackPane(imageBackgroundView, imageFondView);
+        backgroundPane = new StackPane(imageBackgroundView, imageFondView);
+
+        // Attendre que la scène soit disponible avant de lier les propriétés
+        backgroundPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+            if (newScene != null) {
+                imageBackgroundView.fitWidthProperty().bind(newScene.widthProperty());
+                imageBackgroundView.fitHeightProperty().bind(newScene.heightProperty());
+
+                imageFondView.fitWidthProperty().bind(newScene.widthProperty().multiply(0.92));
+                imageFondView.fitHeightProperty().bind(newScene.heightProperty().multiply(0.92));
+            }
+        });
     }
 
     /**
@@ -296,16 +309,37 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Ajuste la taille des images en fonction de la taille de la fenêtre.
+     * Ajuste la taille des images en fonction de la taille de la scène.
      */
     private void ajusterTailleImages() {
-        double taille = Math.min(TAILLE_FOND, TAILLE_FOND) / jeu.getTaille();
-        double tailleImage = taille * SUPERPOSITION_RATIO;
+        if (gridPane.getScene() == null) {
+            // Ajoute un listener pour s'exécuter dès que la scène est disponible
+            gridPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null) {
+                    ajusterTailleImages(); // Appelle à nouveau la fonction avec la bonne taille
+                }
+            });
+            return; // Attend que la scène soit prête
+        }
+
+        double largeurScene = gridPane.getScene().getWidth();
+        double hauteurScene = gridPane.getScene().getHeight();
+
+        // Déterminer la taille des cellules en gardant une marge de 5% sur la table
+        double tailleTable = Math.min(largeurScene * 0.92, hauteurScene * 0.92);
+        double tailleCellule = tailleTable / jeu.getTaille();
+
+        // Ajuster la taille du GridPane pour correspondre à la table
+        gridPane.setPrefSize(jeu.getTaille() * tailleCellule, jeu.getTaille() * tailleCellule);
+        gridPane.setMaxSize(jeu.getTaille() * tailleCellule, jeu.getTaille() * tailleCellule);
+
+        // Ajuster chaque bouton
         for (int i = 0; i < jeu.getTaille(); i++) {
             for (int j = 0; j < jeu.getTaille(); j++) {
-                ImageView imageView = creerImageView(getResourceElement(i, j), tailleImage);
+                ImageView imageView = creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO);
                 boutons[i][j].setGraphic(imageView);
-                boutons[i][j].setMinSize(taille, taille);
+                boutons[i][j].setMinSize(tailleCellule, tailleCellule);
+                boutons[i][j].setMaxSize(tailleCellule, tailleCellule);
             }
         }
     }
