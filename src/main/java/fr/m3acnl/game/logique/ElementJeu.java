@@ -15,6 +15,11 @@ public interface ElementJeu {
     public String draw();
 
     /**
+     * Méthode pour dessiner un élément de jeu dans le terminal.
+     */
+    public void drawTerm();
+
+    /**
      * Méthode pour activer un élément de jeu.
      *
      * @return true si l'élément est activé, false sinon.

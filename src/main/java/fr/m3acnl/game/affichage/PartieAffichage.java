@@ -16,12 +16,41 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.geometry.Pos;
 
+/**
+ * Classe PartieAffichage pour l'affichage de la Partie.
+ * 
+ * @author PESANTES Maelig
+ * @see Application
+ */
 public class PartieAffichage extends Application {
+    /**
+     * Jeu pour la partie.
+     */
     private Jeu jeu;
+    /**
+     * Label pour le temps.
+     */
     private Label timeLabel;
+    /**
+     * Tableau de boutons pour le plateau de jeu.
+     */
     private Button[][] buttons;
+    /**
+     * Timeline pour la mise à jour du temps.
+     */
     private Timeline timeline;
 
+    /**
+     * Constructeur par défaut.
+     */
+    public PartieAffichage() {
+    }
+
+    /**
+     * Méthode pour démarrer l'application.
+     *
+     * @param primaryStage la scène principale
+     */
     @Override
     public void start(Stage primaryStage) {
         System.out.println("Such a beautiful start!");
@@ -36,18 +65,19 @@ public class PartieAffichage extends Application {
         };
         jeu = new Jeu(7, mat);
 
-        BorderPane root = new BorderPane();
+        
 
         // GridPane pour le plateau de jeu
         GridPane gridPane = new GridPane();
         buttons = new Button[7][7];
         System.out.println("Lets do the for Yppie!!");
-        System.out.println("I'll do "+jeu.getTaille()+" iterations !!");
+        System.out.println("I'll do " + jeu.getTaille() + " iterations !!");
         for (int i = 0; i < jeu.getTaille(); i++) {
             System.out.println("Can I go in?");
             for (int j = 0; j < jeu.getTaille(); j++) {
                 System.out.print("Alright,I'm in!");
                 buttons[i][j] = new Button();
+
                 int x = i;
                 int y = j;
                 buttons[i][j].setOnAction(e -> activerElement(x, y));
@@ -71,6 +101,8 @@ public class PartieAffichage extends Application {
                 gridPane.add(buttons[i][j], j, i);
             }
         }
+
+        BorderPane root = new BorderPane();
         root.setCenter(gridPane);
 
         // Panneau de contrôle
@@ -102,22 +134,39 @@ public class PartieAffichage extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Méthode pour activer un élément du jeu.
+     *
+     * @param x la position x
+     * @param y la position y
+     */
     private void activerElement(int x, int y) {
         jeu.activeElemJeu(x, y, null);
         buttons[x][y].setText("X");
     }
 
+    /**
+     * Méthode pour vérifier si le joueur a gagné.
+     */
     private void checkWin() {
         if (jeu.gagner()) {
             System.out.println("Vous avez gagné!");
         }
     }
 
+    /**
+     * Méthode pour mettre à jour le temps.
+     */
     private void updateTime() {
         timeLabel.setText("Temps: " + jeu.getTempsEcouler() + "s");
         
     }
 
+    /**
+     * Méthode main pour lancer l'application.
+     *
+     * @param args les arguments de la ligne de commande
+     */
     public static void main(String[] args) {
         Application.launch(PartieAffichage.class, args);
     }

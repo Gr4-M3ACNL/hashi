@@ -139,7 +139,7 @@ public class Pile implements JsonSerializable {
         serialize(gen, serializers);
     }
 
-    /*
+    /**
      * Récupère une copie du tableau.
      * @return Le tableau copier de la pile.
      */

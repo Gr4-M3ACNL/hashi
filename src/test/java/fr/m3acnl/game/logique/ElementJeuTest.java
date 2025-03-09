@@ -5,16 +5,11 @@ package fr.m3acnl.game.logique;
  * (Vide car la classe ElementJeu est une interface)
  */
 public class ElementJeuTest {
-    
-    /**
-     * Activation d'un élément du jeu.
-     */
-    void Activer() {}
 
     /**
-     * Affichage dans le terminal d'un élément du jeu.
+     * Constructeur de la classe de test de la classe ElementJeu.
      */
-    void Draw() {}
+    ElementJeuTest() {}
 
      // Aucun test à effectuer car la classe ElementJeu est une interface
 }
