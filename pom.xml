@@ -8,15 +8,15 @@
   <artifactId>hashi</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>hashiParmentier </name>
+  <name>hashiParmentier</name>
 
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>16</maven.compiler.source>
-    <maven.compiler.target>16</maven.compiler.target>
-    <maven.compiler.release>16</maven.compiler.release>
-    <javafx.version>23.0.2</javafx.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.release>17</maven.compiler.release>
+    <javafx.version>21.0.2</javafx.version>
     <juint.version>5.8.1</juint.version>
     <start-class>fr.m3acnl.Hashi</start-class>
   </properties>
@@ -124,13 +124,13 @@
 
     <plugins>
       <plugin>
-        <!-- Compile with java 16 -->
+        <!-- Compile with java 17 -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
 
         <version>3.13.0</version>
         <configuration>
-          <release>16</release>
+          <release>17</release>
         </configuration>
       </plugin>
 
