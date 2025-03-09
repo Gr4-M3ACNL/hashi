@@ -54,6 +54,12 @@ public class PartieAffichage extends Application {
     private static final double SUPERPOSITION_RATIO = 1.15;
 
     /**
+     * Les dimensions du background.
+     */
+    private static final Integer LARGEUR_BACKGROUND = 1080;
+    private static final Integer LONGUEUR_BACKGROUND = 1920;
+
+    /**
      * La taille du fond.
      */
     private static final Integer TAILLE_FOND = 800;
@@ -92,7 +98,7 @@ public class PartieAffichage extends Application {
         mainLayout.setCenter(root);
         mainLayout.setBottom(controlPanel);
 
-        Scene scene = new Scene(mainLayout, 900, 900);
+        Scene scene = new Scene(mainLayout, 1920, 1080);
         primaryStage.setTitle("Jeu Interface");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -247,14 +253,22 @@ public class PartieAffichage extends Application {
      * @return Le fond de la fenêtre
      */
     private StackPane creerBackground() {
-        ImageView imageFondView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm()));
-        imageFondView.setFitWidth(TAILLE_FOND);
-        imageFondView.setFitHeight(TAILLE_FOND);
 
-        Rectangle overlay = new Rectangle(TAILLE_FOND, TAILLE_FOND, Color.BLACK);
-        overlay.setOpacity(1 - ASSOMBRISSEMENT);
+        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm());
+        ImageView imageBackgroundView = new ImageView(imageBackground);
 
-        return new StackPane(imageFondView, overlay);
+        imageBackgroundView.setPreserveRatio(false); 
+        imageBackgroundView.fitWidthProperty().bind(gridPane.widthProperty());
+        imageBackgroundView.fitHeightProperty().bind(gridPane.heightProperty());
+        
+        Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/table.png").toExternalForm());
+        ImageView imageFondView = new ImageView(imageFond);
+        
+        imageFondView.setPreserveRatio(true);
+        imageFondView.fitWidthProperty().bind(gridPane.widthProperty().multiply(0.8));
+        imageFondView.fitHeightProperty().bind(gridPane.heightProperty().multiply(0.8));
+
+        return new StackPane(imageBackgroundView, imageFondView);
     }
 
     /**
