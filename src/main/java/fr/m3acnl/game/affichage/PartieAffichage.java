@@ -20,14 +20,47 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
+/**
+ * Classe PartieAffichage pour l'affichage du jeu.
+ *
+ * @author PESANTEZ Maelig
+ * @version 1.0
+ */
 public class PartieAffichage extends Application {
 
+    /**
+     * Le jeu.
+     */
     private Jeu jeu;
+
+    /**
+     * Label pour afficher le temps.
+     */
     private Label labelTemps;
+
+    /**
+     * Tableau de boutons.
+     */
     private Button[][] boutons;
+
+    /**
+     * GridPane pour afficher les boutons.
+     */
     private GridPane gridPane;
+
+    /**
+     * Le ratio de superpostion des images.
+     */
     private static final double SUPERPOSITION_RATIO = 1.15;
+
+    /**
+     * La taille du fond.
+     */
     private static final Integer TAILLE_FOND = 800;
+
+    /**
+     * Le ratio d'assombrissement du fond.
+     */
     private static final double ASSOMBRISSEMENT = 0.65;
 
     @Override
@@ -124,6 +157,9 @@ public class PartieAffichage extends Application {
 
     /**
      * Restaure l'état initial du bouton lorsque la souris quitte.
+     *
+     * @param x La coordonnée x
+     * @param y La coordonnée y
      */
     private void restaurerEtat(int x, int y) {
         if (jeu.getPlateau().getElement(x, y) == null) {
@@ -205,6 +241,11 @@ public class PartieAffichage extends Application {
         return Math.sqrt(dx * dx + dy * dy);
     }
 
+    /**
+     * Crée le fond de la fenêtre.
+     *
+     * @return Le fond de la fenêtre
+     */
     private StackPane creerBackground() {
         ImageView imageFondView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm()));
         imageFondView.setFitWidth(TAILLE_FOND);
@@ -321,6 +362,11 @@ public class PartieAffichage extends Application {
         ajusterTailleImages();
     }
 
+    /**
+     * Méthode main pour lancer l'application.
+     *
+     * @param args Les arguments de la ligne de commande
+     */
     public static void main(String[] args) {
         Application.launch(PartieAffichage.class, args);
     }

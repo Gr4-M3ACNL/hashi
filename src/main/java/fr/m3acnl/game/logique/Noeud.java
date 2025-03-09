@@ -100,6 +100,12 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         return listeAdjacence;
     }
 
+    /**
+     * Permet de définir l'activation du noeud. (Pour la surbrillance pour
+     * eviter que le noeud ne s'active en survol)
+     *
+     * @param activer Boolean pour activer ou non le noeud
+     */
     public void setActiver(Boolean activer) {
         this.activer = activer;
     }

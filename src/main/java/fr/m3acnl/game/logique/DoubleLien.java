@@ -23,6 +23,9 @@ public class DoubleLien implements ElementJeu {
      */
     private Boolean interrupteur;
 
+    /**
+     * Lien qui est en surbrillance.
+     */
     private int lienBrillance;
 
     /**
