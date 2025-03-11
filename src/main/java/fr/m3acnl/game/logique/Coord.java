@@ -60,4 +60,12 @@ public class Coord implements Comparable<Coord> {
         }
         return res;
     }
+
+    /**
+     * Permet de faire l'affichage de la classe.
+     */
+    @Override
+    public String toString() {
+        return "(" + coordX + "," + coordY + ")";
+    }
 }

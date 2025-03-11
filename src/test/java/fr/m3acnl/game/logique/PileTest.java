@@ -46,8 +46,8 @@ public class PileTest extends Tests {
     /**
      * Test de la méthode depiler
      *
-     * @see Pile#empiler
-     * @see Pile#depiler
+     * @see Pile#empiler(Lien)
+     * @see Pile#depiler()
      */
     @Test
     void testDepiler() {
@@ -74,7 +74,7 @@ public class PileTest extends Tests {
     /**
      * Test de la méthode empiler
      *
-     * @see Pile#empiler
+     * @see Pile#empiler(Lien)
      */
     @Test
     void testEmpiler() {
@@ -96,8 +96,8 @@ public class PileTest extends Tests {
     /**
      * Test de la méthode estVide
      *
-     * @see Pile#empiler
-     * @see Pile#estVide
+     * @see Pile#empiler(Lien)
+     * @see Pile#estVide()
      */
     @Test
     void testEstVide() {
@@ -120,8 +120,8 @@ public class PileTest extends Tests {
     /**
      * Test de la méthode sommet
      *
-     * @see Pile#empiler
-     * @see Pile#sommet
+     * @see Pile#empiler(Lien)
+     * @see Pile#sommet()
      */
     @Test
     void testSommet() {
@@ -146,7 +146,7 @@ public class PileTest extends Tests {
     /**
      * Test de la méthode taille
      *
-     * @see Pile#taille
+     * @see Pile#taille()
      */
     @Test
     void testTaille() {
@@ -155,21 +155,21 @@ public class PileTest extends Tests {
     }
 
     /**
-     * Test de la méthode to_s
+     * Test de la méthode toString
      *
-     * @see Pile#to_s
+     * @see Pile#toString()
      */
     @Test
     void testTo_s() {
         Pile p = new Pile();
-        assertEquals("", p.to_s(), "Pile vide renvoie uen chaine vide");
+        assertEquals("", p.toString(), "Pile vide renvoie uen chaine vide");
     }
 
     /**
      * Test de la méthode vidange
      *
-     * @see Pile#empiler
-     * @see Pile#vidange
+     * @see Pile#empiler(Lien)
+     * @see Pile#vidange()
      */
     @Test
     void testVidange() {

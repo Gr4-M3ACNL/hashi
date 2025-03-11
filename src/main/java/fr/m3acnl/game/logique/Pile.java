@@ -18,13 +18,22 @@ public class Pile implements JsonSerializable {
     /**
      * Tableau contenant la pile.
      */
-    private final ArrayList<Lien> tab;
+    private ArrayList<Lien> tab;
 
     /**
      * Constructeur de la classe Pile.
      */
     public Pile() {
         tab = new ArrayList<>();
+    }
+
+    /**
+     * Initialisation d'un nouveau tableau pour la pile.
+     *
+     * @param t Le tableau a initialisé.
+     */
+    public void setTab(ArrayList<Lien> t) {
+        tab = new ArrayList<>(t);
     }
 
     /**
@@ -91,26 +100,22 @@ public class Pile implements JsonSerializable {
     }
 
     /**
-     * Méthode pour afficher le contenu d'une pile.
+     * Récupère une copie du tableau.
      *
-     * @return : le contenu de la pile
+     * @return Le tableau copier de la pile.
      */
-    public String to_s() {
-        String s = "";
-        for (int i = 0; i < this.taille(); i++) {
-            s += tab.get(i).toString() + " ";
-        }
-        return s;
+    public ArrayList<Lien> copieTab() {
+        return new ArrayList<Lien>(tab);
     }
 
     /**
      * Méthode pour sérialiser une pile de liens.
-     * 
+     *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation
-     * 
+     *
      * @throws IOException si une erreur d'entrée/sortie survient
-     * 
+     *
      * @see JsonSerializable#serialize
      */
     @Override
@@ -124,18 +129,33 @@ public class Pile implements JsonSerializable {
 
     /**
      * Méthode pour sérialiser une pile de liens avec le type.
-     * 
+     *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation
      * @param typeSer sérialiseur de type
-     * 
+     *
      * @throws IOException si une erreur d'entrée/sortie survient
-     * 
+     *
      * @see #serialize
      * @see JsonSerializable#serializeWithType
      */
     @Override
-    public void serializeWithType(JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
+    public void serializeWithType(JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer)
+            throws IOException {
         serialize(gen, serializers);
+    }
+
+    /**
+     * Méthode pour afficher le contenu d'une pile.
+     *
+     * @return : le contenu de la pile
+     */
+    @Override
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < this.taille(); i++) {
+            s += tab.get(i).toString() + " ";
+        }
+        return s;
     }
 }
