@@ -3,6 +3,7 @@
 .idea/
 .vscode/
 *.swap
+.DS_Store
 
 ######
 # Fichiers produit par Maven
