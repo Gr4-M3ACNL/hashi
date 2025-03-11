@@ -5,11 +5,13 @@ import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.managers.SauvegardePartieManager;
 import fr.m3acnl.managers.SauvegardePartieManager.JeuEnCour;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -78,12 +80,27 @@ public class Partie implements JsonSerializable {
     public void serialize(JsonGenerator gen, SerializerProvider serializers) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         ObjectNode partieNode = mapper.createObjectNode();
+
+        // Ajoute la liste des coups joués
         partieNode.set("CoupJouer", mapper.valueToTree(jeu.getCoupsJouer()));
+        
+        // Ajouter les coup de retour arrière
         partieNode.set("CoupJouerBuff", mapper.valueToTree(jeu.getCoupsJouerBuff()));
-        // TODO: Ajouter le checkpoint de la partie
-        // TODO: Ajouter la pile de validation
+        
+        // Ajouter le checkpoint de la partie
+        ArrayNode pointDeSauvegarde = mapper.createArrayNode();
+        jeu.getPointDeSauvegarde().forEach(lien -> pointDeSauvegarde.add(lien.getIndex()));
+        partieNode.set("PointDeSauvegarde", pointDeSauvegarde);
+        
+        // Ajouter le tableaux de validation
+        ArrayNode sauvegardeAutomatique = mapper.createArrayNode();
+        jeu.getSauvegardeAutomatique().forEach(lien -> sauvegardeAutomatique.add(lien.getIndex()));
+        partieNode.set("SauvegardeAutomatique", sauvegardeAutomatique);
+
+        // Ajouter le chrono
         partieNode.put("Chrono", getChronoDuration().toMillis());
 
+        // écrie la partie dans l'objet JSON
         gen.writeStartObject();
         gen.writeObjectField("partie", partieNode);
         gen.writeEndObject();

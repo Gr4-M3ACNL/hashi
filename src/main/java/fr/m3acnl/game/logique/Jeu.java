@@ -65,8 +65,8 @@ public class Jeu {
         coupsJouerBuff = new Pile();
         plateau = new Matrice(this.taille, this.taille, mat, this);
         tempsFinal = 0;
-        sauvegardeAutomatique = null;
-        pointDeSauvegarde = null;
+        sauvegardeAutomatique = new ArrayList<Lien>();
+        pointDeSauvegarde = new ArrayList<Lien>();
     }
 
     /**
@@ -94,6 +94,14 @@ public class Jeu {
      */
     public Pile getCoupsJouer() {
         return coupsJouer;
+    }
+
+    public ArrayList<Lien> getSauvegardeAutomatique() {
+        return sauvegardeAutomatique;
+    }
+
+    public ArrayList<Lien> getPointDeSauvegarde() {
+        return pointDeSauvegarde;
     }
 
     /**
