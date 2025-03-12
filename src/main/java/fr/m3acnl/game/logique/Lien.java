@@ -50,12 +50,24 @@ public class Lien implements ElementJeu {
      */
     private int index;
 
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     */
     private boolean modifie = false;
 
+    /**
+     * Compteur pour la consultation.
+     */
     private int cmptVerif = 0;
 
+    /**
+     * Nombre de fois où il faut consulter le lien.
+     */
     private int cmptVerifMax;
 
+    /**
+     * Liste des double lien où il est présent.
+     */
     private ArrayList<DoubleLien> listeDl;
 
     /**
@@ -147,16 +159,26 @@ public class Lien implements ElementJeu {
     /**
      * Défini l'index du lien.
      *
-     * @param i L'index du lien
+     * @param i L'index du lien dans la liste de lien du jeu
      */
     public void setIndex(int i) {
         index = i;
     }
 
+    /**
+     * Ajoute un double lien à la liste.
+     *
+     * @param dl Le double lien à ajouter
+     */
     public void addDoubleLien(DoubleLien dl) {
         listeDl.add(dl);
     }
 
+    /**
+     * Récupère la taille du lien (Nombre de case entre ses deux noeuds).
+     *
+     * @return la taille du lien
+     */
     public int tailleLien() {
         int tot = 0;
         if (orientation == 1) {
@@ -308,13 +330,21 @@ public class Lien implements ElementJeu {
         averifié();
     }
 
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
     @Override
-    public boolean modifié() {
+    public boolean modifie() {
         return modifie;
     }
 
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
     @Override
-    public void verifié() {
+    public void verifie() {
         if (cmptVerif == cmptVerifMax) {
             modifie = false;
             cmptVerif = 0;
@@ -323,12 +353,16 @@ public class Lien implements ElementJeu {
         }
     }
 
+    /**
+     * Permet de dire que l'élément a été modifié. Fait appel à la méthode
+     * averifié sur ses double lien.
+     */
     @Override
-    public void averifié() {
+    public void averifie() {
         modifie = true;
         cmptVerif = 0;
         for (DoubleLien dl : listeDl) {
-            dl.averifié();
+            dl.averifie();
         }
     }
 

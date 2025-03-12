@@ -59,17 +59,24 @@ public class PartieAffichage extends Application {
      */
     private StackPane backgroundPane;
 
+    /**
+     * Stocke la dernière taille de la fenêtre.
+     */
     private double derniereTaille = -1;
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
         Double[][] mat = {
-            {-1.0, 0.1, -1.0},
-            {0.0, 0.0, 0.0},
-            {0.0, 0.0, 0.0}
+            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
+            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
+            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
+            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
+            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
+            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
+            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        jeu = new Jeu(3, mat);
+        jeu = new Jeu(7, mat);
         gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(-10);
@@ -117,8 +124,8 @@ public class PartieAffichage extends Application {
                 }
 
                 boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
-                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(x, y));
-                boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y));
+                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(x, y)); // Active le survol
+                boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y)); // Désactive le survol
 
                 gridPane.add(boutons[i][j], y, x);
             }
@@ -126,10 +133,11 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Prévisualise l'état d'un élément du jeu.
+     * Prévisualise l'état d'un élément du jeu. Permet de pouvoir voir les
+     * connections avant de cliquer.
      *
-     * @param x La coordonnée x
-     * @param y La coordonnée y
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
      */
     private void previsualiserEtat(int x, int y) {
         if (jeu.getPlateau().getElement(x, y) == null) {
@@ -142,9 +150,7 @@ public class PartieAffichage extends Application {
             if (noeudReference != null) {
                 Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
                 if (noeud != null) {
-                    // Simuler l'activation sans modifier l'état du jeu
                     doubleLien.activerSurbrillance(noeud);
-
                 }
             }
         } else {
@@ -157,8 +163,8 @@ public class PartieAffichage extends Application {
     /**
      * Restaure l'état initial du bouton lorsque la souris quitte.
      *
-     * @param x La coordonnée x
-     * @param y La coordonnée y
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
      */
     private void restaurerEtat(int x, int y) {
         if (jeu.getPlateau().getElement(x, y) == null) {
@@ -176,15 +182,14 @@ public class PartieAffichage extends Application {
     /**
      * Active un élément du jeu.
      *
-     * @param x La coordonnée x
-     * @param y La coordonnée y
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
      */
     private void activerElement(int x, int y) {
         restaurerEtat(x, y);
         if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
             DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
 
-            // On suppose que le plateau stocke les Noeuds, ici on récupère un Noeud voisin pour référence
             Noeud noeudReference = jeu.getPlateau().trouverNoeudLePlusProche(x, y);
 
             if (noeudReference != null) {
@@ -197,7 +202,6 @@ public class PartieAffichage extends Application {
             jeu.activeElemJeu(x, y, null);
         }
         if (jeu.gagner()) {
-            System.out.println("Gagné");
             victoire();
         }
         actualiserAffichage();
@@ -262,7 +266,6 @@ public class PartieAffichage extends Application {
 
         backgroundPane = new StackPane(imageBackgroundView, imageFondView);
 
-        // Attendre que la scène soit disponible avant de lier les propriétés
         backgroundPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
             if (newScene != null) {
                 imageBackgroundView.fitWidthProperty().bind(newScene.widthProperty());
@@ -289,7 +292,7 @@ public class PartieAffichage extends Application {
         Button buttonSave = new Button("Sauvegarde manuelle");
         Button buttonCheckpoint = new Button("Retour checkpoint");
 
-        // Appliquer un style uniforme aux boutons
+        // Style des boutons
         for (Button bouton : new Button[]{buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint}) {
             bouton.setMinSize(150, 50);
             bouton.setStyle(
@@ -300,11 +303,10 @@ public class PartieAffichage extends Application {
                     + "-fx-border-radius: 10;"
                     + "-fx-text-fill: white;"
                     + "-fx-font-size: 14px;"
-                    + "-fx-font-family: 'Georgia';"
-            );
+                    + "-fx-font-family: 'Georgia';");
         }
 
-        // Ajouter les actions
+        // Ajout des actions aux boutons
         buttonRetour.setOnAction(e -> retour());
         buttonAvancer.setOnAction(e -> avancer());
         buttonCheck.setOnAction(e -> check());
@@ -313,10 +315,14 @@ public class PartieAffichage extends Application {
         labelTemps = new Label("Temps: 0s");
         labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
 
-        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, labelTemps);
+        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint,
+                labelTemps);
         return controlPanel;
     }
 
+    /**
+     * Permet d'afficher l'overlay de victoire.i
+     */
     private void victoire() {
         System.out.println("Victoire détectée !");
 
@@ -359,44 +365,37 @@ public class PartieAffichage extends Application {
      * Ajuste la taille des images en fonction de la taille de la scène.
      */
     private void ajusterTailleImages() {
-        if (gridPane.getScene() == null) {
-            // Ajoute un listener pour s'exécuter dès que la scène est disponible
-            gridPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
-                if (newScene != null) {
-                    ajusterTailleImages(); // Appelle à nouveau la fonction avec la bonne taille
-                }
-            });
-            return; // Attend que la scène soit prête
+        Scene scene = gridPane.getScene();
+        if (scene == null) {
+            return;
         }
 
-        double largeurScene = gridPane.getScene().getWidth();
-        double hauteurScene = gridPane.getScene().getHeight();
+        double largeurScene = scene.getWidth();
+        double hauteurScene = scene.getHeight();
+        int taille = jeu.getTaille();
 
-        // Déterminer la taille des cellules en gardant une marge de 5% sur la table
-        double tailleTable = Math.min(largeurScene * 0.92, hauteurScene * 0.92);
-        double tailleCellule = tailleTable / jeu.getTaille();
+        double tailleCellule = Math.min(largeurScene * 0.92, hauteurScene * 0.92) / taille;
 
-        // Ajuster la taille du GridPane pour correspondre à la table
-        gridPane.setPrefSize(jeu.getTaille() * tailleCellule, jeu.getTaille() * tailleCellule);
-        gridPane.setMaxSize(jeu.getTaille() * tailleCellule, jeu.getTaille() * tailleCellule);
+        // Ajuster le GridPane
+        gridPane.setPrefSize(taille * tailleCellule, taille * tailleCellule);
+        gridPane.setMaxSize(taille * tailleCellule, taille * tailleCellule);
 
-        // Ajuster chaque bouton
-        for (int i = 0; i < jeu.getTaille(); i++) {
-            for (int j = 0; j < jeu.getTaille(); j++) {
-                if (jeu.getPlateau().getElement(i, j) != null) {
-                    if (jeu.getPlateau().getElement(i, j).modifié() || derniereTaille != tailleCellule) {
-                        derniereTaille = tailleCellule;
-                        ImageView imageView = creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO);
-                        imageView.setCache(true);
-                        imageView.setSmooth(true);
-                        boutons[i][j].setGraphic(imageView);
-                        jeu.getPlateau().getElement(i, j).verifié();
-                    }
-                }
-                boutons[i][j].setMinSize(tailleCellule, tailleCellule);
-                boutons[i][j].setMaxSize(tailleCellule, tailleCellule);
+        // Ajuster chaque bouton avec un Stream
+        Arrays.stream(boutons).flatMap(Arrays::stream).forEach(bouton -> {
+            int i = GridPane.getRowIndex(bouton);
+            int j = GridPane.getColumnIndex(bouton);
+
+            if (jeu.getPlateau().getElement(i, j) != null
+                    && (jeu.getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
+
+                derniereTaille = tailleCellule;
+                bouton.setGraphic(creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO));
+                jeu.getPlateau().getElement(i, j).verifie();
             }
-        }
+
+            bouton.setMinSize(tailleCellule, tailleCellule);
+            bouton.setMaxSize(tailleCellule, tailleCellule);
+        });
     }
 
     /**
@@ -451,6 +450,7 @@ public class PartieAffichage extends Application {
     /**
      * Vérifier la grille et revenir à la dernière grille correcte.
      *
+     * @see Jeu#chargerSauvegardeAuto()
      */
     private void check() {
         jeu.chargerSauvegardeAuto();
@@ -465,7 +465,9 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Retour au checkpoint manuel
+     * Retour au checkpoint manuel.
+     *
+     * @see Jeu#chargerSauvegardeManuel()
      */
     private void retourSauvegarde() {
         jeu.chargerSauvegardeManuel();

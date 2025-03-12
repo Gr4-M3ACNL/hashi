@@ -28,6 +28,9 @@ public class DoubleLien implements ElementJeu {
      */
     private int lienBrillance;
 
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     */
     private boolean modifie = false;
 
     /**
@@ -139,18 +142,29 @@ public class DoubleLien implements ElementJeu {
         }
     }
 
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
     @Override
-    public boolean modifié() {
+    public boolean modifie() {
         return modifie;
     }
 
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
     @Override
-    public void verifié() {
+    public void verifie() {
         modifie = false;
     }
 
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
     @Override
-    public void averifié() {
+    public void averifie() {
         modifie = true;
     }
 

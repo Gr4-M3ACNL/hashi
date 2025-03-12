@@ -40,13 +40,16 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     private Boolean activer = false;
 
-    private boolean modifie = false;
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = true;
 
     /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
-     * @param x la coordonnée x du noeud
-     * @param y la coordonnée y du noeud
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
      * @param degS le degré solution du noeud
      */
     public Noeud(int x, int y, int degS) {
@@ -191,18 +194,29 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         }
     }
 
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
     @Override
-    public boolean modifié() {
+    public boolean modifie() {
         return modifie;
     }
 
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
     @Override
-    public void verifié() {
+    public void verifie() {
         modifie = false;
     }
 
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
     @Override
-    public void averifié() {
+    public void averifie() {
         modifie = true;
     }
 
