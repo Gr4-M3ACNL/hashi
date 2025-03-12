@@ -41,6 +41,8 @@ public class DoubleLien implements ElementJeu {
         lien2 = l2;
         interrupteur = false;
         lienBrillance = 0;
+        lien1.addDoubleLien(this);
+        lien2.addDoubleLien(this);
     }
 
     /**

@@ -1,5 +1,7 @@
 package fr.m3acnl.game.logique;
 
+import java.util.ArrayList;
+
 /**
  * Classe Lien, afin de les utilisés pour lié 2 noeuds.
  *
@@ -54,6 +56,8 @@ public class Lien implements ElementJeu {
 
     private int cmptVerifMax;
 
+    private ArrayList<DoubleLien> listeDl;
+
     /**
      * Constructeur pour une nouvelle instance de Lien.
      *
@@ -72,6 +76,7 @@ public class Lien implements ElementJeu {
         surbrillance = false;
         jeu = j;
         orientation = orient;
+        listeDl = new ArrayList<>();
 
         cmptVerifMax = tailleLien();
     }
@@ -146,6 +151,10 @@ public class Lien implements ElementJeu {
      */
     public void setIndex(int i) {
         index = i;
+    }
+
+    public void addDoubleLien(DoubleLien dl) {
+        listeDl.add(dl);
     }
 
     public int tailleLien() {
@@ -318,6 +327,9 @@ public class Lien implements ElementJeu {
     public void averifié() {
         modifie = true;
         cmptVerif = 0;
+        for (DoubleLien dl : listeDl) {
+            dl.averifié();
+        }
     }
 
     /**

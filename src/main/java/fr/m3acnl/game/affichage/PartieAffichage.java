@@ -198,6 +198,9 @@ public class PartieAffichage extends Application {
         } else {
             jeu.activeElemJeu(x, y, null);
         }
+        if (jeu.gagner()) {
+            System.out.println("Gagné");
+        }
         actualiserAffichage();
     }
 
