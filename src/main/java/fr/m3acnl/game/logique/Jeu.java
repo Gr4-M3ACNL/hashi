@@ -70,6 +70,25 @@ public class Jeu {
     }
 
     /**
+     * Renvoie une copie du jeu.
+     * 
+     * @return La copie du jeu.
+     */
+    public Jeu copieJeu() {
+        Jeu newJeu = new Jeu(taille, plateau.getMatrice2Array());
+        Noeud n1 = null;
+        for (Lien l : coupsJouer.copieTab()) {
+            n1 = l.getNoeud1();
+            if (l.getOrientation() == 1) {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX(), n1.getPosition().getCoordY() + 1, n1);
+            } else {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX() + 1, n1.getPosition().getCoordY(), n1);
+            }
+        }
+        return newJeu;
+    }
+    
+    /**
      * Vérification si le lien horizontal n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien

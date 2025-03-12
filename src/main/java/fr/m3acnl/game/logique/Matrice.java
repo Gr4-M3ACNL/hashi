@@ -100,6 +100,21 @@ public class Matrice {
     }
 
     /**
+     * Récupère la matrice2 en array.
+     * 
+     * @return La matrice2 en array.
+     */
+    public Double [][] getMatrice2Array() {
+        int taille = matrice2.size();
+        Double[][] array = new Double[taille][taille];
+
+        for (int i = 0; i < taille; i++) {
+            array[i] = matrice2.get(i).toArray(new Double[0]);
+        }
+        return array;
+    }
+    
+    /**
      * Modifie un élément de la matrice a la position donnée.
      *
      * @param ligne La ligne de l'élément
