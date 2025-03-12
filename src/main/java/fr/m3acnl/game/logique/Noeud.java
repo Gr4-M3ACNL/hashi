@@ -228,9 +228,14 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public Boolean activer() {
         ArrayList<Noeud> noeuds = afficherReseau();
+
+        // Vérifier si au moins un nœud a la surbrillance activée
+        boolean etatSurbrillance = noeuds.stream().anyMatch(Noeud::getSurbrillance);
+
+        // Appliquer l'état opposé à tous les nœuds
         for (Noeud noeud : noeuds) {
             noeud.setActiver(true);
-            if (noeud.getSurbrillance()) {
+            if (etatSurbrillance) {
                 noeud.surbrillanceOff();
             } else {
                 noeud.surbrillanceOn();

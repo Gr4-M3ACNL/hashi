@@ -6,6 +6,7 @@ import java.util.Arrays;
 import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Noeud;
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -20,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * Classe PartieAffichage pour l'affichage du jeu.
@@ -325,10 +327,29 @@ public class PartieAffichage extends Application {
      */
     private void victoire() {
         System.out.println("Victoire détectée !");
-
-        // Désactiver tous les boutons
         Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
 
+        // Afficher l'image "up.png" temporairement
+        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/up.png").toExternalForm()));
+        winImageView.setFitWidth(300);
+        winImageView.setFitHeight(300);
+
+        // Utiliser un StackPane mais sans fond opaque
+        StackPane upPane = new StackPane(winImageView);
+        upPane.setAlignment(Pos.CENTER);
+
+        backgroundPane.getChildren().add(upPane);
+
+        // Pause de 3 secondes avant d'afficher l'overlay final
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        pause.setOnFinished(event -> {
+            backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
+            afficherOverlayVictoire(); // Afficher l'overlay après la pause
+        });
+        pause.play();
+    }
+
+    private void afficherOverlayVictoire() {
         Scene scene = gridPane.getScene();
         if (!(scene != null && scene.getRoot() instanceof BorderPane mainLayout)) {
             System.out.println("ERREUR : Scène ou BorderPane invalide !");
