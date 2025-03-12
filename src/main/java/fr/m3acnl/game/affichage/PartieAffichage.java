@@ -250,10 +250,12 @@ public class PartieAffichage extends Application {
         Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm());
         ImageView imageBackgroundView = new ImageView(imageBackground);
         imageBackgroundView.setPreserveRatio(false);
+        imageBackgroundView.setCache(true);
 
         Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/table.png").toExternalForm());
         ImageView imageFondView = new ImageView(imageFond);
         imageFondView.setPreserveRatio(true);
+        imageFondView.setCache(true);
 
         backgroundPane = new StackPane(imageBackgroundView, imageFondView);
 
@@ -341,6 +343,8 @@ public class PartieAffichage extends Application {
         for (int i = 0; i < jeu.getTaille(); i++) {
             for (int j = 0; j < jeu.getTaille(); j++) {
                 ImageView imageView = creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO);
+                imageView.setCache(true);
+                imageView.setSmooth(true);
                 boutons[i][j].setGraphic(imageView);
                 boutons[i][j].setMinSize(tailleCellule, tailleCellule);
                 boutons[i][j].setMaxSize(tailleCellule, tailleCellule);
@@ -372,6 +376,8 @@ public class PartieAffichage extends Application {
         ImageView imageView = new ImageView(new Image(resource.toExternalForm()));
         imageView.setFitWidth(size);
         imageView.setFitHeight(size);
+        imageView.setCache(true);
+        imageView.setSmooth(true);
         return imageView;
     }
 
