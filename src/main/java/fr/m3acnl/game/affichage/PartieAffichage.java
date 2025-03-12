@@ -111,7 +111,7 @@ public class PartieAffichage extends Application {
                 boutons[i][j] = new Button();
                 int x = i;
                 int y = j;
-                boutons[i][j].setOnAction(e -> activerElement(x, y));
+                boutons[i][j].setOnMouseReleased(e -> activerElement(x, y));
 
                 URL resource = getResourceElement(i, j);
                 if (resource != null) {
@@ -146,13 +146,11 @@ public class PartieAffichage extends Application {
                 if (noeud != null) {
                     // Simuler l'activation sans modifier l'état du jeu
                     doubleLien.activerSurbrillance(noeud);
-                    doubleLien.averifié();
 
                 }
             }
         } else {
             jeu.getPlateau().getElement(x, y).surbrillanceOn();
-            jeu.getPlateau().getElement(x, y).averifié();
 
         }
         actualiserAffichage();
@@ -171,10 +169,8 @@ public class PartieAffichage extends Application {
         if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
             DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
             doubleLien.surbrillanceOff();
-            doubleLien.averifié();
         } else {
             jeu.getPlateau().getElement(x, y).surbrillanceOff();
-            jeu.getPlateau().getElement(x, y).averifié();
         }
         actualiserAffichage();
     }
@@ -196,16 +192,12 @@ public class PartieAffichage extends Application {
             if (noeudReference != null) {
                 Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
                 if (noeud != null) {
-                    doubleLien.activer(noeud).averifié();
-                    doubleLien.averifié();
-
+                    doubleLien.activer(noeud);
                 }
             }
         } else {
             jeu.activeElemJeu(x, y, null);
-            jeu.getPlateau().getElement(x, y).averifié();
         }
-        jeu.chargerSauvegardeAuto();
         actualiserAffichage();
     }
 

@@ -197,11 +197,14 @@ public class Lien implements ElementJeu {
      */
     @Override
     public Boolean activer() {
+        System.out.println("Lien activer");
+        averifié();
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
             if (orientation == 1) {
                 if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
                     nbLien -= 1;
+
                     return false;
                 }
             } else {
@@ -234,7 +237,8 @@ public class Lien implements ElementJeu {
             }
 
         }
-        averifié();
+
+        System.out.println(nbLien + "\n-------------------");
         return true;
     }
 
@@ -242,6 +246,7 @@ public class Lien implements ElementJeu {
      * Effectue le retour a l'état précédent du Lien et des noeuds.
      */
     public void retourArriere() {
+        averifié();
         nbLien = (nbLien + 2) % 3;
         if (nbLien < 2) {
             if (nbLien == 0) {
@@ -264,7 +269,7 @@ public class Lien implements ElementJeu {
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
         }
-        averifié();
+
     }
 
     /**
