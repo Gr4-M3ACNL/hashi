@@ -373,7 +373,6 @@ public class PartieAffichage extends Application {
      * @return L'ImageView créé
      */
     private ImageView creerImageView(URL resource, double size) {
-        System.out.println();
         ImageView imageView = new ImageView(new Image(resource.toExternalForm(),  500 * 0.5, 500 * 0.5, true, true));
         imageView.setFitWidth(size);
         imageView.setFitHeight(size);
