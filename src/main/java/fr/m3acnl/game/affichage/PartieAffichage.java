@@ -15,7 +15,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -289,14 +288,14 @@ public class PartieAffichage extends Application {
         for (Button bouton : new Button[]{buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint}) {
             bouton.setMinSize(150, 50);
             bouton.setStyle(
-                "-fx-background-color: linear-gradient(#7a5230, #4a2c14);" +
-                "-fx-background-radius: 10;" +
-                "-fx-border-color: #3d1e10;" +
-                "-fx-border-width: 2px;" +
-                "-fx-border-radius: 10;" +
-                "-fx-text-fill: white;" +
-                "-fx-font-size: 14px;" +
-                "-fx-font-family: 'Georgia';"
+                    "-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
+                    + "-fx-background-radius: 10;"
+                    + "-fx-border-color: #3d1e10;"
+                    + "-fx-border-width: 2px;"
+                    + "-fx-border-radius: 10;"
+                    + "-fx-text-fill: white;"
+                    + "-fx-font-size: 14px;"
+                    + "-fx-font-family: 'Georgia';"
             );
         }
 
@@ -304,14 +303,14 @@ public class PartieAffichage extends Application {
         buttonRetour.setOnAction(e -> retour());
         buttonAvancer.setOnAction(e -> avancer());
         buttonCheck.setOnAction(e -> check());
-
+        buttonSave.setOnAction(e -> jeu.sauvegarderManuellement());
+        buttonCheckpoint.setOnAction(e -> retourSauvegarde());
         labelTemps = new Label("Temps: 0s");
         labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
 
         controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, labelTemps);
         return controlPanel;
     }
-
 
     /**
      * Ajuste la taille des images en fonction de la taille de la scène.
@@ -413,17 +412,9 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Sauvegarde manuelle (checkpoint)
-     */
-    private void sauvegarde(){
-        jeu.sauvegarderManuellement();
-    }
-
-    /**
      * Retour au checkpoint manuel
      */
-
-    private void retourSauvegarde(){
+    private void retourSauvegarde() {
         jeu.chargerSauvegardeManuel();
         actualiserAffichage();
     }
