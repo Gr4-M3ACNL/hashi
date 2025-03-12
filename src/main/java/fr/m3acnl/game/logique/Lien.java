@@ -48,6 +48,8 @@ public class Lien implements ElementJeu {
      */
     private int index;
 
+    private boolean modifie = false;
+
     /**
      * Constructeur pour une nouvelle instance de Lien.
      *
@@ -266,6 +268,21 @@ public class Lien implements ElementJeu {
         if (nbLien == 2) {
             this.activer();
         }
+    }
+
+    @Override
+    public boolean modifié() {
+        return modifie;
+    }
+
+    @Override
+    public void verifié() {
+        modifie = false;
+    }
+
+    @Override
+    public void averifié() {
+        modifie = true;
     }
 
     /**

@@ -8,6 +8,12 @@ package fr.m3acnl.game.logique;
  */
 public interface ElementJeu {
 
+    public boolean modifié();
+
+    public void verifié();
+
+    public void averifié();
+
     /**
      * Méthode pour activer un élément de jeu.
      *

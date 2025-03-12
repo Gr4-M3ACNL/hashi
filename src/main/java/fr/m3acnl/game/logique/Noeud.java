@@ -40,6 +40,8 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     private Boolean activer = false;
 
+    private boolean modifie = false;
+
     /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
@@ -184,6 +186,21 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         for (Noeud voisin : noeud.listeAdjacence) {
             afficherReseauRecursif(voisin, visites);
         }
+    }
+
+    @Override
+    public boolean modifié() {
+        return modifie;
+    }
+
+    @Override
+    public void verifié() {
+        modifie = false;
+    }
+
+    @Override
+    public void averifié() {
+        modifie = true;
     }
 
     /**

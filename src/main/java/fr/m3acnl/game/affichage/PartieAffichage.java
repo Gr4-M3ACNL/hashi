@@ -144,11 +144,13 @@ public class PartieAffichage extends Application {
                 if (noeud != null) {
                     // Simuler l'activation sans modifier l'état du jeu
                     doubleLien.activerSurbrillance(noeud);
+                    doubleLien.averifié();
 
                 }
             }
         } else {
             jeu.getPlateau().getElement(x, y).surbrillanceOn();
+            jeu.getPlateau().getElement(x, y).averifié();
 
         }
         actualiserAffichage();
@@ -167,8 +169,10 @@ public class PartieAffichage extends Application {
         if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
             DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
             doubleLien.surbrillanceOff();
+            doubleLien.averifié();
         } else {
             jeu.getPlateau().getElement(x, y).surbrillanceOff();
+            jeu.getPlateau().getElement(x, y).averifié();
         }
         actualiserAffichage();
     }
@@ -190,11 +194,14 @@ public class PartieAffichage extends Application {
             if (noeudReference != null) {
                 Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
                 if (noeud != null) {
-                    doubleLien.activer(noeud);
+                    doubleLien.activer(noeud).averifié();
+                    doubleLien.averifié();
+
                 }
             }
         } else {
             jeu.activeElemJeu(x, y, null);
+            jeu.getPlateau().getElement(x, y).averifié();
         }
         jeu.chargerSauvegardeAuto();
         actualiserAffichage();
@@ -271,7 +278,6 @@ public class PartieAffichage extends Application {
         });
     }
 
-    
     /**
      * Crée le panneau de contrôle.
      *
@@ -343,10 +349,15 @@ public class PartieAffichage extends Application {
         // Ajuster chaque bouton
         for (int i = 0; i < jeu.getTaille(); i++) {
             for (int j = 0; j < jeu.getTaille(); j++) {
-                ImageView imageView = creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO);
-                imageView.setCache(true);
-                imageView.setSmooth(true);
-                boutons[i][j].setGraphic(imageView);
+                if (jeu.getPlateau().getElement(i, j) != null) {
+                    if (jeu.getPlateau().getElement(i, j).modifié()) {
+                        ImageView imageView = creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO);
+                        imageView.setCache(true);
+                        imageView.setSmooth(true);
+                        boutons[i][j].setGraphic(imageView);
+                        jeu.getPlateau().getElement(i, j).verifié();
+                    }
+                }
                 boutons[i][j].setMinSize(tailleCellule, tailleCellule);
                 boutons[i][j].setMaxSize(tailleCellule, tailleCellule);
             }
@@ -374,7 +385,7 @@ public class PartieAffichage extends Application {
      * @return L'ImageView créé
      */
     private ImageView creerImageView(URL resource, double size) {
-        ImageView imageView = new ImageView(new Image(resource.toExternalForm(),  500 * 0.5, 500 * 0.5, true, true));
+        ImageView imageView = new ImageView(new Image(resource.toExternalForm(), 500 * 0.5, 500 * 0.5, true, true));
         imageView.setFitWidth(size);
         imageView.setFitHeight(size);
         imageView.setCache(true);

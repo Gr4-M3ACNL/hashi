@@ -28,6 +28,8 @@ public class DoubleLien implements ElementJeu {
      */
     private int lienBrillance;
 
+    private boolean modifie = false;
+
     /**
      * Constructeur pour créer une instance de DoubleLien.
      *
@@ -132,6 +134,21 @@ public class DoubleLien implements ElementJeu {
 
             }
         }
+    }
+
+    @Override
+    public boolean modifié() {
+        return modifie;
+    }
+
+    @Override
+    public void verifié() {
+        modifie = false;
+    }
+
+    @Override
+    public void averifié() {
+        modifie = true;
     }
 
     /**
