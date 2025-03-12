@@ -271,6 +271,7 @@ public class PartieAffichage extends Application {
         });
     }
 
+    
     /**
      * Crée le panneau de contrôle.
      *
