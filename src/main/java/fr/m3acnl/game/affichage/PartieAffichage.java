@@ -349,6 +349,9 @@ public class PartieAffichage extends Application {
         pause.play();
     }
 
+    /**
+     * Affiche l'overlay du menu de victoire.
+     */
     private void afficherOverlayVictoire() {
         Scene scene = gridPane.getScene();
         if (!(scene != null && scene.getRoot() instanceof BorderPane mainLayout)) {
