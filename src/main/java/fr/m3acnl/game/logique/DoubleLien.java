@@ -134,6 +134,7 @@ public class DoubleLien implements ElementJeu {
 
             }
         }
+        averifié();
     }
 
     @Override
@@ -193,6 +194,7 @@ public class DoubleLien implements ElementJeu {
                 return lien2;
             }
         }
+        averifié();
         return null;
     }
 
@@ -201,6 +203,7 @@ public class DoubleLien implements ElementJeu {
         if (lienActif() != null) {
             lienActif().surbrillanceOn();
         }
+        averifié();
     }
 
     @Override
@@ -212,6 +215,7 @@ public class DoubleLien implements ElementJeu {
             lien2.surbrillanceOff();
             lienBrillance = 0;
         }
+        averifié();
     }
 
     /**

@@ -117,6 +117,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void ajouterDegre() {
         degreActuelle += 1;
+        averifié();
     }
 
     /**
@@ -124,6 +125,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void suppressionDegre() {
         degreActuelle -= 2;
+        averifié();
     }
 
     /**
@@ -131,6 +133,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void diminuerDegre() {
         degreActuelle -= 1;
+        averifié();
     }
 
     /**
@@ -230,6 +233,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public void surbrillanceOn() {
         if (activer) {
             surbrillance = true;
+            averifié();
         }
     }
 
@@ -240,6 +244,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public void surbrillanceOff() {
         if (activer) {
             surbrillance = false;
+            averifié();
         }
     }
 

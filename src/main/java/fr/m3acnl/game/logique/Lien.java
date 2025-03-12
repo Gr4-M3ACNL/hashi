@@ -50,6 +50,10 @@ public class Lien implements ElementJeu {
 
     private boolean modifie = false;
 
+    private int cmptVerif = 0;
+
+    private int cmptVerifMax;
+
     /**
      * Constructeur pour une nouvelle instance de Lien.
      *
@@ -69,6 +73,7 @@ public class Lien implements ElementJeu {
         jeu = j;
         orientation = orient;
 
+        cmptVerifMax = tailleLien();
     }
 
     /**
@@ -143,12 +148,27 @@ public class Lien implements ElementJeu {
         index = i;
     }
 
+    public int tailleLien() {
+        int tot = 0;
+        if (orientation == 1) {
+            for (int i = noeud1.getPosition().getCoordY() + 1; i < noeud2.getPosition().getCoordY(); i++) {
+                tot++;
+            }
+        } else {
+            for (int i = noeud1.getPosition().getCoordX() + 1; i < noeud2.getPosition().getCoordX(); i++) {
+                tot++;
+            }
+        }
+        return tot;
+    }
+
     /**
      * Active la surbrillance du lien.
      */
     @Override
     public void surbrillanceOn() {
         surbrillance = true;
+        averifié();
     }
 
     /**
@@ -157,6 +177,7 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOff() {
         surbrillance = false;
+        averifié();
     }
 
     /**
@@ -213,6 +234,7 @@ public class Lien implements ElementJeu {
             }
 
         }
+        averifié();
         return true;
     }
 
@@ -242,6 +264,7 @@ public class Lien implements ElementJeu {
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
         }
+        averifié();
     }
 
     /**
@@ -268,6 +291,7 @@ public class Lien implements ElementJeu {
         if (nbLien == 2) {
             this.activer();
         }
+        averifié();
     }
 
     @Override
@@ -277,12 +301,18 @@ public class Lien implements ElementJeu {
 
     @Override
     public void verifié() {
-        modifie = false;
+        if (cmptVerif == cmptVerifMax) {
+            modifie = false;
+            cmptVerif = 0;
+        } else {
+            cmptVerif++;
+        }
     }
 
     @Override
     public void averifié() {
         modifie = true;
+        cmptVerif = 0;
     }
 
     /**

@@ -57,6 +57,8 @@ public class PartieAffichage extends Application {
      */
     private StackPane backgroundPane;
 
+    private double derniereTaille = -1;
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
@@ -350,7 +352,8 @@ public class PartieAffichage extends Application {
         for (int i = 0; i < jeu.getTaille(); i++) {
             for (int j = 0; j < jeu.getTaille(); j++) {
                 if (jeu.getPlateau().getElement(i, j) != null) {
-                    if (jeu.getPlateau().getElement(i, j).modifié()) {
+                    if (jeu.getPlateau().getElement(i, j).modifié() || derniereTaille != tailleCellule) {
+                        derniereTaille = tailleCellule;
                         ImageView imageView = creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO);
                         imageView.setCache(true);
                         imageView.setSmooth(true);
