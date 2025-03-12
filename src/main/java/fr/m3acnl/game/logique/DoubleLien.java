@@ -118,7 +118,7 @@ public class DoubleLien implements ElementJeu {
      * @param n Le nœud lié
      */
     public void activerSurbrillance(Noeud n) {
-        averifié();
+        averifie();
         if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 lien1.surbrillanceOn();
@@ -185,7 +185,7 @@ public class DoubleLien implements ElementJeu {
      * @return Le lien qui a été activé, retourne null si aucun lien est activé
      */
     public Lien activer(Noeud n) {
-        averifié();
+        averifie();
         if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.activer()) {
@@ -217,7 +217,7 @@ public class DoubleLien implements ElementJeu {
 
     @Override
     public void surbrillanceOn() {
-        averifié();
+        averifie();
         if (lienActif() != null) {
             lienActif().surbrillanceOn();
         }
@@ -225,7 +225,7 @@ public class DoubleLien implements ElementJeu {
 
     @Override
     public void surbrillanceOff() {
-        averifié();
+        averifie();
         if (lienBrillance == 1) {
             lien1.surbrillanceOff();
             lienBrillance = 0;

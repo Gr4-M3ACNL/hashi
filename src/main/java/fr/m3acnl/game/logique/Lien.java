@@ -199,7 +199,7 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOn() {
         surbrillance = true;
-        averifié();
+        averifie();
     }
 
     /**
@@ -208,7 +208,7 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOff() {
         surbrillance = false;
-        averifié();
+        averifie();
     }
 
     /**
@@ -229,7 +229,7 @@ public class Lien implements ElementJeu {
     @Override
     public Boolean activer() {
         System.out.println("Lien activer");
-        averifié();
+        averifie();
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
             if (orientation == 1) {
@@ -277,7 +277,7 @@ public class Lien implements ElementJeu {
      * Effectue le retour a l'état précédent du Lien et des noeuds.
      */
     public void retourArriere() {
-        averifié();
+        averifie();
         nbLien = (nbLien + 2) % 3;
         if (nbLien < 2) {
             if (nbLien == 0) {
@@ -327,7 +327,7 @@ public class Lien implements ElementJeu {
         if (nbLien == 2) {
             this.activer();
         }
-        averifié();
+        averifie();
     }
 
     /**
@@ -355,7 +355,7 @@ public class Lien implements ElementJeu {
 
     /**
      * Permet de dire que l'élément a été modifié. Fait appel à la méthode
-     * averifié sur ses double lien.
+     * averifie sur ses double lien.
      */
     @Override
     public void averifie() {
