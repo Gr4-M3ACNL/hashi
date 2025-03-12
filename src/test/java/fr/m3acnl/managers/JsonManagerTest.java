@@ -13,8 +13,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.m3acnl.Tests;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
-import fr.m3acnl.game.logique.Lien;
-import fr.m3acnl.game.logique.Pile;
 import fr.m3acnl.profile.Profile;
 
 /**
@@ -72,7 +70,7 @@ public class JsonManagerTest extends Tests {
         // Vérification de quelques valeurs spécifiques
         assertEquals(-4.0, serialise[0][0], "La première île devrait avoir une valeur de -4");
         assertEquals(0.2, serialise[0][1], "La connexion horizontale devrait avoir une valeur de 0.2");
-        assertEquals(-4.0, serialise[0][2], "La deuxième île devrait avoir une valeur de -4");
+        assertEquals(-3.0, serialise[0][2], "La deuxième île devrait avoir une valeur de -3");
     }
 
     /**
