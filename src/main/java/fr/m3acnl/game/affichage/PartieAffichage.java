@@ -52,26 +52,6 @@ public class PartieAffichage extends Application {
     private static final double SUPERPOSITION_RATIO = 1.15;
 
     /**
-     * La largeur du fond.
-     */
-    private static final Integer LARGEUR_BACKGROUND = 1080;
-
-    /**
-     * La longueur du fond.
-     */
-    private static final Integer LONGUEUR_BACKGROUND = 1920;
-
-    /**
-     * La taille du fond.
-     */
-    private static final Integer TAILLE_FOND = 800;
-
-    /**
-     * Le ratio d'assombrissement du fond.
-     */
-    private static final double ASSOMBRISSEMENT = 0.65;
-
-    /**
      * Le StackPane pour le fond.
      */
     private StackPane backgroundPane;
@@ -98,13 +78,14 @@ public class PartieAffichage extends Application {
         creerBackground();
         root.getChildren().addAll(backgroundPane, gridPane);
 
-        boutons = new Button[7][7];
+        boutons = new Button[jeu.getTaille()][jeu.getTaille()];
         initialiserBoutons();
 
         HBox controlPanel = creerPanneauDeControle();
+        controlPanel.setAlignment(Pos.CENTER_LEFT);
+        root.getChildren().add(controlPanel);
         BorderPane mainLayout = new BorderPane();
         mainLayout.setCenter(root);
-        mainLayout.setBottom(controlPanel);
 
         Scene scene = new Scene(mainLayout, 1920, 1080);
         primaryStage.setTitle("Jeu Interface");
