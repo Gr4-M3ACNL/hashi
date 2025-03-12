@@ -1,11 +1,13 @@
 package fr.m3acnl.game.affichage;
 
 import java.net.URL;
+import java.util.Arrays;
 
 import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Noeud;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -22,7 +24,7 @@ import javafx.stage.Stage;
 /**
  * Classe PartieAffichage pour l'affichage du jeu.
  *
- * @author PESANTEZ Maelig
+ * @author MABIRE Aymeric, PESANTEZ Maelig
  * @version 1.0
  */
 public class PartieAffichage extends Application {
@@ -63,15 +65,11 @@ public class PartieAffichage extends Application {
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
         Double[][] mat = {
-            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
-            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
-            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
-            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
-            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
-            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
-            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
+            {-1.0, 0.1, -1.0},
+            {0.0, 0.0, 0.0},
+            {0.0, 0.0, 0.0}
         };
-        jeu = new Jeu(7, mat);
+        jeu = new Jeu(3, mat);
         gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(-10);
@@ -200,6 +198,7 @@ public class PartieAffichage extends Application {
         }
         if (jeu.gagner()) {
             System.out.println("Gagné");
+            victoire();
         }
         actualiserAffichage();
     }
@@ -316,6 +315,44 @@ public class PartieAffichage extends Application {
 
         controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, labelTemps);
         return controlPanel;
+    }
+
+    private void victoire() {
+        System.out.println("Victoire détectée !");
+
+        // Désactiver tous les boutons
+        Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
+
+        Scene scene = gridPane.getScene();
+        if (!(scene != null && scene.getRoot() instanceof BorderPane mainLayout)) {
+            System.out.println("ERREUR : Scène ou BorderPane invalide !");
+            return;
+        }
+
+        // Création des éléments de l'overlay
+        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/win.png").toExternalForm()));
+        winImageView.setFitWidth(500);
+        winImageView.setFitHeight(500);
+
+        Label labelWin = new Label("Temps : " + labelTemps.getText());
+        labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+
+        Button btnSuivant = new Button("Grille Suivante");
+        Button btnQuitter = new Button("Quitter");
+
+        btnSuivant.setOnAction(e -> System.out.println("Grille suivante"));
+        btnQuitter.setOnAction(e -> Platform.exit());
+
+        VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
+        winBox.setAlignment(Pos.CENTER);
+        winBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 20px; -fx-border-radius: 10px;");
+
+        StackPane overlayPane = new StackPane(winBox);
+        overlayPane.setAlignment(Pos.CENTER);
+        overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+
+        mainLayout.setCenter(overlayPane);
+        System.out.println("Overlay ajouté !");
     }
 
     /**
