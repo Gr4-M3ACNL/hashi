@@ -208,9 +208,10 @@ public class Jeu {
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
+     * @return Renvoie null si le lien n'as pas été activer sinon renvoie le lien.
      */
-    public void activeElemAide(int x, int y, Noeud n) {
-        activeElem(x, y, n);
+    public Lien activeElemAide(int x, int y, Noeud n) {
+        return activeElem(x, y, n);
     }
 
     /**
