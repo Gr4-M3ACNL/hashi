@@ -6,6 +6,7 @@ import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Noeud;
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -81,8 +83,10 @@ public class PartieAffichage extends Application {
         boutons = new Button[jeu.getTaille()][jeu.getTaille()];
         initialiserBoutons();
 
-        HBox controlPanel = creerPanneauDeControle();
+        VBox controlPanel = creerPanneauDeControle();
         controlPanel.setAlignment(Pos.CENTER_LEFT);
+        controlPanel.setPadding(new Insets(0, 0, 0, 90));
+        controlPanel.setPickOnBounds(false);
         root.getChildren().add(controlPanel);
         BorderPane mainLayout = new BorderPane();
         mainLayout.setCenter(root);
@@ -193,6 +197,7 @@ public class PartieAffichage extends Application {
         } else {
             jeu.activeElemJeu(x, y, null);
         }
+        jeu.chargerSauvegardeAuto();
         actualiserAffichage();
     }
 
@@ -270,24 +275,43 @@ public class PartieAffichage extends Application {
      *
      * @return Le panneau de contrôle
      */
-    private HBox creerPanneauDeControle() {
-        HBox controlPanel = new HBox(10);
+    private VBox creerPanneauDeControle() {
+        VBox controlPanel = new VBox(10);
         controlPanel.setAlignment(Pos.CENTER);
 
         Button buttonRetour = new Button("Retour");
+        Button buttonAvancer = new Button("Avancer");
+        Button buttonCheck = new Button("Vérifier grille");
+        Button buttonSave = new Button("Sauvegarde manuelle");
+        Button buttonCheckpoint = new Button("Retour checkpoint");
+
+        // Appliquer un style uniforme aux boutons
+        for (Button bouton : new Button[]{buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint}) {
+            bouton.setMinSize(150, 50);
+            bouton.setStyle(
+                "-fx-background-color: linear-gradient(#7a5230, #4a2c14);" +
+                "-fx-background-radius: 10;" +
+                "-fx-border-color: #3d1e10;" +
+                "-fx-border-width: 2px;" +
+                "-fx-border-radius: 10;" +
+                "-fx-text-fill: white;" +
+                "-fx-font-size: 14px;" +
+                "-fx-font-family: 'Georgia';"
+            );
+        }
+
+        // Ajouter les actions
         buttonRetour.setOnAction(e -> retour());
-
-        Button bouttonAvancer = new Button("Avancer");
-        bouttonAvancer.setOnAction(e -> avancer());
-
-        Button bouttonCheck = new Button("Vérifier victoire");
-        bouttonCheck.setOnAction(e -> check());
+        buttonAvancer.setOnAction(e -> avancer());
+        buttonCheck.setOnAction(e -> check());
 
         labelTemps = new Label("Temps: 0s");
+        labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
 
-        controlPanel.getChildren().addAll(buttonRetour, bouttonAvancer, bouttonCheck, labelTemps);
+        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, labelTemps);
         return controlPanel;
     }
+
 
     /**
      * Ajuste la taille des images en fonction de la taille de la scène.
@@ -373,15 +397,12 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Vérifie si le joueur a gagné.
+     * Vérifier la grille et revenir à la dernière grille correcte.
      *
-     * @see Jeu#gagner()
      */
     private void check() {
-        if (jeu.gagner()) {
-            System.out.println("Vous avez gagné!");
-
-        }
+        jeu.chargerSauvegardeAuto();
+        actualiserAffichage();
     }
 
     /**
@@ -389,6 +410,22 @@ public class PartieAffichage extends Application {
      */
     private void actualiserAffichage() {
         ajusterTailleImages();
+    }
+
+    /**
+     * Sauvegarde manuelle (checkpoint)
+     */
+    private void sauvegarde(){
+        jeu.sauvegarderManuellement();
+    }
+
+    /**
+     * Retour au checkpoint manuel
+     */
+
+    private void retourSauvegarde(){
+        jeu.chargerSauvegardeManuel();
+        actualiserAffichage();
     }
 
     /**
