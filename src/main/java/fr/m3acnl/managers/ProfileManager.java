@@ -121,11 +121,24 @@ public class ProfileManager {
      */
     public void creerProfil(String nom) {
         List<String> listeProfils = listeProfils();
+        
+        // Vérifie si le profil existe déjà
         if (Objects.nonNull(listeProfils) && listeProfils.contains(nom)) {
             throw new IllegalArgumentException("Le profil existe déjà");
         }
-        profileActif = new Profile(nom);
-        sauvegarder();
+        
+        // Crée un nouveau profil
+        Profile nouveauProfil = new Profile(nom);
+        
+        // Sauvegarde le nouveau profil via jsonManager
+        jsonManager.sauvegarderProfil(nouveauProfil);
+        
+        // Charge la liste mise à jour
+        listeProfils = listeProfils();
+    
+        // Définit le profil actif
+        setProfileActif(nom);
     }
+    
 
 }
