@@ -18,7 +18,9 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -26,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -112,15 +115,7 @@ public class PartieAffichage extends Application {
         primaryStage.setTitle("Jeu Interface");
         primaryStage.setScene(scene);
         primaryStage.setOnCloseRequest(event -> {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment quitter ?", ButtonType.YES, ButtonType.NO);
-            alert.setTitle("Confirmation de fermeture");
-
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.NO) {
-                event.consume(); // Empêche la fermeture
-            } else {
-                System.out.println("Sauvegarde"); // Sauvegarde avant fermeture
-            }
+            demandeSortie(event);
         });
 
         primaryStage.show();
@@ -386,7 +381,8 @@ public class PartieAffichage extends Application {
         }
 
         // Création des éléments de l'overlay
-        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/win.png").toExternalForm()));
+        ImageView winImageView = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/win.png").toExternalForm()));
         winImageView.setFitWidth(500);
         winImageView.setFitHeight(500);
 
@@ -408,6 +404,72 @@ public class PartieAffichage extends Application {
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
         mainLayout.setCenter(overlayPane);
+    }
+
+    /**
+     * Demande à l'utilisateur s'il veut vraiment quitter.
+     */
+    private void demandeSortie(javafx.stage.WindowEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+
+        // Style du DialogPane avec image de fond
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/background.png');"
+                + "-fx-background-size: cover;");
+
+        // Image de gauche (agrandie de 30%)
+        ImageView exitImage = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/goodbye.png").toExternalForm()));
+        exitImage.setFitWidth(130);
+        exitImage.setFitHeight(130);
+
+        // Texte de confirmation
+        Label message = new Label("Voulez-vous vraiment quitter ?\nToute progression non sauvegardée sera perdue.");
+        message.setWrapText(true);
+        message.setStyle("-fx-font-size: 14px; -fx-font-family: 'Georgia'; -fx-text-fill: black;");
+
+        // Conteneur principal (Image + Texte)
+        HBox content = new HBox(20, exitImage, message);
+        content.setAlignment(Pos.CENTER_LEFT);
+
+        // Création des boutons
+        ButtonType boutonQuitter = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType boutonAnnuler = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(boutonQuitter, boutonAnnuler);
+
+        // Style des boutons
+        String buttonStyle = "-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
+                + "-fx-background-radius: 10;"
+                + "-fx-border-color: #3d1e10;"
+                + "-fx-border-width: 2px;"
+                + "-fx-border-radius: 10;"
+                + "-fx-text-fill: white;"
+                + "-fx-font-size: 14px;"
+                + "-fx-font-family: 'Georgia';";
+
+        // Centrer les boutons
+        HBox buttonBox = new HBox(10, dialogPane.lookupButton(boutonQuitter), dialogPane.lookupButton(boutonAnnuler));
+        buttonBox.setAlignment(Pos.CENTER);
+
+        // Appliquer le style aux boutons
+        buttonBox.getChildren().forEach(button -> button.setStyle(buttonStyle));
+
+        // Organisation du layout général
+        VBox root = new VBox(20, content, buttonBox);
+        root.setAlignment(Pos.CENTER);
+        root.setPadding(new Insets(20));
+        dialogPane.setContent(root);
+
+        // Affichage de l'alerte et récupération de la réponse
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Vérification de la réponse
+        if (result.isEmpty() || result.get() == boutonAnnuler) {
+            event.consume(); // Annule la fermeture de l'application
+        } else {
+            Platform.exit();
+        }
     }
 
     /**
