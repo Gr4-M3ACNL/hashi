@@ -159,22 +159,17 @@ public class JsonManagerTest extends Tests {
         JsonManager manager = new JsonManager();
 
         // vérifie que le fichier de profils n'existe pas
-        assertNull(manager.getListeProfils(), "Le fichier de profils n'existe la liste devrai être null");
+        assertTrue(manager.getListeProfils().isEmpty(), "Le fichier de profils n'existe la liste devrai être null");
 
-        try {
-            // copie le fichier de test dans le repertoire ressources au bon endroit
-            Files.copy(this.getClass().getResourceAsStream("/fr/m3acnl/managers/profils.json"),
-                    SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Impossible de copier le fichier de profils");
-        }
+        Profile profile = new Profile("jacoboni");
+        manager.sauvegarderProfil(profile);
+        profile = new Profile("Després");
+        manager.sauvegarderProfil(profile);
         // vérifie que le fichier de profils existe
         assertNotNull(manager.getListeProfils(), "La liste des profils ne devrait pas être nulle");
-        List<String> profils = manager.getListeProfils();
-        assertEquals(2, profils.size(), "Il devrait y avoir 2 profils");
-        assertEquals("jacoboni", profils.get(0), "Le premier profil devrait être jacoboni");
-        assertEquals("despres", profils.get(1), "Le deuxième profil devrait être despres");
+        assertEquals(2, manager.getListeProfils().size(), "Il devrait y avoir 2 profils");
+        assertEquals("jacoboni", manager.getListeProfils().get(0), "Le premier profil devrait être jacoboni");
+        assertEquals("Després", manager.getListeProfils().get(1), "Le deuxième profil devrait être Després");
 
         // restauration des profils
         restoreProfils();
