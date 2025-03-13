@@ -134,7 +134,6 @@ public class Matrice {
      * @param jeu Le jeu au quel la matrice appartient
      */
     private void genMatrice(Jeu jeu) {
-        // Generate the nodes
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
                 if (matrice2.get(i).get(j) < 0) {

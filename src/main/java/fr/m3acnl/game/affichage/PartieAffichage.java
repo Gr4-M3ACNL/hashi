@@ -2,24 +2,35 @@ package fr.m3acnl.game.affichage;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Optional;
 
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
 import fr.m3acnl.game.logique.DoubleLien;
+import fr.m3acnl.game.logique.ElementJeu;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Noeud;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -101,6 +112,10 @@ public class PartieAffichage extends Application {
         Scene scene = new Scene(mainLayout, 1920, 1080);
         primaryStage.setTitle("Jeu Interface");
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(event -> {
+            demandeSortie(event);
+        });
+
         primaryStage.show();
 
         scene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
@@ -117,7 +132,7 @@ public class PartieAffichage extends Application {
                 boutons[i][j] = new Button();
                 int x = i;
                 int y = j;
-                boutons[i][j].setOnMouseReleased(e -> activerElement(x, y));
+                boutons[i][j].setOnMouseClicked(event -> activerElement(event, x, y));
 
                 URL resource = getResourceElement(i, j);
                 if (resource != null) {
@@ -125,7 +140,8 @@ public class PartieAffichage extends Application {
                 }
 
                 boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
-                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(x, y)); // Active le survol
+                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(e, x, y));
+
                 boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y)); // Désactive le survol
 
                 gridPane.add(boutons[i][j], y, x);
@@ -140,24 +156,24 @@ public class PartieAffichage extends Application {
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
-    private void previsualiserEtat(int x, int y) {
-        if (partie.getJeu().getPlateau().getElement(x, y) == null) {
-            return;
-        }
-        if (partie.getJeu().getPlateau().getElement(x, y) instanceof DoubleLien) {
-            DoubleLien doubleLien = (DoubleLien) partie.getJeu().getPlateau().getElement(x, y);
-            Noeud noeudReference = partie.getJeu().getPlateau().trouverNoeudLePlusProche(x, y);
+    private void previsualiserEtat(MouseEvent event, int x, int y) {
+        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
 
-            if (noeudReference != null) {
-                Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
-                if (noeud != null) {
-                    doubleLien.activerSurbrillance(noeud);
-                }
+        if (element == null) {
+            return; // Rien à faire si la case est vide
+        }
+
+        if (element instanceof DoubleLien doubleLien) {
+            // Trouver le nœud le plus proche de la souris
+            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
+
+            if (noeudProche != null) {
+                doubleLien.activerSurbrillance(noeudProche);
             }
         } else {
-            partie.getJeu().getPlateau().getElement(x, y).surbrillanceOn();
-
+            element.surbrillanceOn();
         }
+
         actualiserAffichage();
     }
 
@@ -186,70 +202,68 @@ public class PartieAffichage extends Application {
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
-    private void activerElement(int x, int y) {
+    private void activerElement(MouseEvent event, int x, int y) {
         restaurerEtat(x, y);
-        if (partie.getJeu().getPlateau().getElement(x, y) instanceof DoubleLien) {
-            DoubleLien doubleLien = (DoubleLien) partie.getJeu().getPlateau().getElement(x, y);
 
-            Noeud noeudReference = partie.getJeu().getPlateau().trouverNoeudLePlusProche(x, y);
+        // Vérifier si l'élément du plateau est un DoubleLien
+        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
+        if (element instanceof DoubleLien doubleLien) {
 
-            if (noeudReference != null) {
-                Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
-                if (noeud != null) {
-                    doubleLien.activer(noeud);
-                }
+            // Trouver le nœud le plus proche de la souris sur le bouton
+            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
+
+            if (noeudProche != null) {
+                doubleLien.activer(noeudProche); // Activation avec le bon nœud
             }
         } else {
-            partie.getJeu().activeElemJeu(x, y, null);
+            partie.getJeu().activeElemJeu(x, y, null); // Activation classique si ce n'est pas un DoubleLien
         }
-        if (partie.getJeu().gagner()) {
+
+        // Vérifier si la partie est gagnée
+        if (jeu.gagner()) {
             partie.finPartie();
             victoire();
         } else {
             partie.sauvegarde();
         }
+
+        // Mettre à jour l'affichage
         actualiserAffichage();
     }
 
-    /**
-     * Trouve le nœud le plus proche d'un double lien.
-     *
-     * @param doubleLien Le double lien
-     * @param reference Le nœud de référence
-     * @return Le nœud le plus proche
-     */
-    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, Noeud reference) {
-        Noeud n1Lien1 = doubleLien.getLien1().getNoeud1();
-        Noeud n2Lien1 = doubleLien.getLien1().getNoeud2();
-        Noeud n1Lien2 = doubleLien.getLien2().getNoeud1();
-        Noeud n2Lien2 = doubleLien.getLien2().getNoeud2();
-
-        Noeud[] noeudsPossibles = {n1Lien1, n2Lien1, n1Lien2, n2Lien2};
-        Noeud noeudProche = noeudsPossibles[0];
-        double distanceMin = calculerDistance(reference, noeudProche);
-
-        for (Noeud noeud : noeudsPossibles) {
-            double distance = calculerDistance(reference, noeud);
-            if (distance < distanceMin) {
-                distanceMin = distance;
-                noeudProche = noeud;
-            }
+    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, MouseEvent event) {
+        if (!(event.getSource() instanceof Node source)) {
+            System.out.println("L'élément source n'est pas un Node !");
+            return null;
         }
 
-        return noeudProche;
-    }
+        // Convertir la position de la souris en coordonnées locales du bouton
+        Point2D mouseLocal = source.sceneToLocal(event.getSceneX(), event.getSceneY());
 
-    /**
-     * Calcule la distance entre deux nœuds.
-     *
-     * @param n1 Le premier nœud
-     * @param n2 Le deuxième nœud
-     * @return La distance entre les deux nœuds
-     */
-    private double calculerDistance(Noeud n1, Noeud n2) {
-        double dx = n1.getPosition().getCoordX() - n2.getPosition().getCoordX();
-        double dy = n1.getPosition().getCoordY() - n2.getPosition().getCoordY();
-        return Math.sqrt(dx * dx + dy * dy);
+        // Récupérer les nœuds des liens
+        Noeud noeudHaut = doubleLien.getLien1().getNoeud1();
+        Noeud noeudBas = doubleLien.getLien1().getNoeud2();
+        Noeud noeudGauche = doubleLien.getLien2().getNoeud1();
+        Noeud noeudDroit = doubleLien.getLien2().getNoeud2();
+
+        // Dimensions du bouton
+        double boutonWidth = ((Button) source).getWidth();
+        double boutonHeight = ((Button) source).getHeight();
+
+        // Déterminer la position relative de la souris
+        double centerX = boutonWidth / 2;
+        double centerY = boutonHeight / 2;
+        double dx = mouseLocal.getX() - centerX;
+        double dy = mouseLocal.getY() - centerY;
+
+        // Comparer les distances pour choisir entre horizontal et vertical
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Mouvement majoritairement horizontal
+            return (dx < 0) ? noeudGauche : noeudDroit;
+        } else {
+            // Mouvement majoritairement vertical
+            return (dy < 0) ? noeudHaut : noeudBas;
+        }
     }
 
     /**
@@ -258,12 +272,12 @@ public class PartieAffichage extends Application {
      */
     private void creerBackground() {
 
-        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm());
+        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backPartie.png").toExternalForm());
         ImageView imageBackgroundView = new ImageView(imageBackground);
         imageBackgroundView.setPreserveRatio(false);
         imageBackgroundView.setCache(true);
 
-        Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/table.png").toExternalForm());
+        Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/table.png").toExternalForm());
         ImageView imageFondView = new ImageView(imageFond);
         imageFondView.setPreserveRatio(true);
         imageFondView.setCache(true);
@@ -331,15 +345,21 @@ public class PartieAffichage extends Application {
         Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
 
         // Afficher l'image "up.png" temporairement
-        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/up.png").toExternalForm()));
+        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/up.png").toExternalForm()));
         winImageView.setFitWidth(300);
         winImageView.setFitHeight(300);
+        winImageView.setBlendMode(BlendMode.SRC_OVER);
 
         // Utiliser un StackPane mais sans fond opaque
         StackPane upPane = new StackPane(winImageView);
         upPane.setAlignment(Pos.CENTER);
+        upPane.setOpacity(1);
+
+        backgroundPane.setEffect(null);
+        backgroundPane.setOpacity(1);
 
         backgroundPane.getChildren().add(upPane);
+        backgroundPane.getChildren().get(backgroundPane.getChildren().size() - 1).toFront();
 
         // Pause de 3 secondes avant d'afficher l'overlay final
         PauseTransition pause = new PauseTransition(Duration.seconds(3));
@@ -354,6 +374,7 @@ public class PartieAffichage extends Application {
      * Affiche l'overlay du menu de victoire.
      */
     private void afficherOverlayVictoire() {
+        System.out.println("Victoire !");
         Scene scene = gridPane.getScene();
         if (!(scene != null && scene.getRoot() instanceof BorderPane mainLayout)) {
             System.out.println("ERREUR : Scène ou BorderPane invalide !");
@@ -361,7 +382,8 @@ public class PartieAffichage extends Application {
         }
 
         // Création des éléments de l'overlay
-        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/win.png").toExternalForm()));
+        ImageView winImageView = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/win.png").toExternalForm()));
         winImageView.setFitWidth(500);
         winImageView.setFitHeight(500);
 
@@ -383,6 +405,72 @@ public class PartieAffichage extends Application {
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
         mainLayout.setCenter(overlayPane);
+    }
+
+    /**
+     * Demande à l'utilisateur s'il veut vraiment quitter.
+     */
+    private void demandeSortie(javafx.stage.WindowEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText(null);
+
+        // Style du DialogPane avec image de fond
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backExit.png');"
+                + "-fx-background-size: cover;");
+
+        // Image de gauche (agrandie de 30%)
+        ImageView exitImage = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
+        exitImage.setFitWidth(130);
+        exitImage.setFitHeight(130);
+
+        // Texte de confirmation
+        Label message = new Label("Voulez-vous vraiment quitter ?");
+        message.setWrapText(true);
+        message.setStyle("-fx-font-size: 14px; -fx-font-family: 'Georgia'; -fx-text-fill: black;");
+
+        // Conteneur principal (Image + Texte)
+        HBox content = new HBox(20, exitImage, message);
+        content.setAlignment(Pos.CENTER_LEFT);
+
+        // Création des boutons
+        ButtonType boutonQuitter = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
+        ButtonType boutonAnnuler = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(boutonQuitter, boutonAnnuler);
+
+        // Style des boutons
+        String buttonStyle = "-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
+                + "-fx-background-radius: 10;"
+                + "-fx-border-color: #3d1e10;"
+                + "-fx-border-width: 2px;"
+                + "-fx-border-radius: 10;"
+                + "-fx-text-fill: white;"
+                + "-fx-font-size: 14px;"
+                + "-fx-font-family: 'Georgia';";
+
+        // Centrer les boutons
+        HBox buttonBox = new HBox(10, dialogPane.lookupButton(boutonQuitter), dialogPane.lookupButton(boutonAnnuler));
+        buttonBox.setAlignment(Pos.CENTER);
+
+        // Appliquer le style aux boutons
+        buttonBox.getChildren().forEach(button -> button.setStyle(buttonStyle));
+
+        // Organisation du layout général
+        VBox root = new VBox(20, content, buttonBox);
+        root.setAlignment(Pos.CENTER);
+        root.setPadding(new Insets(20));
+        dialogPane.setContent(root);
+
+        // Affichage de l'alerte et récupération de la réponse
+        Optional<ButtonType> result = alert.showAndWait();
+
+        // Vérification de la réponse
+        if (result.isEmpty() || result.get() == boutonAnnuler) {
+            event.consume(); // Annule la fermeture de l'application
+        } else {
+            Platform.exit();
+        }
     }
 
     /**
@@ -412,7 +500,6 @@ public class PartieAffichage extends Application {
             if (partie.getJeu().getPlateau().getElement(i, j) != null
                     && (partie.getJeu().getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
 
-                derniereTaille = tailleCellule;
                 bouton.setGraphic(creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO));
                 partie.getJeu().getPlateau().getElement(i, j).verifie();
             }
@@ -420,6 +507,7 @@ public class PartieAffichage extends Application {
             bouton.setMinSize(tailleCellule, tailleCellule);
             bouton.setMaxSize(tailleCellule, tailleCellule);
         });
+        derniereTaille = tailleCellule;
     }
 
     /**
