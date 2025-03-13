@@ -220,7 +220,7 @@ public class PartieAffichage extends Application {
         }
 
         // Vérifier si la partie est gagnée
-        if (jeu.gagner()) {
+        if (partie.getJeu().gagner()) {
             partie.finPartie();
             victoire();
         } else {

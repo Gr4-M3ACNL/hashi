@@ -184,14 +184,14 @@ public class JsonManagerTest extends Tests {
         // initialisation des profils
         initProfils();
         JsonManager manager = new JsonManager();
-        Profile profile = new Profile("test");
+        Profile profile = new Profile("testJson");
         manager.sauvegarderProfil(profile);
         List<String> profils = manager.getListeProfils();
         assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
-        assertEquals("test", profils.get(0), "Le premier profil devrait être test");
+        assertEquals("testJson", profils.get(0), "Le premier profil devrait être test");
 
         // test du chargement du profil nouvellement créé
-        Profile profileCharge = manager.chargerProfil("test");
+        Profile profileCharge = manager.chargerProfil("testJson");
         assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
 
         // restauration des profils
@@ -208,11 +208,11 @@ public class JsonManagerTest extends Tests {
         // initialisation des profils
         initProfils();
         JsonManager manager = new JsonManager();
-        Profile profile = new Profile("test");
+        Profile profile = new Profile("testJson");
         manager.sauvegarderProfil(profile);
 
         // test de la suppression du profil
-        manager.supprimerProfil("test");
+        manager.supprimerProfil("testJson");
         List<String> profils = manager.getListeProfils();
         assertEquals(0, profils.size(), "Il ne devrait y avoir aucun profil");
 

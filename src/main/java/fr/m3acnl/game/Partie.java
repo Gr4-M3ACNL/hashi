@@ -163,5 +163,6 @@ public class Partie implements JsonSerializable {
         }
         ProfileManager.getInstance().getProfileActif().getHistoriquePartieProfile().ajouterTemps(difficulte, getChronoDuration());
         SauvegardePartieManager.getInstance().supprimer(difficulte);
+        ProfileManager.getInstance().sauvegarder();
     }
 }

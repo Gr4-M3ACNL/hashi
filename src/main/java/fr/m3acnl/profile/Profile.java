@@ -6,7 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import fr.m3acnl.game.Difficulte;
+
 import java.io.IOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Profil d'un utilisateur.
@@ -129,10 +135,26 @@ public class Profile implements JsonSerializable {
      * @param historiquePartieProfile l'historique des parties jouées par un joueur
      */
     protected void setHistoriquePartieProfile(HistoriquePartieProfile historiquePartieProfile) {
-        this.historiquePartieProfile.setFacile(historiquePartieProfile.getFacile());
-        this.historiquePartieProfile.setMoyen(historiquePartieProfile.getMoyen());
-        this.historiquePartieProfile.setDifficile(historiquePartieProfile.getDifficile());
-        this.historiquePartieProfile.setExpert(historiquePartieProfile.getExpert());
+        List<String> listeParties = new ArrayList<String>();
+        for (Duration d : historiquePartieProfile.getTemps(Difficulte.facile)) {
+            listeParties.add(d.toString());
+        }
+        this.historiquePartieProfile.setFacile(listeParties);
+        listeParties.clear();
+        for (Duration d : historiquePartieProfile.getTemps(Difficulte.moyen)) {
+            listeParties.add(d.toString());
+        }
+        this.historiquePartieProfile.setMoyen(listeParties);
+        listeParties.clear();
+        for (Duration d : historiquePartieProfile.getTemps(Difficulte.difficile)) {
+            listeParties.add(d.toString());
+        }
+        this.historiquePartieProfile.setDifficile(listeParties);
+        listeParties.clear();
+        for (Duration d : historiquePartieProfile.getTemps(Difficulte.expert)) {
+            listeParties.add(d.toString());
+        }
+        this.historiquePartieProfile.setExpert(listeParties);
     }
 
     /**

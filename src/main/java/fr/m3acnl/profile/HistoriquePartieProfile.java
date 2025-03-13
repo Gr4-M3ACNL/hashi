@@ -327,8 +327,11 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param facile la liste des temps des parties jouées en mode facile.
      */
-    protected void setFacile(List<Duration> facile) {
-        this.facile = new ArrayList<Duration>(facile);
+    protected void setFacile(List<String> facile) {
+        this.facile = new ArrayList<>();
+        for (String time : facile) {
+            this.facile.add(Duration.parse(time));
+        }
     }
 
     /**
@@ -337,8 +340,11 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param moyen la liste des temps des parties jouées en mode moyen.
      */
-    protected void setMoyen(List<Duration> moyen) {
-        this.moyen = new ArrayList<Duration>(moyen);
+    protected void setMoyen(List<String> moyen) {
+        this.moyen = new ArrayList<>();
+        for (String time : moyen) {
+            this.moyen.add(Duration.parse(time));
+        }
     }
 
     /**
@@ -347,8 +353,11 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param difficile la liste des temps des parties jouées en mode difficile.
      */
-    protected void setDifficile(List<Duration> difficile) {
-        this.difficile = new ArrayList<Duration>(difficile);
+    protected void setDifficile(List<String> difficile) {
+        this.difficile = new ArrayList<>();
+        for (String time : difficile) {
+            this.difficile.add(Duration.parse(time));
+        }
     }
 
     /**
@@ -357,8 +366,11 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param expert la liste des temps des parties jouées en mode expert.
      */
-    protected void setExpert(List<Duration> expert) {
-        this.expert = new ArrayList<Duration>(expert);
+    protected void setExpert(List<String> expert) {
+        this.expert = new ArrayList<>();
+        for (String time : expert) {
+            this.expert.add(Duration.parse(time));
+        }
     }
 
 }
