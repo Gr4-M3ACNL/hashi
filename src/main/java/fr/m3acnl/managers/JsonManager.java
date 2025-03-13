@@ -2,6 +2,7 @@ package fr.m3acnl.managers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
@@ -25,12 +26,12 @@ public class JsonManager {
      */
     private static String fichierNiveau = "/META-INF/grilles.json";
 
-    /**
+    /*
      * Chemin du fichier JSON contenant les aides de jeu.
      * Ce fichier est situé dans le dossier resources(dans le jar).
      * TODO: créer le fichier d'aide (avec quelques exemples)
      */
-    private static String fichierAide = "/META-INF/aides.json";
+    //private static String fichierAide = "/META-INF/aides.json";
 
     /**
      * Le nom du fichier contenant les profils.
@@ -136,16 +137,27 @@ public class JsonManager {
     protected List<String> getListeProfils() {
         try {
             ObjectMapper mapper = new ObjectMapper();
+            Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
 
-            Path cheminFicher = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
-            if (!cheminFicher.toFile().exists()) {
-                return null;
+            if (!cheminFichier.toFile().exists()) {
+                return new ArrayList<String>();
             }
 
-            JsonNode rootNode = mapper.readTree(cheminFicher.toFile());
-            List<String> profils = new ArrayList<String>(); // ArrayList pour pouvoir utiliser toArray
-            rootNode.fieldNames().forEachRemaining(profils::add); // Ajoute chaque profil à la liste
+            JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
+
+            if (!rootNode.has("profils")) {
+                return new ArrayList<String>();
+            }
+
+            JsonNode profilsNode = rootNode.get("profils");
+
+            List<String> profils = new ArrayList<String>();
+            for (JsonNode profilNode : profilsNode) {
+                profils.add(profilNode.get("nom").asText());
+            }
+
             return profils;
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Impossible de charger les profils");
@@ -164,13 +176,41 @@ public class JsonManager {
     protected void sauvegarderProfil(Profile profile) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
+
+            // Création ou lecture du fichier JSON
+            JsonNode rootNode;
             if (!cheminFichier.toFile().exists()) {
                 Files.createFile(cheminFichier);
+                rootNode = mapper.createObjectNode();
+                ((ObjectNode) rootNode).putArray("profils");
+            } else {
+                rootNode = mapper.readTree(cheminFichier.toFile());
             }
 
-            mapper.writeValue(cheminFichier.toFile(), profile);
+            // Récupération du nœud des profils
+            ArrayNode profilsNode = (ArrayNode) rootNode.get("profils");
+
+            // Vérification si le profil existe déjà
+            boolean profilExistant = false;
+            for (JsonNode profilNode : profilsNode) {
+                if (profilNode.get("nom").asText().equals(profile.getNom())) {
+                    ((ObjectNode) profilNode).set("profil", mapper.valueToTree(profile));
+                    profilExistant = true;
+                    break;
+                }
+            }
+
+            // Ajout du nouveau profil si non existant
+            if (!profilExistant) {
+                ObjectNode nouveauProfilNode = mapper.createObjectNode();
+                nouveauProfilNode.put("nom", profile.getNom());
+                nouveauProfilNode.set("profil", mapper.valueToTree(profile));
+                profilsNode.add(nouveauProfilNode);
+            }
+
+            // Écriture dans le fichier
+            mapper.writeValue(cheminFichier.toFile(), rootNode);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,12 +236,24 @@ public class JsonManager {
                 return null;
             }
             JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
-            JsonNode profilNode = rootNode.get(nom);
+
+            ArrayNode profilsNode = (ArrayNode) rootNode.get("profils");
+            if (profilsNode == null) {
+                return null;
+            }
+
+            JsonNode profilNode = null;
+            for (JsonNode node : profilsNode) {
+                if (node.get("nom").asText().equals(nom)) {
+                    profilNode = node.get("profil");
+                    break;
+                }
+            }
             if (profilNode == null) {
                 return null;
             }
 
-            return mapper.treeToValue(profilNode, Profile.class);
+            return mapper.treeToValue(profilNode.get(nom), Profile.class);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,21 +272,22 @@ public class JsonManager {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierProfils);
             JsonNode rootNode = mapper.readTree(cheminFichier.toFile());
-            if (rootNode.has(nom)) {
-                ((com.fasterxml.jackson.databind.node.ObjectNode) rootNode).remove(nom);
-                mapper.writeValue(cheminFichier.toFile(), rootNode);
-            } else {
-                throw new RuntimeException("Le profil n'existe pas");
+
+            ArrayNode profilsNode = (ArrayNode) rootNode.get("profils");
+            if (profilsNode == null) {
+                return;
             }
-            Path cheminFichierPartie = SauvegardeManager.getInstance().getRepertoireSauvegarde()
-                    .resolve(nomFichierPartie);
-            if (cheminFichierPartie.toFile().exists()) {
-                rootNode = mapper.readTree(cheminFichierPartie.toFile());
-                if (rootNode.has(nom)) {
-                    ((com.fasterxml.jackson.databind.node.ObjectNode) rootNode).remove(nom);
-                    mapper.writeValue(cheminFichierPartie.toFile(), rootNode);
+
+            int index = 0;
+            for (JsonNode profilNode : profilsNode) {
+                if (profilNode.get("nom").asText().equals(nom)) {
+                    profilsNode.remove(index);
+                    break;
                 }
+                index++;
             }
+
+            mapper.writeValue(cheminFichier.toFile(), rootNode);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Impossible de supprimer le profil");
@@ -296,7 +349,9 @@ public class JsonManager {
 
     /**
      * Charge une partie à partir du fichier de parties.
-     * <p> si la partie n'existe pas, retourne null </p>
+     * <p>
+     * si la partie n'existe pas, retourne null
+     * </p>
      * 
      * @param nomProfil  Nom du profil associé à la partie
      * @param difficulte Difficulté de la partie
@@ -341,7 +396,8 @@ public class JsonManager {
      * @param difficulte Difficulté de la partie
      * @throws RuntimeException si la partie ne peut pas être supprimée
      */
-    protected void supprimerPartie(String nomProfil, Difficulte difficulte) throws IllegalArgumentException, RuntimeException {
+    protected void supprimerPartie(String nomProfil, Difficulte difficulte)
+            throws IllegalArgumentException, RuntimeException {
         try {
             ObjectMapper mapper = new ObjectMapper();
             Path cheminFichier = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierPartie);

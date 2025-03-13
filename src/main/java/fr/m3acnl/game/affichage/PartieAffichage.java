@@ -4,6 +4,8 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
 
+import fr.m3acnl.game.Difficulte;
+import fr.m3acnl.game.Partie;
 import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.ElementJeu;
 import fr.m3acnl.game.logique.Jeu;
@@ -45,7 +47,7 @@ public class PartieAffichage extends Application {
     /**
      * Le jeu.
      */
-    private Jeu jeu;
+    private Partie partie;
 
     /**
      * Label pour afficher le temps.
@@ -77,20 +79,16 @@ public class PartieAffichage extends Application {
      */
     private double derniereTaille = -1;
 
+    public PartieAffichage(Difficulte difficulte) {
+        this.partie = new Partie(difficulte);
+    }
+
     @Override
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
-        Double[][] mat = {
-            {-4.0, 0.2, -4.0, 0.2, -2.0, 0.0, 0.0},
-            {2.0, -3.0, 0.1, -3.0, 0.2, 0.2, -3.0},
-            {-3.0, 2.0, 0.0, 0.0, 0.0, 0.0, 1.0},
-            {1.0, -6.0, 0.2, -4.0, 0.2, -3.0, 1.0},
-            {0.0, 2.0, 0.0, 0.0, 0.0, 1.0, -1.0},
-            {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
-            {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
-        };
 
-        jeu = new Jeu(7, mat);
+        primaryStage.setFullScreen(true);
+
         gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(-10);
@@ -100,7 +98,7 @@ public class PartieAffichage extends Application {
         creerBackground();
         root.getChildren().addAll(backgroundPane, gridPane);
 
-        boutons = new Button[jeu.getTaille()][jeu.getTaille()];
+        boutons = new Button[partie.getJeu().getTaille()][partie.getJeu().getTaille()];
         initialiserBoutons();
 
         VBox controlPanel = creerPanneauDeControle();
@@ -129,8 +127,8 @@ public class PartieAffichage extends Application {
      * Initialise les boutons du jeu.
      */
     private void initialiserBoutons() {
-        for (int i = 0; i < jeu.getTaille(); i++) {
-            for (int j = 0; j < jeu.getTaille(); j++) {
+        for (int i = 0; i < partie.getJeu().getTaille(); i++) {
+            for (int j = 0; j < partie.getJeu().getTaille(); j++) {
                 boutons[i][j] = new Button();
                 int x = i;
                 int y = j;
@@ -159,7 +157,7 @@ public class PartieAffichage extends Application {
      * @param y La colonne de l'élément
      */
     private void previsualiserEtat(MouseEvent event, int x, int y) {
-        ElementJeu element = jeu.getPlateau().getElement(x, y);
+        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
 
         if (element == null) {
             return; // Rien à faire si la case est vide
@@ -186,14 +184,14 @@ public class PartieAffichage extends Application {
      * @param y La colonne de l'élément
      */
     private void restaurerEtat(int x, int y) {
-        if (jeu.getPlateau().getElement(x, y) == null) {
+        if (partie.getJeu().getPlateau().getElement(x, y) == null) {
             return;
         }
-        if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
-            DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
+        if (partie.getJeu().getPlateau().getElement(x, y) instanceof DoubleLien) {
+            DoubleLien doubleLien = (DoubleLien) partie.getJeu().getPlateau().getElement(x, y);
             doubleLien.surbrillanceOff();
         } else {
-            jeu.getPlateau().getElement(x, y).surbrillanceOff();
+            partie.getJeu().getPlateau().getElement(x, y).surbrillanceOff();
         }
         actualiserAffichage();
     }
@@ -208,7 +206,7 @@ public class PartieAffichage extends Application {
         restaurerEtat(x, y);
 
         // Vérifier si l'élément du plateau est un DoubleLien
-        ElementJeu element = jeu.getPlateau().getElement(x, y);
+        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
         if (element instanceof DoubleLien doubleLien) {
 
             // Trouver le nœud le plus proche de la souris sur le bouton
@@ -218,12 +216,15 @@ public class PartieAffichage extends Application {
                 doubleLien.activer(noeudProche); // Activation avec le bon nœud
             }
         } else {
-            jeu.activeElemJeu(x, y, null); // Activation classique si ce n'est pas un DoubleLien
+            partie.getJeu().activeElemJeu(x, y, null); // Activation classique si ce n'est pas un DoubleLien
         }
 
         // Vérifier si la partie est gagnée
         if (jeu.gagner()) {
+            partie.finPartie();
             victoire();
+        } else {
+            partie.sauvegarde();
         }
 
         // Mettre à jour l'affichage
@@ -327,7 +328,7 @@ public class PartieAffichage extends Application {
         buttonRetour.setOnAction(e -> retour());
         buttonAvancer.setOnAction(e -> avancer());
         buttonCheck.setOnAction(e -> check());
-        buttonSave.setOnAction(e -> jeu.sauvegarderManuellement());
+        buttonSave.setOnAction(e -> sauvegarde());
         buttonCheckpoint.setOnAction(e -> retourSauvegarde());
         labelTemps = new Label("Temps: 0s");
         labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
@@ -483,7 +484,7 @@ public class PartieAffichage extends Application {
 
         double largeurScene = scene.getWidth();
         double hauteurScene = scene.getHeight();
-        int taille = jeu.getTaille();
+        int taille = partie.getJeu().getTaille();
 
         double tailleCellule = Math.min(largeurScene * 0.92, hauteurScene * 0.92) / taille;
 
@@ -496,11 +497,11 @@ public class PartieAffichage extends Application {
             int i = GridPane.getRowIndex(bouton);
             int j = GridPane.getColumnIndex(bouton);
 
-            if (jeu.getPlateau().getElement(i, j) != null
-                    && (jeu.getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
+            if (partie.getJeu().getPlateau().getElement(i, j) != null
+                    && (partie.getJeu().getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
 
                 bouton.setGraphic(creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO));
-                jeu.getPlateau().getElement(i, j).verifie();
+                partie.getJeu().getPlateau().getElement(i, j).verifie();
             }
 
             bouton.setMinSize(tailleCellule, tailleCellule);
@@ -517,8 +518,8 @@ public class PartieAffichage extends Application {
      * @return L'URL de la ressource
      */
     private URL getResourceElement(int i, int j) {
-        return jeu.getPlateau().getElement(i, j) != null
-                ? getClass().getResource((String) jeu.getPlateau().getElement(i, j).draw())
+        return partie.getJeu().getPlateau().getElement(i, j) != null
+                ? getClass().getResource((String) partie.getJeu().getPlateau().getElement(i, j).draw())
                 : getClass().getResource("/META-INF/assetsGraphiques/link/blank.png");
     }
 
@@ -544,7 +545,8 @@ public class PartieAffichage extends Application {
      * @see Jeu#retour()
      */
     private void retour() {
-        jeu.retour();
+        partie.getJeu().retour();
+        partie.sauvegarde();
         actualiserAffichage();
     }
 
@@ -554,7 +556,8 @@ public class PartieAffichage extends Application {
      * @see Jeu#avancer()
      */
     private void avancer() {
-        jeu.avancer();
+        partie.getJeu().avancer();
+        partie.sauvegarde();
         actualiserAffichage();
     }
 
@@ -564,7 +567,8 @@ public class PartieAffichage extends Application {
      * @see Jeu#chargerSauvegardeAuto()
      */
     private void check() {
-        jeu.chargerSauvegardeAuto();
+        partie.getJeu().chargerSauvegardeAuto();
+        partie.sauvegarde();
         actualiserAffichage();
     }
 
@@ -575,13 +579,19 @@ public class PartieAffichage extends Application {
         ajusterTailleImages();
     }
 
+    private void sauvegarde() {
+        partie.getJeu().sauvegarderManuellement();
+        partie.sauvegarde();
+    }
+
     /**
      * Retour au checkpoint manuel.
      *
      * @see Jeu#chargerSauvegardeManuel()
      */
     private void retourSauvegarde() {
-        jeu.chargerSauvegardeManuel();
+        partie.getJeu().chargerSauvegardeManuel();
+        partie.sauvegarde();
         actualiserAffichage();
     }
 

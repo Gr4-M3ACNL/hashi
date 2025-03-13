@@ -84,10 +84,10 @@ public class SauvegardePartieManager {
 
         // On charge rempli les différentes piles de coups
 
-        partie.get("CoupJouer").forEach(coup -> jeu.getCoupsJouer().empiler(jeu.getPlateau().getListeLien().get(coup.asInt())));
+        partie.get("CoupJouer").forEach(coup -> jeu.rejouer(coup.asInt()));
         partie.get("CoupJouerBuff").forEach(coup -> jeu.getCoupsJouerBuff().empiler(jeu.getPlateau().getListeLien().get(coup.asInt())));
-        // TODO: Charger le checkpoint de la partie
-        // TODO: Charger la pile de validation
+        partie.get("SauvegardeAutomatique").forEach(coup -> jeu.getSauvegardeAutomatique().add(jeu.getPlateau().getListeLien().get(coup.asInt())));
+        partie.get("PointDeSauvegarde").forEach(coup -> jeu.getPointDeSauvegarde().add(jeu.getPlateau().getListeLien().get(coup.asInt())));
         
         return new JeuEnCour(partie.get("Chrono").asLong(), jeu);
         
