@@ -1,5 +1,7 @@
 package fr.m3acnl;
 
+import fr.m3acnl.game.Difficulte;
+import fr.m3acnl.game.affichage.PartieAffichage;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -124,19 +126,22 @@ public class HashiParmentier extends Application {
         vboxLevels.setBackground(new Background(background));
 
         Button level1 = createStyledButton("Facile");
-        level1.setOnAction(e -> System.out.println("Lancement du Facile..."));
+        level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
 
         Button level2 = createStyledButton("Moyen");
-        level2.setOnAction(e -> System.out.println("Lancement du Moyen..."));
+        level2.setOnAction(e -> lancerPartieAffichage(Difficulte.moyen));
 
         Button level3 = createStyledButton("Difficile");
-        level3.setOnAction(e -> System.out.println("Lancement du Difficile..."));
+        level3.setOnAction(e -> lancerPartieAffichage(Difficulte.difficile));
+
+        Button level4 = createStyledButton("expert");
+        level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
 
         Button levelRetour = createStyledButton("Retour");
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
         Label levelTitle = createStyledLabel("Choisissez votre niveau de jeu :");
-        vboxLevels.getChildren().addAll(levelTitle, level1, level2, level3, levelRetour);
+        vboxLevels.getChildren().addAll(levelTitle, level1, level2, level3, level4, levelRetour);
         levelSelectionScene = new Scene(vboxLevels, 500, 400);
 
         // 📌 PAGE CONFIRMATION QUITTER
@@ -224,6 +229,16 @@ public class HashiParmentier extends Application {
                        + "-fx-padding: 5px 10px; " 
                        + "-fx-background-radius: 10px;");
         return label;
+    }
+
+    private void lancerPartieAffichage(Difficulte difficulte) {
+        PartieAffichage partieAffichage = new PartieAffichage(difficulte);
+        Stage stage = new Stage();
+        try {
+            partieAffichage.start(stage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

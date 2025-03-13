@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.managers.SauvegardePartieManager;
 import fr.m3acnl.managers.SauvegardePartieManager.JeuEnCour;
 import java.io.IOException;
@@ -154,5 +155,13 @@ public class Partie implements JsonSerializable {
      */
     public Difficulte getDifficulte() {
         return difficulte;
-    }    
+    }
+
+    public void finPartie() {
+        if (!jeu.gagner()) {
+            throw new IllegalStateException("La partie n'est pas terminée");
+        }
+        ProfileManager.getInstance().getProfileActif().getHistoriquePartieProfile().ajouterTemps(difficulte, getChronoDuration());
+        SauvegardePartieManager.getInstance().supprimer(difficulte);
+    }
 }
