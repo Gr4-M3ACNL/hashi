@@ -271,12 +271,12 @@ public class PartieAffichage extends Application {
      */
     private void creerBackground() {
 
-        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/background.png").toExternalForm());
+        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/background.png").toExternalForm());
         ImageView imageBackgroundView = new ImageView(imageBackground);
         imageBackgroundView.setPreserveRatio(false);
         imageBackgroundView.setCache(true);
 
-        Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/table.png").toExternalForm());
+        Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/table.png").toExternalForm());
         ImageView imageFondView = new ImageView(imageFond);
         imageFondView.setPreserveRatio(true);
         imageFondView.setCache(true);
@@ -344,7 +344,7 @@ public class PartieAffichage extends Application {
         Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
 
         // Afficher l'image "up.png" temporairement
-        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/up.png").toExternalForm()));
+        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/up.png").toExternalForm()));
         winImageView.setFitWidth(300);
         winImageView.setFitHeight(300);
         winImageView.setBlendMode(BlendMode.SRC_OVER);
@@ -382,7 +382,7 @@ public class PartieAffichage extends Application {
 
         // Création des éléments de l'overlay
         ImageView winImageView = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/win.png").toExternalForm()));
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/win.png").toExternalForm()));
         winImageView.setFitWidth(500);
         winImageView.setFitHeight(500);
 
@@ -416,11 +416,11 @@ public class PartieAffichage extends Application {
 
         // Style du DialogPane avec image de fond
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/background.png');"
+        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/background.png');"
                 + "-fx-background-size: cover;");
 
         // Image de gauche (agrandie de 30%)
-        ImageView exitImage = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/goodbye.png").toExternalForm()));
+        ImageView exitImage = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
         exitImage.setFitWidth(130);
         exitImage.setFitHeight(130);
 
