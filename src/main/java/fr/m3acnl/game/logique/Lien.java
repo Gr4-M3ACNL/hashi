@@ -1,5 +1,7 @@
 package fr.m3acnl.game.logique;
 
+import java.util.ArrayList;
+
 /**
  * Classe Lien, afin de les utilisés pour lié 2 noeuds.
  *
@@ -49,6 +51,26 @@ public class Lien implements ElementJeu {
     private int index;
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = false;
+
+    /**
+     * Compteur pour la consultation.
+     */
+    private int cmptVerif = 0;
+
+    /**
+     * Nombre de fois où il faut consulter le lien.
+     */
+    private int cmptVerifMax;
+
+    /**
+     * Liste des double lien où il est présent.
+     */
+    private ArrayList<DoubleLien> listeDl;
+
+    /**
      * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
@@ -66,7 +88,9 @@ public class Lien implements ElementJeu {
         surbrillance = false;
         jeu = j;
         orientation = orient;
+        listeDl = new ArrayList<>();
 
+        cmptVerifMax = tailleLien();
     }
 
     /**
@@ -135,10 +159,38 @@ public class Lien implements ElementJeu {
     /**
      * Défini l'index du lien.
      *
-     * @param i L'index du lien
+     * @param i L'index du lien dans la liste de lien du jeu
      */
     public void setIndex(int i) {
         index = i;
+    }
+
+    /**
+     * Ajoute un double lien à la liste.
+     *
+     * @param dl Le double lien à ajouter
+     */
+    public void addDoubleLien(DoubleLien dl) {
+        listeDl.add(dl);
+    }
+
+    /**
+     * Récupère la taille du lien (Nombre de case entre ses deux noeuds).
+     *
+     * @return la taille du lien
+     */
+    public int tailleLien() {
+        int tot = 0;
+        if (orientation == 1) {
+            for (int i = noeud1.getPosition().getCoordY() + 1; i < noeud2.getPosition().getCoordY(); i++) {
+                tot++;
+            }
+        } else {
+            for (int i = noeud1.getPosition().getCoordX() + 1; i < noeud2.getPosition().getCoordX(); i++) {
+                tot++;
+            }
+        }
+        return tot;
     }
 
     /**
@@ -147,6 +199,7 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOn() {
         surbrillance = true;
+        averifie();
     }
 
     /**
@@ -155,6 +208,7 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOff() {
         surbrillance = false;
+        averifie();
     }
 
     /**
@@ -174,11 +228,13 @@ public class Lien implements ElementJeu {
      */
     @Override
     public Boolean activer() {
+        averifie();
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
             if (orientation == 1) {
                 if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
                     nbLien -= 1;
+
                     return false;
                 }
             } else {
@@ -211,6 +267,7 @@ public class Lien implements ElementJeu {
             }
 
         }
+
         return true;
     }
 
@@ -218,6 +275,7 @@ public class Lien implements ElementJeu {
      * Effectue le retour a l'état précédent du Lien et des noeuds.
      */
     public void retourArriere() {
+        averifie();
         nbLien = (nbLien + 2) % 3;
         if (nbLien < 2) {
             if (nbLien == 0) {
@@ -240,6 +298,7 @@ public class Lien implements ElementJeu {
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
         }
+
     }
 
     /**
@@ -265,6 +324,43 @@ public class Lien implements ElementJeu {
         }
         if (nbLien == 2) {
             this.activer();
+        }
+        averifie();
+    }
+
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
+    @Override
+    public boolean modifie() {
+        return modifie;
+    }
+
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
+    @Override
+    public void verifie() {
+        if (cmptVerif == cmptVerifMax) {
+            modifie = false;
+            cmptVerif = 0;
+        } else {
+            cmptVerif++;
+        }
+    }
+
+    /**
+     * Permet de dire que l'élément a été modifié. Fait appel à la méthode
+     * averifie sur ses double lien.
+     */
+    @Override
+    public void averifie() {
+        modifie = true;
+        cmptVerif = 0;
+        for (DoubleLien dl : listeDl) {
+            dl.averifie();
         }
     }
 

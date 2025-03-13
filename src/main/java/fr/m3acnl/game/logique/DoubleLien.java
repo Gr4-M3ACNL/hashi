@@ -29,6 +29,11 @@ public class DoubleLien implements ElementJeu {
     private int lienBrillance;
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = false;
+
+    /**
      * Constructeur pour créer une instance de DoubleLien.
      *
      * @param l1 Le 1er lien
@@ -39,6 +44,8 @@ public class DoubleLien implements ElementJeu {
         lien2 = l2;
         interrupteur = false;
         lienBrillance = 0;
+        lien1.addDoubleLien(this);
+        lien2.addDoubleLien(this);
     }
 
     /**
@@ -111,6 +118,7 @@ public class DoubleLien implements ElementJeu {
      * @param n Le nœud lié
      */
     public void activerSurbrillance(Noeud n) {
+        averifie();
         if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 lien1.surbrillanceOn();
@@ -135,6 +143,32 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
+    @Override
+    public boolean modifie() {
+        return modifie;
+    }
+
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
+    @Override
+    public void verifie() {
+        modifie = false;
+    }
+
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
+    @Override
+    public void averifie() {
+        modifie = true;
+    }
+
+    /**
      * Méthode non utilisée.
      *
      * @return false
@@ -151,6 +185,7 @@ public class DoubleLien implements ElementJeu {
      * @return Le lien qui a été activé, retourne null si aucun lien est activé
      */
     public Lien activer(Noeud n) {
+        averifie();
         if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.activer()) {
@@ -176,11 +211,13 @@ public class DoubleLien implements ElementJeu {
                 return lien2;
             }
         }
+
         return null;
     }
 
     @Override
     public void surbrillanceOn() {
+        averifie();
         if (lienActif() != null) {
             lienActif().surbrillanceOn();
         }
@@ -188,6 +225,7 @@ public class DoubleLien implements ElementJeu {
 
     @Override
     public void surbrillanceOff() {
+        averifie();
         if (lienBrillance == 1) {
             lien1.surbrillanceOff();
             lienBrillance = 0;
@@ -195,6 +233,7 @@ public class DoubleLien implements ElementJeu {
             lien2.surbrillanceOff();
             lienBrillance = 0;
         }
+
     }
 
     /**

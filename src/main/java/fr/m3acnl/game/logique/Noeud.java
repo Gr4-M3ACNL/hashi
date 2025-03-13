@@ -41,10 +41,15 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     private Boolean activer = false;
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = true;
+
+    /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
-     * @param x la coordonnée x du noeud
-     * @param y la coordonnée y du noeud
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
      * @param degS le degré solution du noeud
      */
     public Noeud(int x, int y, int degS) {
@@ -115,6 +120,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void ajouterDegre() {
         degreActuelle += 1;
+        averifie();
     }
 
     /**
@@ -122,6 +128,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void suppressionDegre() {
         degreActuelle -= 2;
+        averifie();
     }
 
     /**
@@ -129,6 +136,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void diminuerDegre() {
         degreActuelle -= 1;
+        averifie();
     }
 
     /**
@@ -187,6 +195,32 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
+    @Override
+    public boolean modifie() {
+        return modifie;
+    }
+
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
+    @Override
+    public void verifie() {
+        modifie = false;
+    }
+
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
+    @Override
+    public void averifie() {
+        modifie = true;
+    }
+
+    /**
      * Affiche le réseaux de connection du noeud.
      *
      * @return false pour l'instant
@@ -194,9 +228,14 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public Boolean activer() {
         ArrayList<Noeud> noeuds = afficherReseau();
+
+        // Vérifier si au moins un nœud a la surbrillance activée
+        boolean etatSurbrillance = noeuds.stream().anyMatch(Noeud::getSurbrillance);
+
+        // Appliquer l'état opposé à tous les nœuds
         for (Noeud noeud : noeuds) {
             noeud.setActiver(true);
-            if (noeud.getSurbrillance()) {
+            if (etatSurbrillance) {
                 noeud.surbrillanceOff();
             } else {
                 noeud.surbrillanceOn();
@@ -213,6 +252,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public void surbrillanceOn() {
         if (activer) {
             surbrillance = true;
+            averifie();
         }
     }
 
@@ -223,6 +263,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public void surbrillanceOff() {
         if (activer) {
             surbrillance = false;
+            averifie();
         }
     }
 

@@ -9,9 +9,26 @@ package fr.m3acnl.game.logique;
 public interface ElementJeu {
 
     /**
-     * Méthode pour activer un élément de jeu.
+     * Permet d'indiquer qu'il faut consulter l'élément.
      *
-     * @return true si l'élément est activé, false sinon.
+     * @return true si l'élément a été modifié et necessite consultation
+     */
+    public boolean modifie();
+
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
+    public void verifie();
+
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
+    public void averifie();
+
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
      */
     public Boolean activer();
 
