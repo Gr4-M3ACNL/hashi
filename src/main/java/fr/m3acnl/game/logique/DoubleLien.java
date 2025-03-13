@@ -1,7 +1,7 @@
 package fr.m3acnl.game.logique;
 
 /**
- * Classe DoubleLien Pour gérer les liens croisé.
+ * Classe DoubleLien pour gérer les liens croisés.
  *
  * @author COGNARD Luka
  * @version 1.0
@@ -19,9 +19,14 @@ public class DoubleLien implements ElementJeu {
     private final Lien lien2;
 
     /**
-     * Interrupteur quand un lien est activer.
+     * Interrupteur quand un lien est activé.
      */
     private Boolean interrupteur;
+
+    /**
+     * Lien qui est en surbrillance.
+     */
+    private int lienBrillance;
 
     /**
      * Constructeur pour créer une instance de DoubleLien.
@@ -33,13 +38,117 @@ public class DoubleLien implements ElementJeu {
         lien1 = l1;
         lien2 = l2;
         interrupteur = false;
+        lienBrillance = 0;
     }
 
     /**
-     * Active le lien si il est activable lié au noeud donné.
+     * Récupère le 1er lien.
      *
-     * @param n Le noeud lié
-     * @return Le lien qui a été activer return null si pas de lien activer
+     * @return Le 1er lien
+     */
+    public Lien getLien1() {
+        return lien1;
+    }
+
+    /**
+     * Récupère le 2ème lien.
+     *
+     * @return Le 2ème lien
+     */
+    public Lien getLien2() {
+        return lien2;
+    }
+
+    /**
+     * Récupère l'état de l'interrupteur.
+     *
+     * @return L'état de l'interrupteur
+     */
+    public Boolean getInterrupteur() {
+        return interrupteur;
+    }
+
+    /**
+     * Active l'interrupteur.
+     */
+    public void activeInterrupteur() {
+        interrupteur = true;
+    }
+
+    /**
+     * Désactive l'interrupteur si les liens sont égaux.
+     */
+    public void desactiveInterrupteur() {
+        if (lien1.getNbLien() == lien2.getNbLien()) {
+            interrupteur = false;
+        }
+    }
+
+    /**
+     * Renvoie le lien actif dans le double lien.
+     *
+     * @return Le lien actif, retourne null si aucun n'est actif.
+     */
+    public Lien lienActif() {
+        if (interrupteur) {
+            if (lien1.getNbLien() == 0) {
+                if (lien2.getNbLien() == 0) {
+                    return null;
+                } else {
+                    return lien2;
+                }
+            } else {
+                return lien1;
+            }
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Active la surbrillance du lien en fonction du nœud donné.
+     *
+     * @param n Le nœud lié
+     */
+    public void activerSurbrillance(Noeud n) {
+        if (!interrupteur) {
+            if (lien1.noeudDansLien(n) == 0) {
+                lien1.surbrillanceOn();
+                lienBrillance = 1;
+
+            } else {
+                lien2.surbrillanceOn();
+                lienBrillance = 2;
+            }
+        } else {
+            if (lien1.noeudDansLien(n) == 0) {
+                if (lien1.getNbLien() != 0) {
+                    lien1.surbrillanceOn();
+                    lienBrillance = 1;
+                }
+            } else if (lien2.getNbLien() != 0) {
+                lien2.surbrillanceOn();
+                lienBrillance = 2;
+
+            }
+        }
+    }
+
+    /**
+     * Méthode non utilisée.
+     *
+     * @return false
+     */
+    @Override
+    public Boolean activer() {
+        return false;
+    }
+
+    /**
+     * Active le lien s'il est activable en fonction du nœud donné.
+     *
+     * @param n Le nœud lié
+     * @return Le lien qui a été activé, retourne null si aucun lien est activé
      */
     public Lien activer(Noeud n) {
         if (!interrupteur) {
@@ -70,47 +179,38 @@ public class DoubleLien implements ElementJeu {
         return null;
     }
 
-    /**
-     * Méthode non utilisée.
-     *
-     * @return false
-     */
     @Override
-    public Boolean activer() {
-        return false;
+    public void surbrillanceOn() {
+        if (lienActif() != null) {
+            lienActif().surbrillanceOn();
+        }
     }
 
-    /**
-     * Active l'interrupteur.
-     */
-    public void activeInterrupteur() {
-        interrupteur = true;
-    }
-
-    /**
-     * Désactive l'interrupteur si les lien1 et lien2 sont à 0 donc égaux.
-     */
-    public void desactiveInterrupteur() {
-        if (lien1.getNbLien() == lien2.getNbLien()) {
-            interrupteur = false;
+    @Override
+    public void surbrillanceOff() {
+        if (lienBrillance == 1) {
+            lien1.surbrillanceOff();
+            lienBrillance = 0;
+        } else if (lienBrillance == 2) {
+            lien2.surbrillanceOff();
+            lienBrillance = 0;
         }
     }
 
     /**
-     * Récupère l'état de l'interrupteur.
+     * Renvoie le chemin de l'image du DoubleLien.
      *
-     *
-     * @return L'état de l'interrupteur
-     */
-    public Boolean getInterrupteur() {
-        return interrupteur;
-    }
-
-    /**
-     * Affiche le DoubleLien.
+     * @return Le chemin de l'image correspondant à l'état du DoubleLien
      */
     @Override
     public String draw() {
+        if (lien1.getSurbrillance() || lienBrillance == 1) {
+            return lien1.draw();
+        } else if (lien2.getSurbrillance() || lienBrillance == 2) {
+            return lien2.draw();
+        } else if (this.lienActif() == null) {
+            return "/META-INF/assetsGraphiques/link/blank.png";
+        }
         return this.lienActif().draw();
     }
 
@@ -123,31 +223,13 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Permet de faire l'affichage de la classe.
+     * Affiche une représentation textuelle du DoubleLien.
+     *
+     * @return Une chaîne de caractères représentant l'objet
      */
     @Override
     public String toString() {
         return " D" + "(" + lien1 + "|" + lien2 + ") ";
     }
 
-    /**
-     * Renvoie le lien actif dans le double lien.
-     *
-     * @return Le lien actif si aucun est actif renvoie null.
-     */
-    public Lien lienActif() {
-        if (interrupteur) {
-            if (lien1.getNbLien() == 0) {
-                if (lien2.getNbLien() == 0) {
-                    return null;
-                } else {
-                    return lien2;
-                }
-            } else {
-                return lien1;
-            }
-        } else {
-            return null;
-        }
-    }
 }
