@@ -157,6 +157,11 @@ public class Partie implements JsonSerializable {
         return difficulte;
     }
 
+    /**
+     * Méthode pour terminer la partie.
+     * 
+     * @throws IllegalStateException si la partie n'est pas terminée
+     */
     public void finPartie() {
         if (!jeu.gagner()) {
             throw new IllegalStateException("La partie n'est pas terminée");

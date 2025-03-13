@@ -79,10 +79,20 @@ public class PartieAffichage extends Application {
      */
     private double derniereTaille = -1;
 
+    /**
+     * Constructeur de la classe PartieAffichage.
+     *
+     * @param difficulte La difficulté de la partie
+     */
     public PartieAffichage(Difficulte difficulte) {
         this.partie = new Partie(difficulte);
     }
 
+    /**
+     * Méthode start pour lancer l'application.
+     *
+     * @param primaryStage La scène principale
+     */
     @Override
     public void start(Stage primaryStage) {
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
@@ -153,6 +163,7 @@ public class PartieAffichage extends Application {
      * Prévisualise l'état d'un élément du jeu. Permet de pouvoir voir les
      * connections avant de cliquer.
      *
+     * @param event L'événement de souris
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
@@ -199,6 +210,7 @@ public class PartieAffichage extends Application {
     /**
      * Active un élément du jeu.
      *
+     * @param event L'événement de souris
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
@@ -231,6 +243,13 @@ public class PartieAffichage extends Application {
         actualiserAffichage();
     }
 
+    /**
+     * Trouve le nœud le plus proche du bouton DoubleLien.
+     *
+     * @param doubleLien Le DoubleLien à vérifier
+     * @param event L'événement de souris
+     * @return Le nœud le plus proche
+     */
     private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, MouseEvent event) {
         if (!(event.getSource() instanceof Node source)) {
             System.out.println("L'élément source n'est pas un Node !");
@@ -409,6 +428,9 @@ public class PartieAffichage extends Application {
 
     /**
      * Demande à l'utilisateur s'il veut vraiment quitter.
+     * Si oui, ferme l'application.
+     * 
+     * @param event L'événement de fermeture
      */
     private void demandeSortie(javafx.stage.WindowEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -579,6 +601,11 @@ public class PartieAffichage extends Application {
         ajusterTailleImages();
     }
 
+    /**
+     * Sauvegarde manuelle.
+     *
+     * @see Jeu#sauvegarderManuellement()
+     */
     private void sauvegarde() {
         partie.getJeu().sauvegarderManuellement();
         partie.sauvegarde();

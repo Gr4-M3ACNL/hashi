@@ -28,17 +28,56 @@ import java.util.Optional;
 import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.profile.Profile;
 
+/**
+ * Classe principale de l'application HashiParmentier.
+ */
 public class HashiParmentier extends Application {
 
+    /**
+     * Stage principal de l'application.
+     */
     private Stage primaryStage;
+    /**
+     * Scène principale de l'application.
+     */
     private Scene mainScene;
+    /**
+     * Scènes de reglages.
+     */
     private Scene settingsScene;
+    /**
+     * Scène de sélection de niveau.
+     */
     private Scene levelSelectionScene;
+    /**
+     * Scène de confirmation de quitter.
+     */
     private Scene confirmQuitScene;
+    /**
+     * Scène d'aide.
+     */
     private Scene aideScene;
+    /**
+     * Scène de sélection de profil.
+     */
     private Scene profileSelectionScene; // Nouvelle scène pour la sélection de profil
+    /**
+     * Indique si une partie est en cours.
+     */
     private boolean isInGame = false;  // Suivi de l'état du jeu (en cours ou non)
 
+    /**
+     * Constructeur vide de la classe HashiParmentier.
+     */
+    public HashiParmentier() {
+        // Constructeur vide
+    }
+
+    /**
+     * Méthode start de l'application JavaFX.
+     *
+     * @param primaryStage Stage principal de l'application.
+     */
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -208,27 +247,45 @@ public class HashiParmentier extends Application {
     }
 
     // 📌 Méthodes de navigation
+    /**
+     * Affiche le menu des réglages.
+     */
     private void showSettingsMenu() {
         primaryStage.setScene(settingsScene);
     }
 
+    /**
+     * Affiche la page de sélection de niveau.
+     */
     private void showLevelSelection() {
         primaryStage.setScene(levelSelectionScene);
     }
 
+    /**
+     * Affiche la page de confirmation de quitter.
+     */
     private void showConfirmQuitPage() {
         primaryStage.setScene(confirmQuitScene);
     }
 
+    /**
+     * Affiche la page d'aide.
+     */
     private void showAidePage() {
         primaryStage.setScene(aideScene);
     }
 
+    /**
+     * Affiche la page de sélection de profil.
+     */
     private void showProfileSelectionPage() {
         primaryStage.setScene(profileSelectionScene);  // Changement pour afficher la page de sélection de profil
     }
 
     // 📌 Méthode pour créer un profil
+    /**
+     * Crée un profil.
+     */
     private void createProfile() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Créer un profil");
@@ -246,6 +303,9 @@ public class HashiParmentier extends Application {
     }
     
 
+    /**
+     * Charge un profil.
+     */
     private void loadProfile() {
         List<String> profileNames = ProfileManager.getInstance().listeProfils();
     
@@ -277,12 +337,21 @@ public class HashiParmentier extends Application {
     
 
     // 📌 Méthode pour démarrer une partie
+    /**
+     * Démarre une partie.
+     */
     private void startGame() {
         isInGame = true;  // Mettre à jour l'état pour indiquer que nous sommes en jeu
         primaryStage.setScene(levelSelectionScene);  // Aller à la page de sélection du niveau
     }
 
     // 📌 Création d'un bouton stylisé
+    /**
+     * Crée un bouton stylisé.
+     * 
+     * @param text Texte du bouton.
+     * @return Le bouton créé.
+     */
     private Button createStyledButton(String text) {
         Button button = new Button(text);
         button.setStyle("-fx-font-family: 'Arial'; " 
@@ -297,6 +366,12 @@ public class HashiParmentier extends Application {
     }
 
     // 📌 Création d'un label stylisé
+    /**
+     * Crée un label stylisé.
+     * 
+     * @param text Texte du label.
+     * @return Le label créé.
+     */
     private Label createStyledLabel(String text) {
         Label label = new Label(text);
         label.setStyle("-fx-font-family: 'Arial'; " 
@@ -308,6 +383,12 @@ public class HashiParmentier extends Application {
         return label;
     }
 
+    /**
+     * Lance une partie en mode affichage.
+     * 
+     * @param difficulte Difficulté de la partie.
+     * @see PartieAffichage
+     */
     private void lancerPartieAffichage(Difficulte difficulte) {
         PartieAffichage partieAffichage = new PartieAffichage(difficulte);
         Stage stage = new Stage();
@@ -318,6 +399,11 @@ public class HashiParmentier extends Application {
         }
     }
 
+    /**
+     * Méthode main de l'application.
+     * 
+     * @param args Arguments passés en ligne de commande.
+     */
     public static void main(String[] args) {
         launch(args);
         return;
