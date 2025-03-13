@@ -271,7 +271,7 @@ public class PartieAffichage extends Application {
      */
     private void creerBackground() {
 
-        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/background.png").toExternalForm());
+        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backPartie.png").toExternalForm());
         ImageView imageBackgroundView = new ImageView(imageBackground);
         imageBackgroundView.setPreserveRatio(false);
         imageBackgroundView.setCache(true);
@@ -416,7 +416,7 @@ public class PartieAffichage extends Application {
 
         // Style du DialogPane avec image de fond
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/background.png');"
+        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backExit.png');"
                 + "-fx-background-size: cover;");
 
         // Image de gauche (agrandie de 30%)
@@ -425,7 +425,7 @@ public class PartieAffichage extends Application {
         exitImage.setFitHeight(130);
 
         // Texte de confirmation
-        Label message = new Label("Voulez-vous vraiment quitter ?\nToute progression non sauvegardée sera perdue.");
+        Label message = new Label("Voulez-vous vraiment quitter ?");
         message.setWrapText(true);
         message.setStyle("-fx-font-size: 14px; -fx-font-family: 'Georgia'; -fx-text-fill: black;");
 
