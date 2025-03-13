@@ -19,6 +19,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.TextInputDialog;
+import java.util.List;
+import java.util.Optional;
+import fr.m3acnl.managers.ProfileManager;
+import fr.m3acnl.profile.Profile;
 
 public class HashiParmentier extends Application {
 
@@ -28,19 +34,20 @@ public class HashiParmentier extends Application {
     private Scene levelSelectionScene;
     private Scene confirmQuitScene;
     private Scene aideScene;
+    private Scene profileSelectionScene; // Nouvelle scène pour la sélection de profil
     private boolean isInGame = false;  // Suivi de l'état du jeu (en cours ou non)
 
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Jeu - Menu Principal");
-        
+
         // 📌 Charger l'image de fond
         Image backgroundImage = new Image(getClass().getResource("/META-INF/img/DessinFondMenu.jpeg").toExternalForm());
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
                 BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, 
                 new BackgroundSize(100, 100, true, true, false, true));
-        
+
         // 📌 SCÈNE PRINCIPALE
         BorderPane root = new BorderPane();
         root.setBackground(new Background(background));
@@ -69,14 +76,14 @@ public class HashiParmentier extends Application {
         centerBox.setAlignment(Pos.CENTER);
 
         Button playButton = createStyledButton("Jouer");
-        playButton.setOnAction(e -> startGame());
+        playButton.setOnAction(e -> showProfileSelectionPage()); // Changer pour afficher la page de sélection de profil
 
         Button quitButton = createStyledButton("Quitter le jeu");
         quitButton.setOnAction(e -> showConfirmQuitPage());
 
         centerBox.getChildren().addAll(playButton, quitButton);
         root.setCenter(centerBox);
-        
+
         mainScene = new Scene(root, 500, 400);
 
         // 📌 PAGE DES RÉGLAGES
@@ -90,7 +97,7 @@ public class HashiParmentier extends Application {
         Label volumeLabel = createStyledLabel("Volume des effets sonores");
         Slider volumeSlider = new Slider(0, 100, 50);
         volumeSlider.setMaxWidth(150);
-        
+
         // 📌 Boutons divers
         Button buttonParamAffichage = createStyledButton("Paramètres d'affichage");
         Button buttonNiveauAide = createStyledButton("Niveau d'aide");
@@ -108,12 +115,11 @@ public class HashiParmentier extends Application {
         // Afficher ou masquer le bouton "Quitter la partie" en fonction de l'état du jeu
         if (isInGame) {
             vboxSettings.getChildren().addAll(settingsTitle, volumeLabel, volumeSlider, 
-                                              buttonParamAffichage, buttonNiveauAide, 
-                                              buttonQuitterPartie, buttonQuitterJeu, buttonRetour);
+                    buttonParamAffichage, buttonNiveauAide, 
+                    buttonQuitterPartie, buttonQuitterJeu, buttonRetour);
         } else {
             vboxSettings.getChildren().addAll(settingsTitle, volumeLabel, volumeSlider, 
-                                              buttonParamAffichage, buttonNiveauAide, 
-                                              buttonQuitterJeu, buttonRetour);
+                    buttonParamAffichage, buttonNiveauAide, buttonQuitterJeu, buttonRetour);
         }
 
         settingsScene = new Scene(vboxSettings, 500, 400);
@@ -172,6 +178,25 @@ public class HashiParmentier extends Application {
         vboxAide.getChildren().addAll(aideTitle, niveau0, niveau1, niveau3, retourAide);
         aideScene = new Scene(vboxAide, 500, 400);
 
+        // 📌 PAGE DE SÉLECTION DE PROFIL
+        VBox vboxProfileSelection = new VBox(15);
+        vboxProfileSelection.setAlignment(Pos.CENTER);
+        vboxProfileSelection.setBackground(new Background(background));
+
+        final Label profileLabel = createStyledLabel("Veuillez vous connecter pour jouer");
+
+        Button loadProfileButton = createStyledButton("Charger un profil");
+        loadProfileButton.setOnAction(e -> loadProfile());
+
+        Button createProfileButton = createStyledButton("Créer un profil");
+        createProfileButton.setOnAction(e -> createProfile());
+
+        Button returnToMainMenu = createStyledButton("Retour");
+        returnToMainMenu.setOnAction(e -> primaryStage.setScene(mainScene));
+
+        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, createProfileButton, returnToMainMenu);
+        profileSelectionScene = new Scene(vboxProfileSelection, 500, 400);
+
         // 📌 Lancer l'application avec la scène principale
         primaryStage.setScene(mainScene);
         primaryStage.show();
@@ -193,6 +218,58 @@ public class HashiParmentier extends Application {
     private void showAidePage() {
         primaryStage.setScene(aideScene);
     }
+
+    private void showProfileSelectionPage() {
+        primaryStage.setScene(profileSelectionScene);  // Changement pour afficher la page de sélection de profil
+    }
+
+    // 📌 Méthode pour créer un profil
+    private void createProfile() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Créer un profil");
+        dialog.setHeaderText("Entrez votre nom de profil :");
+    
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(name -> {
+            ProfileManager.getInstance().creerProfil(name); // Crée et sauvegarde le profil
+            ProfileManager.getInstance().setProfileActif(name); // Définit le profil actif
+            System.out.println("Profil créé et sauvegardé : " + name);
+            
+            // Recharge la liste des profils pour que le nouveau apparaisse
+            showProfileSelectionPage();
+        });
+    }
+    
+
+    private void loadProfile() {
+        List<String> profileNames = ProfileManager.getInstance().listeProfils();
+    
+        if (profileNames.isEmpty()) {
+            // Création d'un profil par défaut
+            String defaultProfile = "profil_par_defaut";
+            ProfileManager.getInstance().creerProfil(defaultProfile);
+            ProfileManager.getInstance().setProfileActif(defaultProfile);
+            System.out.println("Aucun profil existant, création du profil par défaut : " + defaultProfile);
+    
+            // Recharger la liste après création du profil
+            profileNames = ProfileManager.getInstance().listeProfils();
+        }
+    
+        // Sélection du profil
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(profileNames.get(0), profileNames);
+        dialog.setTitle("Charger un profil");
+        dialog.setHeaderText("Choisissez un profil à charger :");
+    
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(name -> {
+            ProfileManager.getInstance().setProfileActif(name);
+            Profile profile = ProfileManager.getInstance().getProfileActif();
+            System.out.println("Profil chargé : " + profile.getNom());
+            startGame();
+        });
+    }
+    
+    
 
     // 📌 Méthode pour démarrer une partie
     private void startGame() {
