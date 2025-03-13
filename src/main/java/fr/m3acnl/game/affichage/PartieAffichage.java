@@ -81,6 +81,11 @@ public class PartieAffichage extends Application {
     private double derniereTaille = -1;
 
     /**
+     * Volume des effets sonores.
+     */
+    private double soundeffect = 0.5; // Valeur par défaut (50% du volume)
+
+    /**
      * Constructeur de la classe PartieAffichage.
      *
      * @param difficulte La difficulté de la partie
@@ -215,8 +220,6 @@ public class PartieAffichage extends Application {
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
-    private double soundeffect = 0.5; // Valeur par défaut (50% du volume)
-
     private void activerElement(MouseEvent event, int x, int y) {
         restaurerEtat(x, y);
 
@@ -229,11 +232,11 @@ public class PartieAffichage extends Application {
 
             if (noeudProche != null) {
                 doubleLien.activer(noeudProche);
-                jouerSon("action.mp3"); // Jouer le son de lien
+                jouerSon("noeud.wav"); // Jouer le son de lien
             }
         } else {
             partie.getJeu().activeElemJeu(x, y, null);
-            jouerSon("action.mp3"); // Jouer le son du nœud
+            jouerSon("lien.wav"); // Jouer le son du nœud
         }
 
         // Vérifier si la partie est gagnée
@@ -359,11 +362,26 @@ public class PartieAffichage extends Application {
         }
 
         // Ajout des actions aux boutons
-        buttonRetour.setOnAction(e -> retour());
-        buttonAvancer.setOnAction(e -> avancer());
-        buttonCheck.setOnAction(e -> check());
-        buttonSave.setOnAction(e -> sauvegarde());
-        buttonCheckpoint.setOnAction(e -> retourSauvegarde());
+        buttonRetour.setOnAction(e -> {
+            retour();
+            jouerSon("bouton.wav");
+        });
+        buttonAvancer.setOnAction(e -> {
+            avancer();
+            jouerSon("bouton.wav");
+        });
+        buttonCheck.setOnAction(e -> {
+            check();
+            jouerSon("bouton.wav");
+        });
+        buttonSave.setOnAction(e -> {
+            sauvegarde();
+            jouerSon("bouton.wav");
+        });
+        buttonCheckpoint.setOnAction(e -> {
+            retourSauvegarde();
+            jouerSon("bouton.wav");
+        });
         labelTemps = new Label("Temps: 0s");
         labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
 
@@ -401,6 +419,7 @@ public class PartieAffichage extends Application {
             backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
             afficherOverlayVictoire(); // Afficher l'overlay après la pause
         });
+        jouerSon("victoire.wav");
         pause.play();
     }
 
@@ -427,8 +446,14 @@ public class PartieAffichage extends Application {
         Button btnSuivant = new Button("Grille Suivante");
         Button btnQuitter = new Button("Quitter");
 
-        btnSuivant.setOnAction(e -> relancerPartie());
-        btnQuitter.setOnAction(e -> Platform.exit());
+        btnSuivant.setOnAction(e -> {
+            relancerPartie();
+            jouerSon("bouton.wav");
+        });
+        btnQuitter.setOnAction(e -> {
+            jouerSon("bouton.wav");
+            Platform.exit();
+        });
 
         VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
         winBox.setAlignment(Pos.CENTER);
