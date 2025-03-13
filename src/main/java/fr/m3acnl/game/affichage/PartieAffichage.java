@@ -14,6 +14,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -78,6 +79,11 @@ public class PartieAffichage extends Application {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
+        /*Double[][] mat = {
+            {0.0, 0.0, 0.0},
+            {-1.0, 0.1, -1.0},
+            {0.0, 0.0, 0.0}
+        };*/
         jeu = new Jeu(7, mat);
         gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -332,15 +338,21 @@ public class PartieAffichage extends Application {
         ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/up.png").toExternalForm()));
         winImageView.setFitWidth(300);
         winImageView.setFitHeight(300);
+        winImageView.setBlendMode(BlendMode.SRC_OVER);
 
         // Utiliser un StackPane mais sans fond opaque
         StackPane upPane = new StackPane(winImageView);
         upPane.setAlignment(Pos.CENTER);
+        upPane.setOpacity(1);
+
+        backgroundPane.setEffect(null);
+        backgroundPane.setOpacity(1);
 
         backgroundPane.getChildren().add(upPane);
+        backgroundPane.getChildren().get(backgroundPane.getChildren().size() - 1).toFront();
 
         // Pause de 3 secondes avant d'afficher l'overlay final
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        PauseTransition pause = new PauseTransition(Duration.seconds(30));
         pause.setOnFinished(event -> {
             backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
             afficherOverlayVictoire(); // Afficher l'overlay après la pause
@@ -410,7 +422,6 @@ public class PartieAffichage extends Application {
             if (jeu.getPlateau().getElement(i, j) != null
                     && (jeu.getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
 
-                derniereTaille = tailleCellule;
                 bouton.setGraphic(creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO));
                 jeu.getPlateau().getElement(i, j).verifie();
             }
@@ -418,6 +429,7 @@ public class PartieAffichage extends Application {
             bouton.setMinSize(tailleCellule, tailleCellule);
             bouton.setMaxSize(tailleCellule, tailleCellule);
         });
+        derniereTaille = tailleCellule;
     }
 
     /**
