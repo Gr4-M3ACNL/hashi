@@ -33,6 +33,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -214,33 +215,47 @@ public class PartieAffichage extends Application {
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
+    private double soundeffect = 0.5; // Valeur par défaut (50% du volume)
+
     private void activerElement(MouseEvent event, int x, int y) {
         restaurerEtat(x, y);
 
         // Vérifier si l'élément du plateau est un DoubleLien
         ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
-        if (element instanceof DoubleLien doubleLien) {
 
-            // Trouver le nœud le plus proche de la souris sur le bouton
+        if (element instanceof DoubleLien doubleLien) {
+            // Trouver le nœud le plus proche de la souris
             Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
 
             if (noeudProche != null) {
-                doubleLien.activer(noeudProche); // Activation avec le bon nœud
+                doubleLien.activer(noeudProche);
+                jouerSon("action.mp3"); // Jouer le son de lien
             }
         } else {
-            partie.getJeu().activeElemJeu(x, y, null); // Activation classique si ce n'est pas un DoubleLien
+            partie.getJeu().activeElemJeu(x, y, null);
+            jouerSon("action.mp3"); // Jouer le son du nœud
         }
 
         // Vérifier si la partie est gagnée
         if (partie.getJeu().gagner()) {
-            partie.finPartie();
             victoire();
-        } else {
-            partie.sauvegarde();
         }
 
         // Mettre à jour l'affichage
         actualiserAffichage();
+    }
+
+    // Méthode pour jouer un son avec contrôle du volume
+    private void jouerSon(String fichierAudio) {
+        String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
+        AudioClip son = new AudioClip(chemin);
+        son.setVolume(soundeffect); // Appliquer le volume
+        son.play();
+    }
+
+    // Méthode pour changer le volume des effets sonores
+    public void setSoundEffectVolume(double volume) {
+        soundeffect = Math.max(0, Math.min(1, volume)); // Clamp entre 0 et 1
     }
 
     /**
@@ -427,8 +442,7 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Relance une nouvelle partie.
-     * la difficulté reste la même.
+     * Relance une nouvelle partie. la difficulté reste la même.
      */
     private void relancerPartie() {
         partie = new Partie(partie.getDifficulte());
@@ -437,9 +451,9 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Demande à l'utilisateur s'il veut vraiment quitter.
-     * Si oui, ferme l'application.
-     * 
+     * Demande à l'utilisateur s'il veut vraiment quitter. Si oui, ferme
+     * l'application.
+     *
      * @param event L'événement de fermeture
      */
     private void demandeSortie(javafx.stage.WindowEvent event) {
