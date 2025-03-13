@@ -366,7 +366,7 @@ public class PartieAffichage extends Application {
         backgroundPane.getChildren().get(backgroundPane.getChildren().size() - 1).toFront();
 
         // Pause de 3 secondes avant d'afficher l'overlay final
-        PauseTransition pause = new PauseTransition(Duration.seconds(30));
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> {
             backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
             afficherOverlayVictoire(); // Afficher l'overlay après la pause
@@ -378,6 +378,7 @@ public class PartieAffichage extends Application {
      * Affiche l'overlay du menu de victoire.
      */
     private void afficherOverlayVictoire() {
+        System.out.println("Victoire !");
         Scene scene = gridPane.getScene();
         if (!(scene != null && scene.getRoot() instanceof BorderPane mainLayout)) {
             System.out.println("ERREUR : Scène ou BorderPane invalide !");
