@@ -2,6 +2,7 @@ package fr.m3acnl.game.affichage;
 
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Optional;
 
 import fr.m3acnl.game.logique.DoubleLien;
 import fr.m3acnl.game.logique.Jeu;
@@ -12,7 +13,9 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -108,6 +111,18 @@ public class PartieAffichage extends Application {
         Scene scene = new Scene(mainLayout, 1920, 1080);
         primaryStage.setTitle("Jeu Interface");
         primaryStage.setScene(scene);
+        primaryStage.setOnCloseRequest(event -> {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Voulez-vous vraiment quitter ?", ButtonType.YES, ButtonType.NO);
+            alert.setTitle("Confirmation de fermeture");
+
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.NO) {
+                event.consume(); // Empêche la fermeture
+            } else {
+                System.out.println("Sauvegarde"); // Sauvegarde avant fermeture
+            }
+        });
+
         primaryStage.show();
 
         scene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
