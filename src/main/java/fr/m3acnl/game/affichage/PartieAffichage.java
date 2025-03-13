@@ -5,13 +5,16 @@ import java.util.Arrays;
 import java.util.Optional;
 
 import fr.m3acnl.game.logique.DoubleLien;
+import fr.m3acnl.game.logique.ElementJeu;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Noeud;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -20,6 +23,7 @@ import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -82,11 +86,7 @@ public class PartieAffichage extends Application {
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        /*Double[][] mat = {
-            {0.0, 0.0, 0.0},
-            {-1.0, 0.1, -1.0},
-            {0.0, 0.0, 0.0}
-        };*/
+
         jeu = new Jeu(7, mat);
         gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -139,7 +139,7 @@ public class PartieAffichage extends Application {
                 boutons[i][j] = new Button();
                 int x = i;
                 int y = j;
-                boutons[i][j].setOnMouseReleased(e -> activerElement(x, y));
+                boutons[i][j].setOnMouseClicked(event -> activerElement(event, x, y));
 
                 URL resource = getResourceElement(i, j);
                 if (resource != null) {
@@ -147,7 +147,8 @@ public class PartieAffichage extends Application {
                 }
 
                 boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
-                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(x, y)); // Active le survol
+                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(e, x, y));
+
                 boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y)); // Désactive le survol
 
                 gridPane.add(boutons[i][j], y, x);
@@ -162,24 +163,24 @@ public class PartieAffichage extends Application {
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
-    private void previsualiserEtat(int x, int y) {
-        if (jeu.getPlateau().getElement(x, y) == null) {
-            return;
-        }
-        if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
-            DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
-            Noeud noeudReference = jeu.getPlateau().trouverNoeudLePlusProche(x, y);
+    private void previsualiserEtat(MouseEvent event, int x, int y) {
+        ElementJeu element = jeu.getPlateau().getElement(x, y);
 
-            if (noeudReference != null) {
-                Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
-                if (noeud != null) {
-                    doubleLien.activerSurbrillance(noeud);
-                }
+        if (element == null) {
+            return; // Rien à faire si la case est vide
+        }
+
+        if (element instanceof DoubleLien doubleLien) {
+            // Trouver le nœud le plus proche de la souris
+            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
+
+            if (noeudProche != null) {
+                doubleLien.activerSurbrillance(noeudProche);
             }
         } else {
-            jeu.getPlateau().getElement(x, y).surbrillanceOn();
-
+            element.surbrillanceOn();
         }
+
         actualiserAffichage();
     }
 
@@ -208,67 +209,65 @@ public class PartieAffichage extends Application {
      * @param x La ligne de l'élément
      * @param y La colonne de l'élément
      */
-    private void activerElement(int x, int y) {
+    private void activerElement(MouseEvent event, int x, int y) {
         restaurerEtat(x, y);
-        if (jeu.getPlateau().getElement(x, y) instanceof DoubleLien) {
-            DoubleLien doubleLien = (DoubleLien) jeu.getPlateau().getElement(x, y);
 
-            Noeud noeudReference = jeu.getPlateau().trouverNoeudLePlusProche(x, y);
+        // Vérifier si l'élément du plateau est un DoubleLien
+        ElementJeu element = jeu.getPlateau().getElement(x, y);
+        if (element instanceof DoubleLien doubleLien) {
 
-            if (noeudReference != null) {
-                Noeud noeud = trouverNoeudLePlusProche(doubleLien, noeudReference);
-                if (noeud != null) {
-                    doubleLien.activer(noeud);
-                }
+            // Trouver le nœud le plus proche de la souris sur le bouton
+            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
+
+            if (noeudProche != null) {
+                doubleLien.activer(noeudProche); // Activation avec le bon nœud
             }
         } else {
-            jeu.activeElemJeu(x, y, null);
+            jeu.activeElemJeu(x, y, null); // Activation classique si ce n'est pas un DoubleLien
         }
+
+        // Vérifier si la partie est gagnée
         if (jeu.gagner()) {
             victoire();
         }
+
+        // Mettre à jour l'affichage
         actualiserAffichage();
     }
 
-    /**
-     * Trouve le nœud le plus proche d'un double lien.
-     *
-     * @param doubleLien Le double lien
-     * @param reference Le nœud de référence
-     * @return Le nœud le plus proche
-     */
-    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, Noeud reference) {
-        Noeud n1Lien1 = doubleLien.getLien1().getNoeud1();
-        Noeud n2Lien1 = doubleLien.getLien1().getNoeud2();
-        Noeud n1Lien2 = doubleLien.getLien2().getNoeud1();
-        Noeud n2Lien2 = doubleLien.getLien2().getNoeud2();
-
-        Noeud[] noeudsPossibles = {n1Lien1, n2Lien1, n1Lien2, n2Lien2};
-        Noeud noeudProche = noeudsPossibles[0];
-        double distanceMin = calculerDistance(reference, noeudProche);
-
-        for (Noeud noeud : noeudsPossibles) {
-            double distance = calculerDistance(reference, noeud);
-            if (distance < distanceMin) {
-                distanceMin = distance;
-                noeudProche = noeud;
-            }
+    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, MouseEvent event) {
+        if (!(event.getSource() instanceof Node source)) {
+            System.out.println("L'élément source n'est pas un Node !");
+            return null;
         }
 
-        return noeudProche;
-    }
+        // Convertir la position de la souris en coordonnées locales du bouton
+        Point2D mouseLocal = source.sceneToLocal(event.getSceneX(), event.getSceneY());
 
-    /**
-     * Calcule la distance entre deux nœuds.
-     *
-     * @param n1 Le premier nœud
-     * @param n2 Le deuxième nœud
-     * @return La distance entre les deux nœuds
-     */
-    private double calculerDistance(Noeud n1, Noeud n2) {
-        double dx = n1.getPosition().getCoordX() - n2.getPosition().getCoordX();
-        double dy = n1.getPosition().getCoordY() - n2.getPosition().getCoordY();
-        return Math.sqrt(dx * dx + dy * dy);
+        // Récupérer les nœuds des liens
+        Noeud noeudHaut = doubleLien.getLien1().getNoeud1();
+        Noeud noeudBas = doubleLien.getLien1().getNoeud2();
+        Noeud noeudGauche = doubleLien.getLien2().getNoeud1();
+        Noeud noeudDroit = doubleLien.getLien2().getNoeud2();
+
+        // Dimensions du bouton
+        double boutonWidth = ((Button) source).getWidth();
+        double boutonHeight = ((Button) source).getHeight();
+
+        // Déterminer la position relative de la souris
+        double centerX = boutonWidth / 2;
+        double centerY = boutonHeight / 2;
+        double dx = mouseLocal.getX() - centerX;
+        double dy = mouseLocal.getY() - centerY;
+
+        // Comparer les distances pour choisir entre horizontal et vertical
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Mouvement majoritairement horizontal
+            return (dx < 0) ? noeudGauche : noeudDroit;
+        } else {
+            // Mouvement majoritairement vertical
+            return (dy < 0) ? noeudHaut : noeudBas;
+        }
     }
 
     /**
