@@ -326,7 +326,6 @@ public class PartieAffichage extends Application {
      * Permet d'afficher l'overlay de victoire.i
      */
     private void victoire() {
-        System.out.println("Victoire détectée !");
         Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
 
         // Afficher l'image "up.png" temporairement
@@ -382,7 +381,6 @@ public class PartieAffichage extends Application {
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
         mainLayout.setCenter(overlayPane);
-        System.out.println("Overlay ajouté !");
     }
 
     /**

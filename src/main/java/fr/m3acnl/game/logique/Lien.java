@@ -228,7 +228,6 @@ public class Lien implements ElementJeu {
      */
     @Override
     public Boolean activer() {
-        System.out.println("Lien activer");
         averifie();
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
@@ -269,7 +268,6 @@ public class Lien implements ElementJeu {
 
         }
 
-        System.out.println(nbLien + "\n-------------------");
         return true;
     }
 
