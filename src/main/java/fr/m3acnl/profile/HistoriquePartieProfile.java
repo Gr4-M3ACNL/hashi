@@ -373,4 +373,44 @@ public class HistoriquePartieProfile implements JsonSerializable {
         }
     }
 
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en facile.
+     * Utilisé pour la deserialization.
+     * 
+     * @param indexFacile l'index de la grille de la dernière partie finie en facile.
+     */
+    protected void setIndexFacile(int indexFacile) {
+        this.indexFacile = indexFacile;
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en moyen.
+     * Utilisé pour la deserialization.
+     * 
+     * @param indexMoyen l'index de la grille de la dernière partie finie en moyen.
+     */
+    protected void setIndexMoyen(int indexMoyen) {
+        this.indexMoyen = indexMoyen;
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en difficile.
+     * Utilisé pour la deserialization.
+     * 
+     * @param indexDifficile l'index de la grille de la dernière partie finie en difficile.
+     */
+    protected void setIndexDifficile(int indexDifficile) {
+        this.indexDifficile = indexDifficile;
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en expert.
+     * Utilisé pour la deserialization.
+     * 
+     * @param indexExpert l'index de la grille de la dernière partie finie en expert.
+     */
+    protected void setIndexExpert(int indexExpert) {
+        this.indexExpert = indexExpert;
+    }
+
 }

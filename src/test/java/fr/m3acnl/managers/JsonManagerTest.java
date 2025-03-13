@@ -71,6 +71,21 @@ public class JsonManagerTest extends Tests {
         assertEquals(-4.0, serialise[0][0], "La première île devrait avoir une valeur de -4");
         assertEquals(0.2, serialise[0][1], "La connexion horizontale devrait avoir une valeur de 0.2");
         assertEquals(-4.0, serialise[0][2], "La deuxième île devrait avoir une valeur de -4");
+
+        JsonManager.GrilleInfo grilleInfo2 = manager.getGrilleInfo(Difficulte.facile, 1);
+        assertNotNull(grilleInfo2);
+        assertEquals(7, grilleInfo2.taille(), "La taille de la grille devrait être de 7");
+
+        // Vérification du format de la grille sérialisée
+        Double[][] serialise2 = grilleInfo2.serialise();
+        assertNotNull(serialise2, "La grille sérialisée ne devrait pas être nulle");
+        assertEquals(7, serialise2.length, "La grille devrait avoir 7 lignes");
+        assertEquals(7, serialise2[0].length, "La grille devrait avoir 7 colonnes");
+
+        // Vérification de quelques valeurs spécifiques
+        assertEquals(-4.0, serialise2[0][0], "La première île devrait avoir une valeur de -4");
+        assertEquals(0.2, serialise2[0][1], "La connexion horizontale devrait avoir une valeur de 0.2");
+        assertEquals(-3.0, serialise2[0][2], "La deuxième île devrait avoir une valeur de -3");
     }
 
     /**

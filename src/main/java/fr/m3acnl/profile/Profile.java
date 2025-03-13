@@ -155,6 +155,11 @@ public class Profile implements JsonSerializable {
             listeParties.add(d.toString());
         }
         this.historiquePartieProfile.setExpert(listeParties);
+
+        this.historiquePartieProfile.setIndexFacile(historiquePartieProfile.getIndexFacile());
+        this.historiquePartieProfile.setIndexMoyen(historiquePartieProfile.getIndexMoyen());
+        this.historiquePartieProfile.setIndexDifficile(historiquePartieProfile.getIndexDifficile());
+        this.historiquePartieProfile.setIndexExpert(historiquePartieProfile.getIndexExpert());
     }
 
     /**

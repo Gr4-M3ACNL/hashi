@@ -412,7 +412,7 @@ public class PartieAffichage extends Application {
         Button btnSuivant = new Button("Grille Suivante");
         Button btnQuitter = new Button("Quitter");
 
-        btnSuivant.setOnAction(e -> System.out.println("Grille suivante"));
+        btnSuivant.setOnAction(e -> relancerPartie());
         btnQuitter.setOnAction(e -> Platform.exit());
 
         VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
@@ -424,6 +424,16 @@ public class PartieAffichage extends Application {
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
         mainLayout.setCenter(overlayPane);
+    }
+
+    /**
+     * Relance une nouvelle partie.
+     * la difficulté reste la même.
+     */
+    private void relancerPartie() {
+        partie = new Partie(partie.getDifficulte());
+        initialiserBoutons();
+        actualiserAffichage();
     }
 
     /**
