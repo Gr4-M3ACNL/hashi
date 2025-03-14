@@ -152,6 +152,7 @@ public class PartieAffichage extends Application {
         scene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
         demarrerChrono();
         actualiserAffichage();
+        partie.getJeu().drawJeuTerm();
     }
 
     /**
@@ -462,9 +463,9 @@ public class PartieAffichage extends Application {
      */
     private void actualiserLabelTemps() {
         if (partie != null) {
-            Duration chrono = partie.getChronoDuration(); // Doit être un java.time.Duration
+            Duration chrono = partie.getChronoDuration();
             long minutes = chrono.toMinutes();
-            long secondes = chrono.toSecondsPart(); // Utilise getSeconds() pour Java 8
+            long secondes = chrono.toSecondsPart();
             labelTemps.setText("Temps: " + minutes + " min " + secondes + " sec");
         }
     }
@@ -535,8 +536,9 @@ public class PartieAffichage extends Application {
         Button btnQuitter = new Button("Quitter");
 
         btnSuivant.setOnAction(e -> {
-            relancerPartie();
+            relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
             jouerSon("bouton.wav");
+            cacherOverlay(mainLayout);  // Cacher l'overlay
         });
         btnQuitter.setOnAction(e -> {
             jouerSon("bouton.wav");
@@ -551,13 +553,36 @@ public class PartieAffichage extends Application {
         overlayPane.setAlignment(Pos.CENTER);
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
 
+        // Affichage de l'overlay
         mainLayout.setCenter(overlayPane);
+    }
+
+    /**
+     * Méthode pour cacher l'overlay.
+     */
+    private void cacherOverlay(BorderPane mainLayout) {
+        // Retirer l'overlay en enlevant le StackPane du centre
+        mainLayout.setCenter(null);
+    }
+
+    /**
+     * Relance une nouvelle partie. la difficulté reste la même.
+     */
+    private void relancerPartie(BorderPane mainLayout) {
+        // Réinitialiser la partie, mais ne pas oublier d'ajouter les éléments de jeu au mainLayout
+        partie = new Partie(partie.getDifficulte());
+        initialiserBoutons();  // Réinitialiser les boutons du jeu
+        actualiserAffichage(); // Réactualiser l'affichage de la partie
+
+        // Ajouter à nouveau le layout du jeu (ici gridPane ou tout autre élément contenant le jeu)
+        mainLayout.setCenter(gridPane);
     }
 
     /**
      * Relance une nouvelle partie. la difficulté reste la même.
      */
     private void relancerPartie() {
+
         partie = new Partie(partie.getDifficulte());
         initialiserBoutons();
         actualiserAffichage();
