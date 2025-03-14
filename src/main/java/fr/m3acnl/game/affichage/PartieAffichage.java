@@ -241,9 +241,10 @@ public class PartieAffichage extends Application {
 
         // Vérifier si la partie est gagnée
         if (partie.getJeu().gagner()) {
+            partie.finPartie();
             victoire();
         }
-
+        partie.sauvegarde();
         // Mettre à jour l'affichage
         actualiserAffichage();
     }
