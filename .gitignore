@@ -3,13 +3,19 @@
 .idea/
 .vscode/
 *.swap
+.DS_Store
 
 ######
 # Fichiers produit par Maven
 target/
 doc/javadoc/
-doc/apidocs/
-doc/testapidocs/
+doc/apidocs
+doc/testapidocs
+
+######
+# Fichiers produit par java
+*.class
+*.jar
 
 ######
 # images en double de plantUML

@@ -1,5 +1,7 @@
 package fr.m3acnl;
 
+import javafx.application.Application;
+
 /**
  * Main class of the Hashi game.
  */
@@ -19,5 +21,6 @@ public class Hashi {
      */
     public static void main(String[] args) {
         System.out.println("Hello World!");
+        Application.launch(HashiParmentier.class, args);
     }
 }
