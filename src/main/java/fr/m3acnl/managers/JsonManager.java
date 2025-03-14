@@ -288,6 +288,16 @@ public class JsonManager {
             }
 
             mapper.writeValue(cheminFichier.toFile(), rootNode);
+
+            // Supprime le fichier de sauvegarde de la partie
+            Path cheminFichierPartie = SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve(nomFichierPartie);
+            if (cheminFichierPartie.toFile().exists()) {
+                JsonNode rootNodePartie = mapper.readTree(cheminFichierPartie.toFile());
+                if (rootNodePartie.has(nom)) {
+                    ((ObjectNode) rootNodePartie).remove(nom);
+                    mapper.writeValue(cheminFichierPartie.toFile(), rootNodePartie);
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Impossible de supprimer le profil");
