@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.logique.elementjeu.Coord;
 
 /**
  * Test pour la classe Coord

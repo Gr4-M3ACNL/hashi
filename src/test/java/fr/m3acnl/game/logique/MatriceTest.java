@@ -8,6 +8,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 
 /**
  * Classe de test de la classe Matrice.

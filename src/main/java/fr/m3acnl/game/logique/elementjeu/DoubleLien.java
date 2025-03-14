@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Classe DoubleLien pour gérer les liens croisés.

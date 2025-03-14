@@ -1,5 +1,9 @@
 package fr.m3acnl.game.logique;
 
+import fr.m3acnl.game.logique.elementjeu.Noeud;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;

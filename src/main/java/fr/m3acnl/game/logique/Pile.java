@@ -1,5 +1,6 @@
 package fr.m3acnl.game.logique;
 
+import fr.m3acnl.game.logique.elementjeu.Lien;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;

@@ -1,6 +1,7 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 import java.util.ArrayList;
+import fr.m3acnl.game.logique.Jeu;
 
 /**
  * Classe Lien, afin de les utilisés pour lié 2 noeuds.

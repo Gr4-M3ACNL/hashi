@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Classe Coord pour une représentation de coordonnée.

@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Interface ElementJeu pour représenter les éléments du jeu.

@@ -1,6 +1,8 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 import java.util.ArrayList;
+
+
 
 /**
  * Classe Noeud a lié dans le jeu.

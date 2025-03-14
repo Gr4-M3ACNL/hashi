@@ -6,10 +6,10 @@ import java.util.Optional;
 
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
-import fr.m3acnl.game.logique.DoubleLien;
-import fr.m3acnl.game.logique.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import fr.m3acnl.game.logique.Jeu;
-import fr.m3acnl.game.logique.Noeud;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.application.Platform;
