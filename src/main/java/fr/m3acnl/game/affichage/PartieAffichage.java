@@ -152,6 +152,7 @@ public class PartieAffichage extends Application {
         scene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
         demarrerChrono();
         actualiserAffichage();
+        System.out.println("Partie démarrée !");
         partie.getJeu().drawJeuTerm();
     }
 
@@ -264,7 +265,6 @@ public class PartieAffichage extends Application {
             partie.sauvegarde();
         }
         // Mettre à jour l'affichage
-        partie.getJeu().drawJeuTerm();
         actualiserAffichage();
     }
 
@@ -570,12 +570,8 @@ public class PartieAffichage extends Application {
      */
     private void relancerPartie(BorderPane mainLayout) {
         // Réinitialiser la partie, mais ne pas oublier d'ajouter les éléments de jeu au mainLayout
-        partie = new Partie(partie.getDifficulte());
-        initialiserBoutons();  // Réinitialiser les boutons du jeu
-        actualiserAffichage(); // Réactualiser l'affichage de la partie
-
-        // Ajouter à nouveau le layout du jeu (ici gridPane ou tout autre élément contenant le jeu)
-        mainLayout.setCenter(gridPane);
+        PartieAffichage partieAffichage = new PartieAffichage(partie.getDifficulte());
+        partieAffichage.start((Stage) mainLayout.getScene().getWindow());
     }
 
     /**
