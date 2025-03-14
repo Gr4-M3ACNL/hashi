@@ -10,7 +10,10 @@ import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import fr.m3acnl.game.logique.elementjeu.Noeud;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -35,7 +38,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import java.time.Duration;
+import java.time.Instant;
 
 /**
  * Classe PartieAffichage pour l'affichage du jeu.
@@ -91,6 +95,11 @@ public class PartieAffichage extends Application {
     private double soundeffect = 0.5; // Valeur par défaut (50% du volume)
 
     /**
+     * Accès à la timeline pour l'actualisation du chrono.
+     */
+    private Timeline timeline;
+
+    /**
      * Constructeur de la classe PartieAffichage.
      *
      * @param difficulte La difficulté de la partie
@@ -142,6 +151,7 @@ public class PartieAffichage extends Application {
 
         scene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
         scene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
+        demarrerChrono();
         actualiserAffichage();
     }
 
@@ -252,6 +262,7 @@ public class PartieAffichage extends Application {
         }
         partie.sauvegarde();
         // Mettre à jour l'affichage
+        partie.getJeu().drawJeuTerm();
         actualiserAffichage();
     }
 
@@ -356,14 +367,14 @@ public class PartieAffichage extends Application {
         VBox controlPanel = new VBox(10);
         controlPanel.setAlignment(Pos.CENTER);
 
-        Button buttonRetour = new Button("Retour");
-        Button buttonAvancer = new Button("Avancer");
+        Button buttonRetour = new Button("Annuler coups");
+        Button buttonAvancer = new Button("Rétablir coups");
         Button buttonCheck = new Button("Vérifier grille");
         Button buttonSave = new Button("Sauvegarde manuelle");
         Button buttonCheckpoint = new Button("Retour checkpoint");
 
-        // Style des boutons
-        for (Button bouton : new Button[]{buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint}) {
+        Button[] boutonsControle = {buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint};
+        for (Button bouton : boutonsControle) {
             bouton.setMinSize(150, 50);
             bouton.setStyle(
                     "-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
@@ -398,11 +409,72 @@ public class PartieAffichage extends Application {
             jouerSon("bouton.wav");
         });
         labelTemps = new Label("Temps: " + partie.getChronoDuration().toMinutes() + " min " + partie.getChronoDuration().toSecondsPart() + " sec");
-        labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
+        labelTemps.setStyle("-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
+                + "-fx-background-radius: 10;"
+                + "-fx-border-color: #3d1e10;"
+                + "-fx-border-width: 2px;"
+                + "-fx-border-radius: 10;"
+                + "-fx-text-fill: white;"
+                + "-fx-font-size: 14px;"
+                + "-fx-font-family: 'Georgia'; -fx-padding: 5px;");
+        actualiserLabelTemps();
 
-        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint,
-                labelTemps);
+        // Mise à jour de la taille des boutons lorsqu'on redimensionne la fenêtre
+        Platform.runLater(() -> {
+            Scene scene = controlPanel.getScene();
+            if (scene != null) {
+                scene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleBoutons(boutonsControle));
+                scene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleBoutons(boutonsControle));
+                ajusterTailleBoutons(boutonsControle);
+            }
+        });
+
+        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, labelTemps);
         return controlPanel;
+    }
+
+    /**
+     * Ajuste la taille des boutons en fonction de la taille de la scène.
+     *
+     * @param boutons Les boutons à ajuster
+     */
+    private void ajusterTailleBoutons(Button[] boutons) {
+        Scene scene = boutons[0].getScene();
+        if (scene == null) {
+            return;
+        }
+
+        double largeurFenetre = scene.getWidth();
+        double hauteurFenetre = scene.getHeight();
+
+        double nouvelleTailleBouton = Math.max(hauteurFenetre * 0.05, 40); // 40px de hauteur minimum
+        double nouvelleLargeur = Math.max(largeurFenetre * 0.15, 150); // 150px de largeur minimum
+
+        for (Button bouton : boutons) {
+            bouton.setMinSize(nouvelleLargeur, nouvelleTailleBouton);
+            bouton.setMaxSize(nouvelleLargeur, nouvelleTailleBouton);
+        }
+    }
+
+    /**
+     * Actualise le label du temps.
+     */
+    private void actualiserLabelTemps() {
+        if (partie != null) {
+            Duration chrono = partie.getChronoDuration(); // Doit être un java.time.Duration
+            long minutes = chrono.toMinutes();
+            long secondes = chrono.getSeconds() % 60; // Utilise getSeconds() pour Java 8
+            labelTemps.setText("Temps: " + minutes + " min " + secondes + " sec");
+        }
+    }
+
+    /**
+     * Démarre le chrono de la partie pour l'actualisation du temps.
+     */
+    private void demarrerChrono() {
+        timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> actualiserLabelTemps()));
+        timeline.setCycleCount(Animation.INDEFINITE); // Répéter indéfiniment
+        timeline.play(); // Démarrer le chrono
     }
 
     /**
