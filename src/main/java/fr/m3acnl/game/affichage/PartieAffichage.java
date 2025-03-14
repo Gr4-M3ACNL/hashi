@@ -46,7 +46,12 @@ import javafx.util.Duration;
 public class PartieAffichage extends Application {
 
     /**
-     * Le jeu.
+     * La partie en cours.
+     * <p>
+     * contient le jeu et le chrono.
+     * gère la sauvegarde et la fin de la partie.
+     * </p>
+     * @see Partie
      */
     private Partie partie;
 
@@ -89,6 +94,7 @@ public class PartieAffichage extends Application {
      * Constructeur de la classe PartieAffichage.
      *
      * @param difficulte La difficulté de la partie
+     * @see Partie#Partie(Difficulte)
      */
     public PartieAffichage(Difficulte difficulte) {
         this.partie = new Partie(difficulte);

@@ -49,10 +49,13 @@ public class Partie implements JsonSerializable {
      * Crée ou charge une partie en fonction de la difficulté.
      * 
      * @param difficulte la difficulté de la partie
+     * @see SauvegardePartieManager#charger(Difficulte)
      */
     public Partie(Difficulte difficulte) {
         this.difficulte = difficulte;
+        // cette fonction va créer une nouvelle partie ou charger une partie existante
         JeuEnCour jeuEnCour = SauvegardePartieManager.getInstance().charger(difficulte);
+        
         jeu = jeuEnCour.jeu();
         chrono = Instant.now().minusMillis(jeuEnCour.chrono());
     }
