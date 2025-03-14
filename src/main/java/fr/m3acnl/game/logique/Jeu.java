@@ -65,8 +65,89 @@ public class Jeu {
         coupsJouerBuff = new Pile();
         plateau = new Matrice(this.taille, this.taille, mat, this);
         tempsFinal = 0;
-        sauvegardeAutomatique = null;
-        pointDeSauvegarde = null;
+        sauvegardeAutomatique = new ArrayList<Lien>();
+        pointDeSauvegarde = new ArrayList<Lien>();
+    }
+
+    /**
+     * Récupère la taille.
+     *
+     * @return La taille du plateau.
+     */
+    public int getTaille() {
+        return taille;
+    }
+
+    /**
+     * Récupère le plateau.
+     *
+     * @return Le plateau
+     */
+    public Matrice getPlateau() {
+        return plateau;
+    }
+
+    /**
+     * Récupère la pile des coups jouer.
+     *
+     * @return La pile des coups jouer
+     */
+    public Pile getCoupsJouer() {
+        return coupsJouer;
+    }
+
+    /**
+     * Récupère le tableau de la sauvegarde automatique.
+     * 
+     * @return Le tableau de la sauvegarde automatique
+     */
+    public ArrayList<Lien> getSauvegardeAutomatique() {
+        return sauvegardeAutomatique;
+    }
+
+    /**
+     * Récupère le tableau de la sauvegarde manuel.
+     * 
+     * @return Le tableau de la sauvegarde manuel
+     */
+    public ArrayList<Lien> getPointDeSauvegarde() {
+        return pointDeSauvegarde;
+    }
+
+    /**
+     * Récupère la pile des coups jouer en buffeur.
+     *
+     * @return La pile des coups jouer en buffeur
+     */
+    public Pile getCoupsJouerBuff() {
+        return coupsJouerBuff;
+    }
+
+    /**
+     * Done le temp écouler actuellement en seconde.
+     *
+     * @return le temp écouler
+     */
+    public Long getTempsEcouler() {
+        return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
+    }
+
+    /**
+     * Récupère le temps final.
+     *
+     * @return le temp final
+     */
+    public Long getTempsFinal() {
+        return tempsFinal;
+    }
+
+    /**
+     * Modification du temps final.
+     *
+     * @param temps Le temp final
+     */
+    public void setTempsFinal(long temps) {
+        tempsFinal = temps;
     }
 
     /**
@@ -252,50 +333,8 @@ public class Jeu {
     }
 
     /**
-     * Done le temp écouler actuellement en seconde.
-     *
-     * @return le temp écouler
-     */
-    public Long getTempsEcouler() {
-        return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
-    }
-
-    /**
-     * Récupère le temps final.
-     *
-     * @return le temp final
-     */
-    public Long getTempsFinal() {
-        return tempsFinal;
-    }
-
-    /**
-     * Modification du temps final.
-     *
-     * @param temps Le temp final
-     */
-    public void setTempsFinal(long temps) {
-        tempsFinal = temps;
-    }
-
-    /**
-     * Affiche le jeu.
-     */
-    public void drawJeu() {
-        plateau.draw();
-    }
-
-    /**
-     * Récupère le plateau.
-     *
-     * @return Le plateau
-     */
-    public Matrice getPlateau() {
-        return plateau;
-    }
-
-    /**
      * Charge la sauvegarde donner.
+     *
      * @param sauvegarde la sauvegarde a charger.
      */
     private void chargerSauvegarde(ArrayList<Lien> sauvegarde) {
@@ -323,5 +362,26 @@ public class Jeu {
      */
     public void chargerSauvegardeManuel() {
         chargerSauvegarde(pointDeSauvegarde);
+    }
+
+    /**
+     * Rejoue un coup du lien a l'index donner lors du chargement.
+     *
+     * @param index L'index du lien a ajouter et empiler.
+     * @throws RuntimeException si le Lien ne c'est pas activer.
+     */
+    public void rejouer(int index) {
+        if (plateau.getCopListeLien().get(index).activer()) {
+            coupsJouer.empiler(plateau.getCopListeLien().get(index));
+        } else {
+            throw new RuntimeException("Le lien n'a pas pu s'activer");
+        }
+    }
+
+    /**
+     * Affiche le jeu.
+     */
+    public void drawJeuTerm() {
+        plateau.drawTerm();
     }
 }

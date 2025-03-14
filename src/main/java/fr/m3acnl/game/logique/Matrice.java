@@ -59,11 +59,51 @@ public class Matrice {
 
     /**
      * Récupère une copie de la liste des liens.
-     * 
+     *
      * @return La copie de la liste de lien
      */
-    public ArrayList<Lien> getCopListeLien(){
-        return new ArrayList<Lien>(listeLien);
+    public ArrayList<Lien> getCopListeLien() {
+        return new ArrayList<>(listeLien);
+    }
+
+    /**
+     * Récupère la matrice de départ du jeu.
+     *
+     * @return La matrice de départ du jeu
+     */
+    public int getTaille() {
+        return matrice.size();
+    }
+
+    /**
+     * Récupère un élément de la matrice a la position donnée.
+     *
+     * @param ligne La ligne de l'élément
+     * @param col La colonne de l'élément
+     * @return L'élément a la position donnée
+     */
+    public ElementJeu getElement(int ligne, int col) {
+        return matrice.get(ligne).get(col);
+    }
+
+    /**
+     * Récupère la liste des liens de la matrice.
+     *
+     * @return la liste des liens de la matrice
+     */
+    public ArrayList<Lien> getListeLien() {
+        return listeLien;
+    }
+
+    /**
+     * Modifie un élément de la matrice a la position donnée.
+     *
+     * @param ligne La ligne de l'élément
+     * @param col La colonne de l'élément
+     * @param element L'élément a mettre a la position donnée
+     */
+    public void setElement(int ligne, int col, ElementJeu element) {
+        matrice.get(ligne).set(col, element);
     }
 
     /**
@@ -86,50 +126,6 @@ public class Matrice {
      */
     private double vertic(double val) {
         return Math.floor(val);
-    }
-
-    /**
-     * Récupère un élément de la matrice a la position donnée.
-     *
-     * @param ligne La ligne de l'élément
-     * @param col La colonne de l'élément
-     * @return L'élément a la position donnée
-     */
-    public ElementJeu getElement(int ligne, int col) {
-        return matrice.get(ligne).get(col);
-    }
-
-    /**
-     * Modifie un élément de la matrice a la position donnée.
-     *
-     * @param ligne La ligne de l'élément
-     * @param col La colonne de l'élément
-     * @param element L'élément a mettre a la position donnée
-     */
-    public void setElement(int ligne, int col, ElementJeu element) {
-        matrice.get(ligne).set(col, element);
-    }
-
-    /**
-     * Dessine la matrice.
-     */
-    public void draw() {
-        int count = 0;
-        System.out.println("     0       1       2       3       4       5       6");
-        for (ArrayList<ElementJeu> ligne : matrice) {
-            System.out.print(count++ + " ");
-            for (ElementJeu element : ligne) {
-
-                if (element != null) {
-                    element.draw();
-                } else {
-                    System.out.print(" NONE   ");
-                }
-            }
-            System.out.println();
-        }
-        System.out.println("V/H[nbLien](nbLienSoluce)");
-        System.out.println("N[nbSoluce](nbActuelle)");
     }
 
     /**
@@ -276,6 +272,55 @@ public class Matrice {
     }
 
     /**
+     * Permet de trouver le noeud le plus proche d'un point donné.
+     *
+     * @param x La coordonnée x
+     * @param y La coordonnée y
+     * @return Le noeud le plus proche
+     */
+    public Noeud trouverNoeudLePlusProche(int x, int y) {
+        Noeud noeudLePlusProche = null;
+        double distanceMin = Double.MAX_VALUE;
+
+        // Parcours tout le plateau pour trouver le Noeud le plus proche
+        for (int i = 0; i < getTaille(); i++) {
+            for (int j = 0; j < getTaille(); j++) {
+                ElementJeu elem = this.getElement(i, j);
+                if (elem instanceof Noeud) {
+                    Noeud noeud = (Noeud) elem;
+                    double distance = Math.sqrt(Math.pow(i - x, 2) + Math.pow(j - y, 2));
+
+                    if (distance < distanceMin) {
+                        distanceMin = distance;
+                        noeudLePlusProche = noeud;
+                    }
+                }
+            }
+        }
+        return noeudLePlusProche;
+    }
+
+    /**
+     * Dessine la matrice.
+     */
+    public void drawTerm() {
+        int count = 0;
+        System.out.println("     0       1         2       3         4       5        6");
+        for (ArrayList<ElementJeu> ligne : matrice) {
+            System.out.print(count++ + " ");
+            for (ElementJeu element : ligne) {
+
+                if (element != null) {
+                    element.drawTerm();
+                } else {
+                    System.out.print("NONE     ");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    /**
      * Main pour tester la génération de la matrice.
      *
      * @param args argument en commande
@@ -291,12 +336,13 @@ public class Matrice {
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
         Jeu jeu = new Jeu(7, mat);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
         jeu.activeElemJeu(0, 1, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Activation du noeud 0 0");
+        System.out.println("Affichage du réseau du noeud 0,0");
         ArrayList<Noeud> noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
         for (Noeud n : noeuds) {
             System.out.println(n);
@@ -304,12 +350,12 @@ public class Matrice {
         jeu.activeElemJeu(0, 0, null);
         System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
         jeu.activeElemJeu(0, 1, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         System.out.println("\n\nTest activation du Lien 1,0 en état 2\n\n");
         jeu.activeElemJeu(1, 0, null);
         jeu.activeElemJeu(1, 0, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Activation du noeud 0 0");
         noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
         for (Noeud n : noeuds) {
@@ -319,7 +365,7 @@ public class Matrice {
         jeu.activeElemJeu(0, 0, null);
         System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
         jeu.activeElemJeu(0, 1, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         jeu.sauvegarderManuellement();
 
@@ -361,13 +407,13 @@ public class Matrice {
         //Lien 6,4 état 1
         jeu.activeElemJeu(6, 4, null);
 
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
 
         System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
         jeu.activeElemJeu(2, 4, null);
         jeu.activeElemJeu(2, 4, null);
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
         System.out.println("Validation de la matrice: " + jeu.gagner() + "\n\n");
         System.out.println("Affichage du réseau du noeud 0,0");
         noeuds = ((Noeud) jeu.getPlateau().getElement(0, 0)).afficherReseau();
@@ -383,94 +429,12 @@ public class Matrice {
         jeu.activeElemJeu(2, 6, null);
         jeu.activeElemJeu(4, 1, null);
 
-        jeu.drawJeu();
+        jeu.drawJeuTerm();
 
         System.out.println("\nTest chargement de save auto\n\n");
         jeu.chargerSauvegardeAuto();
         jeu.retour();
-        jeu.drawJeu();
-        /*Matrice test = new Matrice(7, 7, mat, new Jeu(5, mat));
-        test.draw();
-
-        System.out.println("\n\nTest activation du Lien 0,1 en état 1\n\n");
-        test.matrice.get(0).get(1).activer();
-        test.draw();
-
-        System.out.println("\n\nTest activation du Lien 0,1 en état 2\n\n");
-        test.matrice.get(0).get(1).activer();
-        test.draw();
-
-        System.out.println("\n\nTest activation du Lien 1,0 en état 2\n\n");
-        test.matrice.get(1).get(0).activer();
-        test.matrice.get(1).get(0).activer();
-        test.draw();
-
-        System.out.println("\n\nTest activation du Lien 0,1 en état 0 (saturation) \n\n");
-        test.matrice.get(0).get(1).activer();
-        test.draw();
-
-        System.out.println("\n\nTest completion de la matrice\n\n");
-        //Lien 0,1 état 2
-        test.matrice.get(0).get(1).activer();
-        test.matrice.get(0).get(1).activer();
-        //Lien 0,3 état 2
-        test.matrice.get(0).get(3).activer();
-        test.matrice.get(0).get(3).activer();
-        //Lien 1,2 état 1
-        test.matrice.get(1).get(2).activer();
-        //Lien 1,6 état 2
-        test.matrice.get(1).get(5).activer();
-        test.matrice.get(1).get(5).activer();
-        //Lien 2,1 état 2
-        test.matrice.get(2).get(1).activer();
-        test.matrice.get(2).get(1).activer();
-        //Lien 2,6 état 1
-        test.matrice.get(2).get(6).activer();
-        //Lien 3,0 état 1
-        test.matrice.get(3).get(0).activer();
-        //Lien 3,2 état 2
-        test.matrice.get(3).get(2).activer();
-        test.matrice.get(3).get(2).activer();
-        //Lien 3,4 état 2
-        ((DoubleLien) test.matrice.get(3).get(4)).activer((Noeud) test.matrice.get(3).get(5));
-        ((DoubleLien) test.matrice.get(3).get(4)).activer((Noeud) test.matrice.get(3).get(5));
-        //Lien 4,1 état 2
-        test.matrice.get(4).get(1).activer();
-        test.matrice.get(4).get(1).activer();
-
-        //Lien 4,5 état 1
-        test.matrice.get(4).get(5).activer();
-        //Lien 5,2 état 2
-        test.matrice.get(5).get(2).activer();
-        test.matrice.get(5).get(2).activer();
-        //Lien 6,1 état 1
-        test.matrice.get(6).get(1).activer();
-        //Lien 6,4 état 1
-        test.matrice.get(6).get(4).activer();
-
-        test.draw();
-        System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");
-
-        //Lien 2,4 état 2
-        System.out.println("\n\nTest activation du Lien 2,4 en état 2 : Normalement impossible, car DoubleLien et lien horizontal actif\n\n");
-        test.matrice.get(2).get(4).activer();
-        test.matrice.get(2).get(4).activer();
-        test.draw();
-        System.out.println("Validation de la matrice: " + test.validationMatrice() + "\n\n");*/
+        jeu.drawJeuTerm();
+        System.out.println("Taille de la matrice: " + jeu.getPlateau().getTaille());
     }
 }
-
-/*
- * Variables:
- * matrice (contient noeuds et liens)
- * 
- * 
- * 
- * Méthodes:
- * Initialisation-start
- * seek-possibilité
- * check-double
- * 
- * 
- * 
- */

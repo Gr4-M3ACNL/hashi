@@ -70,110 +70,12 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Défini l'index du lien.
-     *
-     * @param i L'index du lien
-     */
-    public void setIndex(int i) {
-        index = i;
-    }
-
-    /**
      * Récupère l'index du lien.
      *
      * @return L'index du lien
      */
     public int getIndex() {
         return index;
-    }
-
-    /**
-     * Active la surbrillance du lien.
-     */
-    public void surbrillanceOn() {
-        surbrillance = true;
-    }
-
-    /**
-     * Désactive la surbrillance du lien.
-     */
-    public void surbrillanceOff() {
-        surbrillance = false;
-    }
-
-    /**
-     * Vérifie si le lien est valide.
-     *
-     * @return True si le lien est valide sinon false
-     */
-    public boolean estValide() {
-        return (nbLien == nbLienSoluce);
-    }
-
-    /**
-     * Active le lien le faisant passer à son état suivant et met à jour le
-     * degré actuelle des noeud liés.
-     *
-     * @return true si le lien a été activer false sinon
-     */
-    @Override
-    public Boolean activer() {
-        nbLien = (nbLien + 1) % 3;
-        if (nbLien != 2) {
-            if (orientation == 1) {
-                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
-                    nbLien -= 1;
-                    return false;
-                }
-            } else {
-                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
-                    nbLien -= 1;
-                    return false;
-                }
-            }
-        }
-        if (nbLien == 0) {
-            noeud1.suppressionDegre();
-            noeud2.suppressionDegre();
-
-            noeud1.retirerNoeudAdjacence(noeud2);
-            noeud2.retirerNoeudAdjacence(noeud1);
-        } else {
-            noeud1.ajouterDegre();
-            noeud2.ajouterDegre();
-
-            noeud1.ajouterNoeudAdjacence(noeud2);
-            noeud2.ajouterNoeudAdjacence(noeud1);
-        }
-        return true;
-    }
-
-    /**
-     * Effectue le retour a l'état précédent du Lien et des noeuds.
-     */
-    public void retourArriere() {
-        nbLien = (nbLien + 2) % 3;
-        if (nbLien < 2) {
-            if (nbLien == 0) {
-                if (orientation == 1) {
-                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
-                } else {
-                    jeu.verificationVertical(noeud1, noeud2, nbLien);
-                }
-            }
-            noeud1.diminuerDegre();
-            noeud2.diminuerDegre();
-        } else {
-            if (orientation == 1) {
-                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
-            } else {
-                jeu.verificationVertical(noeud1, noeud2, nbLien);
-            }
-            noeud1.ajouterDegre();
-            noeud2.ajouterDegre();
-            noeud1.ajouterDegre();
-            noeud2.ajouterDegre();
-        }
     }
 
     /**
@@ -231,6 +133,116 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Défini l'index du lien.
+     *
+     * @param i L'index du lien
+     */
+    public void setIndex(int i) {
+        index = i;
+    }
+
+    /**
+     * Active la surbrillance du lien.
+     */
+    @Override
+    public void surbrillanceOn() {
+        surbrillance = true;
+    }
+
+    /**
+     * Désactive la surbrillance du lien.
+     */
+    @Override
+    public void surbrillanceOff() {
+        surbrillance = false;
+    }
+
+    /**
+     * Vérifie si le lien est valide.
+     *
+     * @return True si le lien est valide sinon false
+     */
+    public boolean estValide() {
+        return (nbLien == nbLienSoluce);
+    }
+
+    /**
+     * Active le lien le faisant passer à son état suivant et met à jour le
+     * degré actuelle des noeud liés.
+     *
+     * @return true si le lien a été activer false sinon
+     */
+    @Override
+    public Boolean activer() {
+        nbLien = (nbLien + 1) % 3;
+        if (nbLien != 2) {
+            if (orientation == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
+            } else {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
+            }
+        }
+        if (nbLien == 0) {
+            noeud1.suppressionDegre();
+            noeud2.suppressionDegre();
+
+            noeud1.retirerNoeudAdjacence(noeud2);
+            noeud2.retirerNoeudAdjacence(noeud1);
+        } else {
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+            if (nbLien == 1) {
+                noeud1.ajouterNoeudAdjacence(noeud2);
+                noeud2.ajouterNoeudAdjacence(noeud1);
+                if (noeud1.getSurbrillance() || noeud2.getSurbrillance()) {
+                    noeud1.setActiver(true);
+                    noeud2.setActiver(true);
+                    noeud1.surbrillanceOn();
+                    noeud2.surbrillanceOn();
+                    noeud1.setActiver(false);
+                    noeud2.setActiver(false);
+                }
+            }
+
+        }
+        return true;
+    }
+
+    /**
+     * Effectue le retour a l'état précédent du Lien et des noeuds.
+     */
+    public void retourArriere() {
+        nbLien = (nbLien + 2) % 3;
+        if (nbLien < 2) {
+            if (nbLien == 0) {
+                if (orientation == 1) {
+                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                } else {
+                    jeu.verificationVertical(noeud1, noeud2, nbLien);
+                }
+            }
+            noeud1.diminuerDegre();
+            noeud2.diminuerDegre();
+        } else {
+            if (orientation == 1) {
+                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+            } else {
+                jeu.verificationVertical(noeud1, noeud2, nbLien);
+            }
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+        }
+    }
+
+    /**
      * Vérifie si un noeud n est présent dans ce lien.
      *
      * @param n Le noeud a vérifier
@@ -260,11 +272,58 @@ public class Lien implements ElementJeu {
      * Affiche le Lien.
      */
     @Override
-    public void draw() {
-        if (orientation == 1) {
-            System.out.print(" H" + nbLien + "(" + nbLienSoluce + ")  ");
+    public String draw() {
+        String path = "/META-INF/assetsGraphiques/link/";
+        if (surbrillance) {
+            path += "surbrillance/";
+            if (orientation == 1) { //Horizontal
+                path += "horizontal_";
+            } else { //Vertical
+                path += "vertical_";
+            }
+
+            switch (nbLien) {
+                case 0:
+                    return path + "uno.png";
+
+                case 1:
+                    return path + "duo.png";
+                case 2:
+                    return path + "duo.png";
+                default:
+                    return "/META-INF/assetsGraphiques/link/blank.png";
+
+            }
         } else {
-            System.out.print(" V" + nbLien + "(" + nbLienSoluce + ")  ");
+            path += "standard/";
+            if (orientation == 1) { //Horizontal
+                path += "horizontal_";
+            } else { //Vertical
+                path += "vertical_";
+            }
+            switch (nbLien) {
+                case 1:
+                    return path + "uno.png";
+
+                case 2:
+                    return path + "duo.png";
+
+                default:
+                    return "/META-INF/assetsGraphiques/link/blank.png";
+
+            }
+        }
+    }
+
+    /**
+     * Affiche le Lien dans le terminal.
+     */
+    @Override
+    public void drawTerm() {
+        if (orientation == 1) {
+            System.out.print("H{" + nbLien + "/" + nbLienSoluce + "}   ");
+        } else {
+            System.out.print("V{" + nbLien + "/" + nbLienSoluce + "}   ");
         }
     }
 
