@@ -36,11 +36,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     private Boolean surbrillance;
 
     /**
-     * Permet de savoir si le noeud est actif ou non.
-     */
-    private Boolean activer = false;
-
-    /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
      * @param x la coordonnée x du noeud
@@ -53,6 +48,50 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         degreActuelle = 0;
         listeAdjacence = new ArrayList<>();
         surbrillance = false;
+    }
+
+    /**
+     * Active la surbrillance du noeud.
+     */
+    public void surbrillanceOn() {
+        surbrillance = true;
+    }
+
+    /**
+     * Désactive la surbrillance du noeud.
+     */
+    public void surbrillanceOff() {
+        surbrillance = false;
+    }
+
+    /**
+     * Incrémente le degré actuelle du noeud.
+     */
+    public void ajouterDegre() {
+        degreActuelle += 1;
+    }
+
+    /**
+     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
+     */
+    public void suppressionDegre() {
+        degreActuelle -= 2;
+    }
+
+    /**
+     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
+     */
+    public void diminuerDegre() {
+        degreActuelle -= 1;
+    }
+
+    /**
+     * Vérifie si le noeud est valide.
+     *
+     * @return 0 si valide
+     */
+    public int estValide() {
+        return (degreSoluce - degreActuelle);
     }
 
     /**
@@ -92,55 +131,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Récupère la liste d'adjacence.
-     *
-     * @return la liste d'adjacence
-     */
-    public ArrayList<Noeud> getListeAdjacence() {
-        return listeAdjacence;
-    }
-
-    /**
-     * Permet de définir l'activation du noeud. (Pour la surbrillance pour
-     * eviter que le noeud ne s'active en survol)
-     *
-     * @param activer Boolean pour activer ou non le noeud
-     */
-    public void setActiver(Boolean activer) {
-        this.activer = activer;
-    }
-
-    /**
-     * Incrémente le degré actuelle du noeud.
-     */
-    public void ajouterDegre() {
-        degreActuelle += 1;
-    }
-
-    /**
-     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
-     */
-    public void suppressionDegre() {
-        degreActuelle -= 2;
-    }
-
-    /**
-     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
-     */
-    public void diminuerDegre() {
-        degreActuelle -= 1;
-    }
-
-    /**
-     * Vérifie si le noeud est valide.
-     *
-     * @return 0 si valide
-     */
-    public int estValide() {
-        return (degreSoluce - degreActuelle);
-    }
-
-    /**
      * Ajoute un noeud à la liste d'adjacence.
      *
      * @param n le noeud à ajouter
@@ -150,104 +140,21 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Récupère la liste d'adjacence.
+     *
+     * @return la liste d'adjacence
+     */
+    public ArrayList<Noeud> getListeAdjacence() {
+        return listeAdjacence;
+    }
+
+    /**
      * Retire un noeud de la liste d'adjacence.
      *
      * @param n le noeud à retirer
      */
     public void retirerNoeudAdjacence(Noeud n) {
         listeAdjacence.remove(n);
-    }
-
-    /**
-     * Retourne la liste des noeuds connectés à ce noeud.
-     *
-     * @return Liste des noeuds connectés.
-     */
-    public ArrayList<Noeud> afficherReseau() {
-        ArrayList<Noeud> listeNoeuds = new ArrayList<>();
-        afficherReseauRecursif(this, listeNoeuds);
-        return listeNoeuds;
-    }
-
-    /**
-     * Parcours récursif du réseau à partir d'un noeud.
-     *
-     * @param noeud Noeud actuel
-     * @param visites Liste des noeuds déjà visités
-     */
-    private void afficherReseauRecursif(Noeud noeud, ArrayList<Noeud> visites) {
-        if (visites.contains(noeud)) {
-            return;
-        }
-        visites.add(noeud);
-
-        for (Noeud voisin : noeud.listeAdjacence) {
-            afficherReseauRecursif(voisin, visites);
-        }
-    }
-
-    /**
-     * Affiche le réseaux de connection du noeud.
-     *
-     * @return false pour l'instant
-     */
-    @Override
-    public Boolean activer() {
-        ArrayList<Noeud> noeuds = afficherReseau();
-        for (Noeud noeud : noeuds) {
-            noeud.setActiver(true);
-            if (noeud.getSurbrillance()) {
-                noeud.surbrillanceOff();
-            } else {
-                noeud.surbrillanceOn();
-            }
-            noeud.setActiver(false);
-        }
-        return true;
-    }
-
-    /**
-     * Active la surbrillance du noeud.
-     */
-    @Override
-    public void surbrillanceOn() {
-        if (activer) {
-            surbrillance = true;
-        }
-    }
-
-    /**
-     * Désactive la surbrillance du noeud.
-     */
-    @Override
-    public void surbrillanceOff() {
-        if (activer) {
-            surbrillance = false;
-        }
-    }
-
-    /**
-     * Affiche le Noeud.
-     */
-    @Override
-    public String draw() {
-        if (getSurbrillance()) {
-            return "/META-INF/assetsGraphiques/pie/surbrillance/pie" + degreSoluce + ".png";
-        } else if (degreActuelle < degreSoluce) {
-            return "/META-INF/assetsGraphiques/pie/standard/pie" + degreSoluce + ".png";
-        } else if (degreActuelle == degreSoluce) {
-            return "/META-INF/assetsGraphiques/pie/good/pie" + degreSoluce + ".png";
-        } else {
-            return "/META-INF/assetsGraphiques/pie/satured/pie" + degreSoluce + ".png";
-        }
-    }
-
-    /**
-     * Permet de faire l'affichage de la classe.
-     */
-    @Override
-    public void drawTerm() {
-        System.out.print("N{" + degreActuelle + "/" + degreSoluce + "}   ");
     }
 
     /**
@@ -262,11 +169,58 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Affiche le Noeud.
+     */
+    @Override
+    public void draw() {
+        System.out.print(" N" + degreSoluce + "(" + degreActuelle + ")  ");
+
+    }
+
+    /**
+     * Affiche le réseaux de connection du noeud.
+     *
+     * @return false pour l'instant
+     */
+    @Override
+    public Boolean activer() {
+        afficherReseau();
+        return true;
+    }
+
+    /**
+     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     *
+     * @return Renvoie la liste des noeud dans le réseau
+     */
+    public ArrayList<Noeud> afficherReseau() {
+        ArrayList<Noeud> listeNoeud = new ArrayList<Noeud>();
+        afficherReseau(listeNoeud);
+        return listeNoeud;
+    }
+
+    /**
+     * Affiche récursivement tous les noeuds connectés à ce noeud.
+     *
+     * @param visites la liste des noeuds déjà visités
+     * @return Renvoie la liste des noeuds visités
+     */
+    private ArrayList<Noeud> afficherReseau(ArrayList<Noeud> visites) {
+        if (visites.contains(this)) {
+            return visites;
+        }
+        visites.add(this);
+        for (Noeud noeud : listeAdjacence) {
+            noeud.afficherReseau(visites);
+        }
+        return visites;
+    }
+
+    /**
      * Permet de faire l'affichage de la classe.
      */
     @Override
     public String toString() {
-        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle
-                + ", Surbrillance= " + surbrillance + "}";
+        return "Noeud{" + "position=" + position + ", degreSoluce=" + degreSoluce + ", degreActuelle=" + degreActuelle + "}";
     }
 }

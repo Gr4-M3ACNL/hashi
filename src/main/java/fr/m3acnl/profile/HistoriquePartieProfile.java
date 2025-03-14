@@ -6,9 +6,8 @@ import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import fr.m3acnl.game.Difficulte;
-import fr.m3acnl.managers.JsonManager;
 import java.io.IOException;
-import java.time.Duration;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,36 +25,19 @@ public class HistoriquePartieProfile implements JsonSerializable {
     /**
      * Liste des temps des parties jouées en mode facile.
      */
-    private List<Duration> facile;
+    private List<Time> facile;
     /**
      * Liste des temps des parties jouées en mode moyen.
      */
-    private List<Duration> moyen;
+    private List<Time> moyen;
     /**
      * Liste des temps des parties jouées en mode difficile.
      */
-    private List<Duration> difficile;
+    private List<Time> difficile;
     /**
      * Liste des temps des parties jouées en mode expert.
      */
-    private List<Duration> expert;
-
-    /**
-     * Index de la grille de la dernière partie finie en facile.
-     */
-    private int indexFacile;
-    /**
-     * Index de la grille de la dernière partie finie en moyen.
-     */
-    private int indexMoyen;
-    /**
-     * Index de la grille de la dernière partie finie en difficile.
-     */
-    private int indexDifficile;
-    /**
-     * Index de la grille de la dernière partie finie en expert.
-     */
-    private int indexExpert;
+    private List<Time> expert;
 
     /**
      * Constructeur par défaut.
@@ -72,7 +54,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @return la liste des temps des parties jouées en mode facile.
      */
-    public List<Duration> getFacile() {
+    public List<Time> getFacile() {
         return this.facile;
     }
     
@@ -81,7 +63,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @return la liste des temps des parties jouées en mode moyen.
      */
-    public List<Duration> getMoyen() {
+    public List<Time> getMoyen() {
         return this.moyen;
     }
 
@@ -90,7 +72,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @return la liste des temps des parties jouées en mode difficile.
      */
-    public List<Duration> getDifficile() {
+    public List<Time> getDifficile() {
         return this.difficile;
     }
 
@@ -99,45 +81,8 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @return la liste des temps des parties jouées en mode expert.
      */
-    public List<Duration> getExpert() {
+    public List<Time> getExpert() {
         return this.expert;
-    }
-
-
-    /**
-     * Retourne l'index de la grille de la dernière partie finie en facile.
-     * 
-     * @return l'index de la grille de la dernière partie finie en facile.
-     */
-    public int getIndexFacile() {
-        return this.indexFacile;
-    }
-
-    /**
-     * Retourne l'index de la grille de la dernière partie finie en moyen.
-     * 
-     * @return l'index de la grille de la dernière partie finie en moyen.
-     */
-    public int getIndexMoyen() {
-        return this.indexMoyen;
-    }
-
-    /**
-     * Retourne l'index de la grille de la dernière partie finie en difficile.
-     * 
-     * @return l'index de la grille de la dernière partie finie en difficile.
-     */
-    public int getIndexDifficile() {
-        return this.indexDifficile;
-    }
-
-    /**
-     * Retourne l'index de la grille de la dernière partie finie en expert.
-     * 
-     * @return l'index de la grille de la dernière partie finie en expert.
-     */
-    public int getIndexExpert() {
-        return this.indexExpert;
     }
 
     /**
@@ -148,7 +93,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
-    public List<Duration> getTemps(Difficulte difficulte) throws IllegalArgumentException {
+    public List<Time> getTemps(Difficulte difficulte) throws IllegalArgumentException {
         switch (difficulte) {
             case facile:
                 return this.facile;
@@ -158,29 +103,6 @@ public class HistoriquePartieProfile implements JsonSerializable {
                 return this.difficile;
             case expert:
                 return this.expert;
-            default:
-                throw new IllegalArgumentException("Difficulté inconnue");
-        }
-    }
-
-    /**
-     * Retourne l'index de la grille de la dernière partie finie en fonction de la difficulté.
-     * 
-     * @param difficulte la difficulté des parties.
-     * @return l'index de la grille de la dernière partie finie en fonction de la difficulté.
-     * 
-     * @throws IllegalArgumentException si la difficulté est inconnue.
-     */
-    public int getIndex(Difficulte difficulte) throws IllegalArgumentException {
-        switch (difficulte) {
-            case facile:
-                return this.indexFacile;
-            case moyen:
-                return this.indexMoyen;
-            case difficile:
-                return this.indexDifficile;
-            case expert:
-                return this.indexExpert;
             default:
                 throw new IllegalArgumentException("Difficulté inconnue");
         }
@@ -217,40 +139,31 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
-    public void ajouterTemps(Difficulte difficulte, Duration temps) throws IllegalArgumentException {
-        JsonManager jsonManager = new JsonManager();
+    public void ajouterTemps(Difficulte difficulte, Time temps) throws IllegalArgumentException {
         switch (difficulte) {
             case facile:
                 this.facile.add(temps);
                 if (this.facile.size() > tailleHistorique) {
                     this.facile.remove(0);
                 }
-                this.indexFacile++;
-                this.indexFacile %= jsonManager.getNbGrilles(Difficulte.facile);
                 break;
             case moyen:
                 this.moyen.add(temps);
                 if (this.moyen.size() > tailleHistorique) {
                     this.moyen.remove(0);
                 }
-                this.indexMoyen++;
-                this.indexMoyen %= jsonManager.getNbGrilles(Difficulte.moyen);
                 break;
             case difficile:
                 this.difficile.add(temps);
                 if (this.difficile.size() > tailleHistorique) {
                     this.difficile.remove(0);
                 }
-                this.indexDifficile++;
-                this.indexDifficile %= jsonManager.getNbGrilles(Difficulte.difficile);
                 break;
             case expert:
                 this.expert.add(temps);
                 if (this.expert.size() > tailleHistorique) {
                     this.expert.remove(0);
                 }
-                this.indexExpert++;
-                this.indexExpert %= jsonManager.getNbGrilles(Difficulte.expert);
                 break;
             default:
                 throw new IllegalArgumentException("Difficulté inconnue");
@@ -272,36 +185,31 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
         gen.writeFieldName("facile");
         gen.writeStartArray();
-        for (Duration time : this.facile) {
+        for (Time time : this.facile) {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
-        gen.writeNumberField("indexFacile", indexFacile);
         
         gen.writeFieldName("moyen");
         gen.writeStartArray();
-        for (Duration time : this.moyen) {
+        for (Time time : this.moyen) {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
-        gen.writeNumberField("indexMoyen", indexMoyen);
         
         gen.writeFieldName("difficile");
         gen.writeStartArray();
-        for (Duration time : this.difficile) {
+        for (Time time : this.difficile) {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
-        gen.writeNumberField("indexDifficile", indexDifficile);
         
         gen.writeFieldName("expert");
         gen.writeStartArray();
-        for (Duration time : this.expert) {
+        for (Time time : this.expert) {
             gen.writeString(time.toString());
         }
         gen.writeEndArray();
-        gen.writeNumberField("indexExpert", indexExpert);
-
         gen.writeEndObject();
     }
 
@@ -327,8 +235,8 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param facile la liste des temps des parties jouées en mode facile.
      */
-    protected void setFacile(List<Duration> facile) {
-        this.facile = new ArrayList<Duration>(facile);
+    protected void setFacile(List<Time> facile) {
+        this.facile = new ArrayList<Time>(facile);
     }
 
     /**
@@ -337,8 +245,8 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param moyen la liste des temps des parties jouées en mode moyen.
      */
-    protected void setMoyen(List<Duration> moyen) {
-        this.moyen = new ArrayList<Duration>(moyen);
+    protected void setMoyen(List<Time> moyen) {
+        this.moyen = new ArrayList<Time>(moyen);
     }
 
     /**
@@ -347,8 +255,8 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param difficile la liste des temps des parties jouées en mode difficile.
      */
-    protected void setDifficile(List<Duration> difficile) {
-        this.difficile = new ArrayList<Duration>(difficile);
+    protected void setDifficile(List<Time> difficile) {
+        this.difficile = new ArrayList<Time>(difficile);
     }
 
     /**
@@ -357,8 +265,8 @@ public class HistoriquePartieProfile implements JsonSerializable {
      * 
      * @param expert la liste des temps des parties jouées en mode expert.
      */
-    protected void setExpert(List<Duration> expert) {
-        this.expert = new ArrayList<Duration>(expert);
+    protected void setExpert(List<Time> expert) {
+        this.expert = new ArrayList<Time>(expert);
     }
 
 }

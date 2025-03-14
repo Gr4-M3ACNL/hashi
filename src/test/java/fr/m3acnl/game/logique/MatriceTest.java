@@ -2,12 +2,8 @@ package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import fr.m3acnl.Tests;
 
 /**
  * Classe de test de la classe Matrice.
@@ -18,33 +14,7 @@ import fr.m3acnl.Tests;
  *
  * @author MABIRE AYMERIC
  */
-public class MatriceTest extends Tests {
-
-    /**
-     * Méthode d'initialisation de la classe de test
-     *
-     * @see Tests#printNameAtStart
-     */
-    @BeforeAll
-    public static void initAll() {
-        printNameAtStart(MatriceTest.class);
-    }
-
-    /**
-     * Méthode de fin de la classe de test
-     *
-     * @see Tests#printNameAtEnd
-     */
-    @AfterAll
-    public static void endAll() {
-        printNameAtEnd(MatriceTest.class);
-    }
-
-    /**
-     * Constructeur de la classe de test MatriceTest.
-     */
-    MatriceTest() {
-    }
+public class MatriceTest {
 
     /**
      * Test de la méthode getElement
@@ -187,7 +157,7 @@ public class MatriceTest extends Tests {
         noeudsAttendu.add(((Noeud) mat1.getElement(5, 4)));
         noeuds = ((Noeud) mat1.getElement(0, 0)).afficherReseau();
         for (int i = 0; i < noeuds.size(); i++) {
-            assertEquals(noeudsAttendu.get(i), noeuds.get(i), "Noeud correctement sélectionner");
+            assertEquals(noeudsAttendu.get(i), noeuds.get(i), "Noeud correctement selectionner");
         }
 
     }
