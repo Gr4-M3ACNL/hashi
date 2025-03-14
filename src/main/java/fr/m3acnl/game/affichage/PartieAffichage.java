@@ -383,7 +383,7 @@ public class PartieAffichage extends Application {
             retourSauvegarde();
             jouerSon("bouton.wav");
         });
-        labelTemps = new Label("Temps: 0s");
+        labelTemps = new Label("Temps: "+ partie.getChronoDuration().toMinutes() + " min " + partie.getChronoDuration().toSecondsPart() + " sec");
         labelTemps.setStyle("-fx-text-fill: white; -fx-font-size: 14px; -fx-font-family: 'Georgia';");
 
         controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint,
