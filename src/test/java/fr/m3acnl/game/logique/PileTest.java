@@ -155,14 +155,14 @@ public class PileTest extends Tests {
     }
 
     /**
-     * Test de la méthode toString
+     * Test de la méthode to_s
      *
-     * @see Pile#toString()
+     * @see Pile#to_s()
      */
     @Test
     void testTo_s() {
         Pile p = new Pile();
-        assertEquals("", p.toString(), "Pile vide renvoie uen chaine vide");
+        assertEquals("", p.to_s(), "Pile vide renvoie uen chaine vide");
     }
 
     /**
