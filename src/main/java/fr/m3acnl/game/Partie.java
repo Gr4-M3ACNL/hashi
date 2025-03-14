@@ -46,6 +46,17 @@ public class Partie implements JsonSerializable {
     private Difficulte difficulte;
 
     /**
+     * Indique si la partie est en pause.
+     * <br>
+     * Vaut true si la partie est en pause, false sinon.
+     * <br>
+     * quand la partie est en pause le chrono est a calculer entre le chron et l'heure zéro
+     * <br>
+     * quand la partie n'est pas en pause le chrono est a calculer entre le chron et l'heure actuelle
+     */
+    private Boolean pause = false;
+
+    /**
      * Constructeur pour une instance d'objet Partie. Crée ou charge une partie
      * en fonction de la difficulté.
      *
@@ -67,7 +78,37 @@ public class Partie implements JsonSerializable {
      * @return la durée du chronomètre
      */
     public Duration getChronoDuration() {
-        return Duration.between(chrono, Instant.now());
+        if (!pause) {
+            // Si le chrono est en cours, on calcule la durée entre le chrono et l'heure
+            return Duration.between(chrono, Instant.now());
+        }
+        // Si le chrono est en pause, on calcule la durée entre le chrono et l'heure zéro
+        return Duration.between(Instant.EPOCH, chrono);
+    }
+
+    /**
+     * Méthode pour arrêter le chronomètre.
+     * Si le chronomètre est déjà en pause, il ne fait rien.
+     */
+    public void stopChrono() {
+        if (!pause) {
+            // On définit le chrono comme l'heure zéro plus la durée du chrono
+            chrono = Instant.EPOCH.plusMillis(getChronoDuration().toMillis());
+            pause = true;
+            sauvegarde();
+        }
+    }
+
+    /**
+     * Méthode pour reprendre le chronomètre.
+     * Si le chronomètre n'est pas en pause, il ne fait rien.
+     */
+    public void startChrono() {
+        if (pause) {
+            // On définit le chrono comme l'heure actuelle moins la durée du chrono
+            chrono = Instant.now().minusMillis(getChronoDuration().toMillis());
+            pause = false;
+        }
     }
 
     /**
