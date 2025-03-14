@@ -6,9 +6,9 @@ import java.util.Optional;
 
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
+import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
-import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.elementjeu.Noeud;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
@@ -48,9 +48,9 @@ public class PartieAffichage extends Application {
     /**
      * La partie en cours.
      * <p>
-     * contient le jeu et le chrono.
-     * gère la sauvegarde et la fin de la partie.
+     * contient le jeu et le chrono. gère la sauvegarde et la fin de la partie.
      * </p>
+     *
      * @see Partie
      */
     private Partie partie;
@@ -255,7 +255,11 @@ public class PartieAffichage extends Application {
         actualiserAffichage();
     }
 
-    // Méthode pour jouer un son avec contrôle du volume
+    /**
+     * Joue un son à partir d'un fichier audio.
+     *
+     * @param fichierAudio Le fichier audio à jouer
+     */
     private void jouerSon(String fichierAudio) {
         String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
         AudioClip son = new AudioClip(chemin);
@@ -263,7 +267,11 @@ public class PartieAffichage extends Application {
         son.play();
     }
 
-    // Méthode pour changer le volume des effets sonores
+    /**
+     * Definie le volume des sons à jouer.
+     *
+     * @param volume le volume à appliquer
+     */
     public void setSoundEffectVolume(double volume) {
         soundeffect = Math.max(0, Math.min(1, volume)); // Clamp entre 0 et 1
     }
