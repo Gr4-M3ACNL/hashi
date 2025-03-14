@@ -1,6 +1,7 @@
 package fr.m3acnl.game.affichage;
 
 import java.net.URL;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -38,8 +39,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
-import java.time.Duration;
-import java.time.Instant;
 
 /**
  * Classe PartieAffichage pour l'affichage du jeu.
@@ -501,7 +500,7 @@ public class PartieAffichage extends Application {
         backgroundPane.getChildren().get(backgroundPane.getChildren().size() - 1).toFront();
 
         // Pause de 3 secondes avant d'afficher l'overlay final
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
+        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(3));
         pause.setOnFinished(event -> {
             backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
             afficherOverlayVictoire(); // Afficher l'overlay après la pause
