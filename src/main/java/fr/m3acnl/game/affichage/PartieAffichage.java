@@ -258,8 +258,10 @@ public class PartieAffichage extends Application {
         if (partie.getJeu().gagner()) {
             partie.finPartie();
             victoire();
+        } else {
+            // on ne doit pas sauvegarder la partie si elle est gagnée
+            partie.sauvegarde();
         }
-        partie.sauvegarde();
         // Mettre à jour l'affichage
         partie.getJeu().drawJeuTerm();
         actualiserAffichage();
@@ -462,7 +464,7 @@ public class PartieAffichage extends Application {
         if (partie != null) {
             Duration chrono = partie.getChronoDuration(); // Doit être un java.time.Duration
             long minutes = chrono.toMinutes();
-            long secondes = chrono.getSeconds() % 60; // Utilise getSeconds() pour Java 8
+            long secondes = chrono.toSecondsPart(); // Utilise getSeconds() pour Java 8
             labelTemps.setText("Temps: " + minutes + " min " + secondes + " sec");
         }
     }
