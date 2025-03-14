@@ -575,16 +575,6 @@ public class PartieAffichage extends Application {
     }
 
     /**
-     * Relance une nouvelle partie. la difficulté reste la même.
-     */
-    private void relancerPartie() {
-
-        partie = new Partie(partie.getDifficulte());
-        initialiserBoutons();
-        actualiserAffichage();
-    }
-
-    /**
      * Demande à l'utilisateur s'il veut vraiment quitter. Si oui, ferme
      * l'application.
      *
