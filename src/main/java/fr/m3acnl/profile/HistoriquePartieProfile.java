@@ -1,27 +1,29 @@
 package fr.m3acnl.profile;
 
-
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JsonSerializable;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import fr.m3acnl.game.Difficulte;
-import fr.m3acnl.managers.JsonManager;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+
+import fr.m3acnl.game.Difficulte;
+import fr.m3acnl.managers.JsonManager;
 
 /**
- * Classe qui permet de stocker les temps des parties jouées par difficulté pour un joueur.
+ * Classe qui permet de stocker les temps des parties jouées par difficulté pour
+ * un joueur.
  */
 public class HistoriquePartieProfile implements JsonSerializable {
 
+    // ======================== Attributs ========================
     /**
      * Taille maximale de l'historique des parties.
      */
-    private int tailleHistorique = 10;
+    private final int tailleHistorique = 10;
 
     /**
      * Liste des temps des parties jouées en mode facile.
@@ -67,18 +69,19 @@ public class HistoriquePartieProfile implements JsonSerializable {
         this.expert = new ArrayList<>();
     }
 
+    // ======================== Getter ========================
     /**
      * Retourne la liste des temps des parties jouées en mode facile.
-     * 
+     *
      * @return la liste des temps des parties jouées en mode facile.
      */
     public List<Duration> getFacile() {
         return this.facile;
     }
-    
+
     /**
      * Retourne la liste des temps des parties jouées en mode moyen.
-     * 
+     *
      * @return la liste des temps des parties jouées en mode moyen.
      */
     public List<Duration> getMoyen() {
@@ -87,7 +90,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Retourne la liste des temps des parties jouées en mode difficile.
-     * 
+     *
      * @return la liste des temps des parties jouées en mode difficile.
      */
     public List<Duration> getDifficile() {
@@ -96,17 +99,16 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Retourne la liste des temps des parties jouées en mode expert.
-     * 
+     *
      * @return la liste des temps des parties jouées en mode expert.
      */
     public List<Duration> getExpert() {
         return this.expert;
     }
 
-
     /**
      * Retourne l'index de la grille de la dernière partie finie en facile.
-     * 
+     *
      * @return l'index de la grille de la dernière partie finie en facile.
      */
     public int getIndexFacile() {
@@ -115,7 +117,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Retourne l'index de la grille de la dernière partie finie en moyen.
-     * 
+     *
      * @return l'index de la grille de la dernière partie finie en moyen.
      */
     public int getIndexMoyen() {
@@ -124,7 +126,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Retourne l'index de la grille de la dernière partie finie en difficile.
-     * 
+     *
      * @return l'index de la grille de la dernière partie finie en difficile.
      */
     public int getIndexDifficile() {
@@ -133,7 +135,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Retourne l'index de la grille de la dernière partie finie en expert.
-     * 
+     *
      * @return l'index de la grille de la dernière partie finie en expert.
      */
     public int getIndexExpert() {
@@ -141,11 +143,13 @@ public class HistoriquePartieProfile implements JsonSerializable {
     }
 
     /**
-     * Retourne la liste des temps des parties jouées en fonction de la difficulté.
-     * 
+     * Retourne la liste des temps des parties jouées en fonction de la
+     * difficulté.
+     *
      * @param difficulte la difficulté des parties.
-     * @return la liste des temps des parties jouées en fonction de la difficulté.
-     * 
+     * @return la liste des temps des parties jouées en fonction de la
+     * difficulté.
+     *
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
     public List<Duration> getTemps(Difficulte difficulte) throws IllegalArgumentException {
@@ -164,11 +168,13 @@ public class HistoriquePartieProfile implements JsonSerializable {
     }
 
     /**
-     * Retourne l'index de la grille de la dernière partie finie en fonction de la difficulté.
-     * 
+     * Retourne l'index de la grille de la dernière partie finie en fonction de
+     * la difficulté.
+     *
      * @param difficulte la difficulté des parties.
-     * @return l'index de la grille de la dernière partie finie en fonction de la difficulté.
-     * 
+     * @return l'index de la grille de la dernière partie finie en fonction de
+     * la difficulté.
+     *
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
     public int getIndex(Difficulte difficulte) throws IllegalArgumentException {
@@ -188,10 +194,10 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Retourne le nombre de parties jouées en fonction de la difficulté.
-     * 
+     *
      * @param difficulte la difficulté des parties.
      * @return le nombre de parties jouées en fonction de la difficulté.
-     * 
+     *
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
     public int getNbPartieDifficulte(Difficulte difficulte) throws IllegalArgumentException {
@@ -209,12 +215,109 @@ public class HistoriquePartieProfile implements JsonSerializable {
         }
     }
 
+    // ======================== Setter ========================
+    /**
+     * Méthode pour modifier la liste des temps des parties jouées en mode
+     * facile. Utilisé pour la deserialization.
+     *
+     * @param facile la liste des temps des parties jouées en mode facile.
+     */
+    protected void setFacile(List<String> facile) {
+        this.facile = new ArrayList<>();
+        for (String time : facile) {
+            this.facile.add(Duration.parse(time));
+        }
+    }
+
+    /**
+     * Méthode pour modifier la liste des temps des parties jouées en mode
+     * moyen. Utilisé pour la deserialization.
+     *
+     * @param moyen la liste des temps des parties jouées en mode moyen.
+     */
+    protected void setMoyen(List<String> moyen) {
+        this.moyen = new ArrayList<>();
+        for (String time : moyen) {
+            this.moyen.add(Duration.parse(time));
+        }
+    }
+
+    /**
+     * Méthode pour modifier la liste des temps des parties jouées en mode
+     * difficile. Utilisé pour la deserialization.
+     *
+     * @param difficile la liste des temps des parties jouées en mode difficile.
+     */
+    protected void setDifficile(List<String> difficile) {
+        this.difficile = new ArrayList<>();
+        for (String time : difficile) {
+            this.difficile.add(Duration.parse(time));
+        }
+    }
+
+    /**
+     * Méthode pour modifier la liste des temps des parties jouées en mode
+     * expert. Utilisé pour la deserialization.
+     *
+     * @param expert la liste des temps des parties jouées en mode expert.
+     */
+    protected void setExpert(List<String> expert) {
+        this.expert = new ArrayList<>();
+        for (String time : expert) {
+            this.expert.add(Duration.parse(time));
+        }
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en
+     * facile. Utilisé pour la deserialization.
+     *
+     * @param indexFacile l'index de la grille de la dernière partie finie en
+     * facile.
+     */
+    protected void setIndexFacile(int indexFacile) {
+        this.indexFacile = indexFacile;
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en
+     * moyen. Utilisé pour la deserialization.
+     *
+     * @param indexMoyen l'index de la grille de la dernière partie finie en
+     * moyen.
+     */
+    protected void setIndexMoyen(int indexMoyen) {
+        this.indexMoyen = indexMoyen;
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en
+     * difficile. Utilisé pour la deserialization.
+     *
+     * @param indexDifficile l'index de la grille de la dernière partie finie en
+     * difficile.
+     */
+    protected void setIndexDifficile(int indexDifficile) {
+        this.indexDifficile = indexDifficile;
+    }
+
+    /**
+     * Méthode pour modifier l'index de la grille de la dernière partie finie en
+     * expert. Utilisé pour la deserialization.
+     *
+     * @param indexExpert l'index de la grille de la dernière partie finie en
+     * expert.
+     */
+    protected void setIndexExpert(int indexExpert) {
+        this.indexExpert = indexExpert;
+    }
+
     /**
      * Ajoute un temps de partie à l'historique.
-     * 
+     *
      * @param difficulte la difficulté de la partie.
      * @param temps le temps de la partie.
-     * 
+     *
      * @throws IllegalArgumentException si la difficulté est inconnue.
      */
     public void ajouterTemps(Difficulte difficulte, Duration temps) throws IllegalArgumentException {
@@ -257,12 +360,13 @@ public class HistoriquePartieProfile implements JsonSerializable {
         }
     }
 
+    // ======================== Sérialisation ========================
     /**
      * Serialize les temps des parties jouées pour un format JSON.
-     * 
+     *
      * @param gen le générateur de JSON.
      * @param serializers le fournisseur de sérialiseurs.
-     * 
+     *
      * @throws IOException si une erreur d'entrée/sortie survient.
      * @see JsonSerializable#serialize
      */
@@ -277,7 +381,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
         }
         gen.writeEndArray();
         gen.writeNumberField("indexFacile", indexFacile);
-        
+
         gen.writeFieldName("moyen");
         gen.writeStartArray();
         for (Duration time : this.moyen) {
@@ -285,7 +389,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
         }
         gen.writeEndArray();
         gen.writeNumberField("indexMoyen", indexMoyen);
-        
+
         gen.writeFieldName("difficile");
         gen.writeStartArray();
         for (Duration time : this.difficile) {
@@ -293,7 +397,7 @@ public class HistoriquePartieProfile implements JsonSerializable {
         }
         gen.writeEndArray();
         gen.writeNumberField("indexDifficile", indexDifficile);
-        
+
         gen.writeFieldName("expert");
         gen.writeStartArray();
         for (Duration time : this.expert) {
@@ -307,110 +411,18 @@ public class HistoriquePartieProfile implements JsonSerializable {
 
     /**
      * Serialize les temps des parties jouées pour un format JSON avec un type.
-     * 
+     *
      * @param gen le générateur de JSON.
      * @param serializers le fournisseur de sérialiseurs.
      * @param typeSer le sérialiseur de type.
-     * 
+     *
      * @throws IOException si une erreur d'entrée/sortie survient.
      * @see #serialize
      * @see JsonSerializable#serializeWithType
      */
-    @Override 
+    @Override
     public void serializeWithType(JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
         serialize(gen, serializers);
-    }
-
-    /**
-     * Méthode pour modifier la liste des temps des parties jouées en mode facile.
-     * Utilisé pour la deserialization.
-     * 
-     * @param facile la liste des temps des parties jouées en mode facile.
-     */
-    protected void setFacile(List<String> facile) {
-        this.facile = new ArrayList<>();
-        for (String time : facile) {
-            this.facile.add(Duration.parse(time));
-        }
-    }
-
-    /**
-     * Méthode pour modifier la liste des temps des parties jouées en mode moyen.
-     * Utilisé pour la deserialization.
-     * 
-     * @param moyen la liste des temps des parties jouées en mode moyen.
-     */
-    protected void setMoyen(List<String> moyen) {
-        this.moyen = new ArrayList<>();
-        for (String time : moyen) {
-            this.moyen.add(Duration.parse(time));
-        }
-    }
-
-    /**
-     * Méthode pour modifier la liste des temps des parties jouées en mode difficile.
-     * Utilisé pour la deserialization.
-     * 
-     * @param difficile la liste des temps des parties jouées en mode difficile.
-     */
-    protected void setDifficile(List<String> difficile) {
-        this.difficile = new ArrayList<>();
-        for (String time : difficile) {
-            this.difficile.add(Duration.parse(time));
-        }
-    }
-
-    /**
-     * Méthode pour modifier la liste des temps des parties jouées en mode expert.
-     * Utilisé pour la deserialization.
-     * 
-     * @param expert la liste des temps des parties jouées en mode expert.
-     */
-    protected void setExpert(List<String> expert) {
-        this.expert = new ArrayList<>();
-        for (String time : expert) {
-            this.expert.add(Duration.parse(time));
-        }
-    }
-
-    /**
-     * Méthode pour modifier l'index de la grille de la dernière partie finie en facile.
-     * Utilisé pour la deserialization.
-     * 
-     * @param indexFacile l'index de la grille de la dernière partie finie en facile.
-     */
-    protected void setIndexFacile(int indexFacile) {
-        this.indexFacile = indexFacile;
-    }
-
-    /**
-     * Méthode pour modifier l'index de la grille de la dernière partie finie en moyen.
-     * Utilisé pour la deserialization.
-     * 
-     * @param indexMoyen l'index de la grille de la dernière partie finie en moyen.
-     */
-    protected void setIndexMoyen(int indexMoyen) {
-        this.indexMoyen = indexMoyen;
-    }
-
-    /**
-     * Méthode pour modifier l'index de la grille de la dernière partie finie en difficile.
-     * Utilisé pour la deserialization.
-     * 
-     * @param indexDifficile l'index de la grille de la dernière partie finie en difficile.
-     */
-    protected void setIndexDifficile(int indexDifficile) {
-        this.indexDifficile = indexDifficile;
-    }
-
-    /**
-     * Méthode pour modifier l'index de la grille de la dernière partie finie en expert.
-     * Utilisé pour la deserialization.
-     * 
-     * @param indexExpert l'index de la grille de la dernière partie finie en expert.
-     */
-    protected void setIndexExpert(int indexExpert) {
-        this.indexExpert = indexExpert;
     }
 
 }

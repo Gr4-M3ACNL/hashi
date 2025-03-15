@@ -16,6 +16,7 @@ import fr.m3acnl.managers.ProfileManager;
  */
 public class ParametreProfile implements JsonSerializable {
 
+    // ======================== Attributs ========================
     /**
      * Limite du niveau d'aide.
      */
@@ -38,6 +39,7 @@ public class ParametreProfile implements JsonSerializable {
         this.effetVisuel = true;
     }
 
+    // ======================== Getter ========================
     /**
      * Méthode pour connaître la limite du niveau d'aide.
      *
@@ -65,6 +67,7 @@ public class ParametreProfile implements JsonSerializable {
         return this.effetVisuel;
     }
 
+    // ======================== Setter ========================
     /**
      * Méthode pour modifier la limite du niveau d'aide.
      *
@@ -101,6 +104,7 @@ public class ParametreProfile implements JsonSerializable {
         ProfileManager.getInstance().sauvegarder();
     }
 
+    // ======================== Sérialisation ========================
     /**
      * Serialize les paramètres de profil pour un format JSON.
      *
