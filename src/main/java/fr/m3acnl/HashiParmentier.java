@@ -88,7 +88,7 @@ public class HashiParmentier extends Application {
         // 📌 SCÈNE PRINCIPALE
         BorderPane root = new BorderPane();
         root.setBackground(new Background(background));
-
+        /*
         // 📌 Icône utilisateur à gauche
         ImageView userIcon = new ImageView(
                 new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/utilisateur.png").toExternalForm()));
@@ -103,12 +103,12 @@ public class HashiParmentier extends Application {
         Button settingsButton = new Button("", settingsIcon);
         settingsButton.setStyle("-fx-background-color: transparent; -fx-border-width: 0;");
         settingsButton.setOnAction(e -> genererMenu.showSettingsMenu(primaryStage, settingsScene));
-
+        
         // 📌 Placer les icônes dans un HBox en haut à droite
         HBox topBox = new HBox(10, userIcon, settingsButton); // 10px d'écart entre les icônes
         topBox.setPadding(new Insets(10));
         topBox.setAlignment(Pos.TOP_RIGHT);
-        root.setTop(topBox);
+        root.setTop(topBox);*/
         // 📌 Centre avec boutons "Jouer" et "Quitter le jeu"
         VBox centerBox = new VBox(20);
         centerBox.setAlignment(Pos.CENTER);

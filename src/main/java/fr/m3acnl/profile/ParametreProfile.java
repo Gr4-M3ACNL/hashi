@@ -70,7 +70,7 @@ public class ParametreProfile implements JsonSerializable {
      *
      * @param niveauAide le niveau d'aide
      */
-    protected void setNiveauAide(Integer niveauAide) {
+    public void setNiveauAide(Integer niveauAide) {
         if (niveauAide < 0 || niveauAide > 2) {
             throw new IllegalArgumentException("Le niveau d'aide doit être compris entre 0 et 2");
         }

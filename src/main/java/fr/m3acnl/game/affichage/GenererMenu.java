@@ -145,6 +145,19 @@ public class GenererMenu {
         Button niveau1 = createStyledButton("Moyen");
         Button niveau3 = createStyledButton("Difficile");
 
+        niveau0.setOnAction(e -> {
+            ProfileManager.getInstance().getProfileActif().getParametre().setNiveauAide(0);
+            primaryStage.setScene(settingsScene);
+        });
+        niveau1.setOnAction(e -> {
+            ProfileManager.getInstance().getProfileActif().getParametre().setNiveauAide(1);
+            primaryStage.setScene(settingsScene);
+        });
+        niveau3.setOnAction(e -> {
+            ProfileManager.getInstance().getProfileActif().getParametre().setNiveauAide(2);
+            primaryStage.setScene(settingsScene);
+        });
+
         Button retourAide = createStyledButton("Retour");
         retourAide.setOnAction(e -> primaryStage.setScene(settingsScene));
 
