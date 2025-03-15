@@ -11,6 +11,7 @@ import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import fr.m3acnl.game.logique.elementjeu.Noeud;
+import fr.m3acnl.managers.ProfileManager;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
@@ -88,11 +89,6 @@ public class PartieAffichage extends Application {
      * Stocke la dernière taille de la fenêtre.
      */
     private double derniereTaille = -1;
-
-    /**
-     * Volume des effets sonores.
-     */
-    private double soundeffect = 0.5;
 
     /**
      * Accès à la timeline pour l'actualisation du chrono.
@@ -627,17 +623,8 @@ public class PartieAffichage extends Application {
     private void jouerSon(String fichierAudio) {
         String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
         AudioClip son = new AudioClip(chemin);
-        son.setVolume(soundeffect); // Appliquer le volume
+        son.setVolume(ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Appliquer le volume
         son.play();
-    }
-
-    /**
-     * Definie le volume des sons à jouer.
-     *
-     * @param volume le volume à appliquer
-     */
-    public void setSoundEffectVolume(double volume) {
-        soundeffect = Math.max(0, Math.min(1, volume)); // Clamp entre 0 et 1
     }
 
     // ======================== Gestion des actions ========================

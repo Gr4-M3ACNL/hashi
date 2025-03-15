@@ -1,7 +1,10 @@
 package fr.m3acnl.game.affichage;
 
 import fr.m3acnl.game.Partie;
+import fr.m3acnl.managers.ProfileManager;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -76,19 +79,26 @@ public class GenererMenu {
         if (partie != null) {
             partie.stopChrono();
         }
-        // 📌 PAGE DES RÉGLAGES
         VBox vboxSettings = new VBox(15);
         vboxSettings.setAlignment(Pos.CENTER);
         vboxSettings.setBackground(new Background(background));
 
         Label settingsTitle = createStyledLabel("Réglages");
 
-        // 📌 Volume sonore
         Label volumeLabel = createStyledLabel("Volume des effets sonores");
-        Slider volumeSlider = new Slider(0, 100, 50);
+        Slider volumeSlider = new Slider(0, 100, ProfileManager.getInstance().getProfileActif() == null
+                ? 50
+                : ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore() * 100);
         volumeSlider.setMaxWidth(150);
 
-        // 📌 Boutons divers
+        // Ajouter un listener pour suivre les changements
+        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                ProfileManager.getInstance().getProfileActif().getParametre().setVolumeEffetsSonore(newValue.floatValue() / 100);
+            }
+        });
+
         Button buttonParamAffichage = createStyledButton("Paramètres d'affichage");
         Button buttonNiveauAide = createStyledButton("Niveau d'aide");
         buttonNiveauAide.setOnAction(e -> showAidePage(primaryStage, creerMenuAide(primaryStage, mainScene)));
