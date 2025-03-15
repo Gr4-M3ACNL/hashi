@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Classe Coord pour une représentation de coordonnée.
@@ -8,15 +8,16 @@ package fr.m3acnl.game.logique;
  */
 public class Coord implements Comparable<Coord> {
 
+    // ==================== Attributs ====================
     /**
      * Coordonnée x de la coordonnée.
      */
-    private int coordX;
+    private final int coordX;
 
     /**
      * Coordonnée y de la coordonnée.
      */
-    private int coordY;
+    private final int coordY;
 
     /**
      * Constructeur pour créer une nouvelle instance de Coord.
@@ -29,6 +30,7 @@ public class Coord implements Comparable<Coord> {
         coordY = py;
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère la coordonnée x de l'instance.
      *
@@ -47,6 +49,7 @@ public class Coord implements Comparable<Coord> {
         return coordY;
     }
 
+    // ==================== Méthodes ====================
     /**
      * Comparaison entre 2 Coord.
      *

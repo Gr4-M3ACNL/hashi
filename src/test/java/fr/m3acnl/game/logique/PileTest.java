@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
 
 /**
  * Test pour la classe DoubleLien

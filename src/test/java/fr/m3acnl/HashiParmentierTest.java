@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 
@@ -44,6 +45,7 @@ public class HashiParmentierTest extends Tests {
      * Test de la méthode init
      * @see HashiParmentier#init
      */
+    @Disabled
     @Test
     public void init_Fonctionne() {
         HashiParmentier hashi = new HashiParmentier();

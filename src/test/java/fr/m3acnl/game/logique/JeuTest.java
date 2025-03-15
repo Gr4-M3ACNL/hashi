@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 
 
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
 
 /**
  * Classe test de la classe Jeu.

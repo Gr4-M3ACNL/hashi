@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.managers.SauvegardePartieManager;
 import fr.m3acnl.managers.SauvegardePartieManager.JeuEnCour;
 
@@ -163,5 +164,63 @@ public class PartieTest extends Tests {
         assertNotNull(partie);
         assertNotNull(partie.getChronoDuration());
         verify(sauvegardePartieManagerMock).charger(eq(Difficulte.facile));
+    }
+
+    /**
+     * Test de la méthode stopChrono quand le chrono n'est pas en pause
+     */
+    @Test
+    public void testStopChronoSansPause() {
+        ProfileManager.getInstance().creerProfil("testPartieChrono");
+        partie.stopChrono();
+        Duration beforeStop = partie.getChronoDuration();
+        Duration afterStop = partie.getChronoDuration();
+        
+        assertEquals(beforeStop, afterStop);
+        ProfileManager.getInstance().supprimerProfil("testPartieChrono");
+    }
+
+    /**
+     * Test de la méthode stopChrono quand le chrono est déjà en pause
+     */
+    @Test
+    public void testStopChronoWhenAvecPause() {
+        ProfileManager.getInstance().creerProfil("testPartieChrono");
+        partie.stopChrono(); // Première pause
+        Duration beforeSecondStop = partie.getChronoDuration();
+        partie.stopChrono(); // Seconde pause
+        Duration afterSecondStop = partie.getChronoDuration();
+        
+        assertEquals(beforeSecondStop, afterSecondStop);
+        ProfileManager.getInstance().supprimerProfil("testPartieChrono");
+    }
+
+    /**
+     * Test de la méthode startChrono quand le chrono est en pause
+     */
+    @Test
+    public void testStartChronoAvecPause() {
+        ProfileManager.getInstance().creerProfil("testPartieChrono");
+        partie.stopChrono(); // Met en pause d'abord
+        Duration beforeStart = partie.getChronoDuration();
+        partie.startChrono();
+        Duration afterStart = partie.getChronoDuration();
+        
+        assertTrue(afterStart.compareTo(beforeStart) >= 0);
+        ProfileManager.getInstance().supprimerProfil("testPartieChrono");
+    }
+
+    /**
+     * Test de la méthode startChrono quand le chrono n'est pas en pause
+     */
+    @Test
+    public void testStartChronoSansPause() {
+        ProfileManager.getInstance().creerProfil("testPartieChrono");
+        Duration beforeStart = partie.getChronoDuration();
+        partie.startChrono();
+        Duration afterStart = partie.getChronoDuration();
+        
+        assertTrue(afterStart.compareTo(beforeStart) >= 0);
+        ProfileManager.getInstance().supprimerProfil("testPartieChrono");
     }
 }

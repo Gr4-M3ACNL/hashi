@@ -20,7 +20,6 @@ public class Hashi {
      * @param args Arguments passés en ligne de commande.
      */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
         Application.launch(HashiParmentier.class, args);
     }
 }

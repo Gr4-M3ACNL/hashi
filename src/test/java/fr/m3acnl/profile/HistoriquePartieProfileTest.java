@@ -3,6 +3,7 @@ package fr.m3acnl.profile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.AfterAll;
@@ -164,7 +165,11 @@ public class HistoriquePartieProfileTest extends Tests {
     public void testSetFacile() {
         List<Duration> facile = historiquePartieProfile.getFacile();
         facile.add(Duration.ofSeconds(10));
-        historiquePartieProfile.setFacile(facile);
+        List<String> facileStrings = new ArrayList<String>();
+        for (Duration d : facile) {
+            facileStrings.add(d.toString());
+        }
+        historiquePartieProfile.setFacile(facileStrings);
         assertEquals(facile, historiquePartieProfile.getFacile());
     }
 
@@ -177,7 +182,11 @@ public class HistoriquePartieProfileTest extends Tests {
     public void testSetMoyen() {
         List<Duration> moyen = historiquePartieProfile.getMoyen();
         moyen.add(Duration.ofSeconds(10));
-        historiquePartieProfile.setMoyen(moyen);
+        List<String> moyenStrings = new ArrayList<String>();
+        for (Duration d : moyen) {
+            moyenStrings.add(d.toString());
+        }
+        historiquePartieProfile.setMoyen(moyenStrings);
         assertEquals(moyen, historiquePartieProfile.getMoyen());
     }
 
@@ -190,7 +199,11 @@ public class HistoriquePartieProfileTest extends Tests {
     public void testSetDifficile() {
         List<Duration> difficile = historiquePartieProfile.getDifficile();
         difficile.add(Duration.ofSeconds(10));
-        historiquePartieProfile.setDifficile(difficile);
+        List<String> difficileStrings = new ArrayList<String>();
+        for (Duration d : difficile) {
+            difficileStrings.add(d.toString());
+        }
+        historiquePartieProfile.setDifficile(difficileStrings);
         assertEquals(difficile, historiquePartieProfile.getDifficile());
     }
 
@@ -203,7 +216,11 @@ public class HistoriquePartieProfileTest extends Tests {
     public void testSetExpert() {
         List<Duration> expert = historiquePartieProfile.getExpert();
         expert.add(Duration.ofSeconds(10));
-        historiquePartieProfile.setExpert(expert);
+        List<String> expertStrings = new ArrayList<String>();
+        for (Duration d : expert) {
+            expertStrings.add(d.toString());
+        }
+        historiquePartieProfile.setExpert(expertStrings);
         assertEquals(expert, historiquePartieProfile.getExpert());
     }
 
