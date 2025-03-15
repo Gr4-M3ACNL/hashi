@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import fr.m3acnl.game.Difficulte;
+import fr.m3acnl.game.affichage.GenererMenu;
 import fr.m3acnl.game.affichage.PartieAffichage;
 import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.profile.Profile;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,7 +20,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -40,6 +39,7 @@ import javafx.stage.Stage;
  */
 public class HashiParmentier extends Application {
 
+    // ======================== Attributs ========================
     /**
      * Stage principal de l'application.
      */
@@ -61,24 +61,14 @@ public class HashiParmentier extends Application {
      */
     private Scene confirmQuitScene;
     /**
-     * Scène d'aide.
-     */
-    private Scene aideScene;
-    /**
      * Scène de sélection de profil.
      */
-    private Scene profileSelectionScene; // Nouvelle scène pour la sélection de profil
-    /**
-     * Indique si une partie est en cours.
-     */
-    private boolean isInGame = false;  // Suivi de l'état du jeu (en cours ou non)
+    private Scene profileSelectionScene;
 
     /**
-     * Constructeur vide de la classe HashiParmentier.
+     * Générateur de menu.
      */
-    public HashiParmentier() {
-        // Constructeur vide
-    }
+    private final GenererMenu genererMenu = new GenererMenu("/META-INF/assetsGraphiques/back/backMenu.jpeg");
 
     /**
      * Méthode start de l'application JavaFX.
@@ -91,174 +81,103 @@ public class HashiParmentier extends Application {
         primaryStage.setTitle("Jeu - Menu Principal");
 
         // 📌 Charger l'image de fond
-        Image backgroundImage = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backMenu.jpeg").toExternalForm());
-        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+        BackgroundImage background = new BackgroundImage(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backMenu.jpeg").toExternalForm()),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(100, 100, true, true, false, true));
-
         // 📌 SCÈNE PRINCIPALE
         BorderPane root = new BorderPane();
         root.setBackground(new Background(background));
 
         // 📌 Icône utilisateur à gauche
-        ImageView userIcon = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/utilisateur.png").toExternalForm()));
+        ImageView userIcon = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/utilisateur.png").toExternalForm()));
         userIcon.setFitWidth(50);
         userIcon.setFitHeight(50);
 
         // 📌 Icône réglages en haut à droite (⚙️)
-        ImageView settingsIcon = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/parametre.png").toExternalForm()));
+        ImageView settingsIcon = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/parametre.png").toExternalForm()));
         settingsIcon.setFitWidth(50);
         settingsIcon.setFitHeight(50);
         Button settingsButton = new Button("", settingsIcon);
         settingsButton.setStyle("-fx-background-color: transparent; -fx-border-width: 0;");
-        settingsButton.setOnAction(e -> showSettingsMenu());
+        settingsButton.setOnAction(e -> genererMenu.showSettingsMenu(primaryStage, settingsScene));
 
         // 📌 Placer les icônes dans un HBox en haut à droite
-        HBox topBox = new HBox(10, userIcon, settingsButton);  // 10px d'écart entre les icônes
+        HBox topBox = new HBox(10, userIcon, settingsButton); // 10px d'écart entre les icônes
         topBox.setPadding(new Insets(10));
         topBox.setAlignment(Pos.TOP_RIGHT);
         root.setTop(topBox);
-
         // 📌 Centre avec boutons "Jouer" et "Quitter le jeu"
         VBox centerBox = new VBox(20);
         centerBox.setAlignment(Pos.CENTER);
-
-        Button playButton = createStyledButton("Jouer");
+        Button playButton = genererMenu.createStyledButton("Jouer");
         playButton.setOnAction(e -> showProfileSelectionPage()); // Changer pour afficher la page de sélection de profil
 
-        Button quitButton = createStyledButton("Quitter le jeu");
-        quitButton.setOnAction(e -> showConfirmQuitPage());
+        Button quitButton = genererMenu.createStyledButton("Quitter le jeu");
+        quitButton.setOnAction(e -> genererMenu.showConfirmQuitPage(primaryStage, confirmQuitScene));
 
         centerBox.getChildren().addAll(playButton, quitButton);
         root.setCenter(centerBox);
 
         mainScene = new Scene(root, 500, 400);
-
-        // 📌 PAGE DES RÉGLAGES
-        VBox vboxSettings = new VBox(15);
-        vboxSettings.setAlignment(Pos.CENTER);
-        vboxSettings.setBackground(new Background(background));
-
-        Label settingsTitle = createStyledLabel("Réglages");
-
-        // 📌 Volume sonore
-        Label volumeLabel = createStyledLabel("Volume des effets sonores");
-        Slider volumeSlider = new Slider(0, 100, 50);
-        volumeSlider.setMaxWidth(150);
-
-        // 📌 Boutons divers
-        Button buttonParamAffichage = createStyledButton("Paramètres d'affichage");
-        Button buttonNiveauAide = createStyledButton("Niveau d'aide");
-        buttonNiveauAide.setOnAction(e -> showAidePage());
-
-        Button buttonQuitterPartie = createStyledButton("Quitter la partie");
-        buttonQuitterPartie.setOnAction(e -> System.out.println("Quitter la partie et sauvegarder..."));
-
-        Button buttonQuitterJeu = createStyledButton("Quitter le jeu");
-        buttonQuitterJeu.setOnAction(e -> showConfirmQuitPage());
-
-        Button buttonRetour = createStyledButton("Retour");
-        buttonRetour.setOnAction(e -> primaryStage.setScene(mainScene));
-
-        // Afficher ou masquer le bouton "Quitter la partie" en fonction de l'état du jeu
-        if (isInGame) {
-            vboxSettings.getChildren().addAll(settingsTitle, volumeLabel, volumeSlider,
-                    buttonParamAffichage, buttonNiveauAide,
-                    buttonQuitterPartie, buttonQuitterJeu, buttonRetour);
-        } else {
-            vboxSettings.getChildren().addAll(settingsTitle, volumeLabel, volumeSlider,
-                    buttonParamAffichage, buttonNiveauAide, buttonQuitterJeu, buttonRetour);
-        }
-
-        settingsScene = new Scene(vboxSettings, 500, 400);
-
-        // 📌 PAGE DE SÉLECTION DE NIVEAU
-        VBox vboxLevels = new VBox(15);
-        vboxLevels.setAlignment(Pos.CENTER);
-        vboxLevels.setBackground(new Background(background));
-
-        Button level1 = createStyledButton("Facile");
-        level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
-
-        Button level2 = createStyledButton("Moyen");
-        level2.setOnAction(e -> lancerPartieAffichage(Difficulte.moyen));
-
-        Button level3 = createStyledButton("Difficile");
-        level3.setOnAction(e -> lancerPartieAffichage(Difficulte.difficile));
-
-        Button level4 = createStyledButton("expert");
-        level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
-
-        Button levelRetour = createStyledButton("Retour");
-        levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
-
-        Label levelTitle = createStyledLabel("Choisissez votre niveau de jeu :");
-        vboxLevels.getChildren().addAll(levelTitle, level1, level2, level3, level4, levelRetour);
-        levelSelectionScene = new Scene(vboxLevels, 500, 400);
-
-        // 📌 PAGE CONFIRMATION QUITTER
-        VBox vboxConfirmQuit = new VBox(15);
-        vboxConfirmQuit.setAlignment(Pos.CENTER);
-        vboxConfirmQuit.setBackground(new Background(background));
-
-        Label confirmQuitLabel = createStyledLabel("Voulez-vous vraiment quitter le jeu ?");
-
-        Button buttonOuiQuitter = createStyledButton("Oui");
-        buttonOuiQuitter.setOnAction(e -> Platform.exit());
-
-        Button buttonNonQuitter = createStyledButton("Non");
-        buttonNonQuitter.setOnAction(e -> primaryStage.setScene(mainScene));
-
-        vboxConfirmQuit.getChildren().addAll(confirmQuitLabel, buttonOuiQuitter, buttonNonQuitter);
-        confirmQuitScene = new Scene(vboxConfirmQuit, 500, 400);
-
-        // 📌 PAGE AIDE
-        VBox vboxAide = new VBox(15);
-        vboxAide.setAlignment(Pos.CENTER);
-        vboxAide.setBackground(new Background(background));
-
-        Label aideTitle = createStyledLabel("Choisissez un niveau d'aide :");
-
-        Button niveau0 = createStyledButton("Facile");
-        Button niveau1 = createStyledButton("Moyen");
-        Button niveau3 = createStyledButton("Difficile");
-
-        Button retourAide = createStyledButton("Retour");
-        retourAide.setOnAction(e -> primaryStage.setScene(settingsScene));
-
-        vboxAide.getChildren().addAll(aideTitle, niveau0, niveau1, niveau3, retourAide);
-        aideScene = new Scene(vboxAide, 500, 400);
-
-        // 📌 PAGE DE SÉLECTION DE PROFIL
-        VBox vboxProfileSelection = new VBox(15);
-        vboxProfileSelection.setAlignment(Pos.CENTER);
-        vboxProfileSelection.setBackground(new Background(background));
-
-        final Label profileLabel = createStyledLabel("Veuillez vous connecter pour jouer");
-
-        Button loadProfileButton = createStyledButton("Charger un profil");
-        loadProfileButton.setOnAction(e -> loadProfile());
-
-        Button createProfileButton = createStyledButton("Créer un profil");
-        createProfileButton.setOnAction(e -> createProfile());
-
-        Button returnToMainMenu = createStyledButton("Retour");
-        returnToMainMenu.setOnAction(e -> primaryStage.setScene(mainScene));
-
-        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, createProfileButton, returnToMainMenu);
-        profileSelectionScene = new Scene(vboxProfileSelection, 500, 400);
+        creerSelectionNiveau(background);
+        confirmQuitScene = genererMenu.creerMenuQuitter(primaryStage, mainScene);
+        settingsScene = genererMenu.creerMenuPause(primaryStage, mainScene, null);
+        creerSelectionProfil(background);
 
         // 📌 Lancer l'application avec la scène principale
         primaryStage.setScene(mainScene);
         primaryStage.show();
     }
 
-    // 📌 Méthodes de navigation
-    /**
-     * Affiche le menu des réglages.
-     */
-    private void showSettingsMenu() {
-        primaryStage.setScene(settingsScene);
+    // ======================== Gestion des scènes ========================
+    private void creerSelectionProfil(BackgroundImage background) {
+        VBox vboxProfileSelection = new VBox(15);
+        vboxProfileSelection.setAlignment(Pos.CENTER);
+        vboxProfileSelection.setBackground(new Background(background));
+
+        final Label profileLabel = genererMenu.createStyledLabel("Veuillez vous connecter pour jouer");
+
+        Button loadProfileButton = genererMenu.createStyledButton("Charger un profil");
+        loadProfileButton.setOnAction(e -> loadProfile());
+
+        Button createProfileButton = genererMenu.createStyledButton("Créer un profil");
+        createProfileButton.setOnAction(e -> createProfile());
+
+        Button returnToMainMenu = genererMenu.createStyledButton("Retour");
+        returnToMainMenu.setOnAction(e -> primaryStage.setScene(mainScene));
+
+        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, createProfileButton,
+                returnToMainMenu);
+        profileSelectionScene = new Scene(vboxProfileSelection, 500, 400);
+    }
+
+    private void creerSelectionNiveau(BackgroundImage background) {
+        VBox vboxLevels = new VBox(15);
+        vboxLevels.setAlignment(Pos.CENTER);
+        vboxLevels.setBackground(new Background(background));
+
+        Button level1 = genererMenu.createStyledButton("Facile");
+        level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
+
+        Button level2 = genererMenu.createStyledButton("Moyen");
+        level2.setOnAction(e -> lancerPartieAffichage(Difficulte.moyen));
+
+        Button level3 = genererMenu.createStyledButton("Difficile");
+        level3.setOnAction(e -> lancerPartieAffichage(Difficulte.difficile));
+
+        Button level4 = genererMenu.createStyledButton("expert");
+        level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
+
+        Button levelRetour = genererMenu.createStyledButton("Retour");
+        levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
+
+        Label levelTitle = genererMenu.createStyledLabel("Choisissez votre niveau de jeu :");
+        vboxLevels.getChildren().addAll(levelTitle, level1, level2, level3, level4, levelRetour);
+        levelSelectionScene = new Scene(vboxLevels, 500, 400);
+
     }
 
     /**
@@ -269,27 +188,13 @@ public class HashiParmentier extends Application {
     }
 
     /**
-     * Affiche la page de confirmation de quitter.
-     */
-    private void showConfirmQuitPage() {
-        primaryStage.setScene(confirmQuitScene);
-    }
-
-    /**
-     * Affiche la page d'aide.
-     */
-    private void showAidePage() {
-        primaryStage.setScene(aideScene);
-    }
-
-    /**
      * Affiche la page de sélection de profil.
      */
     private void showProfileSelectionPage() {
-        primaryStage.setScene(profileSelectionScene);  // Changement pour afficher la page de sélection de profil
+        primaryStage.setScene(profileSelectionScene); // Changement pour afficher la page de sélection de profil
     }
 
-    // 📌 Méthode pour créer un profil
+    // ======================== Gestion des profils ========================
     /**
      * Crée un profil.
      */
@@ -305,7 +210,8 @@ public class HashiParmentier extends Application {
         // Appliquer le style CSS au DialogPane et aux éléments internes
         dialog.setContentText("Entrez votre nom de profil :  ");
 
-        dialog.getDialogPane().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: #3d1e10; -fx-background-color: #f8f1e1;");
+        dialog.getDialogPane().setStyle(
+                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: #3d1e10; -fx-background-color: #f8f1e1;");
         // Appliquer un style spécifique à l'input text
         dialog.getEditor().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: #3d1e10;");
 
@@ -329,14 +235,6 @@ public class HashiParmentier extends Application {
         if (profileNames.isEmpty()) {
             alerteProfile();
             return;
-            /*// Création d'un profil par défaut
-            String defaultProfile = "profil_par_defaut";
-            ProfileManager.getInstance().creerProfil(defaultProfile);
-            ProfileManager.getInstance().setProfileActif(defaultProfile);
-            System.out.println("Aucun profil existant, création du profil par défaut : " + defaultProfile);
-
-            // Recharger la liste après création du profil
-            profileNames = ProfileManager.getInstance().listeProfils();*/
         }
 
         // Création de la fenêtre modale
@@ -377,7 +275,7 @@ public class HashiParmentier extends Application {
         });
 
         // Bouton de validation
-        Button confirmButton = createStyledButton("Valider");
+        Button confirmButton = genererMenu.createStyledButton("Valider");
         confirmButton.setOnAction(event -> {
             String selectedProfile = comboBox.getValue();
             if (selectedProfile != null) {
@@ -408,7 +306,8 @@ public class HashiParmentier extends Application {
                 + "-fx-background-size: cover;");
 
         // Image de gauche (agrandie de 30%)
-        ImageView exitImage = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
+        ImageView exitImage = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
         exitImage.setFitWidth(130);
         exitImage.setFitHeight(130);
 
@@ -452,52 +351,13 @@ public class HashiParmentier extends Application {
         alert.showAndWait();
 
     }
-    // 📌 Méthode pour démarrer une partie
 
+    // ======================== Gestion des parties ========================
     /**
      * Démarre une partie.
      */
     private void startGame() {
-        isInGame = true;  // Mettre à jour l'état pour indiquer que nous sommes en jeu
-        primaryStage.setScene(levelSelectionScene);  // Aller à la page de sélection du niveau
-    }
-
-    // 📌 Création d'un bouton stylisé
-    /**
-     * Crée un bouton stylisé.
-     *
-     * @param text Texte du bouton.
-     * @return Le bouton créé.
-     */
-    private Button createStyledButton(String text) {
-        Button button = new Button(text);
-        button.setStyle("-fx-font-family: 'Arial'; "
-                + "-fx-font-size: 16px; "
-                + "-fx-text-fill: black; "
-                + "-fx-background-color: linear-gradient(#f5e6b8, #e4c98f); "
-                + "-fx-background-radius: 25; "
-                + "-fx-padding: 10px 20px; "
-                + "-fx-border-color: transparent; "
-                + "-fx-border-width: 0;");
-        return button;
-    }
-
-    // 📌 Création d'un label stylisé
-    /**
-     * Crée un label stylisé.
-     *
-     * @param text Texte du label.
-     * @return Le label créé.
-     */
-    private Label createStyledLabel(String text) {
-        Label label = new Label(text);
-        label.setStyle("-fx-font-family: 'Arial'; "
-                + "-fx-font-size: 18px; "
-                + "-fx-text-fill: black; "
-                + "-fx-background-color: rgba(255, 255, 255, 0.6); "
-                + "-fx-padding: 5px 10px; "
-                + "-fx-background-radius: 10px;");
-        return label;
+        primaryStage.setScene(levelSelectionScene); // Aller à la page de sélection du niveau
     }
 
     /**
@@ -506,7 +366,7 @@ public class HashiParmentier extends Application {
      * @param difficulte Difficulté de la partie.
      * @see PartieAffichage
      */
-    private void lancerPartieAffichage(Difficulte difficulte) {
+    public void lancerPartieAffichage(Difficulte difficulte) {
         PartieAffichage partieAffichage = new PartieAffichage(difficulte);
         Stage stage = new Stage();
         try {
@@ -524,5 +384,6 @@ public class HashiParmentier extends Application {
     public static void main(String[] args) {
         launch(args);
         return;
+
     }
 }

@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class Pile implements JsonSerializable {
 
+    // ==================== Attributs ====================
     /**
      * Tableau contenant la pile.
      */
@@ -28,15 +29,7 @@ public class Pile implements JsonSerializable {
         tab = new ArrayList<>();
     }
 
-    /**
-     * Initialisation d'un nouveau tableau pour la pile.
-     *
-     * @param t Le tableau a initialisé.
-     */
-    public void setTab(ArrayList<Lien> t) {
-        tab = new ArrayList<>(t);
-    }
-
+    // ==================== Getter ====================
     /**
      * Méthode pour retourner la taille d'une pile.
      *
@@ -55,6 +48,29 @@ public class Pile implements JsonSerializable {
         return tab.isEmpty();
     }
 
+    /**
+     * Méthode pour retourner l'objet au sommet de la pile.
+     *
+     * @return : l'objet au sommet de la pile
+     */
+    public Lien sommet() {
+        if (!estVide()) {
+            return tab.get(this.taille() - 1);
+        }
+        return null;
+    }
+
+    // ==================== Setter ====================
+    /**
+     * Initialisation d'un nouveau tableau pour la pile.
+     *
+     * @param t Le tableau a initialisé.
+     */
+    public void setTab(ArrayList<Lien> t) {
+        tab = new ArrayList<>(t);
+    }
+
+    // ==================== Action ====================
     /**
      * Méthode pour empiler un objet dans une pile.
      *
@@ -80,18 +96,6 @@ public class Pile implements JsonSerializable {
     }
 
     /**
-     * Méthode pour retourner l'objet au sommet de la pile.
-     *
-     * @return : l'objet au sommet de la pile
-     */
-    public Lien sommet() {
-        if (!estVide()) {
-            return tab.get(this.taille() - 1);
-        }
-        return null;
-    }
-
-    /**
      * Méthode pour vider entièrement une pile.
      */
     public void vidange() {
@@ -109,6 +113,7 @@ public class Pile implements JsonSerializable {
         return new ArrayList<Lien>(tab);
     }
 
+    // ==================== Sérialisation ====================
     /**
      * Méthode pour sérialiser une pile de liens.
      *

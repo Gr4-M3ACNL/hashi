@@ -8,6 +8,7 @@ package fr.m3acnl.game.logique.elementjeu;
  */
 public class DoubleLien implements ElementJeu {
 
+    // ==================== Attributs ====================
     /**
      * Le 1er lien.
      */
@@ -48,6 +49,7 @@ public class DoubleLien implements ElementJeu {
         lien2.addDoubleLien(this);
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère le 1er lien.
      *
@@ -64,31 +66,6 @@ public class DoubleLien implements ElementJeu {
      */
     public Lien getLien2() {
         return lien2;
-    }
-
-    /**
-     * Récupère l'état de l'interrupteur.
-     *
-     * @return L'état de l'interrupteur
-     */
-    public Boolean getInterrupteur() {
-        return interrupteur;
-    }
-
-    /**
-     * Active l'interrupteur.
-     */
-    public void activeInterrupteur() {
-        interrupteur = true;
-    }
-
-    /**
-     * Désactive l'interrupteur si les liens sont égaux.
-     */
-    public void desactiveInterrupteur() {
-        if (lien1.getNbLien() == lien2.getNbLien()) {
-            interrupteur = false;
-        }
     }
 
     /**
@@ -109,6 +86,32 @@ public class DoubleLien implements ElementJeu {
             }
         } else {
             return null;
+        }
+    }
+
+    /**
+     * Récupère l'état de l'interrupteur.
+     *
+     * @return L'état de l'interrupteur
+     */
+    public Boolean getInterrupteur() {
+        return interrupteur;
+    }
+
+    // ==================== Setter ====================
+    /**
+     * Active l'interrupteur.
+     */
+    public void activeInterrupteur() {
+        interrupteur = true;
+    }
+
+    /**
+     * Désactive l'interrupteur si les liens sont égaux.
+     */
+    public void desactiveInterrupteur() {
+        if (lien1.getNbLien() == lien2.getNbLien()) {
+            interrupteur = false;
         }
     }
 
@@ -142,6 +145,7 @@ public class DoubleLien implements ElementJeu {
         }
     }
 
+    // ==================== Override ====================
     /**
      * Permet de savoir si l'élément a été modifié.
      *
@@ -236,6 +240,7 @@ public class DoubleLien implements ElementJeu {
 
     }
 
+    // ==================== Affichage ====================
     /**
      * Renvoie le chemin de l'image du DoubleLien.
      *

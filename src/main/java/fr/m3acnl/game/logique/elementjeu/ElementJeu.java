@@ -8,6 +8,7 @@ package fr.m3acnl.game.logique.elementjeu;
  */
 public interface ElementJeu {
 
+    // ==================== Getter ====================
     /**
      * Permet d'indiquer qu'il faut consulter l'élément.
      *
@@ -15,6 +16,14 @@ public interface ElementJeu {
      */
     public boolean modifie();
 
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
+    public Boolean activer();
+
+    // ==================== Setter ====================
     /**
      * Permet d'indiquer que l'élément a été consulter.
      */
@@ -26,13 +35,6 @@ public interface ElementJeu {
     public void averifie();
 
     /**
-     * Permet de savoir si l'élément a été modifié.
-     *
-     * @return true si l'élément a été modifié, false sinon
-     */
-    public Boolean activer();
-
-    /**
      * Méthode pour activer la surbrillance d'un élément de jeu.
      */
     public void surbrillanceOn();
@@ -42,6 +44,7 @@ public interface ElementJeu {
      */
     public void surbrillanceOff();
 
+    // ==================== Affichage ====================
     /**
      * Méthode pour dessiner un élément de jeu.
      *

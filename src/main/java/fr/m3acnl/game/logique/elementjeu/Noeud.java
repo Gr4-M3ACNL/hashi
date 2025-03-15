@@ -2,8 +2,6 @@ package fr.m3acnl.game.logique.elementjeu;
 
 import java.util.ArrayList;
 
-
-
 /**
  * Classe Noeud a lié dans le jeu.
  *
@@ -12,6 +10,7 @@ import java.util.ArrayList;
  */
 public class Noeud implements ElementJeu, Comparable<Noeud> {
 
+    // ==================== Attributs ====================
     /**
      * La position en coordonnée du noeud.
      */
@@ -62,6 +61,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         surbrillance = false;
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère la position du noeud.
      *
@@ -108,6 +108,16 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Vérifie si le noeud est valide.
+     *
+     * @return 0 si valide
+     */
+    public int estValide() {
+        return (degreSoluce - degreActuelle);
+    }
+
+    // ==================== Setter ====================
+    /**
      * Permet de définir l'activation du noeud. (Pour la surbrillance pour
      * eviter que le noeud ne s'active en survol)
      *
@@ -142,15 +152,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Vérifie si le noeud est valide.
-     *
-     * @return 0 si valide
-     */
-    public int estValide() {
-        return (degreSoluce - degreActuelle);
-    }
-
-    /**
      * Ajoute un noeud à la liste d'adjacence.
      *
      * @param n le noeud à ajouter
@@ -168,6 +169,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         listeAdjacence.remove(n);
     }
 
+    // ==================== Action ====================
     /**
      * Retourne la liste des noeuds connectés à ce noeud.
      *
@@ -196,6 +198,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         }
     }
 
+    // ==================== Override ====================
     /**
      * Permet de savoir si l'élément a été modifié.
      *
@@ -270,6 +273,18 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
+     *
+     * @param n2 le noeud avec qui comparé
+     * @return le résultat de la comparaison
+     */
+    @Override
+    public int compareTo(Noeud n2) {
+        return this.position.compareTo(n2.position);
+    }
+
+    // ==================== Affichage ====================
+    /**
      * Affiche le Noeud.
      */
     @Override
@@ -291,17 +306,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public void drawTerm() {
         System.out.print("N{" + degreActuelle + "/" + degreSoluce + "}   ");
-    }
-
-    /**
-     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
-     *
-     * @param n2 le noeud avec qui comparé
-     * @return le résultat de la comparaison
-     */
-    @Override
-    public int compareTo(Noeud n2) {
-        return this.position.compareTo(n2.position);
     }
 
     /**

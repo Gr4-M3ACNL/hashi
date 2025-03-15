@@ -48,6 +48,7 @@ import javafx.stage.Stage;
  */
 public class PartieAffichage extends Application {
 
+    // ======================== Attributs ========================
     /**
      * La partie en cours.
      * <p>
@@ -56,7 +57,7 @@ public class PartieAffichage extends Application {
      *
      * @see Partie
      */
-    private Partie partie;
+    private final Partie partie;
 
     /**
      * Label pour afficher le temps.
@@ -91,7 +92,7 @@ public class PartieAffichage extends Application {
     /**
      * Volume des effets sonores.
      */
-    private double soundeffect = 0.5; // Valeur par défaut (50% du volume)
+    private double soundeffect = 0.5;
 
     /**
      * Accès à la timeline pour l'actualisation du chrono.
@@ -109,12 +110,28 @@ public class PartieAffichage extends Application {
     }
 
     /**
+     * Generateur de menu.
+     */
+    private final GenererMenu genererMenu = new GenererMenu("/META-INF/assetsGraphiques/back/backPartie.png");
+
+    /**
+     * La fenêtre principale.
+     */
+    Stage primaryStage;
+
+    /**
+     * La scène principale.
+     */
+    Scene mainScene;
+
+    /**
      * Méthode start pour lancer l'application.
      *
-     * @param primaryStage La scène principale
+     * @param prim La scène principale
      */
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage prim) {
+        primaryStage = prim;
         primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
 
         primaryStage.setFullScreen(true);
@@ -139,198 +156,22 @@ public class PartieAffichage extends Application {
         BorderPane mainLayout = new BorderPane();
         mainLayout.setCenter(root);
 
-        Scene scene = new Scene(mainLayout, 1920, 1080);
+        mainScene = new Scene(mainLayout, 1920, 1080);
         primaryStage.setTitle("Jeu Interface");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(mainScene);
         primaryStage.setOnCloseRequest(event -> {
             demandeSortie(event);
         });
 
         primaryStage.show();
 
-        scene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
-        scene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
+        mainScene.widthProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
+        mainScene.heightProperty().addListener((obs, oldVal, newVal) -> ajusterTailleImages());
         demarrerChrono();
         actualiserAffichage();
-        System.out.println("Partie démarrée !");
-        partie.getJeu().drawJeuTerm();
     }
 
-    /**
-     * Initialise les boutons du jeu.
-     */
-    private void initialiserBoutons() {
-        for (int i = 0; i < partie.getJeu().getTaille(); i++) {
-            for (int j = 0; j < partie.getJeu().getTaille(); j++) {
-                boutons[i][j] = new Button();
-                int x = i;
-                int y = j;
-                boutons[i][j].setOnMouseClicked(event -> activerElement(event, x, y));
-
-                URL resource = getResourceElement(i, j);
-                if (resource != null) {
-                    boutons[i][j].setGraphic(creerImageView(resource, 100));
-                }
-
-                boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
-                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(e, x, y));
-
-                boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y)); // Désactive le survol
-
-                gridPane.add(boutons[i][j], y, x);
-            }
-        }
-    }
-
-    /**
-     * Prévisualise l'état d'un élément du jeu. Permet de pouvoir voir les
-     * connections avant de cliquer.
-     *
-     * @param event L'événement de souris
-     * @param x La ligne de l'élément
-     * @param y La colonne de l'élément
-     */
-    private void previsualiserEtat(MouseEvent event, int x, int y) {
-        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
-
-        if (element == null) {
-            return; // Rien à faire si la case est vide
-        }
-
-        if (element instanceof DoubleLien doubleLien) {
-            // Trouver le nœud le plus proche de la souris
-            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
-
-            if (noeudProche != null) {
-                doubleLien.activerSurbrillance(noeudProche);
-            }
-        } else {
-            element.surbrillanceOn();
-        }
-
-        actualiserAffichage();
-    }
-
-    /**
-     * Restaure l'état initial du bouton lorsque la souris quitte.
-     *
-     * @param x La ligne de l'élément
-     * @param y La colonne de l'élément
-     */
-    private void restaurerEtat(int x, int y) {
-        if (partie.getJeu().getPlateau().getElement(x, y) == null) {
-            return;
-        }
-        if (partie.getJeu().getPlateau().getElement(x, y) instanceof DoubleLien) {
-            DoubleLien doubleLien = (DoubleLien) partie.getJeu().getPlateau().getElement(x, y);
-            doubleLien.surbrillanceOff();
-        } else {
-            partie.getJeu().getPlateau().getElement(x, y).surbrillanceOff();
-        }
-        actualiserAffichage();
-    }
-
-    /**
-     * Active un élément du jeu.
-     *
-     * @param event L'événement de souris
-     * @param x La ligne de l'élément
-     * @param y La colonne de l'élément
-     */
-    private void activerElement(MouseEvent event, int x, int y) {
-        restaurerEtat(x, y);
-
-        // Vérifier si l'élément du plateau est un DoubleLien
-        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
-
-        if (element instanceof DoubleLien doubleLien) {
-            // Trouver le nœud le plus proche de la souris
-            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
-
-            if (noeudProche != null) {
-                doubleLien.activer(noeudProche);
-                jouerSon("noeud.wav"); // Jouer le son de lien
-            }
-        } else {
-            partie.getJeu().activeElemJeu(x, y, null);
-            jouerSon("lien.wav"); // Jouer le son du nœud
-        }
-
-        // Vérifier si la partie est gagnée
-        if (partie.getJeu().gagner()) {
-            partie.finPartie();
-            victoire();
-        } else {
-            // on ne doit pas sauvegarder la partie si elle est gagnée
-            partie.sauvegarde();
-        }
-        // Mettre à jour l'affichage
-        actualiserAffichage();
-    }
-
-    /**
-     * Joue un son à partir d'un fichier audio.
-     *
-     * @param fichierAudio Le fichier audio à jouer
-     */
-    private void jouerSon(String fichierAudio) {
-        String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
-        AudioClip son = new AudioClip(chemin);
-        son.setVolume(soundeffect); // Appliquer le volume
-        son.play();
-    }
-
-    /**
-     * Definie le volume des sons à jouer.
-     *
-     * @param volume le volume à appliquer
-     */
-    public void setSoundEffectVolume(double volume) {
-        soundeffect = Math.max(0, Math.min(1, volume)); // Clamp entre 0 et 1
-    }
-
-    /**
-     * Trouve le nœud le plus proche du bouton DoubleLien.
-     *
-     * @param doubleLien Le DoubleLien à vérifier
-     * @param event L'événement de souris
-     * @return Le nœud le plus proche
-     */
-    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, MouseEvent event) {
-        if (!(event.getSource() instanceof Node source)) {
-            System.out.println("L'élément source n'est pas un Node !");
-            return null;
-        }
-
-        // Convertir la position de la souris en coordonnées locales du bouton
-        Point2D mouseLocal = source.sceneToLocal(event.getSceneX(), event.getSceneY());
-
-        // Récupérer les nœuds des liens
-        Noeud noeudHaut = doubleLien.getLien1().getNoeud1();
-        Noeud noeudBas = doubleLien.getLien1().getNoeud2();
-        Noeud noeudGauche = doubleLien.getLien2().getNoeud1();
-        Noeud noeudDroit = doubleLien.getLien2().getNoeud2();
-
-        // Dimensions du bouton
-        double boutonWidth = ((Button) source).getWidth();
-        double boutonHeight = ((Button) source).getHeight();
-
-        // Déterminer la position relative de la souris
-        double centerX = boutonWidth / 2;
-        double centerY = boutonHeight / 2;
-        double dx = mouseLocal.getX() - centerX;
-        double dy = mouseLocal.getY() - centerY;
-
-        // Comparer les distances pour choisir entre horizontal et vertical
-        if (Math.abs(dx) > Math.abs(dy)) {
-            // Mouvement majoritairement horizontal
-            return (dx < 0) ? noeudGauche : noeudDroit;
-        } else {
-            // Mouvement majoritairement vertical
-            return (dy < 0) ? noeudHaut : noeudBas;
-        }
-    }
-
+    // ======================== Creation de l'interface ========================
     /**
      * Crée le fond de la fenêtre.
      *
@@ -369,13 +210,14 @@ public class PartieAffichage extends Application {
         VBox controlPanel = new VBox(10);
         controlPanel.setAlignment(Pos.CENTER);
 
+        Button buttonPause = new Button("Pause");
         Button buttonRetour = new Button("Annuler coups");
         Button buttonAvancer = new Button("Rétablir coups");
         Button buttonCheck = new Button("Vérifier grille");
         Button buttonSave = new Button("Sauvegarde manuelle");
         Button buttonCheckpoint = new Button("Retour checkpoint");
 
-        Button[] boutonsControle = {buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint};
+        Button[] boutonsControle = {buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, buttonPause};
         for (Button bouton : boutonsControle) {
             bouton.setMinSize(150, 50);
             bouton.setStyle(
@@ -410,6 +252,10 @@ public class PartieAffichage extends Application {
             retourSauvegarde();
             jouerSon("bouton.wav");
         });
+        buttonPause.setOnAction(e -> {
+            pause();
+            jouerSon("bouton.wav");
+        });
         labelTemps = new Label("Temps: " + partie.getChronoDuration().toMinutes() + " min " + partie.getChronoDuration().toSecondsPart() + " sec");
         labelTemps.setStyle("-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
                 + "-fx-background-radius: 10;"
@@ -431,147 +277,34 @@ public class PartieAffichage extends Application {
             }
         });
 
-        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, labelTemps);
+        controlPanel.getChildren().addAll(buttonRetour, buttonAvancer, buttonCheck, buttonSave, buttonCheckpoint, buttonPause, labelTemps);
         return controlPanel;
     }
 
     /**
-     * Ajuste la taille des boutons en fonction de la taille de la scène.
-     *
-     * @param boutons Les boutons à ajuster
+     * Initialise les boutons du jeu.
      */
-    private void ajusterTailleBoutons(Button[] boutons) {
-        Scene scene = boutons[0].getScene();
-        if (scene == null) {
-            return;
+    private void initialiserBoutons() {
+        for (int i = 0; i < partie.getJeu().getTaille(); i++) {
+            for (int j = 0; j < partie.getJeu().getTaille(); j++) {
+                boutons[i][j] = new Button();
+                int x = i;
+                int y = j;
+                boutons[i][j].setOnMouseClicked(event -> activerElement(event, x, y));
+
+                URL resource = getResourceElement(i, j);
+                if (resource != null) {
+                    boutons[i][j].setGraphic(creerImageView(resource, 100));
+                }
+
+                boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+                boutons[i][j].setOnMouseEntered(e -> previsualiserEtat(e, x, y));
+
+                boutons[i][j].setOnMouseExited(e -> restaurerEtat(x, y)); // Désactive le survol
+
+                gridPane.add(boutons[i][j], y, x);
+            }
         }
-
-        double largeurFenetre = scene.getWidth();
-        double hauteurFenetre = scene.getHeight();
-
-        double nouvelleTailleBouton = Math.max(hauteurFenetre * 0.05, 40); // 40px de hauteur minimum
-        double nouvelleLargeur = Math.max(largeurFenetre * 0.15, 150); // 150px de largeur minimum
-
-        for (Button bouton : boutons) {
-            bouton.setMinSize(nouvelleLargeur, nouvelleTailleBouton);
-            bouton.setMaxSize(nouvelleLargeur, nouvelleTailleBouton);
-        }
-    }
-
-    /**
-     * Actualise le label du temps.
-     */
-    private void actualiserLabelTemps() {
-        if (partie != null) {
-            Duration chrono = partie.getChronoDuration();
-            long minutes = chrono.toMinutes();
-            long secondes = chrono.toSecondsPart();
-            labelTemps.setText("Temps: " + minutes + " min " + secondes + " sec");
-        }
-    }
-
-    /**
-     * Démarre le chrono de la partie pour l'actualisation du temps.
-     */
-    private void demarrerChrono() {
-        timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> actualiserLabelTemps()));
-        timeline.setCycleCount(Animation.INDEFINITE); // Répéter indéfiniment
-        timeline.play(); // Démarrer le chrono
-    }
-
-    /**
-     * Permet d'afficher l'overlay de victoire.i
-     */
-    private void victoire() {
-        Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
-
-        // Afficher l'image "up.png" temporairement
-        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/up.png").toExternalForm()));
-        winImageView.setFitWidth(300);
-        winImageView.setFitHeight(300);
-        winImageView.setBlendMode(BlendMode.SRC_OVER);
-
-        // Utiliser un StackPane mais sans fond opaque
-        StackPane upPane = new StackPane(winImageView);
-        upPane.setAlignment(Pos.CENTER);
-        upPane.setOpacity(1);
-
-        backgroundPane.setEffect(null);
-        backgroundPane.setOpacity(1);
-
-        backgroundPane.getChildren().add(upPane);
-        backgroundPane.getChildren().get(backgroundPane.getChildren().size() - 1).toFront();
-
-        // Pause de 3 secondes avant d'afficher l'overlay final
-        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(3));
-        pause.setOnFinished(event -> {
-            backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
-            afficherOverlayVictoire(); // Afficher l'overlay après la pause
-        });
-        jouerSon("victoire.wav");
-        pause.play();
-    }
-
-    /**
-     * Affiche l'overlay du menu de victoire.
-     */
-    private void afficherOverlayVictoire() {
-        System.out.println("Victoire !");
-        Scene scene = gridPane.getScene();
-        if (!(scene != null && scene.getRoot() instanceof BorderPane mainLayout)) {
-            System.out.println("ERREUR : Scène ou BorderPane invalide !");
-            return;
-        }
-
-        // Création des éléments de l'overlay
-        ImageView winImageView = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/win.png").toExternalForm()));
-        winImageView.setFitWidth(500);
-        winImageView.setFitHeight(500);
-
-        Label labelWin = new Label("Temps : " + labelTemps.getText());
-        labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
-
-        Button btnSuivant = new Button("Grille Suivante");
-        Button btnQuitter = new Button("Quitter");
-
-        btnSuivant.setOnAction(e -> {
-            relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
-            jouerSon("bouton.wav");
-            cacherOverlay(mainLayout);  // Cacher l'overlay
-        });
-        btnQuitter.setOnAction(e -> {
-            jouerSon("bouton.wav");
-            Platform.exit();
-        });
-
-        VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
-        winBox.setAlignment(Pos.CENTER);
-        winBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 20px; -fx-border-radius: 10px;");
-
-        StackPane overlayPane = new StackPane(winBox);
-        overlayPane.setAlignment(Pos.CENTER);
-        overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
-
-        // Affichage de l'overlay
-        mainLayout.setCenter(overlayPane);
-    }
-
-    /**
-     * Méthode pour cacher l'overlay.
-     */
-    private void cacherOverlay(BorderPane mainLayout) {
-        // Retirer l'overlay en enlevant le StackPane du centre
-        mainLayout.setCenter(null);
-    }
-
-    /**
-     * Relance une nouvelle partie. la difficulté reste la même.
-     */
-    private void relancerPartie(BorderPane mainLayout) {
-        // Réinitialiser la partie, mais ne pas oublier d'ajouter les éléments de jeu au mainLayout
-        PartieAffichage partieAffichage = new PartieAffichage(partie.getDifficulte());
-        partieAffichage.start((Stage) mainLayout.getScene().getWindow());
     }
 
     /**
@@ -591,7 +324,8 @@ public class PartieAffichage extends Application {
                 + "-fx-background-size: cover;");
 
         // Image de gauche (agrandie de 30%)
-        ImageView exitImage = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
+        ImageView exitImage = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
         exitImage.setFitWidth(130);
         exitImage.setFitHeight(130);
 
@@ -643,17 +377,36 @@ public class PartieAffichage extends Application {
         }
     }
 
+    // ======================== Actualisation de l'interface ========================
+    /**
+     * Met à jour l'affichage.
+     */
+    private void actualiserAffichage() {
+        ajusterTailleImages();
+    }
+
+    /**
+     * Actualise le label du temps.
+     */
+    private void actualiserLabelTemps() {
+        if (partie != null) {
+            Duration chrono = partie.getChronoDuration();
+            long minutes = chrono.toMinutes();
+            long secondes = chrono.toSecondsPart();
+            labelTemps.setText("Temps: " + minutes + " min " + secondes + " sec");
+        }
+    }
+
     /**
      * Ajuste la taille des images en fonction de la taille de la scène.
      */
     private void ajusterTailleImages() {
-        Scene scene = gridPane.getScene();
-        if (scene == null) {
+        if (mainScene == null) {
             return;
         }
 
-        double largeurScene = scene.getWidth();
-        double hauteurScene = scene.getHeight();
+        double largeurScene = mainScene.getWidth();
+        double hauteurScene = mainScene.getHeight();
         int taille = partie.getJeu().getTaille();
 
         double tailleCellule = Math.min(largeurScene * 0.92, hauteurScene * 0.92) / taille;
@@ -681,6 +434,163 @@ public class PartieAffichage extends Application {
     }
 
     /**
+     * Prévisualise l'état d'un élément du jeu. Permet de pouvoir voir les
+     * connections avant de cliquer.
+     *
+     * @param event L'événement de souris
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
+     */
+    private void previsualiserEtat(MouseEvent event, int x, int y) {
+        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
+
+        if (element == null) {
+            return; // Rien à faire si la case est vide
+        }
+
+        if (element instanceof DoubleLien doubleLien) {
+            // Trouver le nœud le plus proche de la souris
+            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
+
+            if (noeudProche != null) {
+                doubleLien.activerSurbrillance(noeudProche);
+            }
+        } else {
+            element.surbrillanceOn();
+        }
+
+        actualiserAffichage();
+    }
+
+    /**
+     * Restaure l'état initial du bouton lorsque la souris quitte.
+     *
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
+     */
+    private void restaurerEtat(int x, int y) {
+        if (partie.getJeu().getPlateau().getElement(x, y) == null) {
+            return;
+        }
+        if (partie.getJeu().getPlateau().getElement(x, y) instanceof DoubleLien) {
+            DoubleLien doubleLien = (DoubleLien) partie.getJeu().getPlateau().getElement(x, y);
+            doubleLien.surbrillanceOff();
+        } else {
+            partie.getJeu().getPlateau().getElement(x, y).surbrillanceOff();
+        }
+        actualiserAffichage();
+    }
+
+    /**
+     * Ajuste la taille des boutons en fonction de la taille de la scène.
+     *
+     * @param boutons Les boutons à ajuster
+     */
+    private void ajusterTailleBoutons(Button[] boutons) {
+        Scene scene = boutons[0].getScene();
+        if (scene == null) {
+            return;
+        }
+
+        double largeurFenetre = scene.getWidth();
+        double hauteurFenetre = scene.getHeight();
+
+        double nouvelleTailleBouton = Math.max(hauteurFenetre * 0.05, 40); // 40px de hauteur minimum
+        double nouvelleLargeur = Math.max(largeurFenetre * 0.15, 150); // 150px de largeur minimum
+
+        for (Button bouton : boutons) {
+            bouton.setMinSize(nouvelleLargeur, nouvelleTailleBouton);
+            bouton.setMaxSize(nouvelleLargeur, nouvelleTailleBouton);
+        }
+    }
+
+    /**
+     * Permet d'afficher l'overlay de victoire.i
+     */
+    private void victoire() {
+        Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
+
+        // Afficher l'image "up.png" temporairement
+        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/up.png").toExternalForm()));
+        winImageView.setFitWidth(300);
+        winImageView.setFitHeight(300);
+        winImageView.setBlendMode(BlendMode.SRC_OVER);
+
+        // Utiliser un StackPane mais sans fond opaque
+        StackPane upPane = new StackPane(winImageView);
+        upPane.setAlignment(Pos.CENTER);
+        upPane.setOpacity(1);
+
+        backgroundPane.setEffect(null);
+        backgroundPane.setOpacity(1);
+
+        backgroundPane.getChildren().add(upPane);
+        backgroundPane.getChildren().get(backgroundPane.getChildren().size() - 1).toFront();
+
+        // Pause de 3 secondes avant d'afficher l'overlay final
+        PauseTransition pause = new PauseTransition(javafx.util.Duration.seconds(3));
+        pause.setOnFinished(event -> {
+            backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
+            afficherOverlayVictoire(); // Afficher l'overlay après la pause
+        });
+        jouerSon("victoire.wav");
+        pause.play();
+    }
+
+    /**
+     * Affiche l'overlay du menu de victoire.
+     */
+    private void afficherOverlayVictoire() {
+        System.out.println("Victoire !");
+        if (!(mainScene != null && mainScene.getRoot() instanceof BorderPane mainLayout)) {
+            System.out.println("ERREUR : Scène ou BorderPane invalide !");
+            return;
+        }
+
+        // Création des éléments de l'overlay
+        ImageView winImageView = new ImageView(
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/win.png").toExternalForm()));
+        winImageView.setFitWidth(500);
+        winImageView.setFitHeight(500);
+
+        Label labelWin = new Label("Temps : " + labelTemps.getText());
+        labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+
+        Button btnSuivant = new Button("Grille Suivante");
+        Button btnQuitter = new Button("Quitter");
+
+        btnSuivant.setOnAction(e -> {
+            relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
+            jouerSon("bouton.wav");
+            cacherOverlay(mainLayout);  // Cacher l'overlay
+        });
+        btnQuitter.setOnAction(e -> {
+            jouerSon("bouton.wav");
+            Platform.exit();
+        });
+
+        VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
+        winBox.setAlignment(Pos.CENTER);
+        winBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 20px; -fx-border-radius: 10px;");
+
+        StackPane overlayPane = new StackPane(winBox);
+        overlayPane.setAlignment(Pos.CENTER);
+        overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
+
+        // Affichage de l'overlay
+        mainLayout.setCenter(overlayPane);
+    }
+
+    /**
+     * Méthode pour cacher l'overlay.
+     */
+    private void cacherOverlay(BorderPane mainLayout) {
+        // Retirer l'overlay en enlevant le StackPane du centre
+        mainLayout.setCenter(null);
+    }
+
+    // ======================== Generation des ressources ========================
+    /**
      * Récupère la ressource associée à un élément du jeu.
      *
      * @param i L'indice de ligne
@@ -707,6 +617,140 @@ public class PartieAffichage extends Application {
         imageView.setCache(true);
         imageView.setSmooth(true);
         return imageView;
+    }
+
+    /**
+     * Joue un son à partir d'un fichier audio.
+     *
+     * @param fichierAudio Le fichier audio à jouer
+     */
+    private void jouerSon(String fichierAudio) {
+        String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
+        AudioClip son = new AudioClip(chemin);
+        son.setVolume(soundeffect); // Appliquer le volume
+        son.play();
+    }
+
+    /**
+     * Definie le volume des sons à jouer.
+     *
+     * @param volume le volume à appliquer
+     */
+    public void setSoundEffectVolume(double volume) {
+        soundeffect = Math.max(0, Math.min(1, volume)); // Clamp entre 0 et 1
+    }
+
+    // ======================== Gestion des actions ========================
+    /**
+     * Active un élément du jeu.
+     *
+     * @param event L'événement de souris
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
+     */
+    private void activerElement(MouseEvent event, int x, int y) {
+        restaurerEtat(x, y);
+
+        // Vérifier si l'élément du plateau est un DoubleLien
+        ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
+
+        if (element instanceof DoubleLien doubleLien) {
+            // Trouver le nœud le plus proche de la souris
+            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
+
+            if (noeudProche != null) {
+                doubleLien.activer(noeudProche);
+                jouerSon("noeud.wav"); // Jouer le son de lien
+            }
+        } else {
+            partie.getJeu().activeElemJeu(x, y, null);
+            jouerSon("lien.wav"); // Jouer le son du nœud
+        }
+
+        // Vérifier si la partie est gagnée
+        if (partie.getJeu().gagner()) {
+            partie.finPartie();
+            victoire();
+        } else {
+            // on ne doit pas sauvegarder la partie si elle est gagnée
+            partie.sauvegarde();
+        }
+        // Mettre à jour l'affichage
+        actualiserAffichage();
+    }
+
+    /**
+     * Trouve le nœud le plus proche du bouton DoubleLien.
+     *
+     * @param doubleLien Le DoubleLien à vérifier
+     * @param event L'événement de souris
+     * @return Le nœud le plus proche
+     */
+    private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, MouseEvent event) {
+        if (!(event.getSource() instanceof Node source)) {
+            System.out.println("L'élément source n'est pas un Node !");
+            return null;
+        }
+
+        // Convertir la position de la souris en coordonnées locales du bouton
+        Point2D mouseLocal = source.sceneToLocal(event.getSceneX(), event.getSceneY());
+
+        // Récupérer les nœuds des liens
+        Noeud noeudHaut = doubleLien.getLien1().getNoeud1();
+        Noeud noeudBas = doubleLien.getLien1().getNoeud2();
+        Noeud noeudGauche = doubleLien.getLien2().getNoeud1();
+        Noeud noeudDroit = doubleLien.getLien2().getNoeud2();
+
+        // Dimensions du bouton
+        double boutonWidth = ((Button) source).getWidth();
+        double boutonHeight = ((Button) source).getHeight();
+
+        // Déterminer la position relative de la souris
+        double centerX = boutonWidth / 2;
+        double centerY = boutonHeight / 2;
+        double dx = mouseLocal.getX() - centerX;
+        double dy = mouseLocal.getY() - centerY;
+
+        // Comparer les distances pour choisir entre horizontal et vertical
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Mouvement majoritairement horizontal
+            return (dx < 0) ? noeudGauche : noeudDroit;
+        } else {
+            // Mouvement majoritairement vertical
+            return (dy < 0) ? noeudHaut : noeudBas;
+        }
+    }
+
+    /**
+     * Permet de mettre le jeu en pause et de lancer le menu.
+     */
+    private void pause() {
+        System.out.println("Pause !");
+
+        primaryStage.setWidth(primaryStage.getWidth());
+        primaryStage.setHeight(primaryStage.getHeight());
+
+        genererMenu.showSettingsMenu(primaryStage, genererMenu.creerMenuPause(primaryStage, mainScene, partie));
+
+        // Forcer l'ajustement après un petit délai
+    }
+
+    /**
+     * Démarre le chrono de la partie pour l'actualisation du temps.
+     */
+    private void demarrerChrono() {
+        timeline = new Timeline(new KeyFrame(javafx.util.Duration.seconds(1), event -> actualiserLabelTemps()));
+        timeline.setCycleCount(Animation.INDEFINITE); // Répéter indéfiniment
+        timeline.play(); // Démarrer le chrono
+    }
+
+    /**
+     * Relance une nouvelle partie. la difficulté reste la même.
+     */
+    private void relancerPartie(BorderPane mainLayout) {
+        // Réinitialiser la partie, mais ne pas oublier d'ajouter les éléments de jeu au mainLayout
+        PartieAffichage partieAffichage = new PartieAffichage(partie.getDifficulte());
+        partieAffichage.start((Stage) mainLayout.getScene().getWindow());
     }
 
     /**
@@ -740,13 +784,6 @@ public class PartieAffichage extends Application {
         partie.getJeu().chargerSauvegardeAuto();
         partie.sauvegarde();
         actualiserAffichage();
-    }
-
-    /**
-     * Met à jour l'affichage.
-     */
-    private void actualiserAffichage() {
-        ajusterTailleImages();
     }
 
     /**

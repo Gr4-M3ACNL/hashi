@@ -16,6 +16,7 @@ import java.util.ArrayList;
  */
 public class Jeu {
 
+    // ==================== Attributs ====================
     /**
      * Le plateau de jeu.
      */
@@ -73,6 +74,7 @@ public class Jeu {
         pointDeSauvegarde = new ArrayList<Lien>();
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère la taille.
      *
@@ -102,7 +104,7 @@ public class Jeu {
 
     /**
      * Récupère le tableau de la sauvegarde automatique.
-     * 
+     *
      * @return Le tableau de la sauvegarde automatique
      */
     public ArrayList<Lien> getSauvegardeAutomatique() {
@@ -111,7 +113,7 @@ public class Jeu {
 
     /**
      * Récupère le tableau de la sauvegarde manuel.
-     * 
+     *
      * @return Le tableau de la sauvegarde manuel
      */
     public ArrayList<Lien> getPointDeSauvegarde() {
@@ -146,6 +148,20 @@ public class Jeu {
     }
 
     /**
+     * Vérifie si le jeu est gagner.
+     *
+     * @return true si le joueur a gagner
+     */
+    public Boolean gagner() {
+        if (plateau.validationMatrice()) {
+            tempsFinal = getTempsEcouler();
+            return true;
+        }
+        return false;
+    }
+
+    // ==================== Setter ====================
+    /**
      * Modification du temps final.
      *
      * @param temps Le temp final
@@ -154,6 +170,7 @@ public class Jeu {
         tempsFinal = temps;
     }
 
+    // ==================== Action ====================
     /**
      * Vérification si le lien horizontal n'est pas couper sur son chemin.
      *
@@ -310,19 +327,6 @@ public class Jeu {
     }
 
     /**
-     * Vérifie si le jeu est gagner.
-     *
-     * @return true si le joueur a gagner
-     */
-    public Boolean gagner() {
-        if (plateau.validationMatrice()) {
-            tempsFinal = getTempsEcouler();
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Méthode stoppant le chrono.
      */
     public void stopChrono() {
@@ -382,6 +386,7 @@ public class Jeu {
         }
     }
 
+    // ==================== Affichage ====================
     /**
      * Affiche le jeu.
      */

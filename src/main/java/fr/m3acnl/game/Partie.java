@@ -30,10 +30,11 @@ import fr.m3acnl.managers.SauvegardePartieManager.JeuEnCour;
  */
 public class Partie implements JsonSerializable {
 
+    // ==================== Attributs ====================
     /**
      * Le jeu en cours.
      */
-    private Jeu jeu;
+    private final Jeu jeu;
 
     /**
      * Le chrono de la partie.
@@ -43,16 +44,18 @@ public class Partie implements JsonSerializable {
     /**
      * La difficulté de la partie.
      */
-    private Difficulte difficulte;
+    private final Difficulte difficulte;
 
     /**
      * Indique si la partie est en pause.
      * <br>
      * Vaut true si la partie est en pause, false sinon.
      * <br>
-     * quand la partie est en pause le chrono est a calculer entre le chron et l'heure zéro
+     * quand la partie est en pause le chrono est a calculer entre le chron et
+     * l'heure zéro
      * <br>
-     * quand la partie n'est pas en pause le chrono est a calculer entre le chron et l'heure actuelle
+     * quand la partie n'est pas en pause le chrono est a calculer entre le
+     * chron et l'heure actuelle
      */
     private Boolean pause = false;
 
@@ -72,6 +75,7 @@ public class Partie implements JsonSerializable {
         chrono = Instant.now().minusMillis(jeuEnCour.chrono());
     }
 
+    // ==================== Getter ====================
     /**
      * Méthode pour obtenir la durée du chronomètre.
      *
@@ -87,8 +91,27 @@ public class Partie implements JsonSerializable {
     }
 
     /**
-     * Méthode pour arrêter le chronomètre.
-     * Si le chronomètre est déjà en pause, il ne fait rien.
+     * Méthode pour obtenir le jeu de la partie.
+     *
+     * @return le jeu de la partie
+     */
+    public Jeu getJeu() {
+        return jeu;
+    }
+
+    /**
+     * Méthode pour obtenir la difficulté de la partie.
+     *
+     * @return la difficulté de la partie
+     */
+    public Difficulte getDifficulte() {
+        return difficulte;
+    }
+
+    // ==================== Action ====================
+    /**
+     * Méthode pour arrêter le chronomètre. Si le chronomètre est déjà en pause,
+     * il ne fait rien.
      */
     public void stopChrono() {
         if (!pause) {
@@ -100,8 +123,8 @@ public class Partie implements JsonSerializable {
     }
 
     /**
-     * Méthode pour reprendre le chronomètre.
-     * Si le chronomètre n'est pas en pause, il ne fait rien.
+     * Méthode pour reprendre le chronomètre. Si le chronomètre n'est pas en
+     * pause, il ne fait rien.
      */
     public void startChrono() {
         if (pause) {
@@ -111,6 +134,38 @@ public class Partie implements JsonSerializable {
         }
     }
 
+    /**
+     * Méthode pour ajouter un malus au chrono.
+     *
+     * @param malusEnMillisecondes le malus à ajouter en millisecondes
+     */
+    protected void addMalus(long malusEnMillisecondes) {
+        chrono = chrono.minusMillis(malusEnMillisecondes);
+    }
+
+    /**
+     * Méthode sauvegardant la partie.
+     */
+    public void sauvegarde() {
+        SauvegardePartieManager.getInstance().sauvegarde(this);
+    }
+
+    /**
+     * Méthode pour terminer la partie.
+     *
+     * @throws IllegalStateException si la partie n'est pas terminée
+     */
+    public void finPartie() {
+        if (!jeu.gagner()) {
+            throw new IllegalStateException("La partie n'est pas terminée");
+        }
+        ProfileManager.getInstance().getProfileActif().getHistoriquePartieProfile().ajouterTemps(difficulte,
+                getChronoDuration());
+        SauvegardePartieManager.getInstance().supprimer(difficulte);
+        ProfileManager.getInstance().sauvegarder();
+    }
+
+    // ==================== Serialisation ====================
     /**
      * Méthode pour sérialiser une partie.
      *
@@ -166,53 +221,5 @@ public class Partie implements JsonSerializable {
     @Override
     public void serializeWithType(JsonGenerator gen, SerializerProvider serializers, TypeSerializer typeSer) throws IOException {
         serialize(gen, serializers);
-    }
-
-    /**
-     * Méthode pour ajouter un malus au chrono.
-     *
-     * @param malusEnMillisecondes le malus à ajouter en millisecondes
-     */
-    protected void addMalus(long malusEnMillisecondes) {
-        chrono = chrono.minusMillis(malusEnMillisecondes);
-    }
-
-    /**
-     * Méthode pour obtenir le jeu de la partie.
-     *
-     * @return le jeu de la partie
-     */
-    public Jeu getJeu() {
-        return jeu;
-    }
-
-    /**
-     * Méthode sauvegardant la partie.
-     */
-    public void sauvegarde() {
-        SauvegardePartieManager.getInstance().sauvegarde(this);
-    }
-
-    /**
-     * Méthode pour obtenir la difficulté de la partie.
-     *
-     * @return la difficulté de la partie
-     */
-    public Difficulte getDifficulte() {
-        return difficulte;
-    }
-
-    /**
-     * Méthode pour terminer la partie.
-     *
-     * @throws IllegalStateException si la partie n'est pas terminée
-     */
-    public void finPartie() {
-        if (!jeu.gagner()) {
-            throw new IllegalStateException("La partie n'est pas terminée");
-        }
-        ProfileManager.getInstance().getProfileActif().getHistoriquePartieProfile().ajouterTemps(difficulte, getChronoDuration());
-        SauvegardePartieManager.getInstance().supprimer(difficulte);
-        ProfileManager.getInstance().sauvegarder();
     }
 }

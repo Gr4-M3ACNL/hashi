@@ -1,6 +1,7 @@
 package fr.m3acnl.game.logique.elementjeu;
 
 import java.util.ArrayList;
+
 import fr.m3acnl.game.logique.Jeu;
 
 /**
@@ -11,6 +12,7 @@ import fr.m3acnl.game.logique.Jeu;
  */
 public class Lien implements ElementJeu {
 
+    // ==================== Attributs ====================
     /**
      * Le jeu pour récupérer le plateau.
      */
@@ -64,12 +66,12 @@ public class Lien implements ElementJeu {
     /**
      * Nombre de fois où il faut consulter le lien.
      */
-    private int cmptVerifMax;
+    private final int cmptVerifMax;
 
     /**
      * Liste des double lien où il est présent.
      */
-    private ArrayList<DoubleLien> listeDl;
+    private final ArrayList<DoubleLien> listeDl;
 
     /**
      * Constructeur pour une nouvelle instance de Lien.
@@ -94,6 +96,7 @@ public class Lien implements ElementJeu {
         cmptVerifMax = tailleLien();
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère l'index du lien.
      *
@@ -158,6 +161,16 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Vérifie si le lien est valide.
+     *
+     * @return True si le lien est valide sinon false
+     */
+    public boolean estValide() {
+        return (nbLien == nbLienSoluce);
+    }
+
+    // ==================== Setter ====================
+    /**
      * Défini l'index du lien.
      *
      * @param i L'index du lien dans la liste de lien du jeu
@@ -212,66 +225,7 @@ public class Lien implements ElementJeu {
         averifie();
     }
 
-    /**
-     * Vérifie si le lien est valide.
-     *
-     * @return True si le lien est valide sinon false
-     */
-    public boolean estValide() {
-        return (nbLien == nbLienSoluce);
-    }
-
-    /**
-     * Active le lien le faisant passer à son état suivant et met à jour le
-     * degré actuelle des noeud liés.
-     *
-     * @return true si le lien a été activer false sinon
-     */
-    @Override
-    public Boolean activer() {
-        averifie();
-        nbLien = (nbLien + 1) % 3;
-        if (nbLien != 2) {
-            if (orientation == 1) {
-                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
-                    nbLien -= 1;
-
-                    return false;
-                }
-            } else {
-                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
-                    nbLien -= 1;
-                    return false;
-                }
-            }
-        }
-        if (nbLien == 0) {
-            noeud1.suppressionDegre();
-            noeud2.suppressionDegre();
-
-            noeud1.retirerNoeudAdjacence(noeud2);
-            noeud2.retirerNoeudAdjacence(noeud1);
-        } else {
-            noeud1.ajouterDegre();
-            noeud2.ajouterDegre();
-            if (nbLien == 1) {
-                noeud1.ajouterNoeudAdjacence(noeud2);
-                noeud2.ajouterNoeudAdjacence(noeud1);
-                if (noeud1.getSurbrillance() || noeud2.getSurbrillance()) {
-                    noeud1.setActiver(true);
-                    noeud2.setActiver(true);
-                    noeud1.surbrillanceOn();
-                    noeud2.surbrillanceOn();
-                    noeud1.setActiver(false);
-                    noeud2.setActiver(false);
-                }
-            }
-
-        }
-
-        return true;
-    }
-
+    // ==================== Action ====================
     /**
      * Effectue le retour a l'état précédent du Lien et des noeuds.
      */
@@ -329,6 +283,58 @@ public class Lien implements ElementJeu {
         averifie();
     }
 
+    // ==================== Override ====================
+    /**
+     * Active le lien le faisant passer à son état suivant et met à jour le
+     * degré actuelle des noeud liés.
+     *
+     * @return true si le lien a été activer false sinon
+     */
+    @Override
+    public Boolean activer() {
+        averifie();
+        nbLien = (nbLien + 1) % 3;
+        if (nbLien != 2) {
+            if (orientation == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+
+                    return false;
+                }
+            } else {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                    nbLien -= 1;
+                    return false;
+                }
+            }
+        }
+        if (nbLien == 0) {
+            noeud1.suppressionDegre();
+            noeud2.suppressionDegre();
+
+            noeud1.retirerNoeudAdjacence(noeud2);
+            noeud2.retirerNoeudAdjacence(noeud1);
+        } else {
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+            if (nbLien == 1) {
+                noeud1.ajouterNoeudAdjacence(noeud2);
+                noeud2.ajouterNoeudAdjacence(noeud1);
+                if (noeud1.getSurbrillance() || noeud2.getSurbrillance()) {
+                    noeud1.setActiver(true);
+                    noeud2.setActiver(true);
+                    noeud1.surbrillanceOn();
+                    noeud2.surbrillanceOn();
+                    noeud1.setActiver(false);
+                    noeud2.setActiver(false);
+                }
+            }
+
+        }
+
+        return true;
+    }
+
     /**
      * Permet de savoir si l'élément a été modifié.
      *
@@ -365,6 +371,7 @@ public class Lien implements ElementJeu {
         }
     }
 
+    // ==================== Affichage ====================
     /**
      * Affiche le Lien.
      */
