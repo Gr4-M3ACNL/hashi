@@ -104,7 +104,10 @@ public class GenererMenu {
         buttonNiveauAide.setOnAction(e -> showAidePage(primaryStage, creerMenuAide(primaryStage, mainScene)));
 
         Button buttonQuitterPartie = createStyledButton("Quitter la partie");
-        buttonQuitterPartie.setOnAction(e -> System.out.println("Quitter la partie et sauvegarder..."));
+        buttonQuitterPartie.setOnAction(e -> {
+            System.out.println("Quitter la partie et sauvegarder...");
+            primaryStage.close();
+        });
 
         Button buttonQuitterJeu = createStyledButton("Quitter le jeu");
         buttonQuitterJeu.setOnAction(e -> showConfirmQuitPage(primaryStage, creerMenuQuitter(primaryStage, mainScene)));
