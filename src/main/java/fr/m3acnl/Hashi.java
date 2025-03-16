@@ -4,6 +4,8 @@ import javafx.application.Application;
 
 /**
  * Main class of the Hashi game.
+ * 
+ * @author COGNARD Luka, GAUMONT Maël, LELANDAIS Clément, MABIRE Aymeric, PESANTEZ Maëlig, PUREN Mewen, TOUISSI Nassim
  */
 public class Hashi {
 
