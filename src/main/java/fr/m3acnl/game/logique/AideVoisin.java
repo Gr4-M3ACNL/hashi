@@ -35,6 +35,8 @@ class AideVoisin extends Aide {
         aidesVoisins = new ArrayList<>();
     }
 
+    
+
     /**
      * Affiche l'aide spécifique sur les voisins d'un noeud.
      *
@@ -182,6 +184,14 @@ class AideVoisin extends Aide {
         }
 
         return poidsTotal;
+    }
+
+
+    /**
+     * Getter pour la description.
+     */
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -409,6 +419,11 @@ class AideVoisin extends Aide {
         System.out.println("\nTest de vérification d'aide disponible dans les zones :");
         int aideDisponible = aideVoisin.checkzone();
         System.out.println("Aide disponible ? " + (aideDisponible == 1 ? "Oui" : "Non"));
+
+        System.out.println("Description : " + aideVoisin.getDescription()); 
+
+
+        
 
     }
 
