@@ -2,9 +2,8 @@ package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +22,7 @@ public class MatriceTest extends Tests {
 
     /**
      * Méthode d'initialisation de la classe de test
-     * 
+     *
      * @see Tests#printNameAtStart
      */
     @BeforeAll
@@ -33,7 +32,7 @@ public class MatriceTest extends Tests {
 
     /**
      * Méthode de fin de la classe de test
-     * 
+     *
      * @see Tests#printNameAtEnd
      */
     @AfterAll

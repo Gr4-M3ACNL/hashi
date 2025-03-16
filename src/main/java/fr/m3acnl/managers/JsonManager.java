@@ -25,12 +25,12 @@ public class JsonManager {
      */
     private static String fichierNiveau = "/META-INF/grilles.json";
 
-    /**
+    /*
      * Chemin du fichier JSON contenant les aides de jeu.
      * Ce fichier est situé dans le dossier resources(dans le jar).
      * TODO: créer le fichier d'aide (avec quelques exemples)
      */
-    private static String fichierAide = "/META-INF/aides.json";
+    //private static String fichierAide = "/META-INF/aides.json";
 
     /**
      * Le nom du fichier contenant les profils.
