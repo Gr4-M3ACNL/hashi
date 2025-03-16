@@ -1,11 +1,12 @@
 package fr.m3acnl.game.logique;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Classe d aide
+ * Classe d'aide.
  *
  * @author Gaumont mael
  * @version 1.0
@@ -51,12 +52,13 @@ class AideVoisin extends Aide {
 
         // Vérifie si le poids du noeud divisé par 2 est égal à la somme de ses voisins
         if (poidsNoeud / 2 <= sommeVoisins) {
-            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le poids du noeud divisé par 2 est égal à la somme de ses voisins.", "Voisinage", jeu, noeud.getPosition()));
+            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le poids du noeud divisé par 2 est égal à la somme de ses voisins.",
+                "Voisinage", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
             return true;
-        } // Vérifie si le nombre de voisins est plus petit que le poids du noeud
-        else if (voisins.size() < poidsNoeud) {
-            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le nombre de voisins est plus petit que le poids du noeud.", "Voisinage", jeu, noeud.getPosition()));
+        } else if (voisins.size() < poidsNoeud) { // Vérifie si le nombre de voisins est plus petit que le poids du noeud
+            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le nombre de voisins est plus petit que le poids du noeud.",
+                "Voisinage", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
             return true;
         }
@@ -83,10 +85,11 @@ class AideVoisin extends Aide {
     }
 
     /**
-     * sort une liste de voisin
+     * sort une liste de voisin.
      *
-     * @param noeud
-     * @return
+     * @param noeud Le nœud dont on cherche les voisins.
+     * @return Liste des voisins.
+     * @see Noeud
      */
     public List<Noeud> trouverVoisins(Noeud noeud) {
         List<Noeud> voisins = new ArrayList<>();
@@ -182,8 +185,7 @@ class AideVoisin extends Aide {
     }
 
     /**
-     * prend les poids autour actuelle des voisin pour check si il lui reste de
-     * la place
+     * Prend les poids autour actuelle des voisin pour check si il lui reste de la place.
      *
      * @param noeud le noeud du jeu à analyser
      * @return si il y asser de poid pour se connecter
@@ -196,7 +198,8 @@ class AideVoisin extends Aide {
             pa += voisin.getDegreActuelle();
         }
         if ((pa - noeud.getDegreActuelle()) < (noeud.getDegreActuelle() - noeud.getDegreSoluce())) {
-            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "il n y a plus de place pour cher les voisin actuellement .", "poidRestantVoisin", jeu, noeud.getPosition()));
+            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "il n y a plus de place pour cher les voisin actuellement .",
+                "poidRestantVoisin", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
             return true;
         }   
@@ -205,7 +208,7 @@ class AideVoisin extends Aide {
     }
 
     /**
-     * Observe si ce noeud peut se relier à un autre noeud
+     * Observe si ce noeud peut se relier à un autre noeud.
      *
      * @param noeud le noeud du jeu à analyser
      * @return true si le noeud peut se relier à un voisin, sinon false

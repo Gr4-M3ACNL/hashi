@@ -5,10 +5,10 @@ public abstract class Aide {
     String description;
     int cout;
     Matrice matrice;
-    Coord c;
+    Coord coord;
 
     public Aide(Matrice matrice, String nom, Coord c) {
-        this.c = c;
+        this.coord = c;
         this.matrice = matrice;
         this.nom = nom;
     }
