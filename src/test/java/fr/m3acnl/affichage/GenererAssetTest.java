@@ -7,11 +7,11 @@ import fr.m3acnl.Tests;
  *
  * @author MABIRE Aymeric, TOUISSI Nassim
  */
-public class GenererAsssetTest extends Tests{
+public class GenererAssetTest extends Tests{
     
     /**
-     * Constructeur de la classe GenererAsssetTest.
+     * Constructeur de la classe GenererAssetTest.
      */
-    public GenererAsssetTest() {
+    public GenererAssetTest() {
     }
 }
