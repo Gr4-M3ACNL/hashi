@@ -1,9 +1,7 @@
 package fr.m3acnl.game.affichage;
 
-import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Optional;
 
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
@@ -24,22 +22,15 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 
 /**
@@ -157,7 +148,7 @@ public class PartieAffichage extends Application {
         primaryStage.setTitle("Jeu Interface");
         primaryStage.setScene(mainScene);
         primaryStage.setOnCloseRequest(event -> {
-            demandeSortie(event);
+            genererMenu.demandeSortie(event);
         });
 
         primaryStage.show();
@@ -175,16 +166,9 @@ public class PartieAffichage extends Application {
      */
     private void creerBackground() {
 
-        Image imageBackground = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backPartie.png").toExternalForm());
-        ImageView imageBackgroundView = new ImageView(imageBackground);
-        imageBackgroundView.setPreserveRatio(false);
-        imageBackgroundView.setCache(true);
-
-        Image imageFond = new Image(getClass().getResource("/META-INF/assetsGraphiques/back/table.png").toExternalForm());
-        ImageView imageFondView = new ImageView(imageFond);
+        ImageView imageBackgroundView = genererMenu.creerImageView("/META-INF/assetsGraphiques/back/backPartie.png", 1920, 1080);
+        ImageView imageFondView = genererMenu.creerImageView("/META-INF/assetsGraphiques/back/table.png", 640, 640);
         imageFondView.setPreserveRatio(true);
-        imageFondView.setCache(true);
-
         backgroundPane = new StackPane(imageBackgroundView, imageFondView);
 
         backgroundPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -229,29 +213,36 @@ public class PartieAffichage extends Application {
         }
 
         // Ajout des actions aux boutons
+        // ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()
         buttonRetour.setOnAction(e -> {
             retour();
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
         buttonAvancer.setOnAction(e -> {
             avancer();
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
         buttonCheck.setOnAction(e -> {
             check();
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
         buttonSave.setOnAction(e -> {
             sauvegarde();
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
         buttonCheckpoint.setOnAction(e -> {
             retourSauvegarde();
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
         buttonPause.setOnAction(e -> {
             pause();
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
         labelTemps = new Label("Temps: " + partie.getChronoDuration().toMinutes() + " min " + partie.getChronoDuration().toSecondsPart() + " sec");
         labelTemps.setStyle("-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
@@ -289,9 +280,9 @@ public class PartieAffichage extends Application {
                 int y = j;
                 boutons[i][j].setOnMouseClicked(event -> activerElement(event, x, y));
 
-                URL resource = getResourceElement(i, j);
+                String resource = getResourceElementJeu(i, j);
                 if (resource != null) {
-                    boutons[i][j].setGraphic(creerImageView(resource, 100));
+                    boutons[i][j].setGraphic(genererMenu.creerImageView(resource, 100, 100));
                 }
 
                 boutons[i][j].setStyle("-fx-background-color: transparent; -fx-padding: 0;");
@@ -301,76 +292,6 @@ public class PartieAffichage extends Application {
 
                 gridPane.add(boutons[i][j], y, x);
             }
-        }
-    }
-
-    /**
-     * Demande à l'utilisateur s'il veut vraiment quitter. Si oui, ferme
-     * l'application.
-     *
-     * @param event L'événement de fermeture
-     */
-    private void demandeSortie(javafx.stage.WindowEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText(null);
-
-        // Style du DialogPane avec image de fond
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backAlerte.png');"
-                + "-fx-background-size: cover;");
-
-        // Image de gauche (agrandie de 30%)
-        ImageView exitImage = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
-        exitImage.setFitWidth(130);
-        exitImage.setFitHeight(130);
-
-        // Texte de confirmation
-        Label message = new Label("Voulez-vous vraiment quitter ?");
-        message.setWrapText(true);
-        message.setStyle("-fx-font-size: 14px; -fx-font-family: 'Georgia'; -fx-text-fill: black;");
-
-        // Conteneur principal (Image + Texte)
-        HBox content = new HBox(20, exitImage, message);
-        content.setAlignment(Pos.CENTER_LEFT);
-
-        // Création des boutons
-        ButtonType boutonQuitter = new ButtonType("Oui", ButtonBar.ButtonData.OK_DONE);
-        ButtonType boutonAnnuler = new ButtonType("Non", ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().setAll(boutonQuitter, boutonAnnuler);
-
-        // Style des boutons
-        String buttonStyle = "-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
-                + "-fx-background-radius: 10;"
-                + "-fx-border-color: #3d1e10;"
-                + "-fx-border-width: 2px;"
-                + "-fx-border-radius: 10;"
-                + "-fx-text-fill: white;"
-                + "-fx-font-size: 14px;"
-                + "-fx-font-family: 'Georgia';";
-
-        // Centrer les boutons
-        HBox buttonBox = new HBox(10, dialogPane.lookupButton(boutonQuitter), dialogPane.lookupButton(boutonAnnuler));
-        buttonBox.setAlignment(Pos.CENTER);
-
-        // Appliquer le style aux boutons
-        buttonBox.getChildren().forEach(button -> button.setStyle(buttonStyle));
-
-        // Organisation du layout général
-        VBox root = new VBox(20, content, buttonBox);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(20));
-        dialogPane.setContent(root);
-
-        // Affichage de l'alerte et récupération de la réponse
-        Optional<ButtonType> result = alert.showAndWait();
-
-        // Vérification de la réponse
-        if (result.isEmpty() || result.get() == boutonAnnuler) {
-            event.consume(); // Annule la fermeture de l'application
-        } else {
-            Platform.exit();
         }
     }
 
@@ -420,7 +341,7 @@ public class PartieAffichage extends Application {
             if (partie.getJeu().getPlateau().getElement(i, j) != null
                     && (partie.getJeu().getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
 
-                bouton.setGraphic(creerImageView(getResourceElement(i, j), tailleCellule * SUPERPOSITION_RATIO));
+                bouton.setGraphic(genererMenu.creerImageView(getResourceElementJeu(i, j), tailleCellule * SUPERPOSITION_RATIO, tailleCellule * SUPERPOSITION_RATIO));
                 partie.getJeu().getPlateau().getElement(i, j).verifie();
             }
 
@@ -508,10 +429,7 @@ public class PartieAffichage extends Application {
         Arrays.stream(boutons).flatMap(Arrays::stream).forEach(b -> b.setDisable(true));
 
         // Afficher l'image "up.png" temporairement
-        ImageView winImageView = new ImageView(new Image(getClass().getResource("/META-INF/assetsGraphiques/character/up.png").toExternalForm()));
-        winImageView.setFitWidth(300);
-        winImageView.setFitHeight(300);
-        winImageView.setBlendMode(BlendMode.SRC_OVER);
+        ImageView winImageView = genererMenu.creerImageView("/META-INF/assetsGraphiques/character/up.png", 300, 300);
 
         // Utiliser un StackPane mais sans fond opaque
         StackPane upPane = new StackPane(winImageView);
@@ -530,7 +448,8 @@ public class PartieAffichage extends Application {
             backgroundPane.getChildren().remove(upPane); // Retirer l'image temporaire
             afficherOverlayVictoire(); // Afficher l'overlay après la pause
         });
-        jouerSon("victoire.wav");
+        genererMenu.jouerSon("victoire.wav",
+                ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         pause.play();
     }
 
@@ -538,17 +457,13 @@ public class PartieAffichage extends Application {
      * Affiche l'overlay du menu de victoire.
      */
     private void afficherOverlayVictoire() {
-        System.out.println("Victoire !");
         if (!(mainScene != null && mainScene.getRoot() instanceof BorderPane mainLayout)) {
             System.out.println("ERREUR : Scène ou BorderPane invalide !");
             return;
         }
 
         // Création des éléments de l'overlay
-        ImageView winImageView = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/win.png").toExternalForm()));
-        winImageView.setFitWidth(500);
-        winImageView.setFitHeight(500);
+        ImageView winImageView = genererMenu.creerImageView("/META-INF/assetsGraphiques/character/win.png", 500, 500);
 
         Label labelWin = new Label("Temps : " + labelTemps.getText());
         labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
@@ -558,11 +473,13 @@ public class PartieAffichage extends Application {
 
         btnSuivant.setOnAction(e -> {
             relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
             cacherOverlay(mainLayout);  // Cacher l'overlay
         });
         btnQuitter.setOnAction(e -> {
-            jouerSon("bouton.wav");
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
             primaryStage.close();
         });
 
@@ -594,38 +511,10 @@ public class PartieAffichage extends Application {
      * @param j L'indice de colonne
      * @return L'URL de la ressource
      */
-    private URL getResourceElement(int i, int j) {
+    private String getResourceElementJeu(int i, int j) {
         return partie.getJeu().getPlateau().getElement(i, j) != null
-                ? getClass().getResource((String) partie.getJeu().getPlateau().getElement(i, j).draw())
-                : getClass().getResource("/META-INF/assetsGraphiques/link/blank.png");
-    }
-
-    /**
-     * Crée un ImageView à partir d'une ressource et d'une taille.
-     *
-     * @param resource La ressource à exploiter
-     * @param size La taille de l'image
-     * @return L'ImageView créé
-     */
-    private ImageView creerImageView(URL resource, double size) {
-        ImageView imageView = new ImageView(new Image(resource.toExternalForm(), 500 * 0.5, 500 * 0.5, true, true));
-        imageView.setFitWidth(size);
-        imageView.setFitHeight(size);
-        imageView.setCache(true);
-        imageView.setSmooth(true);
-        return imageView;
-    }
-
-    /**
-     * Joue un son à partir d'un fichier audio.
-     *
-     * @param fichierAudio Le fichier audio à jouer
-     */
-    private void jouerSon(String fichierAudio) {
-        String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
-        AudioClip son = new AudioClip(chemin);
-        son.setVolume(ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Appliquer le volume
-        son.play();
+                ? (String) partie.getJeu().getPlateau().getElement(i, j).draw()
+                : "/META-INF/assetsGraphiques/link/blank.png";
     }
 
     // ======================== Gestion des actions ========================
@@ -648,14 +537,17 @@ public class PartieAffichage extends Application {
 
             if (noeudProche != null) {
                 doubleLien.activer(noeudProche);
-                jouerSon("lien.wav"); // Jouer le son de lien
+                genererMenu.jouerSon("lien.wav",
+                        ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
             }
         } else {
             partie.getJeu().activeElemJeu(x, y, null);
             if (element instanceof Noeud noeud) {
-                jouerSon("noeud.wav"); // Jouer le son du nœud
+                genererMenu.jouerSon("noeud.wav",
+                        ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son du nœud
             } else if (element instanceof Lien Lien) {
-                jouerSon("lien.wav"); // Jouer le son du lien
+                genererMenu.jouerSon("lien.wav",
+                        ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son du lien
             }
         }
 

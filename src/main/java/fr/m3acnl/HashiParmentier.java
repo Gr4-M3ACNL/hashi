@@ -9,27 +9,20 @@ import fr.m3acnl.game.affichage.PartieAffichage;
 import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.profile.Profile;
 import javafx.application.Application;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -233,7 +226,7 @@ public class HashiParmentier extends Application {
         List<String> profileNames = ProfileManager.getInstance().listeProfils();
 
         if (profileNames.isEmpty()) {
-            alerteProfile();
+            genererMenu.alerteProfile();
             return;
         }
 
@@ -293,63 +286,6 @@ public class HashiParmentier extends Application {
         Scene scene = new Scene(root, 300, 200);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
-    }
-
-    private void alerteProfile() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Attention !");
-        alert.setHeaderText(null);
-
-        // Style du DialogPane avec image de fond
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backAlerte.png');"
-                + "-fx-background-size: cover;");
-
-        // Image de gauche (agrandie de 30%)
-        ImageView exitImage = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/sky.png").toExternalForm()));
-        exitImage.setFitWidth(130);
-        exitImage.setFitHeight(130);
-
-        // Texte de confirmation
-        Label message = new Label("Il est necessaire de créer un profil pour jouer.");
-        message.setWrapText(true);
-        message.setStyle("-fx-font-size: 14px; -fx-font-family: 'Georgia'; -fx-text-fill: black;");
-
-        // Conteneur principal (Image + Texte)
-        HBox content = new HBox(20, exitImage, message);
-        content.setAlignment(Pos.CENTER_LEFT);
-
-        // Création des boutons
-        ButtonType boutonQuitter = new ButtonType("Ok", ButtonBar.ButtonData.OK_DONE);
-        alert.getButtonTypes().setAll(boutonQuitter);
-
-        // Style des boutons
-        String buttonStyle = "-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
-                + "-fx-background-radius: 10;"
-                + "-fx-border-color: #3d1e10;"
-                + "-fx-border-width: 2px;"
-                + "-fx-border-radius: 10;"
-                + "-fx-text-fill: white;"
-                + "-fx-font-size: 14px;"
-                + "-fx-font-family: 'Georgia';";
-
-        // Centrer les boutons
-        HBox buttonBox = new HBox(10, dialogPane.lookupButton(boutonQuitter));
-        buttonBox.setAlignment(Pos.CENTER);
-
-        // Appliquer le style aux boutons
-        buttonBox.getChildren().forEach(button -> button.setStyle(buttonStyle));
-
-        // Organisation du layout général
-        VBox root = new VBox(20, content, buttonBox);
-        root.setAlignment(Pos.CENTER);
-        root.setPadding(new Insets(20));
-        dialogPane.setContent(root);
-
-        // Affichage de l'alerte et récupération de la réponse
-        alert.showAndWait();
-
     }
 
     // ======================== Gestion des parties ========================
