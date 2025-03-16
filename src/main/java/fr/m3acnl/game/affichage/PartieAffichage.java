@@ -10,6 +10,7 @@ import fr.m3acnl.game.Partie;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.Lien;
 import fr.m3acnl.game.logique.elementjeu.Noeud;
 import fr.m3acnl.managers.ProfileManager;
 import javafx.animation.Animation;
@@ -316,7 +317,7 @@ public class PartieAffichage extends Application {
 
         // Style du DialogPane avec image de fond
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backExit.png');"
+        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backAlerte.png');"
                 + "-fx-background-size: cover;");
 
         // Image de gauche (agrandie de 30%)
@@ -552,8 +553,8 @@ public class PartieAffichage extends Application {
         Label labelWin = new Label("Temps : " + labelTemps.getText());
         labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
 
-        Button btnSuivant = new Button("Grille Suivante");
-        Button btnQuitter = new Button("Quitter");
+        Button btnSuivant = genererMenu.createStyledButton("Suivant");
+        Button btnQuitter = genererMenu.createStyledButton("Quitter");
 
         btnSuivant.setOnAction(e -> {
             relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
@@ -562,13 +563,13 @@ public class PartieAffichage extends Application {
         });
         btnQuitter.setOnAction(e -> {
             jouerSon("bouton.wav");
-            Platform.exit();
+            primaryStage.close();
         });
 
         VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
         winBox.setAlignment(Pos.CENTER);
-        winBox.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7); -fx-padding: 20px; -fx-border-radius: 10px;");
-
+        winBox.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backWin.png');"
+                + "-fx-background-size: cover; -fx-padding: 20px; -fx-border-radius: 10px;");
         StackPane overlayPane = new StackPane(winBox);
         overlayPane.setAlignment(Pos.CENTER);
         overlayPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);");
@@ -647,11 +648,15 @@ public class PartieAffichage extends Application {
 
             if (noeudProche != null) {
                 doubleLien.activer(noeudProche);
-                jouerSon("noeud.wav"); // Jouer le son de lien
+                jouerSon("lien.wav"); // Jouer le son de lien
             }
         } else {
             partie.getJeu().activeElemJeu(x, y, null);
-            jouerSon("lien.wav"); // Jouer le son du nœud
+            if (element instanceof Noeud noeud) {
+                jouerSon("noeud.wav"); // Jouer le son du nœud
+            } else if (element instanceof Lien Lien) {
+                jouerSon("lien.wav"); // Jouer le son du lien
+            }
         }
 
         // Vérifier si la partie est gagnée
@@ -712,7 +717,6 @@ public class PartieAffichage extends Application {
      * Permet de mettre le jeu en pause et de lancer le menu.
      */
     private void pause() {
-        System.out.println("Pause !");
 
         primaryStage.setWidth(primaryStage.getWidth());
         primaryStage.setHeight(primaryStage.getHeight());

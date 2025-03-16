@@ -302,12 +302,12 @@ public class HashiParmentier extends Application {
 
         // Style du DialogPane avec image de fond
         DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backExit.png');"
+        dialogPane.setStyle("-fx-background-image: url('/META-INF/assetsGraphiques/back/backAlerte.png');"
                 + "-fx-background-size: cover;");
 
         // Image de gauche (agrandie de 30%)
         ImageView exitImage = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/goodbye.png").toExternalForm()));
+                new Image(getClass().getResource("/META-INF/assetsGraphiques/character/sky.png").toExternalForm()));
         exitImage.setFitWidth(130);
         exitImage.setFitHeight(130);
 

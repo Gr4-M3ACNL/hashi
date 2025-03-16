@@ -236,4 +236,12 @@ public class GenererMenu {
         return label;
     }
 
+    public Background createBackground(String backgroundPath) {
+        BackgroundImage background = new BackgroundImage(
+                new Image(getClass().getResource(backgroundPath).toExternalForm()),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
+                new BackgroundSize(100, 100, true, true, false, true));
+        return new Background(background);
+    }
+
 }
