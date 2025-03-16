@@ -352,7 +352,7 @@ public class GenererAsset {
         }
     }
 
-    // ======================== Création des éléments graphiques ========================
+    // ======================== Création des éléments graphiques =========================
     /**
      * Crée un bouton stylisé.
      *
