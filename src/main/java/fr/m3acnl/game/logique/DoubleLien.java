@@ -215,6 +215,21 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
+     * Renvoie le lien possèdant le noeud donné.
+     * 
+     * @param n Le noeud donné.
+     * @return Le lien si il est dans un des liens sinon renvoie null.
+     */
+    public Lien getLienDuNoeud(Noeud n) {
+        if (lien1.noeudDansLien(n) == 0) {
+            return lien1;
+        } else if (lien2.noeudDansLien(n) == 0) {
+            return lien2;
+        }
+        return null;
+    }
+
+    /**
      * Affiche le DoubleLien dans le terminal.
      */
     @Override
