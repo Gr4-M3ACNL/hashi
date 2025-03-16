@@ -483,7 +483,11 @@ public class PartieAffichage extends Application {
         btnQuitter.setOnAction(e -> {
             genererMenu.jouerSon("bouton.wav",
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
+
+            // Fermer la fenêtre principale
             primaryStage.close();
+
+            genererMenu.relancerPartie();
         });
 
         VBox winBox = new VBox(20, winImageView, labelWin, btnSuivant, btnQuitter);
@@ -500,7 +504,7 @@ public class PartieAffichage extends Application {
 
     /**
      * Méthode pour cacher l'overlay.
-     * 
+     *
      * @param mainLayout Le layout principal
      */
     private void cacherOverlay(BorderPane mainLayout) {
@@ -634,7 +638,7 @@ public class PartieAffichage extends Application {
 
     /**
      * Relance une nouvelle partie. la difficulté reste la même.
-     * 
+     *
      * @param mainLayout Le layout principal
      * @see PartieAffichage#PartieAffichage(Difficulte)
      * @see PartieAffichage#start(Stage)

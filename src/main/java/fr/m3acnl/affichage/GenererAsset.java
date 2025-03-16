@@ -3,6 +3,7 @@ package fr.m3acnl.affichage;
 import java.net.URL;
 import java.util.Optional;
 
+import fr.m3acnl.HashiParmentier;
 import fr.m3acnl.game.Partie;
 import fr.m3acnl.managers.ProfileManager;
 import javafx.application.Platform;
@@ -32,7 +33,7 @@ import javafx.stage.Stage;
 
 /**
  * Classe pour générer les menus partager entres les affichages.
- * 
+ *
  * @author MABIRE Aymeric, TOUISSI Nassim
  */
 public class GenererAsset {
@@ -128,6 +129,7 @@ public class GenererAsset {
         buttonQuitterPartie.setOnAction(e -> {
             jouerSon("bouton.wav", ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
             primaryStage.close();
+            relancerPartie();
         });
 
         Button buttonQuitterJeu = createStyledButton("Quitter le jeu");
@@ -350,6 +352,18 @@ public class GenererAsset {
         } else {
             Platform.exit();
         }
+    }
+
+    public void relancerPartie() {
+        Platform.runLater(() -> {
+            try {
+                Stage newStage = new Stage();
+                HashiParmentier app = new HashiParmentier();
+                app.start(newStage);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     // ======================== Création des éléments graphiques =========================

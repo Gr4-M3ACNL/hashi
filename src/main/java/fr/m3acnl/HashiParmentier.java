@@ -3,8 +3,8 @@ package fr.m3acnl;
 import java.util.List;
 import java.util.Optional;
 
-import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.affichage.GenererAsset;
+import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.affichage.PartieAffichage;
 import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.profile.Profile;
@@ -12,6 +12,7 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -29,9 +30,9 @@ import javafx.stage.Stage;
 
 /**
  * Classe principale de l'application HashiParmentier.
- * 
+ *
  * @author TOUISSI Nassim
- * 
+ *
  * @see Application
  */
 public class HashiParmentier extends Application {
@@ -224,10 +225,17 @@ public class HashiParmentier extends Application {
         // Appliquer le style CSS au DialogPane et aux éléments internes
         dialog.setContentText("Entrez votre nom de profil :  ");
 
+        Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+
+        // Remplacement du style des boutons
+        okButton.setStyle(genererMenu.createStyledButton("OK").getStyle());
+        cancelButton.setStyle(genererMenu.createStyledButton("Annuler").getStyle());
         dialog.getDialogPane().setStyle(
-                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: #3d1e10; -fx-background-color: #f8f1e1;");
+                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: rgb(121, 45, 9); -fx-background-color:rgb(175, 140, 117);");
         // Appliquer un style spécifique à l'input text
-        dialog.getEditor().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: #3d1e10;");
+        dialog.getEditor().setPromptText("Nom de profil");
+        dialog.getEditor().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill:rgb(121, 45, 9);; -fx-background-color: #f8f1e1;");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
@@ -328,6 +336,7 @@ public class HashiParmentier extends Application {
         Stage stage = new Stage();
         try {
             partieAffichage.start(stage);
+            primaryStage.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
