@@ -354,6 +354,9 @@ public class GenererAsset {
         }
     }
 
+    /**
+     * Relance une nouvelle appli.
+     */
     public void relancerPartie() {
         Platform.runLater(() -> {
             try {
