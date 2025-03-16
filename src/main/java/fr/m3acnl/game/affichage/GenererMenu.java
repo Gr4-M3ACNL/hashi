@@ -40,6 +40,9 @@ public class GenererMenu {
      * Image de fond des menus.
      */
     BackgroundImage background;
+    /**
+     * Image de fond de l'alerte.
+     */
     String backAlerte = "/META-INF/assetsGraphiques/back/backAlerte.png";
 
     /**
@@ -395,8 +398,9 @@ public class GenererMenu {
     /**
      * Crée un ImageView à partir d'une ressource et d'une taille.
      *
-     * @param resource La ressource à exploiter
-     * @param size La taille de l'image
+     * @param path Le chemin de la ressource
+     * @param hauteur Hauteur de l'image
+     * @param largeur Largeur de l'image
      * @return L'ImageView créé
      */
     public ImageView creerImageView(String path, double hauteur, double largeur) {

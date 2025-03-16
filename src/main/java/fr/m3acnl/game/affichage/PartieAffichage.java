@@ -341,7 +341,9 @@ public class PartieAffichage extends Application {
             if (partie.getJeu().getPlateau().getElement(i, j) != null
                     && (partie.getJeu().getPlateau().getElement(i, j).modifie() || derniereTaille != tailleCellule)) {
 
-                bouton.setGraphic(genererMenu.creerImageView(getResourceElementJeu(i, j), tailleCellule * SUPERPOSITION_RATIO, tailleCellule * SUPERPOSITION_RATIO));
+                bouton.setGraphic(genererMenu.creerImageView(getResourceElementJeu(i, j),
+                        tailleCellule * SUPERPOSITION_RATIO,
+                        tailleCellule * SUPERPOSITION_RATIO));
                 partie.getJeu().getPlateau().getElement(i, j).verifie();
             }
 
@@ -545,7 +547,7 @@ public class PartieAffichage extends Application {
             if (element instanceof Noeud noeud) {
                 genererMenu.jouerSon("noeud.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son du nœud
-            } else if (element instanceof Lien Lien) {
+            } else if (element instanceof Lien lien) {
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son du lien
             }
