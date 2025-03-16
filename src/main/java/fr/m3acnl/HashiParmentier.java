@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import fr.m3acnl.game.Difficulte;
-import fr.m3acnl.game.affichage.GenererMenu;
+import fr.m3acnl.affichage.GenererAsset;
 import fr.m3acnl.game.affichage.PartieAffichage;
 import fr.m3acnl.managers.ProfileManager;
 import fr.m3acnl.profile.Profile;
@@ -29,6 +29,10 @@ import javafx.stage.Stage;
 
 /**
  * Classe principale de l'application HashiParmentier.
+ * 
+ * @author TOUISSI Nassim
+ * 
+ * @see Application
  */
 public class HashiParmentier extends Application {
 
@@ -61,7 +65,14 @@ public class HashiParmentier extends Application {
     /**
      * Générateur de menu.
      */
-    private final GenererMenu genererMenu = new GenererMenu("/META-INF/assetsGraphiques/back/backMenu.jpeg");
+    private final GenererAsset genererMenu = new GenererAsset("/META-INF/assetsGraphiques/back/backMenu.jpeg");
+
+    /**
+     * Constructeur de la classe HashiParmentier.
+     */
+    public HashiParmentier() {
+        // Constructeur par défaut
+    }
 
     /**
      * Méthode start de l'application JavaFX.
@@ -126,6 +137,11 @@ public class HashiParmentier extends Application {
     }
 
     // ======================== Gestion des scènes ========================
+    /**
+     * Crée la scène de sélection de profil.
+     *
+     * @param background Image de fond.
+     */
     private void creerSelectionProfil(BackgroundImage background) {
         VBox vboxProfileSelection = new VBox(15);
         vboxProfileSelection.setAlignment(Pos.CENTER);
@@ -147,6 +163,11 @@ public class HashiParmentier extends Application {
         profileSelectionScene = new Scene(vboxProfileSelection, 500, 400);
     }
 
+    /**
+     * Crée la scène de sélection de niveau.
+     *
+     * @param background Image de fond.
+     */
     private void creerSelectionNiveau(BackgroundImage background) {
         VBox vboxLevels = new VBox(15);
         vboxLevels.setAlignment(Pos.CENTER);

@@ -66,8 +66,7 @@ public class SauvegardeManager {
     /**
      * Initialiser le dossier de sauvegarde.
      *
-     * @throws RuntimeException si le dossier de sauvegarde ne peut pas être
-     * créé
+     * @throws RuntimeException si le dossier de sauvegarde ne peut pas être créé
      */
     private void initialiseRepertoire() {
         if (!this.repertoireSauvegarde.toFile().exists()) {

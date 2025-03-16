@@ -1,4 +1,4 @@
-package fr.m3acnl.game.affichage;
+package fr.m3acnl.affichage;
 
 import java.net.URL;
 import java.util.Optional;
@@ -32,8 +32,10 @@ import javafx.stage.Stage;
 
 /**
  * Classe pour générer les menus partager entres les affichages.
+ * 
+ * @author MABIRE Aymeric, TOUISSI Nassim
  */
-public class GenererMenu {
+public class GenererAsset {
 
     // ======================== Attributs ========================
     /**
@@ -46,11 +48,11 @@ public class GenererMenu {
     String backAlerte = "/META-INF/assetsGraphiques/back/backAlerte.png";
 
     /**
-     * Constructeur de la classe GenererMenu.
+     * Constructeur de la classe GenererAsset.
      *
      * @param backgroundPath Chemin de l'image de fond.
      */
-    public GenererMenu(String backgroundPath) {
+    public GenererAsset(String backgroundPath) {
         background = new BackgroundImage(
                 new Image(getClass().getResource(backgroundPath).toExternalForm()),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
@@ -387,6 +389,12 @@ public class GenererMenu {
         return label;
     }
 
+    /**
+     * Crée un fond d'écran à partir d'une image.
+     *
+     * @param backgroundPath Chemin de l'image de fond.
+     * @return Le fond créé.
+     */
     public Background createBackground(String backgroundPath) {
         BackgroundImage background = new BackgroundImage(
                 new Image(getClass().getResource(backgroundPath).toExternalForm()),
@@ -418,6 +426,8 @@ public class GenererMenu {
      * Joue un son à partir d'un fichier audio.
      *
      * @param fichierAudio Le fichier audio à jouer
+     * @param volume Le volume du son (0.0 à 1.0)
+     * @see AudioClip
      */
     public void jouerSon(String fichierAudio, double volume) {
         String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();

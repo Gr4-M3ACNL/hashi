@@ -3,6 +3,7 @@ package fr.m3acnl.game.affichage;
 import java.time.Duration;
 import java.util.Arrays;
 
+import fr.m3acnl.affichage.GenererAsset;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
 import fr.m3acnl.game.logique.Jeu;
@@ -100,7 +101,7 @@ public class PartieAffichage extends Application {
     /**
      * Generateur de menu.
      */
-    private final GenererMenu genererMenu = new GenererMenu("/META-INF/assetsGraphiques/back/backPartie.png");
+    private final GenererAsset genererMenu = new GenererAsset("/META-INF/assetsGraphiques/back/backPartie.png");
 
     /**
      * La fenêtre principale.
@@ -499,6 +500,8 @@ public class PartieAffichage extends Application {
 
     /**
      * Méthode pour cacher l'overlay.
+     * 
+     * @param mainLayout Le layout principal
      */
     private void cacherOverlay(BorderPane mainLayout) {
         // Retirer l'overlay en enlevant le StackPane du centre
@@ -631,6 +634,10 @@ public class PartieAffichage extends Application {
 
     /**
      * Relance une nouvelle partie. la difficulté reste la même.
+     * 
+     * @param mainLayout Le layout principal
+     * @see PartieAffichage#PartieAffichage(Difficulte)
+     * @see PartieAffichage#start(Stage)
      */
     private void relancerPartie(BorderPane mainLayout) {
         // Réinitialiser la partie, mais ne pas oublier d'ajouter les éléments de jeu au mainLayout
