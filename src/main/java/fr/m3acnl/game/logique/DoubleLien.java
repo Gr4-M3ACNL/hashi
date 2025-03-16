@@ -246,5 +246,4 @@ public class DoubleLien implements ElementJeu {
     public String toString() {
         return " D" + "(" + lien1 + "|" + lien2 + ") ";
     }
-
 }

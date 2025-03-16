@@ -151,6 +151,25 @@ public class Jeu {
     }
 
     /**
+     * Renvoie une copie du jeu.
+     * 
+     * @return La copie du jeu.
+     */
+    public Jeu copieJeu() {
+        Jeu newJeu = new Jeu(taille, plateau.getMatrice2Array());
+        Noeud n1 = null;
+        for (Lien l : coupsJouer.copieTab()) {
+            n1 = l.getNoeud1();
+            if (l.getOrientation() == 1) {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX(), n1.getPosition().getCoordY() + 1, n1);
+            } else {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX() + 1, n1.getPosition().getCoordY(), n1);
+            }
+        }
+        return newJeu;
+    }
+    
+    /**
      * Vérification si le lien horizontal n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
@@ -280,9 +299,10 @@ public class Jeu {
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
+     * @return Renvoie null si le lien n'as pas été activer sinon renvoie le lien.
      */
-    public void activeElemAide(int x, int y, Noeud n) {
-        activeElem(x, y, n);
+    public Lien activeElemAide(int x, int y, Noeud n) {
+        return activeElem(x, y, n);
     }
 
     /**
