@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
-import fr.m3acnl.managers.ProfileManager;
 import java.io.IOException;
 
 /**
@@ -74,7 +73,6 @@ public class ParametreProfile implements JsonSerializable {
             throw new IllegalArgumentException("Le niveau d'aide doit être compris entre 0 et 2");
         }
         this.niveauAide = niveauAide;
-        ProfileManager.getInstance().sauvegarder();
     }
 
     /**
@@ -87,7 +85,6 @@ public class ParametreProfile implements JsonSerializable {
             throw new IllegalArgumentException("Le volume des effets sonores doit être compris entre 0 et 1");
         }
         this.volumeEffetsSonore = volumeEffetsSonore;
-        ProfileManager.getInstance().sauvegarder();
     }
 
     /**
@@ -97,7 +94,6 @@ public class ParametreProfile implements JsonSerializable {
      */
     protected void setEffetVisuel(Boolean effetVisuel) {
         this.effetVisuel = effetVisuel;
-        ProfileManager.getInstance().sauvegarder();
     }
 
     /**

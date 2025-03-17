@@ -137,7 +137,6 @@ public class Profile implements JsonSerializable {
 
     /**
      * Méthode pour modifier le nom du profil.
-     * (utiliser pour le chargement de la sérialisation)
      * 
      * @param pseudo le nom du profil
      */
