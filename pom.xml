@@ -17,7 +17,8 @@
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
     <javafx.version>21.0.2</javafx.version>
-    <juint.version>5.8.1</juint.version>
+    <junit.version>5.12.1</junit.version>
+    <mockito.version>5.16.1</mockito.version>
     <start-class>fr.m3acnl.Hashi</start-class>
   </properties>
 
@@ -74,33 +75,35 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>${juint.version}</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
-      <version>${juint.version}</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-engine</artifactId>
-      <version>${juint.version}</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!-- Mockito dependance pour les test-->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>5.15.2</version>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-junit-jupiter</artifactId>
-      <version>5.15.2</version>
+      <version>${mockito.version}</version>
       <scope>test</scope>
     </dependency>
 
