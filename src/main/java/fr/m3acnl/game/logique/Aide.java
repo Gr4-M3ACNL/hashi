@@ -1,5 +1,7 @@
 package fr.m3acnl.game.logique;
 
+import fr.m3acnl.game.logique.elementjeu.Coord;
+
 public abstract class Aide {
     String nom;
     String description;
