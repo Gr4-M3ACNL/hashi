@@ -1,4 +1,6 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
+
+import fr.m3acnl.game.logique.Jeu;
 
 import org.junit.jupiter.api.AfterAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -6,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.logique.Matrice;
 
 /**
  * Test pour la classe DoubleLien

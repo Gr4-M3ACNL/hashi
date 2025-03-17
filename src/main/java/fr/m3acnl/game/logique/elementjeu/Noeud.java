@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 import java.util.ArrayList;
 
@@ -10,6 +10,7 @@ import java.util.ArrayList;
  */
 public class Noeud implements ElementJeu, Comparable<Noeud> {
 
+    // ==================== Attributs ====================
     /**
      * La position en coordonnée du noeud.
      */
@@ -41,10 +42,15 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     private Boolean activer = false;
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = true;
+
+    /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
      *
-     * @param x la coordonnée x du noeud
-     * @param y la coordonnée y du noeud
+     * @param x La ligne de l'élément
+     * @param y La colonne de l'élément
      * @param degS le degré solution du noeud
      */
     public Noeud(int x, int y, int degS) {
@@ -55,6 +61,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         surbrillance = false;
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère la position du noeud.
      *
@@ -101,6 +108,16 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
+     * Vérifie si le noeud est valide.
+     *
+     * @return 0 si valide
+     */
+    public int estValide() {
+        return (degreSoluce - degreActuelle);
+    }
+
+    // ==================== Setter ====================
+    /**
      * Permet de définir l'activation du noeud. (Pour la surbrillance pour
      * eviter que le noeud ne s'active en survol)
      *
@@ -115,6 +132,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void ajouterDegre() {
         degreActuelle += 1;
+        averifie();
     }
 
     /**
@@ -122,6 +140,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void suppressionDegre() {
         degreActuelle -= 2;
+        averifie();
     }
 
     /**
@@ -129,15 +148,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      */
     public void diminuerDegre() {
         degreActuelle -= 1;
-    }
-
-    /**
-     * Vérifie si le noeud est valide.
-     *
-     * @return 0 si valide
-     */
-    public int estValide() {
-        return (degreSoluce - degreActuelle);
+        averifie();
     }
 
     /**
@@ -158,6 +169,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         listeAdjacence.remove(n);
     }
 
+    // ==================== Action ====================
     /**
      * Retourne la liste des noeuds connectés à ce noeud.
      *
@@ -186,6 +198,33 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
         }
     }
 
+    // ==================== Override ====================
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
+    @Override
+    public boolean modifie() {
+        return modifie;
+    }
+
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
+    @Override
+    public void verifie() {
+        modifie = false;
+    }
+
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
+    @Override
+    public void averifie() {
+        modifie = true;
+    }
+
     /**
      * Affiche le réseaux de connection du noeud.
      *
@@ -194,9 +233,14 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public Boolean activer() {
         ArrayList<Noeud> noeuds = afficherReseau();
+
+        // Vérifier si au moins un nœud a la surbrillance activée
+        boolean etatSurbrillance = noeuds.stream().anyMatch(Noeud::getSurbrillance);
+
+        // Appliquer l'état opposé à tous les nœuds
         for (Noeud noeud : noeuds) {
             noeud.setActiver(true);
-            if (noeud.getSurbrillance()) {
+            if (etatSurbrillance) {
                 noeud.surbrillanceOff();
             } else {
                 noeud.surbrillanceOn();
@@ -213,6 +257,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public void surbrillanceOn() {
         if (activer) {
             surbrillance = true;
+            averifie();
         }
     }
 
@@ -223,9 +268,22 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     public void surbrillanceOff() {
         if (activer) {
             surbrillance = false;
+            averifie();
         }
     }
 
+    /**
+     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
+     *
+     * @param n2 le noeud avec qui comparé
+     * @return le résultat de la comparaison
+     */
+    @Override
+    public int compareTo(Noeud n2) {
+        return this.position.compareTo(n2.position);
+    }
+
+    // ==================== Affichage ====================
     /**
      * Affiche le Noeud.
      */
@@ -248,17 +306,6 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     @Override
     public void drawTerm() {
         System.out.print("N{" + degreActuelle + "/" + degreSoluce + "}   ");
-    }
-
-    /**
-     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
-     *
-     * @param n2 le noeud avec qui comparé
-     * @return le résultat de la comparaison
-     */
-    @Override
-    public int compareTo(Noeud n2) {
-        return this.position.compareTo(n2.position);
     }
 
     /**
