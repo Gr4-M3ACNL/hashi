@@ -129,12 +129,12 @@ class AideVoisin extends Aide {
             System.out.println("voisin : " + voisin.getPosition().getCoordX() + ", " + voisin.getPosition().getCoordY());
 
             if (noeud.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
-                if (jeu.verificationHorizontal(voisin, noeud, 1) == 0) {
+                if (jeu.verificationHorizontal(voisin, noeud, 1,true) == 0) {
                     System.out.println("\nNon accessible, suppression.1");
                     voisins.remove(i);
                 }
             } else {
-                if (jeu.verificationVertical(voisin, noeud, 1) == 0) {
+                if (jeu.verificationVertical(voisin, noeud, 1,true) == 0) {
                     System.out.println("\nNon accessible, suppression.2");
                     voisins.remove(i);
                 }
@@ -234,13 +234,13 @@ class AideVoisin extends Aide {
         for (Noeud voisin : voisins) {
             System.out.println("voisin : " + voisin.getPosition().getCoordX() + ", " + voisin.getPosition().getCoordY());
             if (noeud.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
-                if (jeu.verificationHorizontal(voisin, noeud, 1) == 0) {
+                if (jeu.verificationHorizontal(voisin, noeud, 1,true) == 0) {
                     aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                     afficherAide(aidesVoisins.size() - 1);
                     return true;
                 }
             } else {
-                if (jeu.verificationVertical(voisin, noeud, 1) == 0) {
+                if (jeu.verificationVertical(voisin, noeud, 1,true) == 0) {
                     aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                     afficherAide(aidesVoisins.size() - 1);
                     return true;
