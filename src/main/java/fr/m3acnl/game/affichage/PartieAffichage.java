@@ -296,6 +296,10 @@ public class PartieAffichage extends Application {
         }
     }
 
+    private void initAide() {
+
+    }
+
     // ======================== Actualisation de l'interface ========================
     /**
      * Met à jour l'affichage.
