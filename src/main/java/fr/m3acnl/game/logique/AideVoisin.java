@@ -153,7 +153,7 @@ class AideVoisin extends Aide {
                 } else {
                     // Vérifie l'isolement horizontal du voisin à droite
                     if (!checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
-                          // Aide à true pour une utilisation pour une aide
+                        // Aide à true pour une utilisation pour une aide
                         if (jeu.verificationHorizontal(noeud, voisin, 1, true) == 1) {
                             aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                             afficherAide(aidesVoisins.size() - 1);
@@ -260,7 +260,7 @@ class AideVoisin extends Aide {
         List<Noeud> voisins = trouverVoisinsDispo(noeud);
         int pa = 0;
         int ps = 0;
-        int pl=noeud.getDegreSoluce()-noeud.getDegreActuelle();
+        int pl = noeud.getDegreSoluce() - noeud.getDegreActuelle();
         for (Noeud voisin : voisins) {
             pa += voisin.getDegreActuelle();
         }
@@ -269,7 +269,7 @@ class AideVoisin extends Aide {
         }
         int pr = ps - pa;
 
-        System.out.println("Total des pois  : " + pa +"poid du noeud qui reste a remplir"+pl);
+        System.out.println("Total des pois  : " + pa + "poid du noeud qui reste a remplir" + pl);
         if (pr < pl) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "il n y a plus de place pour cher les voisin actuellement .",
                 "poidRestantVoisin", jeu, noeud.getPosition()));
