@@ -1,18 +1,20 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.aide;
 
+import fr.m3acnl.game.logique.Matrice;
 import fr.m3acnl.game.logique.elementjeu.Coord;
 
 /**
- * Classe représentant une aide pour le graphe dans le jeu.
- * Elle hérite de la classe Aide.
+ * Classe représentant une aide pour le graphe dans le jeu. Elle hérite de la
+ * classe Aide.
  */
 public class AideGraphe extends Aide {
+
     /**
      * Constructeur de la classe AideGraphe.
      *
      * @param matrice Matrice du jeu.
-     * @param nom     Nom de l'aide.
-     * @param c       Coordonnée de l'aide.
+     * @param nom Nom de l'aide.
+     * @param c Coordonnée de l'aide.
      */
     public AideGraphe(Matrice matrice, String nom, Coord c) {
         super(matrice, nom, c);
