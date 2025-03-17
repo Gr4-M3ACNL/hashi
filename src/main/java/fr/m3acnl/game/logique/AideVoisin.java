@@ -253,12 +253,18 @@ class AideVoisin extends Aide {
     public boolean poidRestantVoisin(Noeud noeud) {
         List<Noeud> voisins = trouverVoisinsDispo(noeud);
         int pa = 0;
+        int ps = 0;
         int pl=noeud.getDegreSoluce()-noeud.getDegreActuelle();
         for (Noeud voisin : voisins) {
             pa += voisin.getDegreActuelle();
         }
+        for (Noeud voisin : voisins) {
+            ps += voisin.getDegreSoluce();
+        }
+        int pr = ps - pa;
+
         System.out.println("Total des pois  : " + pa +"poid du noeud qui reste a remplir"+pl);
-        if (pa < pl) {
+        if (pr < pl) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "il n y a plus de place pour cher les voisin actuellement .",
                 "poidRestantVoisin", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
