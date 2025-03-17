@@ -107,7 +107,7 @@ public class Matrice {
         return array;
     }
     
-    /*
+    /**
      * Récupère la liste des liens de la matrice.
      *
      * @return la liste des liens de la matrice
