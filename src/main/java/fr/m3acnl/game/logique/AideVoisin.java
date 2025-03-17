@@ -129,12 +129,12 @@ class AideVoisin extends Aide {
             System.out.println("voisin : " + voisin.getPosition().getCoordX() + ", " + voisin.getPosition().getCoordY());
 
             if (noeud.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
-                if (jeu.verificationHorizontal(voisin, noeud, 1) == 0) {
+                if (jeu.verificationHorizontal(voisin, noeud, 1,true) == 0) {
                     System.out.println("\nNon accessible, suppression.1");
                     voisins.remove(i);
                 }
             } else {
-                if (jeu.verificationVertical(voisin, noeud, 1) == 0) {
+                if (jeu.verificationVertical(voisin, noeud, 1,true) == 0) {
                     System.out.println("\nNon accessible, suppression.2");
                     voisins.remove(i);
                 }
@@ -265,10 +265,10 @@ class AideVoisin extends Aide {
                         afficherAide(aidesVoisins.size() - 1);
                         return true;
                     }
-                    if (jeu.verificationHorizontal(voisin, noeud, 1) == 0) {
+                    /** Aide a true car c'est une utilisation pour une aide */
+                    if (jeu.verificationHorizontal(voisin, noeud, 1,true) == 0) {
                         aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                         afficherAide(aidesVoisins.size() - 1);
-                        jeu.verificationHorizontal(voisin, noeud, 0);
                         return true;
                     }
                 } /** Sinon le voisin est a droite verifhorizontal noeud vers voisin */else {
@@ -280,10 +280,10 @@ class AideVoisin extends Aide {
                         afficherAide(aidesVoisins.size() - 1);
                         return true;
                     }
-                    if (jeu.verificationHorizontal(noeud, voisin, 1) == 0) {
+                    /** Aide a true car c'est une utilisation pour une aide */
+                    if (jeu.verificationHorizontal(noeud, voisin, 1,true) == 0) {
                         aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                         afficherAide(aidesVoisins.size() - 1);
-                        jeu.verificationHorizontal(noeud,voisin, 0);
                         return true;
                     }
                 }
@@ -300,10 +300,10 @@ class AideVoisin extends Aide {
                         afficherAide(aidesVoisins.size() - 1);
                         return true;
                     }
-                    if (jeu.verificationVertical(voisin, noeud, 1) == 0) {
+                    /** Aide a true car c'est une utilisation pour une aide */
+                    if (jeu.verificationVertical(voisin, noeud, 1,true) == 0) {
                         aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                         afficherAide(aidesVoisins.size() - 1);
-                        jeu.verificationVertical(voisin, noeud, 0);
                         return true;
                     }
                 } /** Sinon verifvertical du noeud vers le voisin */else {
@@ -315,10 +315,10 @@ class AideVoisin extends Aide {
                         afficherAide(aidesVoisins.size() - 1);
                         return true;
                     }
-                    if (jeu.verificationVertical(noeud, voisin, 1) == 0) {
+                    /** Aide a true car c'est une utilisation pour une aide */
+                    if (jeu.verificationVertical(noeud, voisin, 1,true) == 0) {
                         aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                         afficherAide(aidesVoisins.size() - 1);
-                        jeu.verificationVertical(noeud, voisin, 0);
                         return true;
                     }
                 }
@@ -484,7 +484,7 @@ class AideVoisin extends Aide {
         aideVoisin.checkIsolement(noeudTest2);
 
         // Test du poids restant chez les voisins
-        /*System.out.println("\nTest du poids restant chez les voisins pour le noeud (0,0) :");
+        System.out.println("\nTest du poids restant chez les voisins pour le noeud (0,0) :");
         boolean poidsRestant = aideVoisin.poidRestantVoisin(noeudTest);
         System.out.println("Résultat : " + poidsRestant);
 
@@ -500,7 +500,7 @@ class AideVoisin extends Aide {
         int aideDisponible = aideVoisin.checkzone();
         System.out.println("Aide disponible ? " + (aideDisponible == 1 ? "Oui" : "Non"));
 
-        System.out.println("Description : " + aideVoisin.getDescription()); */
+        System.out.println("Description : " + aideVoisin.getDescription());
 
 
         
