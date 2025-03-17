@@ -294,7 +294,7 @@ public class JeuTest extends Tests{
     /**
      * Test de la méthode verificationHorizontal.
      *
-     * @see Jeu#verificationHorizontal(Noeud, Noeud, int)
+     * @see Jeu#verificationHorizontal(Noeud, Noeud, int, boolean)
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
      * @see Matrice#getElement(int, int)
@@ -312,13 +312,13 @@ public class JeuTest extends Tests{
         };
         Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(4, 3, null);
-        assertEquals(1, jeu.verificationHorizontal((Noeud) jeu.getPlateau().getElement(5, 1), (Noeud) jeu.getPlateau().getElement(5, 4), 1), "Lien horizontal non activable renvoie 1");
+        assertEquals(1, jeu.verificationHorizontal((Noeud) jeu.getPlateau().getElement(5, 1), (Noeud) jeu.getPlateau().getElement(5, 4), 1,false), "Lien horizontal non activable renvoie 1");
     }
 
     /**
      * Test de la méthode verificationVertical.
      *
-     * @see Jeu#verificationVertical(Noeud, Noeud, int)
+     * @see Jeu#verificationVertical(Noeud, Noeud, int, boolean)
      * @see Jeu#activeElemJeu(int, int, Noeud)
      * @see Jeu#getPlateau()
      * @see Matrice#getElement(int, int)
@@ -336,6 +336,6 @@ public class JeuTest extends Tests{
         };
         Jeu jeu = new Jeu(7, mat);
         jeu.activeElemJeu(5, 2, null);
-        assertEquals(1, jeu.verificationVertical((Noeud) jeu.getPlateau().getElement(3, 3), (Noeud) jeu.getPlateau().getElement(6, 3), 1), "Lien verticale non activable renvoie 1");
+        assertEquals(1, jeu.verificationVertical((Noeud) jeu.getPlateau().getElement(3, 3), (Noeud) jeu.getPlateau().getElement(6, 3), 1,false), "Lien verticale non activable renvoie 1");
     }
 }

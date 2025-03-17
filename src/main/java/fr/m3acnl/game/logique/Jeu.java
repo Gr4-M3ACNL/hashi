@@ -172,14 +172,34 @@ public class Jeu {
 
     // ==================== Action ====================
     /**
+     * Renvoie une copie du jeu.
+     * 
+     * @return La copie du jeu.
+     */
+    public Jeu copieJeu() {
+        Jeu newJeu = new Jeu(taille, plateau.getMatrice2Array());
+        Noeud n1 = null;
+        for (Lien l : coupsJouer.copieTab()) {
+            n1 = l.getNoeud1();
+            if (l.getOrientation() == 1) {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX(), n1.getPosition().getCoordY() + 1, n1);
+            } else {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX() + 1, n1.getPosition().getCoordY(), n1);
+            }
+        }
+        return newJeu;
+    }
+    
+    /**
      * Vérification si le lien horizontal n'est pas couper sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
      * @param nbLien Le nombre de lien actuel
+     * @param aide Si la fonction est appeler pour une aide true, false sinon
      * @return 1 si il est couper 0 sinon
      */
-    public int verificationHorizontal(Noeud noeud1, Noeud noeud2, int nbLien) {
+    public int verificationHorizontal(Noeud noeud1, Noeud noeud2, int nbLien, boolean aide) {
         int y1 = noeud1.getPosition().getCoordY();
         int y2 = noeud2.getPosition().getCoordY();
         int x = noeud1.getPosition().getCoordX();
@@ -198,8 +218,10 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++) {
-            doubleLienPossible.get(i).activeInterrupteur();
+        if (!aide) {
+            for (int i = 0; i < doubleLienPossible.size(); i++) {
+                doubleLienPossible.get(i).activeInterrupteur();
+            }
         }
         return 0;
     }
@@ -210,9 +232,10 @@ public class Jeu {
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
      * @param nbLien Le nombre de lien actuel
+     * @param aide Si la fonction est appeler pour une aide true, false sinon
      * @return 1 si il est couper 0 sinon
      */
-    public int verificationVertical(Noeud noeud1, Noeud noeud2, int nbLien) {
+    public int verificationVertical(Noeud noeud1, Noeud noeud2, int nbLien, boolean aide) {
         int x1 = noeud1.getPosition().getCoordX();
         int x2 = noeud2.getPosition().getCoordX();
         int y = noeud1.getPosition().getCoordY();
@@ -231,8 +254,10 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++) {
-            doubleLienPossible.get(i).activeInterrupteur();
+        if (!aide) {
+            for (int i = 0; i < doubleLienPossible.size(); i++) {
+                doubleLienPossible.get(i).activeInterrupteur();
+            }
         }
         return 0;
     }
@@ -301,9 +326,10 @@ public class Jeu {
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
+     * @return Renvoie null si le lien n'as pas été activer sinon renvoie le lien.
      */
-    public void activeElemAide(int x, int y, Noeud n) {
-        activeElem(x, y, n);
+    public Lien activeElemAide(int x, int y, Noeud n) {
+        return activeElem(x, y, n);
     }
 
     /**

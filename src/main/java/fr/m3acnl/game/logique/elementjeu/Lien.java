@@ -161,6 +161,7 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Vérifie si un noeud n est présent dans ce lien.
      * Vérifie si le lien est valide.
      *
      * @return True si le lien est valide sinon false
@@ -235,18 +236,18 @@ public class Lien implements ElementJeu {
         if (nbLien < 2) {
             if (nbLien == 0) {
                 if (orientation == 1) {
-                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                    jeu.verificationHorizontal(noeud1, noeud2, nbLien, false);
                 } else {
-                    jeu.verificationVertical(noeud1, noeud2, nbLien);
+                    jeu.verificationVertical(noeud1, noeud2, nbLien, false);
                 }
             }
             noeud1.diminuerDegre();
             noeud2.diminuerDegre();
         } else {
             if (orientation == 1) {
-                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                jeu.verificationHorizontal(noeud1, noeud2, nbLien, false);
             } else {
-                jeu.verificationVertical(noeud1, noeud2, nbLien);
+                jeu.verificationVertical(noeud1, noeud2, nbLien, false);
             }
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();
@@ -296,13 +297,13 @@ public class Lien implements ElementJeu {
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
             if (orientation == 1) {
-                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien, false) == 1) {
                     nbLien -= 1;
 
                     return false;
                 }
             } else {
-                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien, false) == 1) {
                     nbLien -= 1;
                     return false;
                 }
@@ -377,45 +378,21 @@ public class Lien implements ElementJeu {
      */
     @Override
     public String draw() {
-        String path = "/META-INF/assetsGraphiques/link/";
-        if (surbrillance) {
-            path += "surbrillance/";
-            if (orientation == 1) { //Horizontal
-                path += "horizontal_";
-            } else { //Vertical
-                path += "vertical_";
-            }
-
-            switch (nbLien) {
-                case 0:
-                    return path + "uno.png";
-
-                case 1:
-                    return path + "duo.png";
-                case 2:
-                    return path + "duo.png";
-                default:
-                    return "/META-INF/assetsGraphiques/link/blank.png";
-
-            }
-        } else {
-            path += "standard/";
-            if (orientation == 1) { //Horizontal
-                path += "horizontal_";
-            } else { //Vertical
-                path += "vertical_";
-            }
-            switch (nbLien) {
-                case 1:
-                    return path + "uno.png";
-
-                case 2:
-                    return path + "duo.png";
-
-                default:
-                    return "/META-INF/assetsGraphiques/link/blank.png";
-
-            }
+        String path;
+        if (orientation == 1) { //Horizontal
+            path = "../../../../../ressources/META-INF/assetsGraphiques/link/horizontal_";
+        } else { //Vertical
+            path = "../../../../../ressources/META-INF/assetsGraphiques/link/vertical_";
+        }
+        switch (nbLien) {
+            case 0:
+                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
+            case 1:
+                return path + "uno.png";
+            case 2:
+                return path + "duo.png";
+            default:
+                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
         }
     }
 
