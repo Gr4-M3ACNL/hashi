@@ -1,5 +1,7 @@
 package fr.m3acnl.game.logique;
 
+import fr.m3acnl.game.logique.elementjeu.Coord;
+
 public class AideGraphe extends Aide {
     public AideGraphe(Matrice matrice, String nom, Coord c) {
         super(matrice, nom, c);

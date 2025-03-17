@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.m3acnl.game.logique.elementjeu.Coord;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+
 /**
  * Classe d'aide.
  *
