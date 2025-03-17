@@ -121,12 +121,12 @@ public class Lien implements ElementJeu {
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
             if (orientation == 1) {
-                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien,false) == 1) {
                     nbLien -= 1;
                     return false;
                 }
             } else {
-                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien,false) == 1) {
                     nbLien -= 1;
                     return false;
                 }
@@ -156,18 +156,18 @@ public class Lien implements ElementJeu {
         if (nbLien < 2) {
             if (nbLien == 0) {
                 if (orientation == 1) {
-                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                    jeu.verificationHorizontal(noeud1, noeud2, nbLien,false);
                 } else {
-                    jeu.verificationVertical(noeud1, noeud2, nbLien);
+                    jeu.verificationVertical(noeud1, noeud2, nbLien,false);
                 }
             }
             noeud1.diminuerDegre();
             noeud2.diminuerDegre();
         } else {
             if (orientation == 1) {
-                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
+                jeu.verificationHorizontal(noeud1, noeud2, nbLien,false);
             } else {
-                jeu.verificationVertical(noeud1, noeud2, nbLien);
+                jeu.verificationVertical(noeud1, noeud2, nbLien,false);
             }
             noeud1.ajouterDegre();
             noeud2.ajouterDegre();

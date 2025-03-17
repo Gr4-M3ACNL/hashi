@@ -175,9 +175,10 @@ public class Jeu {
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
      * @param nbLien Le nombre de lien actuel
+     * @param aide Si la fonction est appeler pour une aide true, false sinon
      * @return 1 si il est couper 0 sinon
      */
-    public int verificationHorizontal(Noeud noeud1, Noeud noeud2, int nbLien) {
+    public int verificationHorizontal(Noeud noeud1, Noeud noeud2, int nbLien, boolean aide) {
         int y1 = noeud1.getPosition().getCoordY();
         int y2 = noeud2.getPosition().getCoordY();
         int x = noeud1.getPosition().getCoordX();
@@ -196,8 +197,10 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++) {
-            doubleLienPossible.get(i).activeInterrupteur();
+        if (!aide) {
+            for (int i = 0; i < doubleLienPossible.size(); i++) {
+                doubleLienPossible.get(i).activeInterrupteur();
+            }
         }
         return 0;
     }
@@ -208,9 +211,10 @@ public class Jeu {
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
      * @param nbLien Le nombre de lien actuel
+     * @param aide Si la fonction est appeler pour une aide true, false sinon
      * @return 1 si il est couper 0 sinon
      */
-    public int verificationVertical(Noeud noeud1, Noeud noeud2, int nbLien) {
+    public int verificationVertical(Noeud noeud1, Noeud noeud2, int nbLien, boolean aide) {
         int x1 = noeud1.getPosition().getCoordX();
         int x2 = noeud2.getPosition().getCoordX();
         int y = noeud1.getPosition().getCoordY();
@@ -229,8 +233,10 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++) {
-            doubleLienPossible.get(i).activeInterrupteur();
+        if (!aide) {
+            for (int i = 0; i < doubleLienPossible.size(); i++) {
+                doubleLienPossible.get(i).activeInterrupteur();
+            }
         }
         return 0;
     }
