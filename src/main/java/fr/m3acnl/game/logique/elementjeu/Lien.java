@@ -161,8 +161,8 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Vérifie si un noeud n est présent dans ce lien.
-     * Vérifie si le lien est valide.
+     * Vérifie si un noeud n est présent dans ce lien. Vérifie si le lien est
+     * valide.
      *
      * @return True si le lien est valide sinon false
      */
@@ -378,21 +378,45 @@ public class Lien implements ElementJeu {
      */
     @Override
     public String draw() {
-        String path;
-        if (orientation == 1) { //Horizontal
-            path = "../../../../../ressources/META-INF/assetsGraphiques/link/horizontal_";
-        } else { //Vertical
-            path = "../../../../../ressources/META-INF/assetsGraphiques/link/vertical_";
-        }
-        switch (nbLien) {
-            case 0:
-                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
-            case 1:
-                return path + "uno.png";
-            case 2:
-                return path + "duo.png";
-            default:
-                return "../../../../../ressources/META-INF/assetsGraphiques/link/blank.png";
+        String path = "/META-INF/assetsGraphiques/link/";
+        if (surbrillance) {
+            path += "surbrillance/";
+            if (orientation == 1) { //Horizontal
+                path += "horizontal_";
+            } else { //Vertical
+                path += "vertical_";
+            }
+
+            switch (nbLien) {
+                case 0:
+                    return path + "uno.png";
+
+                case 1:
+                    return path + "duo.png";
+                case 2:
+                    return path + "duo.png";
+                default:
+                    return "/META-INF/assetsGraphiques/link/blank.png";
+
+            }
+        } else {
+            path += "standard/";
+            if (orientation == 1) { //Horizontal
+                path += "horizontal_";
+            } else { //Vertical
+                path += "vertical_";
+            }
+            switch (nbLien) {
+                case 1:
+                    return path + "uno.png";
+
+                case 2:
+                    return path + "duo.png";
+
+                default:
+                    return "/META-INF/assetsGraphiques/link/blank.png";
+
+            }
         }
     }
 

@@ -45,7 +45,7 @@ public class ParametreProfile implements JsonSerializable {
      *
      * @return le niveau d'aide
      */
-    protected Integer getNiveauAide() {
+    public Integer getNiveauAide() {
         return this.niveauAide;
     }
 

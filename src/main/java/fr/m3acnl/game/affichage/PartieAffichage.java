@@ -32,6 +32,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 /**
@@ -57,6 +58,11 @@ public class PartieAffichage extends Application {
      * Label pour afficher le temps.
      */
     private Label labelTemps;
+
+    /**
+     * Label pour afficher l'aide.
+     */
+    private Label labelAide;
 
     /**
      * Tableau de boutons.
@@ -87,6 +93,19 @@ public class PartieAffichage extends Application {
      * Accès à la timeline pour l'actualisation du chrono.
      */
     private Timeline timeline;
+
+    private boolean aJoue = true;
+
+    private int niveauAide = ProfileManager.getInstance().getProfileActif().getParametre().getNiveauAide();
+
+    private String[] text = {"1 - Dans un monde en perpétuelle évolution,"
+        + "la technologie façonne nos vies à une vitesse fulgurante."
+        + " Chaque innovation ouvre de nouvelles opportunités, transformant nos habitudes et nos interactions."
+        + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
+        "2 - Dans un monde en perpétuelle évolution,",
+        "3 - la technologie façonne nos vies à une vitesse fulgurante.",};
+
+    private int numeroAide = 0;
 
     /**
      * Constructeur de la classe PartieAffichage.
@@ -132,7 +151,6 @@ public class PartieAffichage extends Application {
 
         StackPane root = new StackPane();
         creerBackground();
-        root.getChildren().addAll(backgroundPane, gridPane);
 
         boutons = new Button[partie.getJeu().getTaille()][partie.getJeu().getTaille()];
         initialiserBoutons();
@@ -141,7 +159,17 @@ public class PartieAffichage extends Application {
         controlPanel.setAlignment(Pos.CENTER_LEFT);
         controlPanel.setPadding(new Insets(0, 0, 0, 90));
         controlPanel.setPickOnBounds(false);
-        root.getChildren().add(controlPanel);
+        VBox aideBox = creerPanneauAide();
+        aideBox.setPadding(new Insets(20));
+        aideBox.setAlignment(Pos.CENTER_RIGHT);
+        StackPane.setAlignment(aideBox, Pos.CENTER_RIGHT);
+        aideBox.setMaxWidth(300); // Définit une largeur max
+
+        controlPanel.setStyle("-fx-background-color: transparent;");
+        //aideBox.setStyle("-fx-background-color: transparent;");
+
+        root.getChildren().addAll(backgroundPane, controlPanel, aideBox, gridPane);
+
         BorderPane mainLayout = new BorderPane();
         mainLayout.setCenter(root);
 
@@ -294,6 +322,54 @@ public class PartieAffichage extends Application {
                 gridPane.add(boutons[i][j], y, x);
             }
         }
+    }
+
+    /**
+     * Crée le panneau d'aide.
+     *
+     * @return Le panneau d'aide
+     */
+    private VBox creerPanneauAide() {
+        VBox aideBox = new VBox(10);
+        aideBox.setAlignment(Pos.CENTER_RIGHT); // Alignement général au centre
+        aideBox.setStyle("-fx-background-color: transparent; -fx-border-radius: 10;");
+
+        // Création du label d'aide
+        labelAide = genererMenu.createStyledLabel("Voici un texte d'aide qui donne des indices sur le jeu. "
+                + "Il contient jusqu'à 300 caractères pour expliquer certaines mécaniques ou donner des conseils.");
+        labelAide.setWrapText(true);
+        labelAide.setMaxWidth(250);
+
+        labelAide.setAlignment(Pos.CENTER);
+        labelAide.setTextAlignment(TextAlignment.CENTER);
+
+        // Ajout de l'image d'aide
+        ImageView hintImage = genererMenu.creerImageView("/META-INF/assetsGraphiques/character/hint.png", 200, 200);
+
+        // Création du bouton Aide
+        Button aideButton = genererMenu.createStyledButton("Aide");
+        aideButton.setStyle("-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
+                + "-fx-background-radius: 10;"
+                + "-fx-border-color: #3d1e10;"
+                + "-fx-border-width: 2px;"
+                + "-fx-border-radius: 10;"
+                + "-fx-text-fill: white;"
+                + "-fx-font-size: 14px;"
+                + "-fx-font-family: 'Georgia';");
+        aideButton.setMinSize(150, 50);
+
+        aideButton.setOnAction(e -> {
+            activerAide();
+            genererMenu.jouerSon("bouton.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
+        });
+
+        // Permet aux éléments de prendre plus d'espace pour un meilleur centrage
+        // Ajout des éléments au VBox
+        aideBox.getChildren().addAll(labelAide, hintImage, aideButton);
+        aideBox.setMaxWidth(300); // Largeur max
+
+        return aideBox;
     }
 
     // ======================== Actualisation de l'interface ========================
@@ -512,6 +588,17 @@ public class PartieAffichage extends Application {
         mainLayout.setCenter(null);
     }
 
+    /**
+     * Actualise l'affichage de l'aide.
+     */
+    private void actualiserAideLabel() {
+        String aide = numeroAide < niveauAide + 1
+                ? text[numeroAide]
+                : "Utiliser la vérification de grille pour repartir d'une base valide";
+        labelAide.setText(aide);
+        numeroAide++;
+    }
+
     // ======================== Generation des ressources ========================
     /**
      * Récupère la ressource associée à un élément du jeu.
@@ -527,6 +614,28 @@ public class PartieAffichage extends Application {
     }
 
     // ======================== Gestion des actions ========================
+    /**
+     * Permet de demander une aide.
+     */
+    private void activerAide() {
+        if (niveauAide != ProfileManager.getInstance().getProfileActif().getParametre().getNiveauAide()) {
+            niveauAide = ProfileManager.getInstance().getProfileActif().getParametre().getNiveauAide();
+            numeroAide = 0;
+        }
+        System.out.println("Niveau de l'aide du profile " + (niveauAide + 1));
+        if (aJoue) {
+            System.out.println("Recherche d'aide !");
+            aJoue = false;
+            numeroAide = 0;
+        }
+        if (numeroAide < niveauAide + 1) {
+            partie.addMalus((numeroAide + 1) * 5);
+            System.out.println("Aide de niveau : " + (numeroAide + 1));
+        }
+
+        actualiserAideLabel();
+    }
+
     /**
      * Active un élément du jeu.
      *
@@ -569,6 +678,7 @@ public class PartieAffichage extends Application {
             partie.sauvegarde();
         }
         // Mettre à jour l'affichage
+        aJoue = true;
         actualiserAffichage();
     }
 
