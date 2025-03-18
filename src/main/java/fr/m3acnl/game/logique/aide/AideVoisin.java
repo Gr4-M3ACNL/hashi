@@ -43,8 +43,6 @@ class AideVoisin extends Aide {
         aidesVoisins = new ArrayList<>();
     }
 
-    
-
     /**
      * Affiche l'aide spécifique sur les voisins d'un noeud.
      *
@@ -63,12 +61,12 @@ class AideVoisin extends Aide {
         // Vérifie si le poids du noeud divisé par 2 est égal à la somme de ses voisins
         if (poidsNoeud / 2 <= sommeVoisins) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le poids du noeud divisé par 2 est égal à la somme de ses voisins.",
-                "Voisinage", jeu, noeud.getPosition()));
+                    "Voisinage", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
             return true;
         } else if (voisins.size() < poidsNoeud) { // Vérifie si le nombre de voisins est plus petit que le poids du noeud
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le nombre de voisins est plus petit que le poids du noeud.",
-                "Voisinage", jeu, noeud.getPosition()));
+                    "Voisinage", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
             return true;
         }
@@ -78,7 +76,7 @@ class AideVoisin extends Aide {
 
     /**
      * Fait une liste de tous les noeuds.
-     * 
+     *
      * @return liste de noeuds.
      */
     public List<Noeud> getListeNoeuds() {
@@ -128,7 +126,7 @@ class AideVoisin extends Aide {
         return voisins;
     }
 
-    /** 
+    /**
      * Retourne une liste de voisins uniquement accessibles.
      *
      * @param noeud Le nœud dont on cherche les voisins accessibles.
@@ -155,13 +153,13 @@ class AideVoisin extends Aide {
                 } else {
                     // Vérifie l'isolement horizontal du voisin à droite
                     if (!checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
-                          // Aide à true pour une utilisation pour une aide
+                        // Aide à true pour une utilisation pour une aide
                         if (jeu.verificationHorizontal(noeud, voisin, 1, true) == 1) {
                             aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                             afficherAide(aidesVoisins.size() - 1);
                             voisins.remove(i);
                         }
-                    }           
+                    }
                 }
             } else {
                 // Vérifie si le voisin est au-dessus ou en dessous
@@ -194,12 +192,12 @@ class AideVoisin extends Aide {
 
     /**
      * Ajoute les voisin a une liste .
-     * 
+     *
      * @param voisins voisin
      * @param x coord x
-     * @param y coord y 
+     * @param y coord y
      * @param dx coord dx
-     * @param dy coord dy 
+     * @param dy coord dy
      */
     private void ajouterVoisin(List<Noeud> voisins, int x, int y, int dx, int dy) {
         x += dx;
@@ -223,7 +221,6 @@ class AideVoisin extends Aide {
             }
         }
 
-
     }
 
     /**
@@ -244,7 +241,6 @@ class AideVoisin extends Aide {
         return poidsTotal;
     }
 
-
     /**
      * Getter pour la description.
      */
@@ -252,9 +248,9 @@ class AideVoisin extends Aide {
         return description;
     }
 
-
     /**
-     * Prend les poids autour actuelle des voisin pour check si il lui reste de la place.
+     * Prend les poids autour actuelle des voisin pour check si il lui reste de
+     * la place.
      *
      * @param noeud le noeud du jeu à analyser
      * @return si il y asser de poid pour se connecter
@@ -263,7 +259,7 @@ class AideVoisin extends Aide {
         List<Noeud> voisins = trouverVoisinsDispo(noeud);
         int pa = 0;
         int ps = 0;
-        int pl=noeud.getDegreSoluce()-noeud.getDegreActuelle();
+        int pl = noeud.getDegreSoluce() - noeud.getDegreActuelle();
         for (Noeud voisin : voisins) {
             pa += voisin.getDegreActuelle();
         }
@@ -271,22 +267,20 @@ class AideVoisin extends Aide {
             ps += voisin.getDegreSoluce();
         }
 
-        System.out.println("Total des pois  : " + pa +"poid du noeud qui reste a remplir"+pl);
+        System.out.println("Total des pois  : " + pa + "poid du noeud qui reste a remplir" + pl);
         if (pa < pl) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "il n y a plus de place pour cher les voisin actuellement .",
-                "poidRestantVoisin", jeu, noeud.getPosition()));
+                    "poidRestantVoisin", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
             return true;
-        }   
+        }
         System.out.println("\nil  y a place c est cool.");
         return false;
     }
 
-
-
     /**
      * Regarde si le noeud est lié.
-     * 
+     *
      * @return true si il est lié, false sinon
      */
     private boolean checkLier(ElementJeu elem, Noeud n) {
@@ -338,8 +332,9 @@ class AideVoisin extends Aide {
                         afficherAide(aidesVoisins.size() - 1);
                         return true;
                     }
-                } else { /* Sinon le voisin est a droite verifhorizontal noeud vers voisin */
-                    /*
+                } else {
+                    /* Sinon le voisin est a droite verifhorizontal noeud vers voisin */
+ /*
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
@@ -373,8 +368,9 @@ class AideVoisin extends Aide {
                         afficherAide(aidesVoisins.size() - 1);
                         return true;
                     }
-                } else { /* Sinon verifvertical du noeud vers le voisin */
-                    /*
+                } else {
+                    /* Sinon verifvertical du noeud vers le voisin */
+ /*
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY()), noeud)) {
@@ -396,12 +392,9 @@ class AideVoisin extends Aide {
         return false;
     }
 
-
-    
-
-
     /**
      * Fait une verification par zone du jeu .
+     *
      * @return nb d aide dispo
      */
     public int checkzone() {
@@ -484,38 +477,32 @@ class AideVoisin extends Aide {
         return totalAides;
     }
 
-
     public ElementAide aideGlobale() {
         List<Noeud> tousLesNoeuds = getListeNoeuds();
         ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
-        
+
         for (Noeud noeud : tousLesNoeuds) {
             // Test 1: Aide sur les voisins
             if (afficherAideNoeud(noeud)) {
-                elementAide.addTexte(" 1 Description: Cette aide vous montre les voisins possibles.");
+                elementAide.addTexte(0, " 1 Description: Cette aide vous montre les voisins possibles.");
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
             }
-    
+
             // Test 2: Aide sur l'isolement
             if (poidRestantVoisin(noeud)) {
-                elementAide.addTexte("2 Description: Cette aide met en évidence les nœuds isolés.");
+                elementAide.addTexte(1, "2 Description: Cette aide met en évidence les nœuds isolés.");
                 // Ajouter le noeud à surligner (exemple pour l'index 1)
             }
-    
+
             // Test 3: Aide sur le poids restant
             if (checkIsolement(noeud)) {
-                elementAide.addTexte("3 Description: Cette aide affiche les connexions restantes possibles.");
+                elementAide.addTexte(2, "3 Description: Cette aide affiche les connexions restantes possibles.");
                 // Ajouter le noeud à surligner (exemple pour l'index 2)
             }
         }
-    
+
         return elementAide;  // Retourner l'élément d'aide complet
     }
-    
-    
-
-
-    
 
     /**
      * Affiche la description de l'aide.
@@ -570,7 +557,7 @@ class AideVoisin extends Aide {
         System.out.println("\nTest de getListeNoeuds pour récupérer tous les noeuds :");
         List<Noeud> tousLesNoeuds = aideVoisin.getListeNoeuds();
         System.out.println("Tous les noeuds présents dans la matrice : ");
-        
+
         for (Noeud n : tousLesNoeuds) {
             System.out.println(n);  // Affiche tous les noeuds présents dans la matrice
 
@@ -584,7 +571,6 @@ class AideVoisin extends Aide {
             System.out.println(voisin);
         }
 
-        
         // Test d'isolement 
         System.out.println("\nTest d'isolement 1 pour récupérer tous les noeuds :");
         Noeud noeudTest2 = (Noeud) jeu.getPlateau().getElement(5, 4);
@@ -630,9 +616,7 @@ class AideVoisin extends Aide {
         System.out.println("Aide disponible ? " + (aideDisponible == 1 ? "Oui" : "Non"));
 
         System.out.println("Description : " + aideVoisin.getDescription());
-        */
-        
-
+         */
     }
 
 }

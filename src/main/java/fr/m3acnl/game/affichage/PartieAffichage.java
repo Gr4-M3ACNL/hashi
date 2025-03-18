@@ -7,6 +7,7 @@ import fr.m3acnl.affichage.GenererAsset;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
 import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.game.logique.aide.ElementAide;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import fr.m3acnl.game.logique.elementjeu.Lien;
@@ -104,6 +105,8 @@ public class PartieAffichage extends Application {
         + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
         "2 - Dans un monde en perpétuelle évolution,",
         "3 - la technologie façonne nos vies à une vitesse fulgurante.",};
+
+    private ElementAide elementAide;
 
     private int numeroAide = 0;
 
@@ -593,7 +596,7 @@ public class PartieAffichage extends Application {
      */
     private void actualiserAideLabel() {
         String aide = numeroAide < niveauAide + 1
-                ? text[numeroAide]
+                ? elementAide.getTexte().get(numeroAide)
                 : "Utiliser la vérification de grille pour repartir d'une base valide";
         labelAide.setText(aide);
         numeroAide++;

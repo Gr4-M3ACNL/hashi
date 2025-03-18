@@ -45,8 +45,8 @@ public class ElementAide {
      *
      * @param texte Texte à ajouter.
      */
-    public void addTexte(String texte) {
-        this.texte.add(texte);
+    public void addTexte(int i, String texte) {
+        this.texte.set(i, texte);
     }
 
     /**
