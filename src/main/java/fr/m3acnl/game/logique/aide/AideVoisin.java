@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.type.PlaceholderForType;
+
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Matrice;
 import fr.m3acnl.game.logique.elementjeu.Coord;
@@ -101,7 +103,7 @@ public class AideVoisin extends Aide {
         }
         return noeuds;
     }
-  
+
     /**
      * Vérifie si les coordonnées sont valides.
      *
@@ -354,7 +356,7 @@ public class AideVoisin extends Aide {
                     }
                 } else {
                     /* Sinon le voisin est a droite verifhorizontal noeud vers voisin */
-                    /*
+ /*
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
@@ -390,7 +392,7 @@ public class AideVoisin extends Aide {
                     }
                 } else {
                     /* Sinon verifvertical du noeud vers le voisin */
-                    /*
+ /*
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY()), noeud)) {
@@ -510,7 +512,7 @@ public class AideVoisin extends Aide {
             // Test 1: Aide sur les voisins
             if (afficherAideNoeud(noeud)) {
                 elementAide.addTexte(0, " 1 Description: Cette aide vous montre les voisins possibles.");
-                elementAide.addNoeud(0, noeud);
+                elementAide.addNoeud(0, ((Noeud) matrice.getElement(0, 0)));
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
             }
 

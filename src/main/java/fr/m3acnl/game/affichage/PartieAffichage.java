@@ -111,11 +111,11 @@ public class PartieAffichage extends Application {
      * Texte d'aide à afficher.
      */
     private String[] text = {"1 - Dans un monde en perpétuelle évolution,"
-            + "la technologie façonne nos vies à une vitesse fulgurante."
-            + " Chaque innovation ouvre de nouvelles opportunités, transformant nos habitudes et nos interactions."
-            + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
+        + "la technologie façonne nos vies à une vitesse fulgurante."
+        + " Chaque innovation ouvre de nouvelles opportunités, transformant nos habitudes et nos interactions."
+        + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
         "2 - Dans un monde en perpétuelle évolution,",
-        "3 - la technologie façonne nos vies à une vitesse fulgurante.", };
+        "3 - la technologie façonne nos vies à une vitesse fulgurante.",};
 
     /**
      * L'élément d'aide à afficher.
@@ -348,7 +348,6 @@ public class PartieAffichage extends Application {
             }
         }
     }
-
 
     /**
      * Crée le panneau d'aide.
@@ -674,6 +673,7 @@ public class PartieAffichage extends Application {
             partie.addMalus((numeroAide + 1) * 5);
             System.out.println("Aide de niveau : " + (numeroAide + 1));
         }
+        partie.getJeu().getPlateau().setSurbrillanceOff();
         surbrillanceAide();
         actualiserAideLabel();
         actualiserAffichage();

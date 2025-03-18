@@ -450,7 +450,9 @@ public class GenererAsset {
         String chemin = getClass().getResource("/META-INF/assetsAudio/" + fichierAudio).toExternalForm();
         AudioClip son = new AudioClip(chemin);
         son.setVolume(volume); // Appliquer le volume
-        son.play();
+        if (volume > 0) {
+            son.play();
+        }
     }
 
 }

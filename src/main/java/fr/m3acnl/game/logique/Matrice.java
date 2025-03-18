@@ -94,10 +94,10 @@ public class Matrice {
 
     /**
      * Récupère la matrice2 en array.
-     * 
+     *
      * @return La matrice2 en array.
      */
-    public Double [][] getMatrice2Array() {
+    public Double[][] getMatrice2Array() {
         int taille = matrice2.size();
         Double[][] array = new Double[taille][taille];
 
@@ -106,7 +106,7 @@ public class Matrice {
         }
         return array;
     }
-    
+
     /**
      * Récupère la liste des liens de la matrice.
      *
@@ -323,7 +323,23 @@ public class Matrice {
         return noeudLePlusProche;
     }
 
+    public void setSurbrillanceOff() {
+        for (ArrayList<ElementJeu> ligne : matrice) {
+            for (ElementJeu element : ligne) {
+                if (element != null) {
+                    if (element instanceof Noeud) {
+                        ((Noeud) element).setActiver(true);
+                        ((Noeud) element).surbrillanceOff();
+                        ((Noeud) element).setActiver(false);
+                    } else {
+                        element.surbrillanceOff();
+                    }
+                }
+            }
+        }
+    }
     // =========================== Affichage ===========================
+
     /**
      * Dessine la matrice.
      */
