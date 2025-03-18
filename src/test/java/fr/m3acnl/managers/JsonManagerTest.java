@@ -288,7 +288,7 @@ public class JsonManagerTest extends Tests {
         
         assertEquals(6, manager.getNbGrilles(Difficulte.facile), "Nombre incorrect de grilles faciles");
         assertEquals(5, manager.getNbGrilles(Difficulte.moyen), "Nombre incorrect de grilles moyennes");
-        assertEquals(5, manager.getNbGrilles(Difficulte.difficile), "Nombre incorrect de grilles difficiles");
+        assertEquals(6, manager.getNbGrilles(Difficulte.difficile), "Nombre incorrect de grilles difficiles");
         assertEquals(4, manager.getNbGrilles(Difficulte.expert), "Nombre incorrect de grilles expert");
     }
 
