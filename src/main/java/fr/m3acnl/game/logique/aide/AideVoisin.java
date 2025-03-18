@@ -19,7 +19,7 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
  * @author Gaumont mael
  * @version 1.0
  */
-class AideVoisin extends Aide {
+public class AideVoisin extends Aide {
 
     private final Jeu jeu;
     private static List<AideVoisin> aidesVoisins;
@@ -485,6 +485,7 @@ class AideVoisin extends Aide {
             // Test 1: Aide sur les voisins
             if (afficherAideNoeud(noeud)) {
                 elementAide.addTexte(0, " 1 Description: Cette aide vous montre les voisins possibles.");
+                elementAide.addNoeud(0, noeud);
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
             }
 

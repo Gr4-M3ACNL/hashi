@@ -7,7 +7,9 @@ import fr.m3acnl.affichage.GenererAsset;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
 import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.game.logique.aide.AideVoisin;
 import fr.m3acnl.game.logique.aide.ElementAide;
+import fr.m3acnl.game.logique.elementjeu.Coord;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import fr.m3acnl.game.logique.elementjeu.Lien;
@@ -109,6 +111,8 @@ public class PartieAffichage extends Application {
     private ElementAide elementAide;
 
     private int numeroAide = 0;
+
+    AideVoisin aideVoisin;
 
     /**
      * Constructeur de la classe PartieAffichage.
@@ -598,8 +602,20 @@ public class PartieAffichage extends Application {
         String aide = numeroAide < niveauAide + 1
                 ? elementAide.getTexte().get(numeroAide)
                 : "Utiliser la vérification de grille pour repartir d'une base valide";
+        System.out.println("Aide : " + aide);
         labelAide.setText(aide);
         numeroAide++;
+    }
+
+    private void surbrillanceAide() {
+        if (elementAide != null) {
+            for (Noeud n : elementAide.getNoeudsSurbrillance()[numeroAide]) {
+                n.setActiver(true);
+                n.surbrillanceOn();
+                n.setActiver(false);
+            }
+
+        }
     }
 
     // ======================== Generation des ressources ========================
@@ -627,7 +643,8 @@ public class PartieAffichage extends Application {
         }
         System.out.println("Niveau de l'aide du profile " + (niveauAide + 1));
         if (aJoue) {
-            System.out.println("Recherche d'aide !");
+            aideVoisin = new AideVoisin(partie.getJeu().getPlateau(), "Aide sur les voisins", "Voisinage", partie.getJeu(), new Coord(0, 0));
+            elementAide = aideVoisin.aideGlobale();
             aJoue = false;
             numeroAide = 0;
         }
@@ -635,8 +652,9 @@ public class PartieAffichage extends Application {
             partie.addMalus((numeroAide + 1) * 5);
             System.out.println("Aide de niveau : " + (numeroAide + 1));
         }
-
+        surbrillanceAide();
         actualiserAideLabel();
+        actualiserAffichage();
     }
 
     /**

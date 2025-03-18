@@ -46,6 +46,17 @@ public class ElementAide {
      * @param texte Texte à ajouter.
      */
     public void addTexte(int i, String texte) {
+        // Vérifier si l'index est valide
+        if (i < 0) {
+            throw new IndexOutOfBoundsException("Index négatif : " + i);
+        }
+
+        // Remplir la liste avec des valeurs par défaut jusqu'à atteindre l'index `i`
+        while (this.texte.size() <= i) {
+            this.texte.add(""); // Ajoute des chaînes vides pour éviter l'erreur d'index
+        }
+
+        // Maintenant, on peut utiliser `set`
         this.texte.set(i, texte);
     }
 
