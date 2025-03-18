@@ -331,6 +331,7 @@ public class PartieAffichage extends Application {
         }
     }
 
+
     /**
      * Crée le panneau d'aide.
      *

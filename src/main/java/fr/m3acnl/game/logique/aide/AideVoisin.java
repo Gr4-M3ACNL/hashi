@@ -21,7 +21,14 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
  */
 public class AideVoisin extends Aide {
 
+    /**
+     * le jeu sur lequel on joue.
+     */
     private final Jeu jeu;
+
+    /**
+     * liste d'aide sur les voisins.
+     */
     private static List<AideVoisin> aidesVoisins;
 
     /**
@@ -29,8 +36,9 @@ public class AideVoisin extends Aide {
      *
      * @param matrice la matrice représentant la grille du jeu
      * @param description la description de l'aide
-     * @param cout le coût de l'aide
      * @param nom le nom de l'aide
+     * @param jeu le jeu sur lequel on joue
+     * @param c les coordonnées de l'aide
      */
     public AideVoisin(Matrice matrice, String description, String nom, Jeu jeu, Coord c) {
         super(matrice, nom, c);
@@ -47,6 +55,7 @@ public class AideVoisin extends Aide {
      * Affiche l'aide spécifique sur les voisins d'un noeud.
      *
      * @param noeud le noeud du jeu à analyser
+     * @return true si l'aide a été affichée, false sinon
      */
     public boolean afficherAideNoeud(Noeud noeud) {
         int poidsNoeud = noeud.getDegreSoluce();
@@ -92,7 +101,14 @@ public class AideVoisin extends Aide {
         }
         return noeuds;
     }
-
+  
+    /**
+     * Vérifie si les coordonnées sont valides.
+     *
+     * @param x coordonnée x
+     * @param y coordonnée y
+     * @return true si les coordonnées sont valides, false sinon
+     */
     private boolean estValide(int x, int y) {
         return x >= 0 && x < jeu.getTaille() && y >= 0 && y < jeu.getTaille();
     }
@@ -243,6 +259,8 @@ public class AideVoisin extends Aide {
 
     /**
      * Getter pour la description.
+     *
+     * @return la description de l'aide
      */
     public String getDescription() {
         return description;
@@ -281,6 +299,8 @@ public class AideVoisin extends Aide {
     /**
      * Regarde si le noeud est lié.
      *
+     * @param elem le noeud du jeu à analyser
+     * @param n le noeud du jeu à analyser
      * @return true si il est lié, false sinon
      */
     private boolean checkLier(ElementJeu elem, Noeud n) {
@@ -334,7 +354,7 @@ public class AideVoisin extends Aide {
                     }
                 } else {
                     /* Sinon le voisin est a droite verifhorizontal noeud vers voisin */
- /*
+                    /*
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
@@ -370,7 +390,7 @@ public class AideVoisin extends Aide {
                     }
                 } else {
                     /* Sinon verifvertical du noeud vers le voisin */
- /*
+                    /*
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY()), noeud)) {
@@ -507,6 +527,8 @@ public class AideVoisin extends Aide {
 
     /**
      * Affiche la description de l'aide.
+     *
+     * @param index L'index de l'aide à afficher.
      */
     @Override
     public void afficherAide(int index) {
@@ -516,6 +538,11 @@ public class AideVoisin extends Aide {
 
     }
 
+    /**
+     * Méthode main pour tester la classe AideVoisin.
+     *
+     * @param args Arguments de la ligne de commande.
+     */
     public static void main(String[] args) {
         // Création d'une matrice pour tester
         Double[][] mat = {
