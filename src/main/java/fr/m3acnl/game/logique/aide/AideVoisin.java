@@ -1,18 +1,17 @@
 package fr.m3acnl.game.logique.aide;
 
-import fr.m3acnl.game.logique.Matrice;
-import fr.m3acnl.game.logique.elementjeu.Coord;
-import fr.m3acnl.game.logique.elementjeu.Noeud;
-import fr.m3acnl.game.logique.elementjeu.Lien;
-import fr.m3acnl.game.logique.elementjeu.DoubleLien;
-import fr.m3acnl.game.logique.elementjeu.ElementJeu;
-
-import fr.m3acnl.game.logique.Jeu;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.game.logique.Matrice;
+import fr.m3acnl.game.logique.elementjeu.Coord;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
 
 /**
  * Classe d'aide.
@@ -486,41 +485,34 @@ class AideVoisin extends Aide {
     }
 
 
-    public String aideGlobale(int type_test) {
+    public ElementAide aideGlobale() {
         List<Noeud> tousLesNoeuds = getListeNoeuds();
-        String titreAide;
-        String descriptionAide;
-    
+        ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
+        
         for (Noeud noeud : tousLesNoeuds) {
-            switch (type_test) {
-                case 1:
-                    if (poidRestantVoisin(noeud)) {
-                        titreAide = "Aide sur les voisins";
-                        descriptionAide = "Cette aide vous montre les voisins possibles.";
-                        return "Titre de l'aide: " + titreAide + "\nDescription: " + descriptionAide;
-                    }
-                    break;
-                case 2:
-                    if (checkIsolement(noeud)) {
-                        titreAide = "Aide sur l'isolement";
-                        descriptionAide = "Cette aide met en évidence les nœuds isolés.";
-                        return "Titre de l'aide: " + titreAide + "\nDescription: " + descriptionAide;
-                    }
-                    break;
-                case 3:
-                    if (afficherAideNoeud(noeud)) {
-                        titreAide = "Aide sur le poids restant";
-                        descriptionAide = "Cette aide affiche les connexions restantes possibles.";
-                        return "Titre de l'aide: " + titreAide + "\nDescription: " + descriptionAide;
-                    }
-                    break;
-                default:
-                    return "Type d'aide inconnu.";
+            // Test 1: Aide sur les voisins
+            if (afficherAideNoeud(noeud)) {
+                elementAide.addTexte(" 1 Description: Cette aide vous montre les voisins possibles.");
+                // Ajouter le noeud à surligner (exemple pour l'index 0)
+            }
+    
+            // Test 2: Aide sur l'isolement
+            if (poidRestantVoisin(noeud)) {
+                elementAide.addTexte("2 Description: Cette aide met en évidence les nœuds isolés.");
+                // Ajouter le noeud à surligner (exemple pour l'index 1)
+            }
+    
+            // Test 3: Aide sur le poids restant
+            if (checkIsolement(noeud)) {
+                elementAide.addTexte("3 Description: Cette aide affiche les connexions restantes possibles.");
+                // Ajouter le noeud à surligner (exemple pour l'index 2)
             }
         }
-        return "Aucune aide disponible.";
+    
+        return elementAide;  // Retourner l'élément d'aide complet
     }
-
+    
+    
 
 
     
@@ -639,13 +631,6 @@ class AideVoisin extends Aide {
 
         System.out.println("Description : " + aideVoisin.getDescription());
         */
-
-        // Test de la méthode aideGlobale
-        System.out.println("\nTest de aideGlobale :");
-        for (int i = 1; i <= 3; i++) {
-            System.out.println("Type d'aide " + i + " : ");
-            System.out.println(aideVoisin.aideGlobale(i));
-        }
         
 
     }
