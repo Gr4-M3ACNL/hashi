@@ -1,4 +1,8 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
+
+import java.util.ArrayList;
+
+import fr.m3acnl.game.logique.Jeu;
 
 /**
  * Classe Lien, afin de les utilisés pour lié 2 noeuds.
@@ -8,6 +12,7 @@ package fr.m3acnl.game.logique;
  */
 public class Lien implements ElementJeu {
 
+    // ==================== Attributs ====================
     /**
      * Le jeu pour récupérer le plateau.
      */
@@ -49,6 +54,26 @@ public class Lien implements ElementJeu {
     private int index;
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = false;
+
+    /**
+     * Compteur pour la consultation.
+     */
+    private int cmptVerif = 0;
+
+    /**
+     * Nombre de fois où il faut consulter le lien.
+     */
+    private final int cmptVerifMax;
+
+    /**
+     * Liste des double lien où il est présent.
+     */
+    private final ArrayList<DoubleLien> listeDl;
+
+    /**
      * Constructeur pour une nouvelle instance de Lien.
      *
      * @param n1 premier Noeud
@@ -66,9 +91,12 @@ public class Lien implements ElementJeu {
         surbrillance = false;
         jeu = j;
         orientation = orient;
+        listeDl = new ArrayList<>();
 
+        cmptVerifMax = tailleLien();
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère l'index du lien.
      *
@@ -133,12 +161,51 @@ public class Lien implements ElementJeu {
     }
 
     /**
+     * Vérifie si un noeud n est présent dans ce lien. Vérifie si le lien est
+     * valide.
+     *
+     * @return True si le lien est valide sinon false
+     */
+    public boolean estValide() {
+        return (nbLien == nbLienSoluce);
+    }
+
+    // ==================== Setter ====================
+    /**
      * Défini l'index du lien.
      *
-     * @param i L'index du lien
+     * @param i L'index du lien dans la liste de lien du jeu
      */
     public void setIndex(int i) {
         index = i;
+    }
+
+    /**
+     * Ajoute un double lien à la liste.
+     *
+     * @param dl Le double lien à ajouter
+     */
+    public void addDoubleLien(DoubleLien dl) {
+        listeDl.add(dl);
+    }
+
+    /**
+     * Récupère la taille du lien (Nombre de case entre ses deux noeuds).
+     *
+     * @return la taille du lien
+     */
+    public int tailleLien() {
+        int tot = 0;
+        if (orientation == 1) {
+            for (int i = noeud1.getPosition().getCoordY() + 1; i < noeud2.getPosition().getCoordY(); i++) {
+                tot++;
+            }
+        } else {
+            for (int i = noeud1.getPosition().getCoordX() + 1; i < noeud2.getPosition().getCoordX(); i++) {
+                tot++;
+            }
+        }
+        return tot;
     }
 
     /**
@@ -147,6 +214,7 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOn() {
         surbrillance = true;
+        averifie();
     }
 
     /**
@@ -155,17 +223,68 @@ public class Lien implements ElementJeu {
     @Override
     public void surbrillanceOff() {
         surbrillance = false;
+        averifie();
+    }
+
+    // ==================== Action ====================
+    /**
+     * Effectue le retour a l'état précédent du Lien et des noeuds.
+     */
+    public void retourArriere() {
+        averifie();
+        nbLien = (nbLien + 2) % 3;
+        if (nbLien < 2) {
+            if (nbLien == 0) {
+                if (orientation == 1) {
+                    jeu.verificationHorizontal(noeud1, noeud2, nbLien, false);
+                } else {
+                    jeu.verificationVertical(noeud1, noeud2, nbLien, false);
+                }
+            }
+            noeud1.diminuerDegre();
+            noeud2.diminuerDegre();
+        } else {
+            if (orientation == 1) {
+                jeu.verificationHorizontal(noeud1, noeud2, nbLien, false);
+            } else {
+                jeu.verificationVertical(noeud1, noeud2, nbLien, false);
+            }
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+            noeud1.ajouterDegre();
+            noeud2.ajouterDegre();
+        }
+
     }
 
     /**
-     * Vérifie si le lien est valide.
+     * Vérifie si un noeud n est présent dans ce lien.
      *
-     * @return True si le lien est valide sinon false
+     * @param n Le noeud a vérifier
+     * @return Le résultat de la vérification
      */
-    public boolean estValide() {
-        return (nbLien == nbLienSoluce);
+    public int noeudDansLien(Noeud n) {
+        int res = noeud1.compareTo(n);
+        if (res != 0) {
+            return noeud2.compareTo(n);
+        }
+        return res;
     }
 
+    /**
+     * Remet le lien à zéro .
+     */
+    public void remiseAzero() {
+        if (nbLien == 1) {
+            this.retourArriere();
+        }
+        if (nbLien == 2) {
+            this.activer();
+        }
+        averifie();
+    }
+
+    // ==================== Override ====================
     /**
      * Active le lien le faisant passer à son état suivant et met à jour le
      * degré actuelle des noeud liés.
@@ -174,15 +293,17 @@ public class Lien implements ElementJeu {
      */
     @Override
     public Boolean activer() {
+        averifie();
         nbLien = (nbLien + 1) % 3;
         if (nbLien != 2) {
             if (orientation == 1) {
-                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien) == 1) {
+                if (jeu.verificationHorizontal(noeud1, noeud2, nbLien, false) == 1) {
                     nbLien -= 1;
+
                     return false;
                 }
             } else {
-                if (jeu.verificationVertical(noeud1, noeud2, nbLien) == 1) {
+                if (jeu.verificationVertical(noeud1, noeud2, nbLien, false) == 1) {
                     nbLien -= 1;
                     return false;
                 }
@@ -211,63 +332,47 @@ public class Lien implements ElementJeu {
             }
 
         }
+
         return true;
     }
 
     /**
-     * Effectue le retour a l'état précédent du Lien et des noeuds.
-     */
-    public void retourArriere() {
-        nbLien = (nbLien + 2) % 3;
-        if (nbLien < 2) {
-            if (nbLien == 0) {
-                if (orientation == 1) {
-                    jeu.verificationHorizontal(noeud1, noeud2, nbLien);
-                } else {
-                    jeu.verificationVertical(noeud1, noeud2, nbLien);
-                }
-            }
-            noeud1.diminuerDegre();
-            noeud2.diminuerDegre();
-        } else {
-            if (orientation == 1) {
-                jeu.verificationHorizontal(noeud1, noeud2, nbLien);
-            } else {
-                jeu.verificationVertical(noeud1, noeud2, nbLien);
-            }
-            noeud1.ajouterDegre();
-            noeud2.ajouterDegre();
-            noeud1.ajouterDegre();
-            noeud2.ajouterDegre();
-        }
-    }
-
-    /**
-     * Vérifie si un noeud n est présent dans ce lien.
+     * Permet de savoir si l'élément a été modifié.
      *
-     * @param n Le noeud a vérifier
-     * @return Le résultat de la vérification
+     * @return true si l'élément a été modifié, false sinon
      */
-    public int noeudDansLien(Noeud n) {
-        int res = noeud1.compareTo(n);
-        if (res != 0) {
-            return noeud2.compareTo(n);
-        }
-        return res;
+    @Override
+    public boolean modifie() {
+        return modifie;
     }
 
     /**
-     * Remet le lien à zéro .
+     * Permet d'indiquer que l'élément a été consulter.
      */
-    public void remiseAzero() {
-        if (nbLien == 1) {
-            this.retourArriere();
-        }
-        if (nbLien == 2) {
-            this.activer();
+    @Override
+    public void verifie() {
+        if (cmptVerif == cmptVerifMax) {
+            modifie = false;
+            cmptVerif = 0;
+        } else {
+            cmptVerif++;
         }
     }
 
+    /**
+     * Permet de dire que l'élément a été modifié. Fait appel à la méthode
+     * averifie sur ses double lien.
+     */
+    @Override
+    public void averifie() {
+        modifie = true;
+        cmptVerif = 0;
+        for (DoubleLien dl : listeDl) {
+            dl.averifie();
+        }
+    }
+
+    // ==================== Affichage ====================
     /**
      * Affiche le Lien.
      */

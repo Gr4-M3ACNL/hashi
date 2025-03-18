@@ -70,7 +70,22 @@ public class JsonManagerTest extends Tests {
         // Vérification de quelques valeurs spécifiques
         assertEquals(-4.0, serialise[0][0], "La première île devrait avoir une valeur de -4");
         assertEquals(0.2, serialise[0][1], "La connexion horizontale devrait avoir une valeur de 0.2");
-        assertEquals(-3.0, serialise[0][2], "La deuxième île devrait avoir une valeur de -3");
+        assertEquals(-4.0, serialise[0][2], "La deuxième île devrait avoir une valeur de -4");
+
+        JsonManager.GrilleInfo grilleInfo2 = manager.getGrilleInfo(Difficulte.facile, 1);
+        assertNotNull(grilleInfo2);
+        assertEquals(7, grilleInfo2.taille(), "La taille de la grille devrait être de 7");
+
+        // Vérification du format de la grille sérialisée
+        Double[][] serialise2 = grilleInfo2.serialise();
+        assertNotNull(serialise2, "La grille sérialisée ne devrait pas être nulle");
+        assertEquals(7, serialise2.length, "La grille devrait avoir 7 lignes");
+        assertEquals(7, serialise2[0].length, "La grille devrait avoir 7 colonnes");
+
+        // Vérification de quelques valeurs spécifiques
+        assertEquals(-4.0, serialise2[0][0], "La première île devrait avoir une valeur de -4");
+        assertEquals(0.2, serialise2[0][1], "La connexion horizontale devrait avoir une valeur de 0.2");
+        assertEquals(-3.0, serialise2[0][2], "La deuxième île devrait avoir une valeur de -3");
     }
 
     /**
@@ -82,7 +97,7 @@ public class JsonManagerTest extends Tests {
     public void testGetNbGrilles() {
         JsonManager manager = new JsonManager();
         int nbGrilles = manager.getNbGrilles(Difficulte.facile);
-        assertEquals(5, nbGrilles, "Le nombre de grilles pour la difficulté facile devrait être de 2");
+        assertEquals(6, nbGrilles, "Le nombre de grilles pour la difficulté facile devrait être de 6");
     }
 
     /**
@@ -157,22 +172,17 @@ public class JsonManagerTest extends Tests {
         JsonManager manager = new JsonManager();
 
         // vérifie que le fichier de profils n'existe pas
-        assertNull(manager.getListeProfils(), "Le fichier de profils n'existe la liste devrai être null");
+        assertTrue(manager.getListeProfils().isEmpty(), "Le fichier de profils n'existe la liste devrai être null");
 
-        try {
-            // copie le fichier de test dans le repertoire ressources au bon endroit
-            Files.copy(this.getClass().getResourceAsStream("/fr/m3acnl/managers/profils.json"),
-                    SauvegardeManager.getInstance().getRepertoireSauvegarde().resolve("profils.json"));
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("Impossible de copier le fichier de profils");
-        }
+        Profile profile = new Profile("jacoboni");
+        manager.sauvegarderProfil(profile);
+        profile = new Profile("Després");
+        manager.sauvegarderProfil(profile);
         // vérifie que le fichier de profils existe
         assertNotNull(manager.getListeProfils(), "La liste des profils ne devrait pas être nulle");
-        List<String> profils = manager.getListeProfils();
-        assertEquals(2, profils.size(), "Il devrait y avoir 2 profils");
-        assertEquals("jacoboni", profils.get(0), "Le premier profil devrait être jacoboni");
-        assertEquals("despres", profils.get(1), "Le deuxième profil devrait être despres");
+        assertEquals(2, manager.getListeProfils().size(), "Il devrait y avoir 2 profils");
+        assertEquals("jacoboni", manager.getListeProfils().get(0), "Le premier profil devrait être jacoboni");
+        assertEquals("Després", manager.getListeProfils().get(1), "Le deuxième profil devrait être Després");
 
         // restauration des profils
         restoreProfils();
@@ -189,14 +199,14 @@ public class JsonManagerTest extends Tests {
         // initialisation des profils
         initProfils();
         JsonManager manager = new JsonManager();
-        Profile profile = new Profile("test");
+        Profile profile = new Profile("testJson");
         manager.sauvegarderProfil(profile);
         List<String> profils = manager.getListeProfils();
         assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
-        assertEquals("test", profils.get(0), "Le premier profil devrait être test");
+        assertEquals("testJson", profils.get(0), "Le premier profil devrait être test");
 
         // test du chargement du profil nouvellement créé
-        Profile profileCharge = manager.chargerProfil("test");
+        Profile profileCharge = manager.chargerProfil("testJson");
         assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
 
         // restauration des profils
@@ -213,11 +223,11 @@ public class JsonManagerTest extends Tests {
         // initialisation des profils
         initProfils();
         JsonManager manager = new JsonManager();
-        Profile profile = new Profile("test");
+        Profile profile = new Profile("testJson");
         manager.sauvegarderProfil(profile);
 
         // test de la suppression du profil
-        manager.supprimerProfil("test");
+        manager.supprimerProfil("testJson");
         List<String> profils = manager.getListeProfils();
         assertEquals(0, profils.size(), "Il ne devrait y avoir aucun profil");
 
@@ -276,7 +286,7 @@ public class JsonManagerTest extends Tests {
     public void testGetNbGrillesAllDifficulties() {
         JsonManager manager = new JsonManager();
         
-        assertEquals(5, manager.getNbGrilles(Difficulte.facile), "Nombre incorrect de grilles faciles");
+        assertEquals(6, manager.getNbGrilles(Difficulte.facile), "Nombre incorrect de grilles faciles");
         assertEquals(5, manager.getNbGrilles(Difficulte.moyen), "Nombre incorrect de grilles moyennes");
         assertEquals(5, manager.getNbGrilles(Difficulte.difficile), "Nombre incorrect de grilles difficiles");
         assertEquals(4, manager.getNbGrilles(Difficulte.expert), "Nombre incorrect de grilles expert");

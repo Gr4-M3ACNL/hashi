@@ -10,6 +10,7 @@ import java.nio.file.Path;
  */
 public class SauvegardeManager {
 
+    // ======================== Attributs ========================
     /**
      * Le singleton de la classe SauvegardeManager.
      */
@@ -27,19 +28,44 @@ public class SauvegardeManager {
         initialiseRepertoire();
     }
 
+    // ======================== Getter ========================
+    /**
+     * Retourne l'instance de la classe SauvegardeManager.
+     *
+     * @return l'instance de la classe SauvegardeManager
+     */
+    protected static SauvegardeManager getInstance() {
+        return instance;
+    }
+
+    /**
+     * Retourne le dossier de sauvegarde.
+     *
+     * @return le dossier de sauvegarde
+     */
+    protected Path getRepertoireSauvegarde() {
+        return repertoireSauvegarde;
+    }
+
+    // ======================== Setter ========================
     /**
      * Définir le dossier de sauvegarde en fonction du système d'exploitation.
      */
     private void setSaveDir() {
         this.repertoireSauvegarde = switch (OsManager.getInstance().getOsType()) {
-            case WINDOWS -> Path.of(System.getenv("APPDATA"), "HashiParmentier");
-            case MAC -> Path.of(System.getProperty("user.home"), "Library", "Application Support", "HashiParmentier");
-            default -> Path.of(System.getProperty("user.home"), ".game", "HashiParmentier");
+            case WINDOWS ->
+                Path.of(System.getenv("APPDATA"), "HashiParmentier");
+            case MAC ->
+                Path.of(System.getProperty("user.home"), "Library", "Application Support", "HashiParmentier");
+            default ->
+                Path.of(System.getProperty("user.home"), ".game", "HashiParmentier");
         };
     }
 
+    // ======================== Méthodes ========================
     /**
      * Initialiser le dossier de sauvegarde.
+     *
      * @throws RuntimeException si le dossier de sauvegarde ne peut pas être créé
      */
     private void initialiseRepertoire() {
@@ -50,19 +76,4 @@ public class SauvegardeManager {
         }
     }
 
-    /**
-     * Retourne l'instance de la classe SauvegardeManager.
-     * @return l'instance de la classe SauvegardeManager
-     */
-    protected static SauvegardeManager getInstance() {
-        return instance;
-    }
-
-    /**
-     * Retourne le dossier de sauvegarde.
-     * @return le dossier de sauvegarde
-     */
-    protected Path getRepertoireSauvegarde() {
-        return repertoireSauvegarde;
-    }
 }

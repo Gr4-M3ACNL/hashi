@@ -2,6 +2,11 @@ package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
+
 /**
  * Classe matrice du jeu pour gérer sa création et sa validité.
  *
@@ -9,8 +14,8 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Matrice {
-    //Variables de la classe Matrice.
 
+    // =========================== Attributs ===========================
     /**
      * Contient la matrice du jeu avec les objets de type ElementJeu.
      */
@@ -57,6 +62,7 @@ public class Matrice {
 
     }
 
+    // =========================== Getter ===========================
     /**
      * Récupère une copie de la liste des liens.
      *
@@ -87,6 +93,21 @@ public class Matrice {
     }
 
     /**
+     * Récupère la matrice2 en array.
+     * 
+     * @return La matrice2 en array.
+     */
+    public Double [][] getMatrice2Array() {
+        int taille = matrice2.size();
+        Double[][] array = new Double[taille][taille];
+
+        for (int i = 0; i < taille; i++) {
+            array[i] = matrice2.get(i).toArray(new Double[0]);
+        }
+        return array;
+    }
+    
+    /**
      * Récupère la liste des liens de la matrice.
      *
      * @return la liste des liens de la matrice
@@ -95,6 +116,7 @@ public class Matrice {
         return listeLien;
     }
 
+    // =========================== Setter ===========================
     /**
      * Modifie un élément de la matrice a la position donnée.
      *
@@ -106,6 +128,7 @@ public class Matrice {
         matrice.get(ligne).set(col, element);
     }
 
+    // =========================== Generation ===========================
     /**
      * Récupère la partie entière d'un nombre. La partie entière représente la
      * solution vertical du lien.
@@ -134,7 +157,6 @@ public class Matrice {
      * @param jeu Le jeu au quel la matrice appartient
      */
     private void genMatrice(Jeu jeu) {
-        // Generate the nodes
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
                 if (matrice2.get(i).get(j) < 0) {
@@ -232,6 +254,7 @@ public class Matrice {
         }
     }
 
+    // =========================== Action ===========================
     /**
      * Vérifie si la matrice est valide.
      *
@@ -300,6 +323,7 @@ public class Matrice {
         return noeudLePlusProche;
     }
 
+    // =========================== Affichage ===========================
     /**
      * Dessine la matrice.
      */
