@@ -43,6 +43,7 @@ public class ElementAide {
     /**
      * Ajoute un texte à l'élément d'aide.
      *
+     * @param i Index du texte à ajouter.
      * @param texte Texte à ajouter.
      */
     public void addTexte(int i, String texte) {

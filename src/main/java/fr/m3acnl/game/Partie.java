@@ -140,7 +140,7 @@ public class Partie implements JsonSerializable {
      * @param malusEnMillisecondes le malus à ajouter en millisecondes
      */
     public void addMalus(long malusEnMillisecondes) {
-        chrono = chrono.plusMillis(malusEnMillisecondes * 1000);
+        chrono = chrono.minusMillis(malusEnMillisecondes * 1000);
     }
 
     /**

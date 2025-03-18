@@ -97,21 +97,39 @@ public class PartieAffichage extends Application {
      */
     private Timeline timeline;
 
-    private boolean aJoue = true;
+    /**
+     * Accès à la timeline pour l'actualisation de l'aide.
+     */
+    private boolean ajoue = true;
 
+    /**
+     * Limiteur du niveau d'aide.
+     */
     private int niveauAide = ProfileManager.getInstance().getProfileActif().getParametre().getNiveauAide();
 
+    /**
+     * Texte d'aide à afficher.
+     */
     private String[] text = {"1 - Dans un monde en perpétuelle évolution,"
-        + "la technologie façonne nos vies à une vitesse fulgurante."
-        + " Chaque innovation ouvre de nouvelles opportunités, transformant nos habitudes et nos interactions."
-        + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
+            + "la technologie façonne nos vies à une vitesse fulgurante."
+            + " Chaque innovation ouvre de nouvelles opportunités, transformant nos habitudes et nos interactions."
+            + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
         "2 - Dans un monde en perpétuelle évolution,",
-        "3 - la technologie façonne nos vies à une vitesse fulgurante.",};
+        "3 - la technologie façonne nos vies à une vitesse fulgurante.", };
 
+    /**
+     * L'élément d'aide à afficher.
+     */
     private ElementAide elementAide;
 
+    /**
+     * Le numéro de l'aide actuelle.
+     */
     private int numeroAide = 0;
 
+    /**
+     * l'aide sur les voisins.
+     */
     AideVoisin aideVoisin;
 
     /**
@@ -608,6 +626,9 @@ public class PartieAffichage extends Application {
         numeroAide++;
     }
 
+    /**
+     * Met une partie de la grille en subrillance pour les Aide.
+     */
     private void surbrillanceAide() {
         if (elementAide != null) {
             for (Noeud n : elementAide.getNoeudsSurbrillance()[numeroAide]) {
@@ -643,10 +664,10 @@ public class PartieAffichage extends Application {
             numeroAide = 0;
         }
         System.out.println("Niveau de l'aide du profile " + (niveauAide + 1));
-        if (aJoue) {
+        if (ajoue) {
             aideVoisin = new AideVoisin(partie.getJeu().getPlateau(), "Aide sur les voisins", "Voisinage", partie.getJeu(), new Coord(0, 0));
             elementAide = aideVoisin.aideGlobale();
-            aJoue = false;
+            ajoue = false;
             numeroAide = 0;
         }
         if (numeroAide < niveauAide + 1) {
@@ -700,7 +721,7 @@ public class PartieAffichage extends Application {
             partie.sauvegarde();
         }
         // Mettre à jour l'affichage
-        aJoue = true;
+        ajoue = true;
         actualiserAffichage();
     }
 
