@@ -1,4 +1,4 @@
-package fr.m3acnl.game.logique;
+package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Classe DoubleLien pour gérer les liens croisés.
@@ -8,6 +8,7 @@ package fr.m3acnl.game.logique;
  */
 public class DoubleLien implements ElementJeu {
 
+    // ==================== Attributs ====================
     /**
      * Le 1er lien.
      */
@@ -29,6 +30,11 @@ public class DoubleLien implements ElementJeu {
     private int lienBrillance;
 
     /**
+     * Permet de savoir si l'élément a été modifié.
+     */
+    private boolean modifie = false;
+
+    /**
      * Constructeur pour créer une instance de DoubleLien.
      *
      * @param l1 Le 1er lien
@@ -39,8 +45,11 @@ public class DoubleLien implements ElementJeu {
         lien2 = l2;
         interrupteur = false;
         lienBrillance = 0;
+        lien1.addDoubleLien(this);
+        lien2.addDoubleLien(this);
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère le 1er lien.
      *
@@ -57,31 +66,6 @@ public class DoubleLien implements ElementJeu {
      */
     public Lien getLien2() {
         return lien2;
-    }
-
-    /**
-     * Récupère l'état de l'interrupteur.
-     *
-     * @return L'état de l'interrupteur
-     */
-    public Boolean getInterrupteur() {
-        return interrupteur;
-    }
-
-    /**
-     * Active l'interrupteur.
-     */
-    public void activeInterrupteur() {
-        interrupteur = true;
-    }
-
-    /**
-     * Désactive l'interrupteur si les liens sont égaux.
-     */
-    public void desactiveInterrupteur() {
-        if (lien1.getNbLien() == lien2.getNbLien()) {
-            interrupteur = false;
-        }
     }
 
     /**
@@ -106,11 +90,38 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
+     * Récupère l'état de l'interrupteur.
+     *
+     * @return L'état de l'interrupteur
+     */
+    public Boolean getInterrupteur() {
+        return interrupteur;
+    }
+
+    // ==================== Setter ====================
+    /**
+     * Active l'interrupteur.
+     */
+    public void activeInterrupteur() {
+        interrupteur = true;
+    }
+
+    /**
+     * Désactive l'interrupteur si les liens sont égaux.
+     */
+    public void desactiveInterrupteur() {
+        if (lien1.getNbLien() == lien2.getNbLien()) {
+            interrupteur = false;
+        }
+    }
+
+    /**
      * Active la surbrillance du lien en fonction du nœud donné.
      *
      * @param n Le nœud lié
      */
     public void activerSurbrillance(Noeud n) {
+        averifie();
         if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 lien1.surbrillanceOn();
@@ -134,6 +145,33 @@ public class DoubleLien implements ElementJeu {
         }
     }
 
+    // ==================== Override ====================
+    /**
+     * Permet de savoir si l'élément a été modifié.
+     *
+     * @return true si l'élément a été modifié, false sinon
+     */
+    @Override
+    public boolean modifie() {
+        return modifie;
+    }
+
+    /**
+     * Permet d'indiquer que l'élément a été consulter.
+     */
+    @Override
+    public void verifie() {
+        modifie = false;
+    }
+
+    /**
+     * Permet de dire que l'élément a été modifié.
+     */
+    @Override
+    public void averifie() {
+        modifie = true;
+    }
+
     /**
      * Méthode non utilisée.
      *
@@ -151,6 +189,7 @@ public class DoubleLien implements ElementJeu {
      * @return Le lien qui a été activé, retourne null si aucun lien est activé
      */
     public Lien activer(Noeud n) {
+        averifie();
         if (!interrupteur) {
             if (lien1.noeudDansLien(n) == 0) {
                 if (lien1.activer()) {
@@ -176,11 +215,13 @@ public class DoubleLien implements ElementJeu {
                 return lien2;
             }
         }
+
         return null;
     }
 
     @Override
     public void surbrillanceOn() {
+        averifie();
         if (lienActif() != null) {
             lienActif().surbrillanceOn();
         }
@@ -188,6 +229,7 @@ public class DoubleLien implements ElementJeu {
 
     @Override
     public void surbrillanceOff() {
+        averifie();
         if (lienBrillance == 1) {
             lien1.surbrillanceOff();
             lienBrillance = 0;
@@ -195,8 +237,10 @@ public class DoubleLien implements ElementJeu {
             lien2.surbrillanceOff();
             lienBrillance = 0;
         }
+
     }
 
+    // ==================== Affichage ====================
     /**
      * Renvoie le chemin de l'image du DoubleLien.
      *
@@ -212,6 +256,21 @@ public class DoubleLien implements ElementJeu {
             return "/META-INF/assetsGraphiques/link/blank.png";
         }
         return this.lienActif().draw();
+    }
+
+    /**
+     * Renvoie le lien possèdant le noeud donné.
+     * 
+     * @param n Le noeud donné.
+     * @return Le lien si il est dans un des liens sinon renvoie null.
+     */
+    public Lien getLienDuNoeud(Noeud n) {
+        if (lien1.noeudDansLien(n) == 0) {
+            return lien1;
+        } else if (lien2.noeudDansLien(n) == 0) {
+            return lien2;
+        }
+        return null;
     }
 
     /**
@@ -231,5 +290,4 @@ public class DoubleLien implements ElementJeu {
     public String toString() {
         return " D" + "(" + lien1 + "|" + lien2 + ") ";
     }
-
 }

@@ -256,7 +256,9 @@
     </module>
     <module name="NoWhitespaceBeforeCaseDefaultColon"/>
     <module name="OverloadMethodsDeclarationOrder"/>
-    <module name="VariableDeclarationUsageDistance"/>
+    <module name="VariableDeclarationUsageDistance">
+      <property name="allowedDistance" value="15"/>
+    </module>
 
     <module name="MethodParamPad">
       <property name="tokens"
