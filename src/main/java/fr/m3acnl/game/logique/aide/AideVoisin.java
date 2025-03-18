@@ -497,6 +497,11 @@ public class AideVoisin extends Aide {
         return totalAides;
     }
 
+    /**
+     * Méthode pour créer un élément d'aide globale.
+     *
+     * @return un élément d'aide globale
+     */
     public ElementAide aideGlobale() {
         List<Noeud> tousLesNoeuds = getListeNoeuds();
         ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide

@@ -81,7 +81,6 @@ public class SauvegardePartieManager {
     public JeuEnCour charger(Difficulte difficulte) {
         GrilleInfo grilleInfo = jsonManager.getGrilleInfo(difficulte, ProfileManager.getInstance()
                 .getProfileActif().getHistoriquePartieProfile().getIndex(difficulte));
-        System.out.println(ProfileManager.getInstance().getProfileActif().getHistoriquePartieProfile().getIndex(difficulte));
         Jeu jeu = new Jeu(grilleInfo.taille(), grilleInfo.serialise());
 
         JsonNode partie = jsonManager.chargerPartie(ProfileManager.getInstance().getProfileActif().getNom(), difficulte);
