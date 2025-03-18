@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import fr.m3acnl.game.logique.elementjeu.Coord;
-import fr.m3acnl.game.logique.elementjeu.Noeud;
-import fr.m3acnl.game.logique.elementjeu.ElementJeu;
-import fr.m3acnl.game.logique.elementjeu.DoubleLien;
-import fr.m3acnl.game.logique.elementjeu.Lien;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Matrice;
+import fr.m3acnl.game.logique.elementjeu.Coord;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
 
 /**
  * Classe d'aide.
@@ -19,7 +19,7 @@ import fr.m3acnl.game.logique.Matrice;
  * @author Gaumont mael
  * @version 1.0
  */
-class AideVoisin extends Aide {
+public class AideVoisin extends Aide {
 
     /**
      * le jeu sur lequel on joue.
@@ -101,7 +101,7 @@ class AideVoisin extends Aide {
         }
         return noeuds;
     }
-
+  
     /**
      * Vérifie si les coordonnées sont valides.
      *
@@ -284,10 +284,9 @@ class AideVoisin extends Aide {
         for (Noeud voisin : voisins) {
             ps += voisin.getDegreSoluce();
         }
-        int pr = ps - pa;
 
         System.out.println("Total des pois  : " + pa + "poid du noeud qui reste a remplir" + pl);
-        if (pr < pl) {
+        if (pa < pl) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "il n y a plus de place pour cher les voisin actuellement .",
                     "poidRestantVoisin", jeu, noeud.getPosition()));
             afficherAide(aidesVoisins.size() - 1);
@@ -496,6 +495,34 @@ class AideVoisin extends Aide {
 
         System.out.println("Total des aides disponibles : " + totalAides);
         return totalAides;
+    }
+
+    public ElementAide aideGlobale() {
+        List<Noeud> tousLesNoeuds = getListeNoeuds();
+        ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
+
+        for (Noeud noeud : tousLesNoeuds) {
+            // Test 1: Aide sur les voisins
+            if (afficherAideNoeud(noeud)) {
+                elementAide.addTexte(0, " 1 Description: Cette aide vous montre les voisins possibles.");
+                elementAide.addNoeud(0, noeud);
+                // Ajouter le noeud à surligner (exemple pour l'index 0)
+            }
+
+            // Test 2: Aide sur l'isolement
+            if (poidRestantVoisin(noeud)) {
+                elementAide.addTexte(1, "2 Description: Cette aide met en évidence les nœuds isolés.");
+                // Ajouter le noeud à surligner (exemple pour l'index 1)
+            }
+
+            // Test 3: Aide sur le poids restant
+            if (checkIsolement(noeud)) {
+                elementAide.addTexte(2, "3 Description: Cette aide affiche les connexions restantes possibles.");
+                // Ajouter le noeud à surligner (exemple pour l'index 2)
+            }
+        }
+
+        return elementAide;  // Retourner l'élément d'aide complet
     }
 
     /**
