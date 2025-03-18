@@ -15,8 +15,6 @@ import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.elementjeu.Coord;
 import fr.m3acnl.game.logique.elementjeu.Noeud;
 
-
-
 /**
  * Classe test pour la classe AideVoisin.
  *
@@ -24,7 +22,7 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
  * @see Jeu
  * @see Noeud
  */
-public class AideVoisinTest extends Tests{
+public class AideVoisinTest extends Tests {
 
     private static Jeu jeu;
     private static AideVoisin aideVoisin;
@@ -42,7 +40,7 @@ public class AideVoisinTest extends Tests{
             {1.0, -4.0, 0.2, 0.2, -2.0, 1.0, 0.0},
             {-2.0, 0.1, 0.1, -2.0, 0.1, -2.0, 0.0}
         };
-        
+
         jeu = new Jeu(7, mat);
         aideVoisin = new AideVoisin(jeu.getPlateau(), "Aide sur les voisins", "Voisinage", jeu, new Coord(0, 0));
         noeudTest = (Noeud) jeu.getPlateau().getElement(0, 0);
@@ -98,4 +96,3 @@ public class AideVoisinTest extends Tests{
         noeudTest2 = null;
     }
 }
-
