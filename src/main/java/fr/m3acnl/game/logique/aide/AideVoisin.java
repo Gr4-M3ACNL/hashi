@@ -29,7 +29,6 @@ public class AideVoisin extends Aide {
      *
      * @param matrice la matrice représentant la grille du jeu
      * @param description la description de l'aide
-     * @param cout le coût de l'aide
      * @param nom le nom de l'aide
      */
     public AideVoisin(Matrice matrice, String description, String nom, Jeu jeu, Coord c) {
