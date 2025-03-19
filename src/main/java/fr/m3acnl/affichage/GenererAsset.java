@@ -402,7 +402,7 @@ public class GenererAsset {
 
         ImageView imageView = creerImageView(imagePaths[currentIndex[0]], 1100, 1000);
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(6), event -> {
             currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
             imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
         }));
