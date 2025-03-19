@@ -19,7 +19,7 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
  * @author Gaumont mael
  * @version 1.0
  */
-class AideVoisin extends Aide {
+public class AideVoisin extends Aide {
 
     private final Jeu jeu;
     private static List<AideVoisin> aidesVoisins;
@@ -29,7 +29,6 @@ class AideVoisin extends Aide {
      *
      * @param matrice la matrice représentant la grille du jeu
      * @param description la description de l'aide
-     * @param cout le coût de l'aide
      * @param nom le nom de l'aide
      */
     public AideVoisin(Matrice matrice, String description, String nom, Jeu jeu, Coord c) {
@@ -62,7 +61,7 @@ class AideVoisin extends Aide {
         }
 
         // Vérifie si le poids du noeud divisé par 2 est égal à la somme de ses voisins
-        if ((poidsNoeud / 2 == nbvoisin ) && (poidsNoeud <= sommeVoisins)) {
+        if ((poidsNoeud / 2 == nbvoisin) && (poidsNoeud <= sommeVoisins)) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le poids du noeud divisé par 2 est égal à la somme de ses voisins.",
                 "Voisinage", jeu, noeud.getPosition()));
             return true;
@@ -87,7 +86,7 @@ class AideVoisin extends Aide {
         }
 
         // Vérifie si le poids du noeud divisé par 2 est égal à la somme de ses voisins
-        if ((poidsNoeud / 2 == nbvoisin ) && (poidsNoeud <= sommeVoisins)) {
+        if ((poidsNoeud / 2 == nbvoisin) && (poidsNoeud <= sommeVoisins)) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Le poids du noeud divisé par 2 est égal à la somme de ses voisins.",
                 "Voisinage", jeu, noeud.getPosition()));
             return true;
@@ -171,7 +170,7 @@ class AideVoisin extends Aide {
                 } else {
                     // Vérifie l'isolement horizontal du voisin à droite
                     if (!checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
-                          // Aide à true pour une utilisation pour une aide
+                        // Aide à true pour une utilisation pour une aide
                         if (jeu.verificationHorizontal(noeud, voisin, 1, true) == 1) {
                             aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                             voisins.remove(i);
@@ -276,7 +275,7 @@ class AideVoisin extends Aide {
         List<Noeud> voisins = trouverVoisinsDispo(noeud);
         int pa = 0;
         int ps = 0;
-        int pl=noeud.getDegreSoluce()-noeud.getDegreActuelle();
+        int pl = noeud.getDegreSoluce() - noeud.getDegreActuelle();
         for (Noeud voisin : voisins) {
             pa += voisin.getDegreActuelle();
         }
@@ -493,20 +492,21 @@ class AideVoisin extends Aide {
         for (Noeud noeud : tousLesNoeuds) {
             // Test 1: Aide sur les voisins
             if (afficherAideNoeud(noeud)) {
-                elementAide.addTexte(1," Il y a des noeud qui peuve etre connecter.Tecnique :si une ile a un chiffre qui "
-                +"si il se divise par 2 alors est egale a son nombre de voisin alors il peut se connecter en double pont a tous ses voisin");
+                elementAide.addTexte(1, " Il y a des noeud qui peuve etre connecter.Tecnique :si une ile a un chiffre qui "
+                    + "si il se divise par 2 alors est egale a son nombre de voisin alors il peut se connecter en double pont a tous ses voisin");
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
             }
     
             // Test 2: Aide sur l'isolement
             if (poidRestantVoisin(noeud)) {
-                elementAide.addTexte(2,"un noeud ne possede plus assez de place pour se completer.conseille:liberer lui des voisin");
+                elementAide.addTexte(2, "un noeud ne possede plus assez de place pour se completer.conseille:liberer lui des voisin");
                 // Ajouter le noeud à surligner (exemple pour l'index 1)
             }
     
             // Test 3: Aide sur le poids restant
             if (checkIsolement(noeud)) {
-                elementAide.addTexte(3,"une ile est completement isolé et ne peut plus etre connecter a aucune ile.conseille:liberer lui des voisin");
+                elementAide.addTexte(3, "une ile est completement isolé et ne peut plus etre connecter" 
+                    + "a aucune ile.conseille:liberer lui des voisin");
                 // Ajouter le noeud à surligner (exemple pour l'index 2)
             }
         }
