@@ -85,12 +85,11 @@ public class HashiParmentier extends Application {
         this.primaryStage = primaryStage;
         primaryStage.setTitle("Jeu - Menu Principal");
 
-        // 📌 Charger l'image de fond
         BackgroundImage background = new BackgroundImage(
                 new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backMenu.jpeg").toExternalForm()),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(100, 100, true, true, false, true));
-        // 📌 SCÈNE PRINCIPALE
+
         BorderPane root = new BorderPane();
         root.setBackground(new Background(background));
         /*
@@ -177,6 +176,10 @@ public class HashiParmentier extends Application {
         vboxLevels.setAlignment(Pos.CENTER);
         vboxLevels.setBackground(new Background(background));
 
+
+        Button tuto = genererMenu.createStyledButton("Tutoriel");
+        tuto.setOnAction(e -> genererMenu.creerSlideshow(primaryStage, mainScene));
+
         Button level1 = genererMenu.createStyledButton("Facile");
         level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
 
@@ -193,7 +196,7 @@ public class HashiParmentier extends Application {
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
         Label levelTitle = genererMenu.createStyledLabel("Choisissez votre niveau de jeu :");
-        vboxLevels.getChildren().addAll(levelTitle, level1, level2, level3, level4, levelRetour);
+        vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, levelRetour);
         levelSelectionScene = new Scene(vboxLevels, 500, 400);
 
     }

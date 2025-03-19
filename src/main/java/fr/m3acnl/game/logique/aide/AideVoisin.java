@@ -346,8 +346,8 @@ public class AideVoisin extends Aide {
                         
                         return true;
                     }
-                } else { /* Sinon le voisin est a droite verifhorizontal noeud vers voisin */
-                    /*
+                } else {
+                    /* Sinon le voisin est a droite verifhorizontal noeud vers voisin
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX(), noeud.getPosition().getCoordY() + 1), noeud)) {
@@ -377,8 +377,8 @@ public class AideVoisin extends Aide {
                         aidesVoisins.add(new AideVoisin(matrice, "Trouvés", "Isolement", jeu, noeud.getPosition()));
                         return true;
                     }
-                } else { /* Sinon verifvertical du noeud vers le voisin */
-                    /*
+                } else {
+                    /* Sinon verifvertical du noeud vers le voisin
                      * Regarde si le noeud ets lié a son voisin si oui n'est pas isolé.
                      */
                     if (checkLier(matrice.getElement(noeud.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY()), noeud)) {
