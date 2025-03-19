@@ -176,9 +176,8 @@ public class HashiParmentier extends Application {
         vboxLevels.setAlignment(Pos.CENTER);
         vboxLevels.setBackground(new Background(background));
 
-
         Button tuto = genererMenu.createStyledButton("Tutoriel");
-        tuto.setOnAction(e -> genererMenu.creerSlideshow(primaryStage, mainScene));
+        tuto.setOnAction(e -> primaryStage.setScene(genererMenu.creerSlideshow(primaryStage, mainScene)));
 
         Button level1 = genererMenu.createStyledButton("Facile");
         level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
