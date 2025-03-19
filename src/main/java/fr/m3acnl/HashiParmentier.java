@@ -156,10 +156,13 @@ public class HashiParmentier extends Application {
         Button createProfileButton = genererMenu.createStyledButton("Créer un profil");
         createProfileButton.setOnAction(e -> createProfile());
 
+        Button supprimerProfilButton = genererMenu.createStyledButton("Supprimer un profil");
+        supprimerProfilButton.setOnAction(e -> supprimerProfile());
+
         Button returnToMainMenu = genererMenu.createStyledButton("Retour");
         returnToMainMenu.setOnAction(e -> primaryStage.setScene(mainScene));
 
-        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, createProfileButton,
+        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, createProfileButton, supprimerProfilButton,
                 returnToMainMenu);
         profileSelectionScene = new Scene(vboxProfileSelection, 500, 400);
     }
@@ -235,13 +238,48 @@ public class HashiParmentier extends Application {
                 "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: rgb(121, 45, 9); -fx-background-color:rgb(175, 140, 117);");
         // Appliquer un style spécifique à l'input text
         dialog.getEditor().setPromptText("Nom de profil");
-        dialog.getEditor().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill:rgb(121, 45, 9);; -fx-background-color: #f8f1e1;");
+        dialog.getEditor().setStyle(
+                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill:rgb(121, 45, 9);; -fx-background-color: #f8f1e1;");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
             ProfileManager.getInstance().creerProfil(name); // Crée et sauvegarde le profil
             ProfileManager.getInstance().setProfileActif(name); // Définit le profil actif
             System.out.println("Profil créé et sauvegardé : " + name);
+
+            // Recharge la liste des profils pour que le nouveau apparaisse
+            showProfileSelectionPage();
+        });
+    }
+
+    private void supprimerProfile() {
+        // Créer une instance de TextInputDialog
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Supprimer le profil");
+        //dialog.setHeaderText("Entrez votre nom de profil :");
+        dialog.setHeaderText(null);
+        dialog.getDialogPane().setHeader(null);
+
+        dialog.setGraphic(null);
+        // Appliquer le style CSS au DialogPane et aux éléments internes
+        dialog.setContentText("Le nom du profil à supprimer :  ");
+
+        Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+
+        // Remplacement du style des boutons
+        okButton.setStyle(genererMenu.createStyledButton("OK").getStyle());
+        cancelButton.setStyle(genererMenu.createStyledButton("Annuler").getStyle());
+        dialog.getDialogPane().setStyle(
+                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: rgb(121, 45, 9); -fx-background-color:rgb(175, 140, 117);");
+        // Appliquer un style spécifique à l'input text
+        dialog.getEditor().setPromptText("Nom de profil");
+        dialog.getEditor().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill:rgb(121, 45, 9);; -fx-background-color: #f8f1e1;");
+
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(name -> {
+            ProfileManager.getInstance().supprimerProfil(name);
+            System.out.println("Profil supprimer : " + name);
 
             // Recharge la liste des profils pour que le nouveau apparaisse
             showProfileSelectionPage();
