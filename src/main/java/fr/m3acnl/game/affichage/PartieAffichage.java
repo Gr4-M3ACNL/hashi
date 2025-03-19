@@ -687,7 +687,7 @@ public class PartieAffichage extends Application {
             Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
 
             if (noeudProche != null) {
-                doubleLien.activer(noeudProche);
+                partie.getJeu().activeElemJeu(x, y, noeudProche);
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
             }
