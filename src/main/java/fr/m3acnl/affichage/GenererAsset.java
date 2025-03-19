@@ -76,12 +76,12 @@ public class GenererAsset {
         vboxConfirmQuit.setAlignment(Pos.CENTER);
         vboxConfirmQuit.setBackground(new Background(background));
 
-        Label confirmQuitLabel = createStyledLabel("Voulez-vous vraiment quitter le jeu ?");
+        Label confirmQuitLabel = creerLabelStyle("Voulez-vous vraiment quitter le jeu ?");
 
-        Button buttonOuiQuitter = createStyledButton("Oui");
+        Button buttonOuiQuitter = creerBoutonStyle("Oui");
         buttonOuiQuitter.setOnAction(e -> Platform.exit());
 
-        Button buttonNonQuitter = createStyledButton("Non");
+        Button buttonNonQuitter = creerBoutonStyle("Non");
         buttonNonQuitter.setOnAction(e -> primaryStage.setScene(mainScene));
 
         vboxConfirmQuit.getChildren().addAll(confirmQuitLabel, buttonOuiQuitter, buttonNonQuitter);
@@ -104,9 +104,9 @@ public class GenererAsset {
         vboxSettings.setAlignment(Pos.CENTER);
         vboxSettings.setBackground(new Background(background));
 
-        Label settingsTitle = createStyledLabel("Réglages");
+        Label settingsTitle = creerLabelStyle("Réglages");
 
-        Label volumeLabel = createStyledLabel("Volume des effets sonores");
+        Label volumeLabel = creerLabelStyle("Volume des effets sonores");
         Slider volumeSlider = new Slider(0, 100, ProfileManager.getInstance().getProfileActif() == null
                 ? 50
                 : ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore() * 100);
@@ -120,34 +120,34 @@ public class GenererAsset {
             }
         });
 
-        Button buttonParamAffichage = createStyledButton("Tutoriel");
+        Button buttonParamAffichage = creerBoutonStyle("Tutoriel");
         buttonParamAffichage.setOnAction(e -> {
             showAidePage(primaryStage, creerSlideshow(primaryStage, mainScene));
             jouerSon("bouton.wav",
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
-        Button buttonNiveauAide = createStyledButton("Niveau d'aide");
+        Button buttonNiveauAide = creerBoutonStyle("Niveau d'aide");
         buttonNiveauAide.setOnAction(e -> {
             showAidePage(primaryStage, creerMenuAide(primaryStage, mainScene));
             jouerSon("bouton.wav",
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
 
-        Button buttonQuitterPartie = createStyledButton("Quitter la partie");
+        Button buttonQuitterPartie = creerBoutonStyle("Quitter la partie");
         buttonQuitterPartie.setOnAction(e -> {
             jouerSon("bouton.wav", ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
             primaryStage.close();
             relancerPartie();
         });
 
-        Button buttonQuitterJeu = createStyledButton("Quitter le jeu");
+        Button buttonQuitterJeu = creerBoutonStyle("Quitter le jeu");
         buttonQuitterJeu.setOnAction(e -> {
             showConfirmQuitPage(primaryStage, creerMenuQuitter(primaryStage, mainScene));
             jouerSon("bouton.wav", ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         }
         );
 
-        Button buttonRetour = createStyledButton("Retour");
+        Button buttonRetour = creerBoutonStyle("Retour");
         buttonRetour.setOnAction(e -> {
             if (partie != null) {
                 partie.startChrono();
@@ -176,11 +176,11 @@ public class GenererAsset {
         vboxAide.setAlignment(Pos.CENTER);
         vboxAide.setBackground(new Background(background));
 
-        Label aideTitle = createStyledLabel("Choisissez un niveau d'aide :");
+        Label aideTitle = creerLabelStyle("Choisissez un niveau d'aide :");
 
-        Button niveau0 = createStyledButton("Facile");
-        Button niveau1 = createStyledButton("Moyen");
-        Button niveau3 = createStyledButton("Difficile");
+        Button niveau0 = creerBoutonStyle("Facile");
+        Button niveau1 = creerBoutonStyle("Moyen");
+        Button niveau3 = creerBoutonStyle("Difficile");
 
         niveau0.setOnAction(e -> {
             ProfileManager.getInstance().getProfileActif().getParametre().setNiveauAide(0);
@@ -198,7 +198,7 @@ public class GenererAsset {
             primaryStage.setScene(settingsScene);
         });
 
-        Button retourAide = createStyledButton("Retour");
+        Button retourAide = creerBoutonStyle("Retour");
         retourAide.setOnAction(e -> {
             primaryStage.setScene(settingsScene);
             jouerSon("bouton.wav", ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
@@ -377,6 +377,13 @@ public class GenererAsset {
         });
     }
 
+    /**
+     * Crée un diaporama pour le tutoriel.
+     *
+     * @param primaryStage La fenêtre principale.
+     * @param mainScene La scène principale.
+     * @return La scène créée.
+     */
     public Scene creerSlideshow(Stage primaryStage, Scene mainScene) {
         VBox root = new VBox(10);
         root.setAlignment(Pos.CENTER);
@@ -413,7 +420,7 @@ public class GenererAsset {
         timeline.play();
 
         // Bouton "Précédent"
-        Button buttonPrecedent = createStyledButton("Précédent");
+        Button buttonPrecedent = creerBoutonStyle("Précédent");
         buttonPrecedent.setOnAction(e -> {
             currentIndex[0] = (currentIndex[0] - 1 + imagePaths.length) % imagePaths.length;
             imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
@@ -426,7 +433,7 @@ public class GenererAsset {
         });
 
         // Bouton "Suivant"
-        Button buttonSuivant = createStyledButton("Suivant");
+        Button buttonSuivant = creerBoutonStyle("Suivant");
         buttonSuivant.setOnAction(e -> {
             currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
             imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
@@ -439,7 +446,7 @@ public class GenererAsset {
         });
 
         // Bouton "Retour"
-        Button buttonRetour = createStyledButton("Retour");
+        Button buttonRetour = creerBoutonStyle("Retour");
         buttonRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
         HBox buttonBox = new HBox(10, buttonPrecedent, buttonRetour, buttonSuivant);
@@ -457,7 +464,7 @@ public class GenererAsset {
      * @param text Texte du bouton.
      * @return Le bouton créé.
      */
-    public Button createStyledButton(String text) {
+    public Button creerBoutonStyle(String text) {
         Button button = new Button(text);
         button.setStyle("-fx-font-family: 'Arial'; "
                 + "-fx-font-size: 16px; "
@@ -476,7 +483,7 @@ public class GenererAsset {
      * @param text Texte du label.
      * @return Le label créé.
      */
-    public Label createStyledLabel(String text) {
+    public Label creerLabelStyle(String text) {
         Label label = new Label(text);
         label.setStyle("-fx-font-family: 'Arial'; "
                 + "-fx-font-size: 18px; "

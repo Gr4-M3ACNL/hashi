@@ -494,7 +494,9 @@ public class AideVoisin extends Aide {
 
             // Test 3: Aide sur le poids restant
             if (checkIsolement(noeud)) {
-                elementAide.addTexte(3, "une ile est completement isolé et ne peut plus etre connecter a aucune ile.conseille:liberer lui des voisin");
+                elementAide.addTexte(3,
+                        "une ile est completement isolé et ne peut plus etre connecter a aucune ile.conseille:"
+                        + "liberer lui des voisin");
                 // Ajouter le noeud à surligner (exemple pour l'index 2)
             }
         }

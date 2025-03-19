@@ -350,7 +350,7 @@ public class PartieAffichage extends Application {
         aideBox.setStyle("-fx-background-color: transparent; -fx-border-radius: 10;");
 
         // Création du label d'aide
-        labelAide = genererMenu.createStyledLabel("Voici un texte d'aide qui donne des indices sur le jeu. "
+        labelAide = genererMenu.creerLabelStyle("Voici un texte d'aide qui donne des indices sur le jeu. "
                 + "Il contient jusqu'à 300 caractères pour expliquer certaines mécaniques ou donner des conseils.");
         labelAide.setWrapText(true);
         labelAide.setMaxWidth(250);
@@ -362,7 +362,7 @@ public class PartieAffichage extends Application {
         ImageView hintImage = genererMenu.creerImageView("/META-INF/assetsGraphiques/character/hint.png", 200, 200);
 
         // Création du bouton Aide
-        Button aideButton = genererMenu.createStyledButton("Aide");
+        Button aideButton = genererMenu.creerBoutonStyle("Aide");
         aideButton.setStyle("-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
                 + "-fx-background-radius: 10;"
                 + "-fx-border-color: #3d1e10;"
@@ -562,8 +562,8 @@ public class PartieAffichage extends Application {
         Label labelWin = new Label("Temps : " + labelTemps.getText());
         labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
 
-        Button btnSuivant = genererMenu.createStyledButton("Suivant");
-        Button btnQuitter = genererMenu.createStyledButton("Quitter");
+        Button btnSuivant = genererMenu.creerBoutonStyle("Suivant");
+        Button btnQuitter = genererMenu.creerBoutonStyle("Quitter");
 
         btnSuivant.setOnAction(e -> {
             relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
