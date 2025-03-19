@@ -252,6 +252,9 @@ public class HashiParmentier extends Application {
         });
     }
 
+    /**
+     * Permet de supprimer un profile.
+     */
     private void supprimerProfile() {
         // Créer une instance de TextInputDialog
         TextInputDialog dialog = new TextInputDialog();
