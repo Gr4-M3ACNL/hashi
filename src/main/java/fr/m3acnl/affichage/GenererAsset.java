@@ -401,6 +401,9 @@ public class GenererAsset {
         int[] currentIndex = {0};
 
         ImageView imageView = creerImageView(imagePaths[currentIndex[0]], 1100, 1000);
+        imageView.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(root.widthProperty());
+        imageView.fitHeightProperty().bind(root.heightProperty().subtract(50)); // Laisser de la place aux boutons
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(6), event -> {
             currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
@@ -409,10 +412,40 @@ public class GenererAsset {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
+        // Bouton "Précédent"
+        Button buttonPrecedent = createStyledButton("Précédent");
+        buttonPrecedent.setOnAction(e -> {
+            currentIndex[0] = (currentIndex[0] - 1 + imagePaths.length) % imagePaths.length;
+            imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
+            timeline.stop();
+            timeline.getKeyFrames().setAll(new KeyFrame(Duration.seconds(900), evt -> {
+                currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
+                imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
+            }));
+            timeline.play();
+        });
+
+        // Bouton "Suivant"
+        Button buttonSuivant = createStyledButton("Suivant");
+        buttonSuivant.setOnAction(e -> {
+            currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
+            imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
+            timeline.stop();
+            timeline.getKeyFrames().setAll(new KeyFrame(Duration.seconds(900), evt -> {
+                currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
+                imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
+            }));
+            timeline.play();
+        });
+
+        // Bouton "Retour"
         Button buttonRetour = createStyledButton("Retour");
         buttonRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
-        root.getChildren().addAll(imageView, buttonRetour);
+        HBox buttonBox = new HBox(10, buttonPrecedent, buttonRetour, buttonSuivant);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        root.getChildren().addAll(imageView, buttonBox);
 
         return new Scene(root, 1100, 1000);
     }
