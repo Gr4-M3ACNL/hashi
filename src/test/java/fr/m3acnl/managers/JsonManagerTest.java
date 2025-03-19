@@ -176,6 +176,9 @@ public class JsonManagerTest extends Tests {
 
         Profile profile = new Profile("jacoboni");
         manager.sauvegarderProfil(profile);
+        assertNotNull(manager.getListeProfils(), "La liste des profils ne devrait pas être nulle");
+        assertEquals(1, manager.getListeProfils().size(), "Il devrait y avoir 1 profil");
+        assertEquals("jacoboni", manager.getListeProfils().get(0), "Le profil devrait être jacoboni");
         profile = new Profile("Després");
         manager.sauvegarderProfil(profile);
         // vérifie que le fichier de profils existe
@@ -200,14 +203,42 @@ public class JsonManagerTest extends Tests {
         initProfils();
         JsonManager manager = new JsonManager();
         Profile profile = new Profile("testJson");
+
+
+        // test de sauvegarde sans fichier
         manager.sauvegarderProfil(profile);
         List<String> profils = manager.getListeProfils();
+        // vérifie que le  profils existe
         assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
-        assertEquals("testJson", profils.get(0), "Le premier profil devrait être test");
-
+        assertEquals("testJson", profils.get(0), "Le premier profil devrait être testJson");
         // test du chargement du profil nouvellement créé
         Profile profileCharge = manager.chargerProfil("testJson");
         assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
+
+
+        // test de sauvegarde dans un fichier existant vide
+        manager.supprimerProfil("testJson");
+        manager.sauvegarderProfil(profile);
+        // vérifie que le  profils existe
+        profils = manager.getListeProfils();
+        assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
+        assertEquals("testJson", profils.get(0), "Le premier profil devrait être testJson");
+        // test du chargement du profil nouvellement créé
+        profileCharge = manager.chargerProfil("testJson");
+        assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
+
+        // test de sauvegarde dans un fichier existant avec un profil
+        Profile profile2 = new Profile("testJson2");
+        manager.sauvegarderProfil(profile2);
+        // vérifie que le profils existe
+        profils = manager.getListeProfils();
+        assertEquals(2, profils.size(), "Il devrait y avoir 2 profils");
+        assertEquals("testJson", profils.get(0), "Le premier profil devrait être testJson");
+        assertEquals("testJson2", profils.get(1), "Le deuxième profil devrait être testJson2");
+        // test du chargement du profil nouvellement créé
+        profileCharge = manager.chargerProfil("testJson2");
+        assertNotNull(profileCharge, "Le profil ne devrait pas être nul");
+
 
         // restauration des profils
         restoreProfils();
@@ -226,10 +257,27 @@ public class JsonManagerTest extends Tests {
         Profile profile = new Profile("testJson");
         manager.sauvegarderProfil(profile);
 
+        // verification de la présence du profil
+        List<String> profils = manager.getListeProfils();
+        assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
+        assertEquals("testJson", profils.get(0), "Le premier profil devrait être testJson");
+
         // test de la suppression du profil
         manager.supprimerProfil("testJson");
-        List<String> profils = manager.getListeProfils();
+        profils = manager.getListeProfils();
         assertEquals(0, profils.size(), "Il ne devrait y avoir aucun profil");
+
+        manager.sauvegarderProfil(profile);
+        Profile profile2 = new Profile("testJson2");
+        manager.sauvegarderProfil(profile2);
+        // vérifie que le profils existe
+        profils = manager.getListeProfils();
+        assertEquals(2, profils.size(), "Il devrait y avoir 2 profils");
+        manager.supprimerProfil("testJson");
+        // vérifie que le profils existe
+        profils = manager.getListeProfils();
+        assertEquals(1, profils.size(), "Il devrait y avoir 1 profil");
+        assertEquals("testJson2", profils.get(0), "Le premier profil devrait être testJson2");
 
         // restauration des profils
         restoreProfils();
