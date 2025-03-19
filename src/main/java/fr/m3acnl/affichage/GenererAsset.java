@@ -30,6 +30,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 
 /**
  * Classe pour générer les menus partager entres les affichages.
@@ -453,6 +456,50 @@ public class GenererAsset {
         if (volume > 0) {
             son.play();
         }
+    }
+
+    public Scene creerSlideshow(Stage primaryStage, Scene mainScene) {
+        VBox root = new VBox(10);
+        root.setAlignment(Pos.CENTER);
+        root.setBackground(new Background(background));
+    
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(400);
+        imageView.setFitHeight(300);
+    
+        String[] imagePaths = {
+            "/META-INF/assetsTuto/1.png",
+            "/META-INF/assetsTuto/2.png",
+            "/META-INF/assetsTuto/3.png",
+            "/META-INF/assetsTuto/4.png",
+            "/META-INF/assetsTuto/5.png",
+            "/META-INF/assetsTuto/6.png",
+            "/META-INF/assetsTuto/7.png",
+            "/META-INF/assetsTuto/8.png",
+            "/META-INF/assetsTuto/9.png",
+            "/META-INF/assetsTuto/10.png",
+            "/META-INF/assetsTuto/11.png",
+            "/META-INF/assetsTuto/12.png",
+            "/META-INF/assetsTuto/13.png"
+        };
+    
+        int[] currentIndex = {0};
+    
+        imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
+    
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
+            currentIndex[0] = (currentIndex[0] + 1) % imagePaths.length;
+            imageView.setImage(new Image(getClass().getResource(imagePaths[currentIndex[0]]).toExternalForm()));
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+    
+        Button buttonRetour = createStyledButton("Retour");
+        buttonRetour.setOnAction(e -> primaryStage.setScene(mainScene));
+    
+        root.getChildren().addAll(imageView, buttonRetour);
+    
+        return new Scene(root, 500, 400);
     }
 
 }
