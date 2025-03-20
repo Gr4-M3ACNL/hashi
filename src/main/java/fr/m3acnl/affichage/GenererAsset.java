@@ -523,7 +523,7 @@ public class GenererAsset {
         imageView.setFitHeight(hauteur);
         imageView.setCache(true);
         imageView.setSmooth(true);
-        imageView.setPreserveRatio(true);
+
         return imageView;
     }
 

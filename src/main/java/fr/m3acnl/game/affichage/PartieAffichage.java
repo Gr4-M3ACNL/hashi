@@ -33,6 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -346,7 +347,7 @@ public class PartieAffichage extends Application {
      */
     private VBox creerPanneauAide() {
         VBox aideBox = new VBox(10);
-        aideBox.setAlignment(Pos.CENTER_RIGHT); // Alignement général au centre
+        aideBox.setAlignment(Pos.CENTER_RIGHT);
         aideBox.setStyle("-fx-background-color: transparent; -fx-border-radius: 10;");
 
         // Création du label d'aide
@@ -354,7 +355,6 @@ public class PartieAffichage extends Application {
                 + "Il contient jusqu'à 300 caractères pour expliquer certaines mécaniques ou donner des conseils.");
         labelAide.setWrapText(true);
         labelAide.setMaxWidth(250);
-
         labelAide.setAlignment(Pos.CENTER);
         labelAide.setTextAlignment(TextAlignment.CENTER);
 
@@ -379,10 +379,16 @@ public class PartieAffichage extends Application {
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
 
-        // Permet aux éléments de prendre plus d'espace pour un meilleur centrage
-        // Ajout des éléments au VBox
-        aideBox.getChildren().addAll(labelAide, hintImage, aideButton);
-        aideBox.setMaxWidth(300); // Largeur max
+        // Ajout de l'image "ampoule.png" à côté du bouton
+        ImageView ampouleImage = genererMenu.creerImageView("/META-INF/assetsGraphiques/icon/ampoule.png", 40, 40);
+
+        // HBox pour aligner le bouton et l'image horizontalement
+        HBox aideContainer = new HBox(10, aideButton, ampouleImage);
+        aideContainer.setAlignment(Pos.CENTER); // Centrage des éléments dans la HBox
+
+        // Ajout des éléments au VBox principal
+        aideBox.getChildren().addAll(labelAide, hintImage, aideContainer);
+        aideBox.setMaxWidth(300);
 
         return aideBox;
     }
@@ -414,6 +420,8 @@ public class PartieAffichage extends Application {
         if (mainScene == null) {
             return;
         }
+
+        creerBackground();
 
         double largeurScene = mainScene.getWidth();
         double hauteurScene = mainScene.getHeight();
