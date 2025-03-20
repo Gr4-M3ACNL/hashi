@@ -98,6 +98,15 @@ public class DoubleLien implements ElementJeu {
         return interrupteur;
     }
 
+    /**
+     * Récupère le numero du lien en surbrillance.
+     *
+     * @return Le lien en surbrillance
+     */
+    public int getLienBrillance() {
+        return lienBrillance;
+    }
+
     // ==================== Setter ====================
     /**
      * Active l'interrupteur.
@@ -260,7 +269,7 @@ public class DoubleLien implements ElementJeu {
 
     /**
      * Renvoie le lien possèdant le noeud donné.
-     * 
+     *
      * @param n Le noeud donné.
      * @return Le lien si il est dans un des liens sinon renvoie null.
      */

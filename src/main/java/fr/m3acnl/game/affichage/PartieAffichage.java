@@ -677,20 +677,22 @@ public class PartieAffichage extends Application {
      * @param y La colonne de l'élément
      */
     private void activerElement(MouseEvent event, int x, int y) {
-        restaurerEtat(x, y);
 
         // Vérifier si l'élément du plateau est un DoubleLien
         ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
 
         if (element instanceof DoubleLien doubleLien) {
             // Trouver le nœud le plus proche de la souris
-            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
-
+            /*Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event); //!! Ne pas supprimer !!
+            
             if (noeudProche != null) {
                 partie.getJeu().activeElemJeu(x, y, noeudProche);
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
-            }
+            }*/
+            partie.getJeu().activeElemJeu(x, y, ((DoubleLien) element).getLienBrillance() == 1 ? ((DoubleLien) element).getLien1().getNoeud1() : ((DoubleLien) element).getLien2().getNoeud1());
+            genererMenu.jouerSon("lien.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
         } else {
             partie.getJeu().activeElemJeu(x, y, null);
             if (element instanceof Noeud noeud) {
@@ -712,6 +714,7 @@ public class PartieAffichage extends Application {
         }
         // Mettre à jour l'affichage
         ajoue = true;
+        //restaurerEtat(x, y);
         actualiserAffichage();
     }
 
