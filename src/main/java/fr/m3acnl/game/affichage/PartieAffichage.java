@@ -124,16 +124,6 @@ public class PartieAffichage extends Application {
     AideVoisin aideVoisin;
 
     /**
-     * Constructeur de la classe PartieAffichage.
-     *
-     * @param difficulte La difficulté de la partie
-     * @see Partie#Partie(Difficulte)
-     */
-    public PartieAffichage(Difficulte difficulte) {
-        this.partie = new Partie(difficulte);
-    }
-
-    /**
      * Generateur de menu.
      */
     private final GenererAsset genererMenu = new GenererAsset("/META-INF/assetsGraphiques/back/backPartie.png");
@@ -147,6 +137,16 @@ public class PartieAffichage extends Application {
      * La scène principale.
      */
     Scene mainScene;
+
+    /**
+     * Constructeur de la classe PartieAffichage.
+     *
+     * @param difficulte La difficulté de la partie
+     * @see Partie#Partie(Difficulte)
+     */
+    public PartieAffichage(Difficulte difficulte) {
+        this.partie = new Partie(difficulte);
+    }
 
     /**
      * Méthode start pour lancer l'application.
@@ -627,8 +627,10 @@ public class PartieAffichage extends Application {
      * Met une partie de la grille en subrillance pour les Aide.
      */
     private void surbrillanceAide() {
-        if (elementAide != null) {
+        if (elementAide != null && numeroAide < niveauAide) {
+            System.out.println("Surbrillance de l'aide : " + numeroAide);
             for (Noeud n : elementAide.getNoeudsSurbrillance()[numeroAide]) {
+                System.out.println(n);
                 n.setActiver(true);
                 n.surbrillanceOn();
                 n.setActiver(false);
@@ -669,7 +671,7 @@ public class PartieAffichage extends Application {
         }
         if (numeroAide < niveauAide + 1) {
             partie.addMalus((numeroAide + 1) * 5);
-            System.out.println("Aide de niveau : " + (numeroAide + 1));
+            System.out.println("Aide de niveau : " + (numeroAide + 1) + " sur " + (niveauAide + 1));
         }
         partie.getJeu().getPlateau().setSurbrillanceOff();
         surbrillanceAide();

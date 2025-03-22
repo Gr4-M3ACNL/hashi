@@ -44,7 +44,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     /**
      * Permet de savoir si l'élément a été modifié.
      */
-    private boolean modifie = true;
+    private Boolean modifie = true;
 
     /**
      * Constructeur pour créer une nouvelle instance d'un Noeud.
@@ -205,7 +205,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      * @return true si l'élément a été modifié, false sinon
      */
     @Override
-    public boolean modifie() {
+    public Boolean modifie() {
         return modifie;
     }
 
