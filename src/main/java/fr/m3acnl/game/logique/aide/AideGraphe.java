@@ -409,14 +409,14 @@ public class AideGraphe extends Aide {
             if (lienImpossible(noeud)) {
                 elementAide.addTexte(4, "Une île peut rendre un regroupement d'îles complet sans que ce soit toutes les îles."
                 + "Conseil : Attention aux ponts de cette île.");
-                elementAide.addNoeud(0, ((Noeud) matrice.getElement(0, 0)));
+                elementAide.addNoeud(4, noeud);
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
             }
 
             // Test 2: Aide sur l'isolement
             else if (rendSousGrapheConnexe(noeud)) {
                 elementAide.addTexte(5, "5 Description: Cette aide met en évidence si un noeud rend un sous-reseau connexe.");
-                elementAide.addNoeud(0, ((Noeud) matrice.getElement(0, 0)));
+                elementAide.addNoeud(5,  noeud);
             }
         }
 
