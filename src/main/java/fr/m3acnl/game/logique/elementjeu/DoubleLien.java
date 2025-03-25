@@ -32,7 +32,7 @@ public class DoubleLien implements ElementJeu {
     /**
      * Permet de savoir si l'élément a été modifié.
      */
-    private boolean modifie = false;
+    private Boolean modifie = false;
 
     /**
      * Constructeur pour créer une instance de DoubleLien.
@@ -98,6 +98,30 @@ public class DoubleLien implements ElementJeu {
         return interrupteur;
     }
 
+    /**
+     * Récupère le numero du lien en surbrillance.
+     *
+     * @return Le lien en surbrillance
+     */
+    public int getLienBrillance() {
+        return lienBrillance;
+    }
+
+    /**
+     * Renvoie le lien possèdant le noeud donné.
+     *
+     * @param n Le noeud donné.
+     * @return Le lien si il est dans un des liens sinon renvoie null.
+     */
+    public Lien getLienDuNoeud(Noeud n) {
+        if (lien1.noeudDansLien(n) == 0) {
+            return lien1;
+        } else if (lien2.noeudDansLien(n) == 0) {
+            return lien2;
+        }
+        return null;
+    }
+
     // ==================== Setter ====================
     /**
      * Active l'interrupteur.
@@ -152,7 +176,7 @@ public class DoubleLien implements ElementJeu {
      * @return true si l'élément a été modifié, false sinon
      */
     @Override
-    public boolean modifie() {
+    public Boolean modifie() {
         return modifie;
     }
 
@@ -256,21 +280,6 @@ public class DoubleLien implements ElementJeu {
             return "/META-INF/assetsGraphiques/link/blank.png";
         }
         return this.lienActif().draw();
-    }
-
-    /**
-     * Renvoie le lien possèdant le noeud donné.
-     * 
-     * @param n Le noeud donné.
-     * @return Le lien si il est dans un des liens sinon renvoie null.
-     */
-    public Lien getLienDuNoeud(Noeud n) {
-        if (lien1.noeudDansLien(n) == 0) {
-            return lien1;
-        } else if (lien2.noeudDansLien(n) == 0) {
-            return lien2;
-        }
-        return null;
     }
 
     /**

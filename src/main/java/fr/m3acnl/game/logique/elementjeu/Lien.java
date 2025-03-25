@@ -208,24 +208,6 @@ public class Lien implements ElementJeu {
         return tot;
     }
 
-    /**
-     * Active la surbrillance du lien.
-     */
-    @Override
-    public void surbrillanceOn() {
-        surbrillance = true;
-        averifie();
-    }
-
-    /**
-     * Désactive la surbrillance du lien.
-     */
-    @Override
-    public void surbrillanceOff() {
-        surbrillance = false;
-        averifie();
-    }
-
     // ==================== Action ====================
     /**
      * Effectue le retour a l'état précédent du Lien et des noeuds.
@@ -342,7 +324,7 @@ public class Lien implements ElementJeu {
      * @return true si l'élément a été modifié, false sinon
      */
     @Override
-    public boolean modifie() {
+    public Boolean modifie() {
         return modifie;
     }
 
@@ -370,6 +352,24 @@ public class Lien implements ElementJeu {
         for (DoubleLien dl : listeDl) {
             dl.averifie();
         }
+    }
+
+    /**
+     * Active la surbrillance du lien.
+     */
+    @Override
+    public void surbrillanceOn() {
+        surbrillance = true;
+        averifie();
+    }
+
+    /**
+     * Désactive la surbrillance du lien.
+     */
+    @Override
+    public void surbrillanceOff() {
+        surbrillance = false;
+        averifie();
     }
 
     // ==================== Affichage ====================

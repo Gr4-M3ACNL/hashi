@@ -14,7 +14,7 @@ public interface ElementJeu {
      *
      * @return true si l'élément a été modifié et necessite consultation
      */
-    public boolean modifie();
+    public Boolean modifie();
 
     /**
      * Permet de savoir si l'élément a été modifié.
