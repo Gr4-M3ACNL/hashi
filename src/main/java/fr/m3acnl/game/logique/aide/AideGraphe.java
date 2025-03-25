@@ -218,7 +218,7 @@ public class AideGraphe extends Aide {
     }
 
     /**
-     * Vérifie si un lien est impossible : s'il rend le sous-réseau connexe.
+     * Vérifie si le/les liens rend/rendent le sous-réseau connexe.
      *
      * @param n Noeud dont on vérifie les liens.
      */
@@ -226,8 +226,8 @@ public class AideGraphe extends Aide {
         List<Noeud> voisins = trouverVoisinsDispoComplet(n);
         for (Noeud voisin : voisins) {
             int orientation = 0;
-            int no = ((n.getDegreSoluce() - n.getDegreActuelle()) % 2 == 0 ? 2 : 1);
-            int vo = ((voisin.getDegreSoluce() - voisin.getDegreActuelle()) % 2 == 0 ? 2 : 1);
+            int no = ((n.getDegreSoluce() - n.getDegreActuelle()) >= 2 ? 2 : 1);
+            int vo = ((voisin.getDegreSoluce() - voisin.getDegreActuelle()) >= 2 ? 2 : 1);
             // Placement du lien au bon endroit (là où se trouve le/les voisin/voisins)
             if (n.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
                 if (n.getPosition().getCoordY() > voisin.getPosition().getCoordY()) {
@@ -396,8 +396,8 @@ public class AideGraphe extends Aide {
     }
 
     /**
-     * Méthode pour créer un élément d'aide globale. PENSER A PRIORISER L'AIDE
-     * DE LIEN IMPOSSIBLE : AIDE SUR MM NOEUD, PRIORISER LIEN IMPOSSIBLE
+     * Méthode pour créer un élément d'aide globale.
+     *
      *
      * @return Un élément aide.
      */
@@ -407,7 +407,8 @@ public class AideGraphe extends Aide {
         for (Noeud noeud : tousLesNoeuds) {
             // Test 1: Aide sur les voisins
             if (lienImpossible(noeud)) {
-                elementAide.addTexte(4, " 4 Description: Cette aide vous montre les voisins possibles.");
+                elementAide.addTexte(4, "Une île peut rendre un regroupement d'îles complet sans que ce soit toutes les îles."
+                + "Conseil : Attention aux ponts de cette île.");
                 elementAide.addNoeud(0, ((Noeud) matrice.getElement(0, 0)));
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
             }
