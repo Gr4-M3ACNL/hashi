@@ -700,7 +700,9 @@ public class PartieAffichage extends Application {
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
             }*/
-            partie.getJeu().activeElemJeu(x, y, ((DoubleLien) element).getLienBrillance() == 1 ? ((DoubleLien) element).getLien1().getNoeud1() : ((DoubleLien) element).getLien2().getNoeud1());
+            partie.getJeu().activeElemJeu(x, y, ((DoubleLien) element).getLienBrillance() == 1 
+                ? ((DoubleLien) element).getLien1().getNoeud1() : ((DoubleLien) element).getLien2().getNoeud1());
+            
             genererMenu.jouerSon("lien.wav",
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
         } else {
