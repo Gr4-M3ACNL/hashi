@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.m3acnl.game.logique.aide.AideGraphe;
 import fr.m3acnl.game.logique.Jeu;
 import fr.m3acnl.game.logique.Matrice;
 import fr.m3acnl.game.logique.elementjeu.Coord;
@@ -243,15 +244,17 @@ public class AideVoisin extends Aide {
         int poidsRestant = (noeud.getDegreSoluce() - noeud.getDegreActuelle());
         int poidsRestantVoisins = 0;
         for (Noeud voisin : voisins) {
-            poidsRestantVoisins += ((voisin.getDegreSoluce() - voisin.getDegreActuelle())/* >= 2 ? 2 : 1*/);
-            poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle())/* >= 2 ? 2 : 1*/);
+            poidsRestantVoisins += ((voisin.getDegreSoluce() - voisin.getDegreActuelle()) >= 2 ? 2 : 1);
+            poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle()) >= 2 ? 2 : 1);
         }
         // Priorité 0 : Plus de pont disponible
         if (poidsRestantVoisins < poidsRestant) {
             aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Ponts vers les voisins insuffisant." + noeud.getPosition(),
                     "Aucun pont", jeu, noeud.getPosition()));
             //afficherAide(aidesVoisins.size() - 1);
+            
             return 0;
+            
         } else if (poidsRestantVoisins == poidsRestant) {
             // Priorité 1 : Le noeud peut se connecter complètement.
             switch (voisins.size()) {
@@ -672,33 +675,39 @@ public class AideVoisin extends Aide {
     public ElementAide aideGlobale() {
         List<Noeud> tousLesNoeuds = getListeNoeuds();
         ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
-
         for (Noeud noeud : tousLesNoeuds) {
+            AideGraphe aideGraphe = new AideGraphe(jeu.getPlateau(), "", "", jeu, noeud.getPosition());
             // Test 2: Aide sur l'isolement
             switch (poidsRestantVoisins(noeud)) {
                 case 0 -> {
                     elementAide.addTexte(0, "Un noeud ne possède plus assez de place pour se relier."
-                        + " Conseil : libérez lui de ses voisins");
+                            + " Conseil : libérez lui de ses voisins");
                     elementAide.addNoeud(0, noeud);
                 }
                 case 1 -> {
-                    elementAide.addTexte(1, "Un noeud peut complètement se relier avec ses voisins");
-                    elementAide.addNoeud(1, noeud);
+                    elementAide.addTexte(0, "Un noeud peut complètement se relier avec ses voisins");
+                    elementAide.addNoeud(0, noeud);
                 }
                 case 2 -> {
-                    elementAide.addTexte(2, "Un noeud peut se relier avec ses voisins");
-                    elementAide.addNoeud(2, noeud);
+                    elementAide.addTexte(0, "Un noeud peut se relier avec ses voisins");
+                    elementAide.addNoeud(0, noeud);
                 }
                 default -> {
                 }
             }
 
-            // Test 3: Aide sur le poids restant
             if (checkIsolement(noeud)) {
-                elementAide.addTexte(3,
+                elementAide.addTexte(1,
                         "Une île est complètement isolée et ne peut plus être connectée à aucune île. Conseil : "
                         + "libérez lui de ses voisins");
-                elementAide.addNoeud(3, noeud);
+                elementAide.addNoeud(1, noeud);
+            }
+
+            if (aideGraphe.lienImpossible(noeud)) {
+                elementAide.addTexte(2,
+                        "Un noeud peut rendre un groupe d'îles complet. Conseil : "
+                        + "libérez lui de ses voisins");
+                elementAide.addNoeud(2, noeud);
             }
         }
 
@@ -737,8 +746,8 @@ public class AideVoisin extends Aide {
 
         // Création du jeu
         Jeu jeu = new Jeu(7, mat);
-        jeu.activeElemAide(1, 4, (Noeud) jeu.getPlateau().getElement(1, 3));
-        jeu.activeElemAide(1, 4, (Noeud) jeu.getPlateau().getElement(1, 3));
+        //jeu.activeElemAide(1, 4, (Noeud) jeu.getPlateau().getElement(1, 3));
+        //jeu.activeElemAide(1, 4, (Noeud) jeu.getPlateau().getElement(1, 3));
 
         AideVoisin aideVoisin = new AideVoisin(jeu.getPlateau(), "Aide sur les voisins", "Voisinage", jeu, new Coord(0, 0));
 
@@ -747,10 +756,16 @@ public class AideVoisin extends Aide {
         System.out.println("Aide globale : " + aideVoisin.aideGlobale().getTexte());
         List<Noeud>[] aide = aideVoisin.aideGlobale().getNoeudsSurbrillance();
         // affichage des noeuds qui correspondent à l'aide de niveau 2
+        for (Noeud noeud : aide[0]) {
+            System.out.println("NOEUD" + noeud.getPosition() + aide[0].size());
+        }
+        System.out.println("\n");
+        for (Noeud noeud : aide[1]) {
+            System.out.println("NOEUD" + noeud.getPosition() + aide[1].size());
+        }
+        System.out.println("\n");
         for (Noeud noeud : aide[2]) {
             System.out.println("NOEUD" + noeud.getPosition());
         }
-
     }
-
 }

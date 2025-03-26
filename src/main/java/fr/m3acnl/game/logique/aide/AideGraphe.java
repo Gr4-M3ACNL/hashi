@@ -66,7 +66,7 @@ public class AideGraphe extends Aide {
 
     }
 
-    /**
+        /**
      * Trouve les voisins d'un nœud.
      *
      * @param noeud Le noeud sur lequel trouver les voisins.
@@ -217,165 +217,6 @@ public class AideGraphe extends Aide {
         return voisinsComplet;
     }
 
-    /**
-     * Vérifie si le/les liens rend/rendent le sous-réseau connexe.
-     *
-     * @param n Noeud dont on vérifie les liens.
-     * @return Si le noeud peut rendre le sous-graphe connexe.
-     */
-    public boolean rendSousGrapheConnexe(Noeud n) {
-        List<Noeud> voisins = trouverVoisinsDispoComplet(n);
-        for (Noeud voisin : voisins) {
-            int orientation = 0;
-            int no = ((n.getDegreSoluce() - n.getDegreActuelle()) >= 2 ? 2 : 1);
-            int vo = ((voisin.getDegreSoluce() - voisin.getDegreActuelle()) >= 2 ? 2 : 1);
-            // Placement du lien au bon endroit (là où se trouve le/les voisin/voisins)
-            if (n.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
-                if (n.getPosition().getCoordY() > voisin.getPosition().getCoordY()) {
-                    if (jeu.verificationHorizontal(voisin, n, 1, true) == 0 && no == vo) {
-                        for (int i = 0; i < no; i++) {
-                            jeu.activeElemAide(n.getPosition().getCoordX(), n.getPosition().getCoordY() + 1, voisin);
-                            orientation = 1;
-                        }
-                    }
-                } else if (jeu.verificationHorizontal(n, voisin, 1, true) == 0 && no == vo) {
-                    for (int i = 0; i < no; i++) {
-                        jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() - 1, n);
-                        orientation = 2;
-                    }
-                }
-            } else {
-                if (n.getPosition().getCoordX() > voisin.getPosition().getCoordX()) {
-                    if (jeu.verificationVertical(n, voisin, 1, true) == 0 && no == vo) {
-                        for (int i = 0; i < no; i++) {
-                            jeu.activeElemAide(voisin.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY(), n);
-                            orientation = 3;
-                        }
-                    }
-
-                } else {
-                    if (jeu.verificationVertical(voisin, n, 1, true) == 0 && no == vo) {
-                        for (int i = 0; i < no; i++) {
-                            jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                            orientation = 4;
-                        }
-                    }
-                }
-            }
-            // Après placement, on vérifie si le sous-réseau est connexe
-            if (estSousReseauConnexe(voisin)) {
-                //System.out.println("Voisin " + voisin.getPosition().getCoordX() + " " + voisin.getPosition().getCoordY() + " est connexe");
-                aidesGraphes.add(new AideGraphe(matrice, "Le noeud " + n.getPosition() + " peut rendre un sous-graphe connexe en le "
-                        + "connectant à un autre noeud.",
-                        "Rendre sous-graphe connexe", jeu, voisin.getPosition()));
-                afficherAide(aidesGraphes.size() - 1);
-
-                // on replace le lien
-                switch (orientation) {
-                    case 1 -> {
-                        jeu.verificationHorizontal(voisin, n, 0, true);
-                        switch (no) {
-                            case 1 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() - 1, n);
-                                jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() - 1, n);
-                            }
-                            case 2 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() - 1, n);
-                            }
-                            default -> {
-                            }
-                        }
-                    }
-                    case 2 -> {
-                        jeu.verificationHorizontal(n, voisin, 0, true);
-                        switch (no) {
-                            case 1 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() + 1, n);
-                                jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() + 1, n);
-                            }
-                            case 2 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX(), voisin.getPosition().getCoordY() + 1, n);
-                            }
-                            default -> {
-                            }
-                        }
-                    }
-                    case 3 -> {
-                        jeu.verificationVertical(voisin, n, 0, true);
-                        switch (no) {
-                            case 1 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY(), n);
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY(), n);
-                            }
-                            case 2 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY(), n);
-                            }
-                            default -> {
-                            }
-                        }
-                    }
-                    case 4 -> {
-                        jeu.verificationVertical(n, voisin, 0, true);
-                        switch (no) {
-                            case 1 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                            }
-                            case 2 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                            }
-                            default -> {
-                            }
-                        }
-                    }
-                    default -> {
-                    }
-                }
-                return true;
-            } else {
-                switch (orientation) {
-                    case 1 -> {
-                        jeu.verificationHorizontal(voisin, n, 0, true);
-                        for (int i = 0; i < no; i++) {
-                            jeu.activeElemAide(n.getPosition().getCoordX(), n.getPosition().getCoordY() - 1, voisin);
-                            jeu.activeElemAide(n.getPosition().getCoordX(), n.getPosition().getCoordY() - 1, voisin);
-                        }
-                    }
-                    case 2 -> {
-                        jeu.verificationHorizontal(n, voisin, 0, true);
-                        for (int i = 0; i < no; i++) {
-                            jeu.activeElemAide(n.getPosition().getCoordX(), n.getPosition().getCoordY() + 1, voisin);
-                            jeu.activeElemAide(n.getPosition().getCoordX(), n.getPosition().getCoordY() + 1, voisin);
-                        }
-                    }
-                    case 3 -> {
-                        jeu.verificationVertical(voisin, n, 0, true);
-                        for (int i = 0; i < no; i++) {
-                            jeu.activeElemAide(voisin.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY(), n);
-                            jeu.activeElemAide(voisin.getPosition().getCoordX() + 1, voisin.getPosition().getCoordY(), n);
-                        }
-                    }
-                    case 4 -> {
-                        jeu.verificationVertical(n, voisin, 0, true);
-                        switch (no) {
-                            case 1 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                            }
-                            case 2 -> {
-                                jeu.activeElemAide(voisin.getPosition().getCoordX() - 1, voisin.getPosition().getCoordY(), n);
-                            }
-                            default -> {
-                            }
-                        }
-                    }
-                    default -> {
-                    }
-                }
-            }
-        }
-        return false;
-    }
 
     /**
      * Fait une liste de tous les noeuds.
@@ -397,8 +238,8 @@ public class AideGraphe extends Aide {
     }
 
     /**
-     * Méthode pour créer un élément d'aide globale.
-     *
+     * Méthode pour créer un élément d'aide globale. PENSER A PRIORISER L'AIDE
+     * DE LIEN IMPOSSIBLE : AIDE SUR MM NOEUD, PRIORISER LIEN IMPOSSIBLE
      *
      * @return Un élément aide.
      */
@@ -408,25 +249,21 @@ public class AideGraphe extends Aide {
         for (Noeud noeud : tousLesNoeuds) {
             // Test 1: Aide sur les voisins
             if (lienImpossible(noeud)) {
-                elementAide.addTexte(4, "Une île peut rendre un regroupement d'îles complet sans que ce soit toutes les îles."
-                    + "Conseil : Attention aux ponts de cette île.");
-                elementAide.addNoeud(4, noeud);
+                elementAide.addTexte(4, " 4 Description: Cette aide vous montre les voisins possibles.");
+                elementAide.addNoeud(0, ((Noeud) matrice.getElement(0, 0)));
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
-            } else if (rendSousGrapheConnexe(noeud)) {
-                elementAide.addTexte(5, "5 Description: Cette aide met en évidence si un noeud rend un sous-reseau connexe.");
-                elementAide.addNoeud(5,  noeud);
             }
+
+            // Test 2: Aide sur l'isolement
+            /*if (rendSousGrapheConnexe(noeud)) {
+                elementAide.addTexte(5, "5 Description: Cette aide met en évidence si un noeud rend un sous-reseau connexe.");
+                elementAide.addNoeud(0, ((Noeud) matrice.getElement(0, 0)));
+            }*/
         }
 
         return elementAide;  // Retourner l'élément d'aide complet
     }
 
-    /**
-     * Lé méthode retourne la somme des voisins du noeud sous forme de liste d'entiers.
-     * @param voisins La liste des voisins
-     * @param n Le noeud sur lequel on veut la somme des voisins
-     * @return La liste des entiers représentant la somme des voisins.
-     */
     public List<Integer> getSommeVoisins(List<Noeud> voisins, Noeud n) {
         List<Integer> somme = new ArrayList<>();
         for (Noeud voisin : voisins) {
@@ -437,13 +274,6 @@ public class AideGraphe extends Aide {
         return somme;
     }
 
-    /**
-     * La méthode retourne le nombre de voisins dispos du noeud.
-     * 
-     * @param voisins Liste des voisins
-     * @param n Noeud où on veut les voisins.
-     * @return Nombre de voisins dispos.
-     */
     public int getNbVoisinsDispos(List<Noeud> voisins, Noeud n) {
         int nb = 0;
         for (Noeud voisin : voisins) {
@@ -474,13 +304,12 @@ public class AideGraphe extends Aide {
                 int som = somme.stream().mapToInt(Integer::intValue).sum();
                 if (somm && som == (n.getDegreSoluce() - n.getDegreActuelle())
                         && getNbVoisinsDispos(voisins.get(Math.max(0, i - 1)).afficherReseau(),
-                                voisins.get(Math.max(0, i - 1))) == 1 
-                                && getNbVoisinsDispos(voisins.get(Math.min(voisins.size() - 1, i)).afficherReseau(),
+                                voisins.get(Math.max(0, i - 1))) == 1 && getNbVoisinsDispos(voisins.get(Math.min(voisins.size() - 1, i)).afficherReseau(),
                         voisins.get(Math.min(voisins.size() - 1, i))) == 1) {
                     voisins.add(0, temp);
                     aidesGraphes.add(new AideGraphe(matrice, "Le nœud " + n.getPosition() + " peut rendre un sous-graphe connexe à cause "
                             + "de la somme de certains de ses voisins.\n", "Liens impossibles", jeu, n.getPosition()));
-                    afficherAide(aidesGraphes.size() - 1);
+                    //afficherAide(aidesGraphes.size() - 1);
                     return true;
                 }
             }
@@ -500,49 +329,8 @@ public class AideGraphe extends Aide {
         return x >= 0 && x < jeu.getTaille() && y >= 0 && y < jeu.getTaille();
     }
 
-    /**
-     * Vérifie si un sous-réseau est connexe.
-     *
-     * @param n Noeud dont on vérifie le sous-réseau
-     * @return true si le sous-réseau est connexe, false sinon
-     */
-    public boolean estSousReseauConnexe(Noeud n) {
-        ArrayList<Noeud> reseau = n.afficherReseau(); // Récupère tous les nœuds du sous-graphe
-        if (reseau.isEmpty()) {
-            return false; // Cas particulier : noeud pas encore connecté
-        }
-        Set<Noeud> visites = new HashSet<>();
-        Stack<Noeud> pile = new Stack<>();
-        //System.out.println("Reseau : " + reseau);
-        // Démarrer le parcours à partir de ce noeud
-        Noeud premier = reseau.get(0);
-        pile.push(premier);
-        visites.add(premier);
-        //System.out.println("Premier : " + premier.getDegreActuelle() + " " + premier.getDegreSoluce());
-        while (!pile.isEmpty()) {
-            Noeud courant = pile.pop();
-            for (Noeud voisin : courant.getListeAdjacence()) {
-                if (!voisin.equals(n)) {
-                    //System.out.println("Voisin : " + voisin.getDegreActuelle() + " " + voisin.getDegreSoluce());
-                    if (reseau.contains(voisin) && !visites.contains(voisin)) {
-                        visites.add(voisin);
-                        pile.add(voisin);
-                    }
-                }
-            }
-        }
-        for (Noeud n1 : visites) {
-            if (n1.getDegreActuelle() != n1.getDegreSoluce()) {
-                return false;
-            }
-        }
-        return visites.size() == reseau.size() && reseau.size() > 1;
-    }
+    
 
-    /**
-     * Méthode main qui va tester les méthodes.
-     * @param args Les arguments main().
-     */
     public static void main(String[] args) {
         // Création d'une matrice pour tester
         Double[][] mat = {
@@ -561,9 +349,9 @@ public class AideGraphe extends Aide {
         // Test de la méthode afficherAideNoeud
         //Noeud noeudTest = (Noeud) jeu.getPlateau().getElement(0, 0);
         //jeu.activeElemAide(1, 0, null);
-        jeu.drawJeuTerm();
         System.out.println("\nTest sous-graphe connexe");
         aideGraphe.aideGlobale();
+        jeu.drawJeuTerm();
         //System.out.println("Element Aide : " + ea);
     }
 }

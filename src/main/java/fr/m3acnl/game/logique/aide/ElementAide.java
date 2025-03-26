@@ -33,9 +33,9 @@ public class ElementAide {
     @SuppressWarnings("unchecked") // Nécessaire car Java ne permet pas la création directe de tableaux génériques
     public ElementAide() {
         texte = new ArrayList<>();
-        noeudsSurbrillance = new List[6];
+        noeudsSurbrillance = new List[3];
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 3; i++) {
             noeudsSurbrillance[i] = new ArrayList<>();
         }
     }
@@ -68,7 +68,7 @@ public class ElementAide {
      * @param n Noeud à ajouter.
      */
     public void addNoeud(int index, Noeud n) {
-        if (index >= 0 && index < 6) {
+        if (index >= 0 && index < 3) {
             noeudsSurbrillance[index].add(n);
         } else {
             throw new IndexOutOfBoundsException("Index hors limite : " + index);
