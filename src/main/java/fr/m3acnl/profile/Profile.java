@@ -48,6 +48,7 @@ public class Profile implements JsonSerializable {
         this.historiquePartieProfile = new HistoriquePartieProfile();
     }
 
+    // ======================== Getter ========================
     /**
      * Méthode pour connaître le nom du profil.
      *
@@ -95,6 +96,7 @@ public class Profile implements JsonSerializable {
      * Méthode pour modifier l'historique des parties jouées par un joueur.
      *
      * @param historiquePartieProfile l'historique des parties jouées par un joueur
+     * 
      */
     protected void setHistoriquePartieProfile(HistoriquePartieProfile historiquePartieProfile) {
         List<String> listeParties = new ArrayList<String>();

@@ -47,21 +47,17 @@ public class HashiParmentier extends Application {
      */
     private Scene mainScene;
     /**
-     * Scènes de reglages.
-     */
-    private Scene settingsScene;
-    /**
      * Scène de sélection de niveau.
      */
-    private Scene levelSelectionScene;
+    private Scene selectionNiveau;
     /**
      * Scène de confirmation de quitter.
      */
-    private Scene confirmQuitScene;
+    private Scene quitterAppli;
     /**
      * Scène de sélection de profil.
      */
-    private Scene profileSelectionScene;
+    private Scene selectionProfile;
 
     /**
      * Générateur de menu.
@@ -83,56 +79,34 @@ public class HashiParmentier extends Application {
     @Override
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        primaryStage.getIcons().add(new Image(getClass().getResource("/META-INF/assetsGraphiques/logo.png").toExternalForm()));
         primaryStage.setTitle("Jeu - Menu Principal");
 
-        // 📌 Charger l'image de fond
         BackgroundImage background = new BackgroundImage(
                 new Image(getClass().getResource("/META-INF/assetsGraphiques/back/backMenu.jpeg").toExternalForm()),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER,
                 new BackgroundSize(100, 100, true, true, false, true));
-        // 📌 SCÈNE PRINCIPALE
+
         BorderPane root = new BorderPane();
         root.setBackground(new Background(background));
-        /*
-        // 📌 Icône utilisateur à gauche
-        ImageView userIcon = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/utilisateur.png").toExternalForm()));
-        userIcon.setFitWidth(50);
-        userIcon.setFitHeight(50);
 
-        // 📌 Icône réglages en haut à droite (⚙️)
-        ImageView settingsIcon = new ImageView(
-                new Image(getClass().getResource("/META-INF/assetsGraphiques/icon/parametre.png").toExternalForm()));
-        settingsIcon.setFitWidth(50);
-        settingsIcon.setFitHeight(50);
-        Button settingsButton = new Button("", settingsIcon);
-        settingsButton.setStyle("-fx-background-color: transparent; -fx-border-width: 0;");
-        settingsButton.setOnAction(e -> genererMenu.showSettingsMenu(primaryStage, settingsScene));
-        
-        // 📌 Placer les icônes dans un HBox en haut à droite
-        HBox topBox = new HBox(10, userIcon, settingsButton); // 10px d'écart entre les icônes
-        topBox.setPadding(new Insets(10));
-        topBox.setAlignment(Pos.TOP_RIGHT);
-        root.setTop(topBox);*/
-        // 📌 Centre avec boutons "Jouer" et "Quitter le jeu"
         VBox centerBox = new VBox(20);
         centerBox.setAlignment(Pos.CENTER);
-        Button playButton = genererMenu.createStyledButton("Jouer");
-        playButton.setOnAction(e -> showProfileSelectionPage()); // Changer pour afficher la page de sélection de profil
+        Button bouttonJouer = genererMenu.creerBoutonStyle("Jouer");
+        bouttonJouer.setOnAction(e -> showProfileSelectionPage());
 
-        Button quitButton = genererMenu.createStyledButton("Quitter le jeu");
-        quitButton.setOnAction(e -> genererMenu.showConfirmQuitPage(primaryStage, confirmQuitScene));
+        Button bouttonQuitter = genererMenu.creerBoutonStyle("Quitter le jeu");
+        bouttonQuitter.setOnAction(e -> genererMenu.showConfirmQuitPage(primaryStage, quitterAppli));
 
-        centerBox.getChildren().addAll(playButton, quitButton);
+        centerBox.getChildren().addAll(bouttonJouer, bouttonQuitter);
         root.setCenter(centerBox);
 
         mainScene = new Scene(root, 500, 400);
         creerSelectionNiveau(background);
-        confirmQuitScene = genererMenu.creerMenuQuitter(primaryStage, mainScene);
-        settingsScene = genererMenu.creerMenuPause(primaryStage, mainScene, null);
+        quitterAppli = genererMenu.creerMenuQuitter(primaryStage, mainScene);
         creerSelectionProfil(background);
 
-        // 📌 Lancer l'application avec la scène principale
+        //Lancement de l'application
         primaryStage.setScene(mainScene);
         primaryStage.show();
     }
@@ -148,20 +122,23 @@ public class HashiParmentier extends Application {
         vboxProfileSelection.setAlignment(Pos.CENTER);
         vboxProfileSelection.setBackground(new Background(background));
 
-        final Label profileLabel = genererMenu.createStyledLabel("Veuillez vous connecter pour jouer");
+        final Label profileLabel = genererMenu.creerLabelStyle("Veuillez vous connecter pour jouer");
 
-        Button loadProfileButton = genererMenu.createStyledButton("Charger un profil");
+        Button loadProfileButton = genererMenu.creerBoutonStyle("Charger un profil");
         loadProfileButton.setOnAction(e -> loadProfile());
 
-        Button createProfileButton = genererMenu.createStyledButton("Créer un profil");
-        createProfileButton.setOnAction(e -> createProfile());
+        Button creerProfileButton = genererMenu.creerBoutonStyle("Créer un profil");
+        creerProfileButton.setOnAction(e -> creerProfile());
 
-        Button returnToMainMenu = genererMenu.createStyledButton("Retour");
+        Button supprimerProfilButton = genererMenu.creerBoutonStyle("Supprimer un profil");
+        supprimerProfilButton.setOnAction(e -> supprimerProfile());
+
+        Button returnToMainMenu = genererMenu.creerBoutonStyle("Retour");
         returnToMainMenu.setOnAction(e -> primaryStage.setScene(mainScene));
 
-        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, createProfileButton,
+        vboxProfileSelection.getChildren().addAll(profileLabel, loadProfileButton, creerProfileButton, supprimerProfilButton,
                 returnToMainMenu);
-        profileSelectionScene = new Scene(vboxProfileSelection, 500, 400);
+        selectionProfile = new Scene(vboxProfileSelection, 500, 400);
     }
 
     /**
@@ -174,76 +151,99 @@ public class HashiParmentier extends Application {
         vboxLevels.setAlignment(Pos.CENTER);
         vboxLevels.setBackground(new Background(background));
 
-        Button level1 = genererMenu.createStyledButton("Facile");
+        Button tuto = genererMenu.creerBoutonStyle("Tutoriel");
+        tuto.setOnAction(e -> primaryStage.setScene(genererMenu.creerSlideshow(primaryStage, mainScene)));
+
+        Button level1 = genererMenu.creerBoutonStyle("Facile");
         level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
 
-        Button level2 = genererMenu.createStyledButton("Moyen");
+        Button level2 = genererMenu.creerBoutonStyle("Moyen");
         level2.setOnAction(e -> lancerPartieAffichage(Difficulte.moyen));
 
-        Button level3 = genererMenu.createStyledButton("Difficile");
+        Button level3 = genererMenu.creerBoutonStyle("Difficile");
         level3.setOnAction(e -> lancerPartieAffichage(Difficulte.difficile));
 
-        Button level4 = genererMenu.createStyledButton("expert");
+        Button level4 = genererMenu.creerBoutonStyle("expert");
         level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
 
-        Button levelRetour = genererMenu.createStyledButton("Retour");
+        Button levelRetour = genererMenu.creerBoutonStyle("Retour");
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
-        Label levelTitle = genererMenu.createStyledLabel("Choisissez votre niveau de jeu :");
-        vboxLevels.getChildren().addAll(levelTitle, level1, level2, level3, level4, levelRetour);
-        levelSelectionScene = new Scene(vboxLevels, 500, 400);
+        Label levelTitle = genererMenu.creerLabelStyle("Choisissez votre niveau de jeu :");
+        vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, levelRetour);
+        selectionNiveau = new Scene(vboxLevels, 500, 400);
 
-    }
-
-    /**
-     * Affiche la page de sélection de niveau.
-     */
-    private void showLevelSelection() {
-        primaryStage.setScene(levelSelectionScene);
     }
 
     /**
      * Affiche la page de sélection de profil.
      */
     private void showProfileSelectionPage() {
-        primaryStage.setScene(profileSelectionScene); // Changement pour afficher la page de sélection de profil
+        primaryStage.setScene(selectionProfile); // Changement pour afficher la page de sélection de profil
     }
 
     // ======================== Gestion des profils ========================
     /**
      * Crée un profil.
      */
-    private void createProfile() {
-        // Créer une instance de TextInputDialog
+    private void creerProfile() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Créer un profil");
-        //dialog.setHeaderText("Entrez votre nom de profil :");
         dialog.setHeaderText(null);
         dialog.getDialogPane().setHeader(null);
 
         dialog.setGraphic(null);
-        // Appliquer le style CSS au DialogPane et aux éléments internes
         dialog.setContentText("Entrez votre nom de profil :  ");
 
         Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
         Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
 
-        // Remplacement du style des boutons
-        okButton.setStyle(genererMenu.createStyledButton("OK").getStyle());
-        cancelButton.setStyle(genererMenu.createStyledButton("Annuler").getStyle());
+        okButton.setStyle(genererMenu.creerBoutonStyle("OK").getStyle());
+        cancelButton.setStyle(genererMenu.creerBoutonStyle("Annuler").getStyle());
         dialog.getDialogPane().setStyle(
                 "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: rgb(121, 45, 9); -fx-background-color:rgb(175, 140, 117);");
-        // Appliquer un style spécifique à l'input text
+        dialog.getEditor().setPromptText("Nom de profil");
+        dialog.getEditor().setStyle(
+                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill:rgb(121, 45, 9);; -fx-background-color: #f8f1e1;");
+
+        Optional<String> result = dialog.showAndWait();
+        //Recupération du nom du profil
+        result.ifPresent(name -> {
+            ProfileManager.getInstance().creerProfil(name);
+            ProfileManager.getInstance().setProfileActif(name);
+            System.out.println("Profil créé et sauvegardé : " + name);
+
+            showProfileSelectionPage();
+        });
+    }
+
+    /**
+     * Permet de supprimer un profile.
+     */
+    private void supprimerProfile() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Supprimer le profil");
+        dialog.setHeaderText(null);
+        dialog.getDialogPane().setHeader(null);
+
+        dialog.setGraphic(null);
+        dialog.setContentText("Le nom du profil à supprimer :  ");
+
+        Button okButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.OK);
+        Button cancelButton = (Button) dialog.getDialogPane().lookupButton(ButtonType.CANCEL);
+
+        okButton.setStyle(genererMenu.creerBoutonStyle("OK").getStyle());
+        cancelButton.setStyle(genererMenu.creerBoutonStyle("Annuler").getStyle());
+        dialog.getDialogPane().setStyle(
+                "-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: rgb(121, 45, 9); -fx-background-color:rgb(175, 140, 117);");
         dialog.getEditor().setPromptText("Nom de profil");
         dialog.getEditor().setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill:rgb(121, 45, 9);; -fx-background-color: #f8f1e1;");
 
         Optional<String> result = dialog.showAndWait();
         result.ifPresent(name -> {
-            ProfileManager.getInstance().creerProfil(name); // Crée et sauvegarde le profil
-            ProfileManager.getInstance().setProfileActif(name); // Définit le profil actif
-            System.out.println("Profil créé et sauvegardé : " + name);
+            ProfileManager.getInstance().supprimerProfil(name);
+            System.out.println("Profil supprimer : " + name);
 
-            // Recharge la liste des profils pour que le nouveau apparaisse
             showProfileSelectionPage();
         });
     }
@@ -297,7 +297,7 @@ public class HashiParmentier extends Application {
         });
 
         // Bouton de validation
-        Button confirmButton = genererMenu.createStyledButton("Valider");
+        Button confirmButton = genererMenu.creerBoutonStyle("Valider");
         confirmButton.setOnAction(event -> {
             String selectedProfile = comboBox.getValue();
             if (selectedProfile != null) {
@@ -322,7 +322,7 @@ public class HashiParmentier extends Application {
      * Démarre une partie.
      */
     private void startGame() {
-        primaryStage.setScene(levelSelectionScene); // Aller à la page de sélection du niveau
+        primaryStage.setScene(selectionNiveau); // Aller à la page de sélection du niveau
     }
 
     /**

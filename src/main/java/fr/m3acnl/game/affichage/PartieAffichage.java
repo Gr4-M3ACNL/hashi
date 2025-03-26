@@ -33,6 +33,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
@@ -108,16 +109,6 @@ public class PartieAffichage extends Application {
     private int niveauAide = ProfileManager.getInstance().getProfileActif().getParametre().getNiveauAide();
 
     /**
-     * Texte d'aide à afficher.
-     */
-    private String[] text = {"1 - Dans un monde en perpétuelle évolution,"
-                + "la technologie façonne nos vies à une vitesse fulgurante."
-                + " Chaque innovation ouvre de nouvelles opportunités, transformant nos habitudes et nos interactions."
-                + " La curiosité et l’apprentissage continu sont essentiels pour s’adapter et prospérer dans cet environnement dynamique.",
-        "2 - Dans un monde en perpétuelle évolution,",
-        "3 - la technologie façonne nos vies à une vitesse fulgurante.", };
-
-    /**
      * L'élément d'aide à afficher.
      */
     private ElementAide elementAide;
@@ -133,16 +124,6 @@ public class PartieAffichage extends Application {
     AideVoisin aideVoisin;
 
     /**
-     * Constructeur de la classe PartieAffichage.
-     *
-     * @param difficulte La difficulté de la partie
-     * @see Partie#Partie(Difficulte)
-     */
-    public PartieAffichage(Difficulte difficulte) {
-        this.partie = new Partie(difficulte);
-    }
-
-    /**
      * Generateur de menu.
      */
     private final GenererAsset genererMenu = new GenererAsset("/META-INF/assetsGraphiques/back/backPartie.png");
@@ -156,6 +137,16 @@ public class PartieAffichage extends Application {
      * La scène principale.
      */
     Scene mainScene;
+
+    /**
+     * Constructeur de la classe PartieAffichage.
+     *
+     * @param difficulte La difficulté de la partie
+     * @see Partie#Partie(Difficulte)
+     */
+    public PartieAffichage(Difficulte difficulte) {
+        this.partie = new Partie(difficulte);
+    }
 
     /**
      * Méthode start pour lancer l'application.
@@ -356,15 +347,14 @@ public class PartieAffichage extends Application {
      */
     private VBox creerPanneauAide() {
         VBox aideBox = new VBox(10);
-        aideBox.setAlignment(Pos.CENTER_RIGHT); // Alignement général au centre
+        aideBox.setAlignment(Pos.CENTER_RIGHT);
         aideBox.setStyle("-fx-background-color: transparent; -fx-border-radius: 10;");
 
         // Création du label d'aide
-        labelAide = genererMenu.createStyledLabel("Voici un texte d'aide qui donne des indices sur le jeu. "
+        labelAide = genererMenu.creerLabelStyle("Voici un texte d'aide qui donne des indices sur le jeu. "
                 + "Il contient jusqu'à 300 caractères pour expliquer certaines mécaniques ou donner des conseils.");
         labelAide.setWrapText(true);
         labelAide.setMaxWidth(250);
-
         labelAide.setAlignment(Pos.CENTER);
         labelAide.setTextAlignment(TextAlignment.CENTER);
 
@@ -372,7 +362,7 @@ public class PartieAffichage extends Application {
         ImageView hintImage = genererMenu.creerImageView("/META-INF/assetsGraphiques/character/hint.png", 200, 200);
 
         // Création du bouton Aide
-        Button aideButton = genererMenu.createStyledButton("Aide");
+        Button aideButton = genererMenu.creerBoutonStyle("Aide");
         aideButton.setStyle("-fx-background-color: linear-gradient(#7a5230, #4a2c14);"
                 + "-fx-background-radius: 10;"
                 + "-fx-border-color: #3d1e10;"
@@ -389,10 +379,16 @@ public class PartieAffichage extends Application {
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore());
         });
 
-        // Permet aux éléments de prendre plus d'espace pour un meilleur centrage
-        // Ajout des éléments au VBox
-        aideBox.getChildren().addAll(labelAide, hintImage, aideButton);
-        aideBox.setMaxWidth(300); // Largeur max
+        // Ajout de l'image "ampoule.png" à côté du bouton
+        ImageView ampouleImage = genererMenu.creerImageView("/META-INF/assetsGraphiques/icon/ampoule.png", 40, 40);
+
+        // HBox pour aligner le bouton et l'image horizontalement
+        HBox aideContainer = new HBox(10, aideButton, ampouleImage);
+        aideContainer.setAlignment(Pos.CENTER); // Centrage des éléments dans la HBox
+
+        // Ajout des éléments au VBox principal
+        aideBox.getChildren().addAll(labelAide, hintImage, aideContainer);
+        aideBox.setMaxWidth(300);
 
         return aideBox;
     }
@@ -424,6 +420,8 @@ public class PartieAffichage extends Application {
         if (mainScene == null) {
             return;
         }
+
+        creerBackground();
 
         double largeurScene = mainScene.getWidth();
         double hauteurScene = mainScene.getHeight();
@@ -572,8 +570,8 @@ public class PartieAffichage extends Application {
         Label labelWin = new Label("Temps : " + labelTemps.getText());
         labelWin.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
 
-        Button btnSuivant = genererMenu.createStyledButton("Suivant");
-        Button btnQuitter = genererMenu.createStyledButton("Quitter");
+        Button btnSuivant = genererMenu.creerBoutonStyle("Suivant");
+        Button btnQuitter = genererMenu.creerBoutonStyle("Quitter");
 
         btnSuivant.setOnAction(e -> {
             relancerPartie(mainLayout);  // Passer mainLayout à relancerPartie
@@ -629,8 +627,10 @@ public class PartieAffichage extends Application {
      * Met une partie de la grille en subrillance pour les Aide.
      */
     private void surbrillanceAide() {
-        if (elementAide != null) {
+        if (elementAide != null && numeroAide < niveauAide) {
+            System.out.println("Surbrillance de l'aide : " + numeroAide);
             for (Noeud n : elementAide.getNoeudsSurbrillance()[numeroAide]) {
+                System.out.println(n);
                 n.setActiver(true);
                 n.surbrillanceOn();
                 n.setActiver(false);
@@ -671,7 +671,7 @@ public class PartieAffichage extends Application {
         }
         if (numeroAide < niveauAide + 1) {
             partie.addMalus((numeroAide + 1) * 5);
-            System.out.println("Aide de niveau : " + (numeroAide + 1));
+            System.out.println("Aide de niveau : " + (numeroAide + 1) + " sur " + (niveauAide + 1));
         }
         partie.getJeu().getPlateau().setSurbrillanceOff();
         surbrillanceAide();
@@ -687,20 +687,24 @@ public class PartieAffichage extends Application {
      * @param y La colonne de l'élément
      */
     private void activerElement(MouseEvent event, int x, int y) {
-        restaurerEtat(x, y);
 
         // Vérifier si l'élément du plateau est un DoubleLien
         ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
 
         if (element instanceof DoubleLien doubleLien) {
             // Trouver le nœud le plus proche de la souris
-            Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
-
+            /*Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event); //!! Ne pas supprimer !!
+            
             if (noeudProche != null) {
-                doubleLien.activer(noeudProche);
+                partie.getJeu().activeElemJeu(x, y, noeudProche);
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
-            }
+            }*/
+            partie.getJeu().activeElemJeu(x, y, ((DoubleLien) element).getLienBrillance() == 1 
+                ? ((DoubleLien) element).getLien1().getNoeud1() : ((DoubleLien) element).getLien2().getNoeud1());
+            
+            genererMenu.jouerSon("lien.wav",
+                    ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
         } else {
             partie.getJeu().activeElemJeu(x, y, null);
             if (element instanceof Noeud noeud) {
@@ -722,6 +726,7 @@ public class PartieAffichage extends Application {
         }
         // Mettre à jour l'affichage
         ajoue = true;
+        //restaurerEtat(x, y);
         actualiserAffichage();
     }
 

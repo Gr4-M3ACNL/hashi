@@ -323,6 +323,9 @@ public class Matrice {
         return noeudLePlusProche;
     }
 
+    /**
+     * Permet de retirer la surbrillance de tout les éléments.
+     */
     public void setSurbrillanceOff() {
         for (ArrayList<ElementJeu> ligne : matrice) {
             for (ElementJeu element : ligne) {

@@ -23,10 +23,9 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
 public class AideVoisin extends Aide {
 
     /**
-     * le jeu sur lequel on joue.
+     * le jeu sur lequel on recherche de l'aide.
      */
     private final Jeu jeu;
-
     /**
      * liste d'aide sur les voisins.
      */
@@ -38,8 +37,8 @@ public class AideVoisin extends Aide {
      * @param matrice la matrice représentant la grille du jeu
      * @param description la description de l'aide
      * @param nom le nom de l'aide
-     * @param jeu le jeu sur lequel on joue
-     * @param c les coordonnées de l'aide
+     * @param jeu le jeu sur lequel on recherche de l'aide
+     * @param c la coordonnée du noeud
      */
     public AideVoisin(Matrice matrice, String description, String nom, Jeu jeu, Coord c) {
         super(matrice, nom, c);
@@ -51,28 +50,7 @@ public class AideVoisin extends Aide {
     static {
         aidesVoisins = new ArrayList<>();
     }
-
-    
-    /*public boolean afficherAideNoeud(Noeud noeud) {
-        int poidsNoeud = noeud.getDegreSoluce() - noeud.getDegreActuelle();
-        List<Noeud> voisins = trouverVoisins(noeud);
-        int sommeVoisins = 0;
-        int nbvoisin = voisins.size();
-
-        // Calcul de la somme des poids des voisins
-        for (Noeud voisin : voisins) {
-            sommeVoisins += voisin.getDegreSoluce();
-        }
-        // METHODE 4-2-2-2
-        // Vérifie si le poids du noeud divisé par 2 est égal à la somme de ses voisins
-        if ((poidsNoeud / 2 == nbvoisin) && (poidsNoeud <= sommeVoisins)) {
-            aidesVoisins.add(new AideVoisin(jeu.getPlateau(), "Nombre de ponts divisé par 2 est égal à la somme des ponts de ses voisins.",
-                    "Technique debut de jeu", jeu, noeud.getPosition()));
-            afficherAide(aidesVoisins.size() - 1);
-            return true;
-        }
-        return false;
-    }*/
+  
     /**
      * Fait une liste de tous les noeuds.
      *
@@ -97,7 +75,7 @@ public class AideVoisin extends Aide {
      *
      * @param x coordonnée x
      * @param y coordonnée y
-     * @return true si les coordonnées sont valides, false sinon
+     * @return true si les coordonnées sont valides, sinon false
      */
     private boolean estValide(int x, int y) {
         return x >= 0 && x < jeu.getTaille() && y >= 0 && y < jeu.getTaille();
@@ -143,8 +121,6 @@ public class AideVoisin extends Aide {
 
         for (int i = voisins.size() - 1; i >= 0; i--) {
             Noeud voisin = voisins.get(i);
-            //System.out.println("voisin : " + voisin.getPosition().getCoordX() + ", " + voisin.getPosition().getCoordY());
-
             if (noeud.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
                 // Vérifie si le voisin est à gauche ou à droite
                 if (noeud.getPosition().getCoordY() > voisin.getPosition().getCoordY()) {
@@ -245,7 +221,7 @@ public class AideVoisin extends Aide {
 
     /**
      * Getter pour la description.
-     *
+     * 
      * @return la description de l'aide
      */
     public String getDescription() {
@@ -486,7 +462,7 @@ public class AideVoisin extends Aide {
      * Regarde si le noeud est lié.
      *
      * @param elem le noeud du jeu à analyser
-     * @param n le noeud du jeu à analyser
+     * @param n le noeud à vérifier
      * @return true si il est lié, false sinon
      */
     private boolean checkLier(ElementJeu elem, Noeud n) {
@@ -510,12 +486,11 @@ public class AideVoisin extends Aide {
         List<Noeud> voisins = trouverVoisins(noeud);
         if (voisins.isEmpty()) {
             aidesVoisins.add(new AideVoisin(matrice, "Aucun voisin accessible", "Isolement", jeu, noeud.getPosition()));
-            afficherAide(aidesVoisins.size() - 1);
+
             return false;
         }
 
         for (Noeud voisin : voisins) {
-            //System.out.println("voisin : " + voisin.getPosition().getCoordX() + ", " + voisin.getPosition().getCoordY());
             if (noeud.getPosition().getCoordX() == voisin.getPosition().getCoordX()) {
                 /*
                  * Regarde si le voisin est a ça gauche si oui verifhorizontal du voisin vers le noeud
@@ -663,10 +638,9 @@ public class AideVoisin extends Aide {
 
         // Affichage des résultats
         for (Map.Entry<String, Integer> aideEntry : aidesParZone.entrySet()) {
-            System.out.println("Zone : " + aideEntry.getKey() + " | Aides disponibles : " + aideEntry.getValue());
+
         }
 
-        System.out.println("Total des aides disponibles : " + totalAides);
         return totalAides;
     }
 
@@ -691,21 +665,15 @@ public class AideVoisin extends Aide {
 
     /**
      * Méthode pour créer un élément d'aide globale.
+     * Vérifie si le noeud est isolé.
      *
-     * @return un élément d'aide globale
+     * @return l'element d'aide a afficher
      */
     public ElementAide aideGlobale() {
         List<Noeud> tousLesNoeuds = getListeNoeuds();
         ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
 
         for (Noeud noeud : tousLesNoeuds) {
-            // Test 1: Aide sur les voisins
-            /*if (afficherAideNoeud(noeud)) {
-                elementAide.addTexte(1, " Il y a des noeud qui peuve etre connecter.Tecnique :si une ile a un chiffre qui "
-                + "si il se divise par 2 alors est egale a son nombre de voisin alors il peut se connecter en double pont a tous ses voisin");
-                // Ajouter le noeud à surligner (exemple pour l'index 0)
-            }*/
-
             // Test 2: Aide sur l'isolement
             switch (poidsRestantVoisins(noeud)) {
                 case 0 -> {
@@ -739,8 +707,9 @@ public class AideVoisin extends Aide {
 
     /**
      * Affiche la description de l'aide.
-     *
-     * @param index L'index de l'aide à afficher.
+     * 
+     * @param index l'index de l'aide à afficher
+     * @see Aide#afficherAide(int)
      */
     @Override
     public void afficherAide(int index) {
@@ -750,9 +719,9 @@ public class AideVoisin extends Aide {
     }
 
     /**
-     * Méthode main pour tester la classe AideVoisin.
-     *
-     * @param args Arguments de la ligne de commande.
+     * Méthode principale pour tester la classe AideVoisin.
+     * 
+     * @param args arguments de la ligne de commande
      */
     public static void main(String[] args) {
         // Création d'une matrice pour tester
@@ -782,13 +751,6 @@ public class AideVoisin extends Aide {
             System.out.println("NOEUD" + noeud.getPosition());
         }
 
-        /*
-        System.out.println("\nTest de vérification d'aide disponible dans les zones :");
-        int aideDisponible = aideVoisin.checkzone();
-        System.out.println("Aide disponible ? " + (aideDisponible == 1 ? "Oui" : "Non"));
-
-        System.out.println("Description : " + aideVoisin.getDescription());
-         */
     }
 
 }
