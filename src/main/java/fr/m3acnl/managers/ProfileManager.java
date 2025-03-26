@@ -37,6 +37,13 @@ public class ProfileManager {
     private ProfileManager() {
     }
 
+    // ======================== Classes internes ========================
+    /**
+     * Classe interne permettant de stocker le nom du profil et la durée de la partie.
+     * 
+     * @param nomProfil nom du profil
+     * @param duree     durée de la partie
+     */
     public record TempsPartie(String nomProfil, Duration duree) {
 
     }

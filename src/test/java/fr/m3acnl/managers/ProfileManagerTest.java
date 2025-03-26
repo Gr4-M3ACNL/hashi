@@ -197,6 +197,12 @@ public class ProfileManagerTest extends Tests {
         profileManager.supprimerProfil(profileTest);
     }
 
+    /**
+     * Test de la méthode getClassementTemps de la classe ProfileManager.
+     * Vérifie que le classement des temps est bien retourné.
+     * 
+     * @see ProfileManager#getClassementTemps
+     */
     @Test
     public void testGetClassemntTemps() {
         ProfileManager profileManager = ProfileManager.getInstance();
