@@ -196,6 +196,11 @@
           <serialwarn>true</serialwarn>
           <failOnError>true</failOnError>
           <failOnWarnings>true</failOnWarnings>
+
+          <!-- Ajout de l'option pour autoriser les scripts dans les commentaires -->
+          <additionalOptions>
+            <additionalOption>--allow-script-in-comments</additionalOption>
+          </additionalOptions>
         </configuration>
       </plugin>
 
@@ -209,18 +214,10 @@
           <filesets>
             <!-- Chemin du dossier relatif à la base du projet -->
             <fileset>
-              <directory>doc/apidocs</directory>
               <directory>doc/testapidocs</directory>
             </fileset>
             <fileset>
-              <directory>doc/plantuml</directory>
-              <includes>
-                <include>**/*.svg</include>
-                <include>**/*.png</include>
-              </includes>
-              <excludes>
-                <exclude>**/*.puml</exclude>
-              </excludes>
+              <directory>doc/apidocs</directory>
             </fileset>
           </filesets>
         </configuration>
