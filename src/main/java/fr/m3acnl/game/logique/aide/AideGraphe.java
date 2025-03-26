@@ -221,6 +221,7 @@ public class AideGraphe extends Aide {
      * Vérifie si le/les liens rend/rendent le sous-réseau connexe.
      *
      * @param n Noeud dont on vérifie les liens.
+     * @return Si le noeud peut rendre le sous-graphe connexe.
      */
     public boolean rendSousGrapheConnexe(Noeud n) {
         List<Noeud> voisins = trouverVoisinsDispoComplet(n);
@@ -408,13 +409,10 @@ public class AideGraphe extends Aide {
             // Test 1: Aide sur les voisins
             if (lienImpossible(noeud)) {
                 elementAide.addTexte(4, "Une île peut rendre un regroupement d'îles complet sans que ce soit toutes les îles."
-                + "Conseil : Attention aux ponts de cette île.");
+                    + "Conseil : Attention aux ponts de cette île.");
                 elementAide.addNoeud(4, noeud);
                 // Ajouter le noeud à surligner (exemple pour l'index 0)
-            }
-
-            // Test 2: Aide sur l'isolement
-            else if (rendSousGrapheConnexe(noeud)) {
+            } else if (rendSousGrapheConnexe(noeud)) {
                 elementAide.addTexte(5, "5 Description: Cette aide met en évidence si un noeud rend un sous-reseau connexe.");
                 elementAide.addNoeud(5,  noeud);
             }
@@ -423,6 +421,12 @@ public class AideGraphe extends Aide {
         return elementAide;  // Retourner l'élément d'aide complet
     }
 
+    /**
+     * Lé méthode retourne la somme des voisins du noeud sous forme de liste d'entiers.
+     * @param voisins La liste des voisins
+     * @param n Le noeud sur lequel on veut la somme des voisins
+     * @return La liste des entiers représentant la somme des voisins.
+     */
     public List<Integer> getSommeVoisins(List<Noeud> voisins, Noeud n) {
         List<Integer> somme = new ArrayList<>();
         for (Noeud voisin : voisins) {
@@ -433,6 +437,13 @@ public class AideGraphe extends Aide {
         return somme;
     }
 
+    /**
+     * La méthode retourne le nombre de voisins dispos du noeud.
+     * 
+     * @param voisins Liste des voisins
+     * @param n Noeud où on veut les voisins.
+     * @return Nombre de voisins dispos.
+     */
     public int getNbVoisinsDispos(List<Noeud> voisins, Noeud n) {
         int nb = 0;
         for (Noeud voisin : voisins) {
@@ -463,7 +474,8 @@ public class AideGraphe extends Aide {
                 int som = somme.stream().mapToInt(Integer::intValue).sum();
                 if (somm && som == (n.getDegreSoluce() - n.getDegreActuelle())
                         && getNbVoisinsDispos(voisins.get(Math.max(0, i - 1)).afficherReseau(),
-                                voisins.get(Math.max(0, i - 1))) == 1 && getNbVoisinsDispos(voisins.get(Math.min(voisins.size() - 1, i)).afficherReseau(),
+                                voisins.get(Math.max(0, i - 1))) == 1 
+                                && getNbVoisinsDispos(voisins.get(Math.min(voisins.size() - 1, i)).afficherReseau(),
                         voisins.get(Math.min(voisins.size() - 1, i))) == 1) {
                     voisins.add(0, temp);
                     aidesGraphes.add(new AideGraphe(matrice, "Le nœud " + n.getPosition() + " peut rendre un sous-graphe connexe à cause "
@@ -527,6 +539,10 @@ public class AideGraphe extends Aide {
         return visites.size() == reseau.size() && reseau.size() > 1;
     }
 
+    /**
+     * Méthode main qui va tester les méthodes.
+     * @param args Les arguments main().
+     */
     public static void main(String[] args) {
         // Création d'une matrice pour tester
         Double[][] mat = {
