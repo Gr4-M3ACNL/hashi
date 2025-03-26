@@ -76,16 +76,6 @@ public class AideVoisinTest extends Tests {
     }
 
     /**
-     * Test de la méthode afficherAideNoeud.
-     * 
-     * @see AideVoisin#afficherAideNoeud
-     */
-    @Test
-    void testAfficherAideNoeud() {
-        assertDoesNotThrow(() -> aideVoisin.afficherAideNoeud(noeudTest));
-    }
-
-    /**
      * Test de la méthode checkIsolement.
      * 
      * @see AideVoisin#checkIsolement
@@ -143,12 +133,12 @@ public class AideVoisinTest extends Tests {
     /**
      * Test de la méthode poidRestantVoisin.
      * 
-     * @see AideVoisin#poidRestantVoisin(Noeud)
+     * @see AideVoisin#poidsRestantVoisins(Noeud)
      */
     @Test
-    void testPoidRestantVoisin() {
-        boolean poidsRestant = aideVoisin.poidRestantVoisin(noeudTest);
-        assertTrue(poidsRestant || !poidsRestant, "Le retour doit être un booléen valide.");
+    void testPoidsRestantVoisins() {
+        int poidsRestant = aideVoisin.poidsRestantVoisins(noeudTest);
+        assertTrue(poidsRestant >= 0 && poidsRestant < 3, "Le retour doit être un booléen valide.");
     }
 
     /**
