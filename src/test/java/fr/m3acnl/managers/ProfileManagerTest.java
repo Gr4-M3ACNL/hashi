@@ -1,6 +1,7 @@
 package fr.m3acnl.managers;
 
 import fr.m3acnl.Tests;
+import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.profile.Profile;
 
 import org.junit.jupiter.api.AfterAll;
@@ -8,6 +9,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.time.Duration;
+import java.util.List;
 
 /**
  * Classe de Test de la classe ProfileManager.
@@ -191,5 +195,37 @@ public class ProfileManagerTest extends Tests {
         assertThrows(IllegalArgumentException.class, () -> profileManager.creerProfil("TestManager"),
                 "on ne devrais pas pouvoir crée un profil qui existe déjà");
         profileManager.supprimerProfil(profileTest);
+    }
+
+    @Test
+    public void testGetClassemntTemps() {
+        ProfileManager profileManager = ProfileManager.getInstance();
+        profileManager.creerProfil("TestManager");
+        profileTest = profileManager.getProfileActif();
+        assertNotNull(profileTest);
+        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(1));
+        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(2));
+        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(3));
+        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(4));
+        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(5));
+        
+        profileManager.sauvegarder(profileTest);
+
+
+        List<ProfileManager.TempsPartie> classement = profileManager.getClassementTemps(Difficulte.difficile);
+        assertNotNull(classement);
+        assertEquals(5, classement.size());
+        assertEquals("TestManager", classement.get(0).nomProfil());
+        assertEquals(Duration.ofSeconds(1), classement.get(0).duree());
+        assertEquals("TestManager", classement.get(1).nomProfil());
+        assertEquals(Duration.ofSeconds(2), classement.get(1).duree());
+        assertEquals("TestManager", classement.get(2).nomProfil());
+        assertEquals(Duration.ofSeconds(3), classement.get(2).duree());
+        assertEquals("TestManager", classement.get(3).nomProfil());
+        assertEquals(Duration.ofSeconds(4), classement.get(3).duree());
+        assertEquals("TestManager", classement.get(4).nomProfil());
+        assertEquals(Duration.ofSeconds(5), classement.get(4).duree());
+        profileManager.supprimerProfil(profileTest);      
+
     }
 }

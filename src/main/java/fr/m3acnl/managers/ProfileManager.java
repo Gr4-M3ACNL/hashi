@@ -1,8 +1,11 @@
 package fr.m3acnl.managers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.time.Duration;
 
+import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.profile.Profile;
 
 /**
@@ -34,6 +37,10 @@ public class ProfileManager {
     private ProfileManager() {
     }
 
+    public record TempsPartie(String nomProfil, Duration duree) {
+
+    }
+
     // ======================== Getter ========================
     /**
      * Retourne l'instance de la classe ProfileManager.
@@ -51,6 +58,24 @@ public class ProfileManager {
      */
     public Profile getProfileActif() {
         return profileActif;
+    }
+
+    /**
+     * Retourne la liste des profils sous forme d'objets Profile.
+     * 
+     * @return la liste des profils sous forme d'objets Profile
+     */
+    private List<Profile> getListeProfilsObjet() {
+        List<String> listeProfils = jsonManager.getListeProfils();
+        List<Profile> listeProfilsObjet = new ArrayList<>();
+        // On parcourt la liste des noms de profils et on les charge
+        for (String nom : listeProfils) {
+            Profile profile = jsonManager.chargerProfil(nom);
+            if (profile != null) {
+                listeProfilsObjet.add(profile);
+            }
+        }
+        return listeProfilsObjet;
     }
 
     // ======================== Setter ========================
@@ -89,6 +114,18 @@ public class ProfileManager {
         if (Objects.nonNull(profileActif)) {
             jsonManager.sauvegarderProfil(profileActif);
         }
+    }
+
+    /**
+     * Sauvegarde un profil.
+     * 
+     * @param profile le profil à sauvegarder
+     */
+    public void sauvegarder(Profile profile) {
+        if (Objects.isNull(profile)) {
+            throw new IllegalArgumentException("Le profil ne peut pas être null");
+        }
+        jsonManager.sauvegarderProfil(profile);
     }
 
     /**
@@ -139,6 +176,49 @@ public class ProfileManager {
 
         // Définit le profil actif
         setProfileActif(nom);
+    }
+
+    /**
+     * Retourne le classement des temps de jeu pour une difficulté donnée.
+     * 
+     * @param difficulte difficulté pour laquelle on veut le classement
+     * @return une liste ordonée de tuple (nomProfil, tempsPartie)
+     */
+    public List<TempsPartie> getClassementTemps(Difficulte difficulte) {
+
+        List<Profile> listeProfils = getListeProfilsObjet();
+        List<TempsPartie> classement = new ArrayList<>();
+        List<Duration> tempsParties;
+
+        // On parcourt la liste des profils et on récupère les temps de jeu
+        for (Profile profile : listeProfils) {
+            tempsParties = profile.getHistoriquePartieProfile().getTemps(difficulte);
+            for (Duration temps : tempsParties) {
+                classement.add(new TempsPartie(profile.getNom(), temps));
+            }
+        }
+
+        // On trie la liste des tuples (nomProfil, tempsPartie) par ordre croissant des temps
+        // on utilse un ordre croissant car le temps de jeu le plus court est le meilleur
+        classement.sort((o1, o2) -> {
+            if (o1.duree.toMillis() == o2.duree.toMillis()) {
+                return 0;
+            } else if (o1.duree.toMillis() < o2.duree.toMillis()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+
+        // On garde les 5 meilleurs temps
+        if (classement.size() > 5) {
+            classement = classement.subList(0, 5);
+        }
+        // On remplit la liste avec des null si elle fait moins de 5
+        while (classement.size() < 5) {
+            classement.add(new TempsPartie("", null));
+        }
+        return classement;
     }
 
 }
