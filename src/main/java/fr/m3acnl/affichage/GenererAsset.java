@@ -402,7 +402,9 @@ public class GenererAsset {
             "/META-INF/assetsTuto/10.png",
             "/META-INF/assetsTuto/11.png",
             "/META-INF/assetsTuto/12.png",
-            "/META-INF/assetsTuto/13.png"
+            "/META-INF/assetsTuto/13.png",
+            "/META-INF/assetsTuto/14.png",
+            "/META-INF/assetsTuto/15.png"
         };
 
         int[] currentIndex = {0};
