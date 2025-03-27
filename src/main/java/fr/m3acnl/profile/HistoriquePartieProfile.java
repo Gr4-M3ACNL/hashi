@@ -20,10 +20,6 @@ import fr.m3acnl.managers.JsonManager;
 public class HistoriquePartieProfile implements JsonSerializable {
 
     // ======================== Attributs ========================
-    /**
-     * Taille maximale de l'historique des parties.
-     */
-    private final int tailleHistorique = 10;
 
     /**
      * Liste des temps des parties jouées en mode facile.
@@ -317,33 +313,25 @@ public class HistoriquePartieProfile implements JsonSerializable {
         switch (difficulte) {
             case facile:
                 this.facile.add(temps);
-                if (this.facile.size() > tailleHistorique) {
-                    this.facile.remove(0);
-                }
+                this.facile.sort(Duration::compareTo);
                 this.indexFacile++;
                 this.indexFacile %= jsonManager.getNbGrilles(Difficulte.facile);
                 break;
             case moyen:
                 this.moyen.add(temps);
-                if (this.moyen.size() > tailleHistorique) {
-                    this.moyen.remove(0);
-                }
+                this.moyen.sort(Duration::compareTo);
                 this.indexMoyen++;
                 this.indexMoyen %= jsonManager.getNbGrilles(Difficulte.moyen);
                 break;
             case difficile:
                 this.difficile.add(temps);
-                if (this.difficile.size() > tailleHistorique) {
-                    this.difficile.remove(0);
-                }
+                this.difficile.sort(Duration::compareTo);
                 this.indexDifficile++;
                 this.indexDifficile %= jsonManager.getNbGrilles(Difficulte.difficile);
                 break;
             case expert:
                 this.expert.add(temps);
-                if (this.expert.size() > tailleHistorique) {
-                    this.expert.remove(0);
-                }
+                this.expert.sort(Duration::compareTo);
                 this.indexExpert++;
                 this.indexExpert %= jsonManager.getNbGrilles(Difficulte.expert);
                 break;
