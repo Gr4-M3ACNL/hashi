@@ -97,7 +97,7 @@ public class JsonManagerTest extends Tests {
     public void testGetNbGrilles() {
         JsonManager manager = new JsonManager();
         int nbGrilles = manager.getNbGrilles(Difficulte.facile);
-        assertEquals(6, nbGrilles, "Le nombre de grilles pour la difficulté facile devrait être de 6");
+        assertEquals(10, nbGrilles, "Le nombre de grilles pour la difficulté facile devrait être de 10");
     }
 
     /**
@@ -286,10 +286,10 @@ public class JsonManagerTest extends Tests {
     public void testGetNbGrillesAllDifficulties() {
         JsonManager manager = new JsonManager();
         
-        assertEquals(6, manager.getNbGrilles(Difficulte.facile), "Nombre incorrect de grilles faciles");
-        assertEquals(5, manager.getNbGrilles(Difficulte.moyen), "Nombre incorrect de grilles moyennes");
-        assertEquals(6, manager.getNbGrilles(Difficulte.difficile), "Nombre incorrect de grilles difficiles");
-        assertEquals(4, manager.getNbGrilles(Difficulte.expert), "Nombre incorrect de grilles expert");
+        assertEquals(10, manager.getNbGrilles(Difficulte.facile), "Nombre incorrect de grilles faciles");
+        assertEquals(10, manager.getNbGrilles(Difficulte.moyen), "Nombre incorrect de grilles moyennes");
+        assertEquals(10, manager.getNbGrilles(Difficulte.difficile), "Nombre incorrect de grilles difficiles");
+        assertEquals(6, manager.getNbGrilles(Difficulte.expert), "Nombre incorrect de grilles expert");
     }
 
     /**
