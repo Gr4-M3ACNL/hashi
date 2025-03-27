@@ -248,7 +248,7 @@ public class AideVoisin extends Aide {
             poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
         }
         if (noeud.getDegreSoluce() != noeud.getDegreActuelle()) {
-            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + " Voisins : " + poidsVoisins);
+            //System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + " Voisins : " + poidsVoisins);
             if (poids == 7 && poidsRestant > 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "7" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
@@ -261,24 +261,51 @@ public class AideVoisin extends Aide {
             } if (voisins.size() == 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "Unique voisin" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (voisins.size() == 2 && poidsRestant == 4) {
+            } if (voisins.size() == 2 && poidsRestant == 4 && poids == 4) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 4" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poids == 6 && voisins.size() == 3 && poidsRestant == 6) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 6" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 3 && voisins.size() == 2 && poidsRestant != 1) {
+            } if (poids == 3 && voisins.size() == 2 && poidsRestant > 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 3" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 4 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant != 2 && voisins.size() == 3) {
+            } if (poids == 4 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant == 4 && voisins.size() == 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "Voisins 4-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
+                return 1;
             } if (poids == 6 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant > 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 6-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
+                return 1;
             } if (poids == 7 && poidsRestant == 3 && voisins.size() == 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "7-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
+            } if (poids == 2 && poidsRestant == 2 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 2) == 2) {
+                aidesVoisins.add(new AideVoisin(matrice, "2-2-2" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (voisins.size() == 2 && poidsRestant == 3) {
+                aidesVoisins.add(new AideVoisin(matrice, "Angle, 3" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 1 && poidsRestant == 1 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 1) == 1) {
+                aidesVoisins.add(new AideVoisin(matrice, "1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 2 && poidsRestant == 2 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 2) == 1) {
+                aidesVoisins.add(new AideVoisin(matrice, "2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 2 && poidsRestant == 2 && Collections.frequency(poidsVoisins, 1) == 1 && voisins.size() == 2) {
+                aidesVoisins.add(new AideVoisin(matrice, "2-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 4 && poidsRestant == 4 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 2) == 2) {
+                aidesVoisins.add(new AideVoisin(matrice, "4-2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 3 && poidsRestant == 3 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 1) == 2) {
+                aidesVoisins.add(new AideVoisin(matrice, "Voisins : 3-1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 6 && poidsRestant == 6 && Collections.frequency(poidsVoisins, 1) == 1 && Collections.frequency(poidsVoisins, 2) == 1) {
+                aidesVoisins.add(new AideVoisin(matrice, "Voisins : 6-1-2" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
+            } if (poids == 2 && poidsRestant == 2 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 1) == 2) {
+                aidesVoisins.add(new AideVoisin(matrice, "2-1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 1;
             }
         }
         return -1;
@@ -502,16 +529,15 @@ public class AideVoisin extends Aide {
             AideGraphe aideGraphe = new AideGraphe(jeu.getPlateau(), "", "", jeu, noeud.getPosition());
             // Test 2: Aide sur l'isolement
             if (poidsRestantVoisins(noeud) == 0) {
-                    elementAide.addTexte(0, "Un noeud ne possède plus assez de place pour se relier."
-                            + " Conseil : libérez lui de ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                    elementAide.addTexte(0, "Technique debut de partie : " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
                     elementAide.addNoeud(0, noeud);
             } if (poidsRestantVoisins(noeud) == 1) {
-                    elementAide.addTexte(0, "Un noeud peut complètement se relier avec ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
-                    elementAide.addNoeud(0, noeud);
-            } if (poidsRestantVoisins(noeud) == 2) {
+                    elementAide.addTexte(1, "Technique plus avancée : " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                    elementAide.addNoeud(1, noeud);
+            } /*if (poidsRestantVoisins(noeud) == 2) {
                     elementAide.addTexte(0, "Un noeud peut se relier avec ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
                     elementAide.addNoeud(0, noeud);
-            }
+            }*/
 
             if (!checkIsolement(noeud)) {
                 elementAide.addTexte(1,
