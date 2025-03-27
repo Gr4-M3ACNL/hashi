@@ -178,9 +178,9 @@ public class GenererAsset {
 
         Label aideTitle = creerLabelStyle("Choisissez un niveau d'aide :");
 
-        Button niveau0 = creerBoutonStyle("Facile");
-        Button niveau1 = creerBoutonStyle("Moyen");
-        Button niveau3 = creerBoutonStyle("Difficile");
+        Button niveau0 = creerBoutonStyle("General");
+        Button niveau1 = creerBoutonStyle("Localisé");
+        Button niveau3 = creerBoutonStyle("Précise");
 
         niveau0.setOnAction(e -> {
             ProfileManager.getInstance().getProfileActif().getParametre().setNiveauAide(0);
