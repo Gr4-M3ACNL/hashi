@@ -1,18 +1,15 @@
 package fr.m3acnl.game.logique.aide;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.Stack;
 
+import fr.m3acnl.game.logique.Jeu;
+import fr.m3acnl.game.logique.Matrice;
 import fr.m3acnl.game.logique.elementjeu.Coord;
 import fr.m3acnl.game.logique.elementjeu.DoubleLien;
 import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import fr.m3acnl.game.logique.elementjeu.Lien;
 import fr.m3acnl.game.logique.elementjeu.Noeud;
-import fr.m3acnl.game.logique.Jeu;
-import fr.m3acnl.game.logique.Matrice;
 
 /**
  * Classe AideGraphe pour aider à travers les graphes. Cette classe permet de
@@ -66,7 +63,7 @@ public class AideGraphe extends Aide {
 
     }
 
-        /**
+    /**
      * Trouve les voisins d'un nœud.
      *
      * @param noeud Le noeud sur lequel trouver les voisins.
@@ -217,7 +214,6 @@ public class AideGraphe extends Aide {
         return voisinsComplet;
     }
 
-
     /**
      * Fait une liste de tous les noeuds.
      *
@@ -304,8 +300,10 @@ public class AideGraphe extends Aide {
                 int som = somme.stream().mapToInt(Integer::intValue).sum();
                 if (somm && som == (n.getDegreSoluce() - n.getDegreActuelle())
                         && getNbVoisinsDispos(voisins.get(Math.max(0, i - 1)).afficherReseau(),
-                                voisins.get(Math.max(0, i - 1))) == 1 && getNbVoisinsDispos(voisins.get(Math.min(voisins.size() - 1, i)).afficherReseau(),
-                        voisins.get(Math.min(voisins.size() - 1, i))) == 1) {
+                                voisins.get(Math.max(0, i - 1))) == 1
+                        && getNbVoisinsDispos(voisins.get(
+                                Math.min(voisins.size() - 1, i)).afficherReseau(),
+                                voisins.get(Math.min(voisins.size() - 1, i))) == 1) {
                     voisins.add(0, temp);
                     aidesGraphes.add(new AideGraphe(matrice, "Le nœud " + n.getPosition() + " peut rendre un sous-graphe connexe à cause "
                             + "de la somme de certains de ses voisins.\n", "Liens impossibles", jeu, n.getPosition()));
@@ -328,8 +326,6 @@ public class AideGraphe extends Aide {
     private boolean estValide(int x, int y) {
         return x >= 0 && x < jeu.getTaille() && y >= 0 && y < jeu.getTaille();
     }
-
-    
 
     public static void main(String[] args) {
         // Création d'une matrice pour tester
