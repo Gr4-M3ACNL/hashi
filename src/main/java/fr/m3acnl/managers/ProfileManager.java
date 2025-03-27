@@ -182,9 +182,6 @@ public class ProfileManager {
         // Sauvegarde le nouveau profil via jsonManager
         jsonManager.sauvegarderProfil(nouveauProfil);
 
-        // Charge la liste mise à jour
-        listeProfils = listeProfils();
-
         // Définit le profil actif
         setProfileActif(nom);
     }
