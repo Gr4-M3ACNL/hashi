@@ -240,23 +240,22 @@ public class AideVoisin extends Aide {
     public int poidsRestantVoisins(Noeud noeud) {
         List<Noeud> voisins = trouverVoisinsDispoComplet(noeud);
         List<Integer> poidsVoisins = new ArrayList<>();
+        List<Integer> poidsVoisinsReels = new ArrayList<>();
         int poidsRestant = (noeud.getDegreSoluce() - noeud.getDegreActuelle());
         int poidsRestantVoisins = 0;
         int poids = noeud.getDegreSoluce();
         for (Noeud voisin : voisins) {
             poidsRestantVoisins += ((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
             poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
+            poidsVoisinsReels.add(voisin.getDegreSoluce());
         }
         if (noeud.getDegreSoluce() != noeud.getDegreActuelle()) {
-            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : " + voisins.size());
+            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : " + poidsVoisinsReels);
             if (poids == 7 && poidsRestant != 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "7" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poidsRestant == 8) {
                 aidesVoisins.add(new AideVoisin(matrice, "8" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (Collections.frequency(poidsVoisins, 1) == 1 && voisins.size() == 2 && poids == 2 && poidsRestant != 0) {
-                aidesVoisins.add(new AideVoisin(matrice, "1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poids == 5 && voisins.size() == 3 && poidsRestant != 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 5 et 3 voisins" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
@@ -282,7 +281,11 @@ public class AideVoisin extends Aide {
             } if (poids == 2 && Collections.frequency(poidsVoisins, 2) == 1 && poidsRestant != 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            }
+            } if (poids == 7 && Collections.frequency(poidsVoisinsReels, 1) == 1) {
+                System.out.println("Voisins = " + poidsVoisins);
+                aidesVoisins.add(new AideVoisin(matrice, "Complet, 7-1" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 0;
+            } 
         }
         return -1;
     }
