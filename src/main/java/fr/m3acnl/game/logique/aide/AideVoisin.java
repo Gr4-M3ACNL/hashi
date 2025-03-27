@@ -241,36 +241,35 @@ public class AideVoisin extends Aide {
         List<Noeud> voisins = trouverVoisinsDispoComplet(noeud);
         List<Integer> poidsVoisins = new ArrayList<>();
         int poidsRestant = (noeud.getDegreSoluce() - noeud.getDegreActuelle());
-        int poidsRestantVoisins = 0;
         int poids = noeud.getDegreSoluce();
         for (Noeud voisin : voisins) {
-            poidsRestantVoisins += ((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
             poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
         }
         if (noeud.getDegreSoluce() != noeud.getDegreActuelle()) {
-            //System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + " Voisins : " + poidsVoisins);
+            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + " Voisins : " + poidsVoisins);
             if (poids == 7 && poidsRestant > 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "7" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poidsRestant == 8) {
                 aidesVoisins.add(new AideVoisin(matrice, "8" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poidsRestant == 5 && voisins.size() == 3 && poidsRestant != 2) {
+            } if (poidsRestant == 5 && voisins.size() == 3 && poidsRestant > 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 5 et 3 voisins" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (voisins.size() == 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "Unique voisin" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (voisins.size() == 2 && poidsRestant == 4 && poids == 4) {
+            } if (voisins.size() == 2 && poidsRestant > 0 && poids == 4) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 4" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 6 && voisins.size() == 3 && poidsRestant == 6) {
+            } if (poids == 6 && voisins.size() == 3 && poidsRestant > 0) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 6" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poids == 3 && voisins.size() == 2 && poidsRestant > 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 3" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 4 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant == 4 && voisins.size() == 3) {
+
+            } if (poids == 4 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant > 2 && voisins.size() == 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "Voisins 4-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
             } if (poids == 6 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant > 3) {
@@ -279,31 +278,32 @@ public class AideVoisin extends Aide {
             } if (poids == 7 && poidsRestant == 3 && voisins.size() == 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "7-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 2 && poidsRestant == 2 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 2) == 2) {
+
+            } if (poids == 2 && poidsRestant > 0 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 2) == 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "2-2-2" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
             } if (voisins.size() == 2 && poidsRestant == 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 3" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
-            } if (poids == 1 && poidsRestant == 1 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 1) == 1) {
+            } if (poids == 1 && poidsRestant > 0 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 1) == 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
-            } if (poids == 2 && poidsRestant == 2 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 2) == 1) {
+            } if (poids == 2 && poidsRestant > 1 && voisins.size() == 2 && Collections.frequency(poidsVoisins, 2) == 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
-            } if (poids == 2 && poidsRestant == 2 && Collections.frequency(poidsVoisins, 1) == 1 && voisins.size() == 2) {
+            } if (poids == 2 && poidsRestant > 1 && Collections.frequency(poidsVoisins, 1) == 1 && voisins.size() == 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "2-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
-            } if (poids == 4 && poidsRestant == 4 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 2) == 2) {
+            } if (poids == 4 && poidsRestant > 3 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 2) == 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "4-2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
-            } if (poids == 3 && poidsRestant == 3 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 1) == 2) {
+            } if (poids == 3 && poidsRestant > 2 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 1) == 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "Voisins : 3-1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
-            } if (poids == 6 && poidsRestant == 6 && Collections.frequency(poidsVoisins, 1) == 1 && Collections.frequency(poidsVoisins, 2) == 1) {
+            } /*if (poids == 6 && poidsRestant > 3 && Collections.frequency(poidsVoisins, 1) == 1 && Collections.frequency(poidsVoisins, 2) == 1) {
                 aidesVoisins.add(new AideVoisin(matrice, "Voisins : 6-1-2" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 1;
-            } if (poids == 2 && poidsRestant == 2 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 1) == 2) {
+                return 1; PB : 1 DOIT ETRE BLOQUE, PLUS DE PONT PR LUI ET IDEM PR 1-V...
+            }*/ if (poids == 2 && poidsRestant > 1 && voisins.size() == 3 && Collections.frequency(poidsVoisins, 1) == 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "2-1-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 1;
             }
