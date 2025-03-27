@@ -78,8 +78,7 @@ public class JsonManager {
                         grilleNode.get("taille").asInt(),
                         mapper.convertValue(grilleNode.get("serialise"), Double[][].class));
             }
-            throw new IllegalArgumentException(
-                    "La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
+            throw new IllegalArgumentException();
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     "La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
@@ -100,11 +99,11 @@ public class JsonManager {
 
             JsonNode difficulteNode = rootNode.get(difficulte.toString());
             if (difficulteNode == null) {
-                throw new IllegalArgumentException("La difficulté n'existe pas");
+                throw new IllegalArgumentException();
             }
             return difficulteNode.size();
         } catch (Exception e) {
-            throw new IllegalArgumentException("La difficulté n'existe pas");
+            throw new IllegalArgumentException("La difficulté n'a pas été trouvée : " + difficulte);
         }
     }
 
