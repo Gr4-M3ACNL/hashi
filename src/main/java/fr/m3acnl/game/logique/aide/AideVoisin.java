@@ -240,24 +240,22 @@ public class AideVoisin extends Aide {
     public int poidsRestantVoisins(Noeud noeud) {
         List<Noeud> voisins = trouverVoisinsDispoComplet(noeud);
         List<Integer> poidsVoisins = new ArrayList<>();
-        List<Integer> poidsVoisinsReels = new ArrayList<>();
         int poidsRestant = (noeud.getDegreSoluce() - noeud.getDegreActuelle());
         int poidsRestantVoisins = 0;
         int poids = noeud.getDegreSoluce();
         for (Noeud voisin : voisins) {
             poidsRestantVoisins += ((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
             poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
-            poidsVoisinsReels.add(voisin.getDegreSoluce());
         }
         if (noeud.getDegreSoluce() != noeud.getDegreActuelle()) {
-            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : " + poidsVoisinsReels);
-            if (poids == 7 && poidsRestant != 3) {
+            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + " Voisins : " + poidsVoisins);
+            if (poids == 7 && poidsRestant > 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "7" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poidsRestant == 8) {
                 aidesVoisins.add(new AideVoisin(matrice, "8" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 5 && voisins.size() == 3 && poidsRestant != 2) {
+            } if (poidsRestant == 5 && voisins.size() == 3 && poidsRestant != 2) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 5 et 3 voisins" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (voisins.size() == 1) {
@@ -266,7 +264,7 @@ public class AideVoisin extends Aide {
             } if (voisins.size() == 2 && poidsRestant == 4) {
                 aidesVoisins.add(new AideVoisin(matrice, "Angle, 4" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 6 && voisins.size() == 3) {
+            } if (poids == 6 && voisins.size() == 3 && poidsRestant == 6) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 6" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
             } if (poids == 3 && voisins.size() == 2 && poidsRestant != 1) {
@@ -275,17 +273,13 @@ public class AideVoisin extends Aide {
             } if (poids == 4 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant != 2 && voisins.size() == 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "Voisins 4-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 6 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant != 3) {
+            } if (poids == 6 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant > 3) {
                 aidesVoisins.add(new AideVoisin(matrice, "Côté, 6-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 2 && Collections.frequency(poidsVoisins, 2) == 1 && poidsRestant != 1) {
-                aidesVoisins.add(new AideVoisin(matrice, "Angle, 2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+            } if (poids == 7 && poidsRestant == 3 && voisins.size() == 3) {
+                aidesVoisins.add(new AideVoisin(matrice, "7-1-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
                 return 0;
-            } if (poids == 7 && Collections.frequency(poidsVoisinsReels, 1) == 1) {
-                System.out.println("Voisins = " + poidsVoisins);
-                aidesVoisins.add(new AideVoisin(matrice, "Complet, 7-1" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } 
+            }
         }
         return -1;
     }
