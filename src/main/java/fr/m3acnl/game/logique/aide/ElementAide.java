@@ -37,6 +37,7 @@ public class ElementAide {
 
         for (int i = 0; i < 3; i++) {
             noeudsSurbrillance[i] = new ArrayList<>();
+            this.addTexte(i, "");
         }
     }
 

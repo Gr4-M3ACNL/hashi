@@ -1,7 +1,6 @@
 package fr.m3acnl.game.logique.aide;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +30,8 @@ public class AideVoisin extends Aide {
      */
     private static List<AideVoisin> aidesVoisins;
 
+    private Map<String, List<Noeud>> zones;
+
     /**
      * Constructeur pour créer une instance de l'aide sur les voisins.
      *
@@ -45,6 +46,7 @@ public class AideVoisin extends Aide {
         this.description = description;
         this.jeu = jeu;
         cout = 1;
+        // Removed call to checkzone() to avoid overridable method call in constructor
     }
 
     static {
@@ -239,53 +241,37 @@ public class AideVoisin extends Aide {
      */
     public int poidsRestantVoisins(Noeud noeud) {
         List<Noeud> voisins = trouverVoisinsDispoComplet(noeud);
-        List<Integer> poidsVoisins = new ArrayList<>();
-        List<Integer> poidsVoisinsReels = new ArrayList<>();
+        int poidsVoisins = 0;
+        int poidsVoisinsReels = 0;
         int poidsRestant = (noeud.getDegreSoluce() - noeud.getDegreActuelle());
-        int poidsRestantVoisins = 0;
         int poids = noeud.getDegreSoluce();
         for (Noeud voisin : voisins) {
-            poidsRestantVoisins += ((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
-            poidsVoisins.add((voisin.getDegreSoluce() - voisin.getDegreActuelle()));
-            poidsVoisinsReels.add(voisin.getDegreSoluce());
+            poidsVoisins += voisin.getDegreActuelle();
+            poidsVoisinsReels += voisin.getDegreSoluce();
         }
-        if (noeud.getDegreSoluce() != noeud.getDegreActuelle()) {
-            System.out.println("Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : " + poidsVoisinsReels);
-            if (poids == 7 && poidsRestant != 3) {
-                aidesVoisins.add(new AideVoisin(matrice, "7" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+        System.out.println("Noeud : " + noeud + "Poids restant : " + poidsRestant);
+        if (poidsRestant != 0) {
+            System.out.println(
+                    "Noeud : " + noeud + "Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : " + poidsVoisinsReels);
+            if (poidsRestant > 0 && poidsVoisinsReels == poidsVoisins) { // Ses voisins sont connecté aux mauvais noeuds
+                aidesVoisins.add(new AideVoisin(matrice, "Voisin trop connecté" + noeud.getPosition(), "Voisinage", jeu,
+                        noeud.getPosition()));
                 return 0;
-            } if (poidsRestant == 8) {
-                aidesVoisins.add(new AideVoisin(matrice, "8" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 5 && voisins.size() == 3 && poidsRestant != 2) {
-                aidesVoisins.add(new AideVoisin(matrice, "Côté, 5 et 3 voisins" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (voisins.size() == 1) {
-                aidesVoisins.add(new AideVoisin(matrice, "Unique voisin" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (voisins.size() == 2 && poidsRestant == 4) {
-                aidesVoisins.add(new AideVoisin(matrice, "Angle, 4" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 6 && voisins.size() == 3) {
-                aidesVoisins.add(new AideVoisin(matrice, "Côté, 6" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 3 && voisins.size() == 2 && poidsRestant != 1) {
-                aidesVoisins.add(new AideVoisin(matrice, "Angle, 3" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 4 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant != 2 && voisins.size() == 3) {
-                aidesVoisins.add(new AideVoisin(matrice, "Voisins 4-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 6 && Collections.frequency(poidsVoisins, 1) == 1 && poidsRestant != 3) {
-                aidesVoisins.add(new AideVoisin(matrice, "Côté, 6-1-V-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 2 && Collections.frequency(poidsVoisins, 2) == 1 && poidsRestant != 1) {
-                aidesVoisins.add(new AideVoisin(matrice, "Angle, 2-2-V" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } if (poids == 7 && Collections.frequency(poidsVoisinsReels, 1) == 1) {
-                System.out.println("Voisins = " + poidsVoisins);
-                aidesVoisins.add(new AideVoisin(matrice, "Complet, 7-1" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
-                return 0;
-            } 
+            } else if (poidsRestant > 0 && poidsVoisinsReels == noeud.getDegreSoluce()) { // Le noeud peut se connecter à tous ses voisins
+                aidesVoisins.add(new AideVoisin(matrice, "Connexion totale" + noeud.getPosition(), "Voisinage",
+                        jeu, noeud.getPosition()));
+                return 1;
+            } else if (noeud.getDegreActuelle() == 0 && poidsVoisins > 0) { // Le noeud est isolé
+                aidesVoisins.add(new AideVoisin(matrice, "Noeud isolé" + noeud.getPosition(), "Isolement", jeu, noeud.getPosition()));
+                return 4;
+            } else if (poidsRestant > 0) { //Le noeud a de la place pour se connecter
+                aidesVoisins.add(new AideVoisin(matrice, "Connexion partiel" + noeud.getPosition(), "Voisinage",
+                        jeu, noeud.getPosition()));
+                return 2;
+            } else if (poidsRestant < 0) { //Le noeud est surchargé
+                aidesVoisins.add(new AideVoisin(matrice, "Surcharge" + noeud.getPosition(), "Voisinage", jeu, noeud.getPosition()));
+                return 3;
+            }
         }
         return -1;
     }
@@ -393,11 +379,65 @@ public class AideVoisin extends Aide {
     }
 
     /**
+     * Découpe la matrice en 9 zones distinctes.
+     */
+    public void checkzone() {
+        // Création des 9 listes pour les zones
+        zones = new HashMap<>();
+        zones.put("Centre", new ArrayList<>());
+        zones.put("Centre Droite", new ArrayList<>());
+        zones.put("Centre Gauche", new ArrayList<>());
+        zones.put("Gauche", new ArrayList<>());
+        zones.put("Droite", new ArrayList<>());
+        zones.put("Haut Droite", new ArrayList<>());
+        zones.put("Haut Gauche", new ArrayList<>());
+        zones.put("Bas Droite", new ArrayList<>());
+        zones.put("Bas Gauche", new ArrayList<>());
+
+        int taille = jeu.getTaille();
+        int tiers = taille / 3; // Permet de découper en 3 parties égales
+
+        List<Noeud> tousLesNoeuds = getListeNoeuds();
+
+        // Classer les nœuds dans les bonnes listes en fonction de leur position
+        for (Noeud noeud : tousLesNoeuds) {
+            int x = noeud.getPosition().getCoordX();
+            int y = noeud.getPosition().getCoordY();
+
+            if (x < tiers) {
+                if (y < tiers) {
+                    zones.get("Haut Gauche").add(noeud);
+                } else if (y < 2 * tiers) {
+                    zones.get("Centre Gauche").add(noeud);
+                } else {
+                    zones.get("Haut Droite").add(noeud);
+                }
+            } else if (x < 2 * tiers) {
+                if (y < tiers) {
+                    zones.get("Gauche").add(noeud);
+                } else if (y < 2 * tiers) {
+                    zones.get("Centre").add(noeud);
+                } else {
+                    zones.get("Droite").add(noeud);
+                }
+            } else {
+                if (y < tiers) {
+                    zones.get("Bas Gauche").add(noeud);
+                } else if (y < 2 * tiers) {
+                    zones.get("Centre Droite").add(noeud);
+                } else {
+                    zones.get("Bas Droite").add(noeud);
+                }
+            }
+        }
+    }
+
+    /**
      * Fait une verification par zone du jeu .
      *
      * @return nb d aide dispo
      */
-    public int checkzone() {
+    /*public int checkzone() {
         // Création des 9 listes pour les zones
         Map<String, List<Noeud>> zones = new HashMap<>();
         zones.put("Centre", new ArrayList<>());
@@ -457,7 +497,7 @@ public class AideVoisin extends Aide {
             int aidesDansCetteZone = 0;
 
             for (Noeud noeud : noeuds) {
-                if (poidsRestantVoisins(noeud) >= 0 && poidsRestantVoisins(noeud) < 3 || checkIsolement(noeud) /*|| afficherAideNoeud(noeud)*/) {
+                if (poidsRestantVoisins(noeud) >= 0 && poidsRestantVoisins(noeud) < 3 || checkIsolement(noeud) /*|| afficherAideNoeud(noeud)) {
                     aidesDansCetteZone++;
                 }
             }
@@ -474,8 +514,7 @@ public class AideVoisin extends Aide {
         }
 
         return totalAides;
-    }
-
+    }*/
     /**
      * Retourne une liste de voisins uniquement accessibles et complets : pas de
      * lien qui coupe et de degré complet.
@@ -502,24 +541,74 @@ public class AideVoisin extends Aide {
      * @return l'element d'aide a afficher
      */
     public ElementAide aideGlobale() {
+        checkzone();
         List<Noeud> tousLesNoeuds = getListeNoeuds();
         ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
         for (Noeud noeud : tousLesNoeuds) {
-            AideGraphe aideGraphe = new AideGraphe(jeu.getPlateau(), "", "", jeu, noeud.getPosition());
             // Test 2: Aide sur l'isolement
-            if (poidsRestantVoisins(noeud) == 0) {
-                    elementAide.addTexte(0, "Un noeud ne possède plus assez de place pour se relier."
-                            + " Conseil : libérez lui de ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
-                    elementAide.addNoeud(0, noeud);
-            } if (poidsRestantVoisins(noeud) == 1) {
-                    elementAide.addTexte(0, "Un noeud peut complètement se relier avec ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
-                    elementAide.addNoeud(0, noeud);
-            } if (poidsRestantVoisins(noeud) == 2) {
-                    elementAide.addTexte(0, "Un noeud peut se relier avec ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
-                    elementAide.addNoeud(0, noeud);
+            System.out.println("Poids restant : " + poidsRestantVoisins(noeud));
+            if (elementAide.getTexte().get(0).equals("")) {
+                switch (poidsRestantVoisins(noeud)) {
+                    case 0 -> {
+                        elementAide.addTexte(0, "Un noeud ne possède plus assez de place pour se relier.");
+                        elementAide.addTexte(1, "Un noeud ne possède plus assez de place pour se relier. Il se trouve dans la zone "
+                                + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
+                                        .getKey());
+                        zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get().getValue().forEach(n -> elementAide.addNoeud(1, n));
+                        elementAide.addTexte(2, "Un noeud ne possède plus assez de place pour se relier."
+                                + " Conseil : libérez lui de ses voisins "
+                                + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                        elementAide.addNoeud(2, noeud);
+                    }
+                    case 1 -> {
+                        elementAide.addTexte(0, "Un noeud peut complètement se relier avec ses voisins ");
+                        elementAide.addTexte(1, "Un noeud peut complètement se relier avec ses voisins . Il se trouve dans la zone "
+                                + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
+                                        .getKey());
+                        zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get().getValue().forEach(n -> elementAide.addNoeud(1, n));
+                        elementAide.addTexte(2, "Un noeud peut complètement se relier avec ses voisins "
+                                + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                        elementAide.addNoeud(2, noeud);
+                    }
+                    case 2 -> {
+                        elementAide.addTexte(0, "Un noeud peut se relier avec ses voisins ");
+
+                        elementAide.addTexte(1, "Un noeud peut se relier avec ses voisins . Il se trouve dans la zone "
+                                + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
+                                        .getKey());
+                        zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get().getValue().forEach(n -> elementAide.addNoeud(1, n));
+
+                        elementAide.addTexte(2, "Un noeud peut se relier avec ses voisins "
+                                + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                        elementAide.addNoeud(2, noeud);
+                    }
+                    case 3 -> {
+                        elementAide.addTexte(0, "Un noeud est saturé, liberer le un peu ");
+                        elementAide.addTexte(1, "Un noeud est saturé, liberer le un peu. Il se trouve dans la zone "
+                                + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
+                                        .getKey());
+                        zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get().getValue().forEach(n -> elementAide.addNoeud(1, n));
+
+                        elementAide.addTexte(2, "Un noeud est saturé, liberer le un peu "
+                                + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                        elementAide.addNoeud(2, noeud);
+                    }
+                    case 4 -> {
+                        elementAide.addTexte(0,
+                                "Un noeud est isolé");
+                        elementAide.addTexte(1, "Un noeud est isolé. Il se trouve dans la zone "
+                                + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
+                                        .getKey());
+                        zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get().getValue().forEach(n -> elementAide.addNoeud(1, n));
+                        elementAide.addTexte(2,
+                                "Un noeud est isolé" + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
+                        elementAide.addNoeud(2, noeud);
+                    }
+                }
             }
 
-            if (!checkIsolement(noeud)) {
+            /* if (!checkIsolement(noeud)) {
+                System.out.println("Isolement : " + checkIsolement(noeud));
                 elementAide.addTexte(1,
                         "Une île est complètement isolée et ne peut plus être connectée à aucune île. Conseil : "
                         + "libérez lui de ses voisins");
@@ -527,6 +616,7 @@ public class AideVoisin extends Aide {
             }
 
             if (aideGraphe.lienImpossible(noeud)) {
+                System.out.println("Lien impossible : " + aideGraphe.lienImpossible(noeud));
                 elementAide.addTexte(2,
                         "Un noeud peut rendre un groupe d'îles complet. Conseil : "
                         + "libérez lui de ses voisins " + aidesVoisins.get(aidesVoisins.size() - 1).getDescription());
@@ -534,7 +624,8 @@ public class AideVoisin extends Aide {
             }
         }
         aidesVoisins.remove(aidesVoisins.size() - 1);
-
+             */
+        }
         return elementAide;  // Retourner l'élément d'aide complet
     }
 

@@ -627,7 +627,7 @@ public class PartieAffichage extends Application {
      * Met une partie de la grille en subrillance pour les Aide.
      */
     private void surbrillanceAide() {
-        if (elementAide != null && numeroAide < niveauAide) {
+        if (elementAide != null && numeroAide < niveauAide + 1) {
             System.out.println("Surbrillance de l'aide : " + numeroAide);
             for (Noeud n : elementAide.getNoeudsSurbrillance()[numeroAide]) {
                 System.out.println(n);
@@ -700,9 +700,9 @@ public class PartieAffichage extends Application {
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
             }*/
-            partie.getJeu().activeElemJeu(x, y, ((DoubleLien) element).getLienBrillance() == 1 
-                ? ((DoubleLien) element).getLien1().getNoeud1() : ((DoubleLien) element).getLien2().getNoeud1());
-            
+            partie.getJeu().activeElemJeu(x, y, ((DoubleLien) element).getLienBrillance() == 1
+                    ? ((DoubleLien) element).getLien1().getNoeud1() : ((DoubleLien) element).getLien2().getNoeud1());
+
             genererMenu.jouerSon("lien.wav",
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
         } else {
