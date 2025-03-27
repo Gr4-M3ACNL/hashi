@@ -236,7 +236,8 @@ public class ProfileManagerTest extends Tests {
         assertEquals(Duration.ofSeconds(4), classement.get(3).duree());
         assertEquals("TestManager", classement.get(4).nomProfil());
         assertEquals(Duration.ofSeconds(5), classement.get(4).duree());
-        profileManager.supprimerProfil(profileTest);      
+        profileManager.supprimerProfil(profileTest);
+        profileManager.supprimerProfil(profileTest2);
 
     }
 }

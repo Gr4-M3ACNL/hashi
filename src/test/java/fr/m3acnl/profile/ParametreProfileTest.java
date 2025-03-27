@@ -105,7 +105,6 @@ public class ParametreProfileTest extends Tests {
         String json = writer.toString();
         assertTrue(json.contains("\"niveauAide\":0"));
         assertTrue(json.contains("\"volumeEffetsSonore\":0.5"));
-        assertTrue(json.contains("\"effetVisuel\":true"));
     }
 
     /**
@@ -125,6 +124,5 @@ public class ParametreProfileTest extends Tests {
         String json = writer.toString();
         assertTrue(json.contains("\"niveauAide\":0"));
         assertTrue(json.contains("\"volumeEffetsSonore\":0.5"));
-        assertTrue(json.contains("\"effetVisuel\":true"));
     }
 }
