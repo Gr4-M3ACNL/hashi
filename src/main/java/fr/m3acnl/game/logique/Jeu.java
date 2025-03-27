@@ -29,7 +29,9 @@ public class Jeu {
 
     /**
      * Temps fin de partie.
+     * @deprecated le crono est calculer dans la Partie
      */
+    @Deprecated
     private long tempsFinal;
 
     /**
@@ -133,7 +135,10 @@ public class Jeu {
      * Done le temp écouler actuellement en seconde.
      *
      * @return le temp écouler
+     * 
+     * @deprecated le crono est maintent calculer dans la Partie
      */
+    @Deprecated
     public Long getTempsEcouler() {
         return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
     }
@@ -142,7 +147,10 @@ public class Jeu {
      * Récupère le temps final.
      *
      * @return le temp final
+     * 
+     * @deprecated le crono est maintent calculer dans la Partie
      */
+    @Deprecated
     public Long getTempsFinal() {
         return tempsFinal;
     }
@@ -165,7 +173,10 @@ public class Jeu {
      * Modification du temps final.
      *
      * @param temps Le temp final
+     * 
+     * @deprecated le crono est maintent calculer dans la Partie
      */
+    @Deprecated
     public void setTempsFinal(long temps) {
         tempsFinal = temps;
     }
@@ -264,6 +275,8 @@ public class Jeu {
 
     /**
      * Sauvegarde automatiquement seulement si le graphe est valide.
+     * <br>
+     * utiliser pour les validation de la matrice.
      */
     private void sauvegardeAuto() {
         if (plateau.liensValide()) {
@@ -273,6 +286,8 @@ public class Jeu {
 
     /**
      * Sauvegarde manuellement peut importe l'état du graphe.
+     * <br>
+     * Utiliser pour les sauvegardes manuel.
      */
     public void sauvegarderManuellement() {
         pointDeSauvegarde = coupsJouer.copieTab();
@@ -344,6 +359,8 @@ public class Jeu {
 
     /**
      * Avance en effectuant le coup suivant.
+     * <br>
+     * Uniquement si il y a un coup dans le buffer.
      */
     public void avancer() {
         if (!coupsJouerBuff.estVide()) {
@@ -354,14 +371,20 @@ public class Jeu {
 
     /**
      * Méthode stoppant le chrono.
+     * 
+     * @deprecated le crono est maintent calculer dans la Partie
      */
+    @Deprecated
     public void stopChrono() {
         tempsFinal += Duration.between(instantDebut, Instant.now()).toSeconds();
     }
 
     /**
      * Méthode remettant le chrono en marche.
+     * 
+     * @deprecated le crono est maintent calculer dans la Partie
      */
+    @Deprecated
     public void reprendreChrono() {
         instantDebut = Instant.now();
     }
@@ -386,6 +409,8 @@ public class Jeu {
 
     /**
      * Charge la sauvegarde automatique.
+     * <br>
+     * Utiliser pour les validation de la matrice.
      */
     public void chargerSauvegardeAuto() {
         chargerSauvegarde(sauvegardeAutomatique);
@@ -400,7 +425,9 @@ public class Jeu {
 
     /**
      * Rejoue un coup du lien a l'index donner lors du chargement.
-     *
+     * <br>
+     * L'index est celui de la liste des liens.
+     * 
      * @param index L'index du lien a ajouter et empiler.
      * @throws RuntimeException si le Lien ne c'est pas activer.
      */
@@ -415,6 +442,8 @@ public class Jeu {
     // ==================== Affichage ====================
     /**
      * Affiche le jeu.
+     * <br>
+     * Utiliser pour le terminal.
      */
     public void drawJeuTerm() {
         plateau.drawTerm();

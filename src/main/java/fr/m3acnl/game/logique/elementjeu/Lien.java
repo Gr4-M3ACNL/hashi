@@ -375,6 +375,8 @@ public class Lien implements ElementJeu {
     // ==================== Affichage ====================
     /**
      * Affiche le Lien.
+     * <br>
+     * Séléctionne le bon chemin d'accès en fonction de l'orientation et de la surbrillance.
      */
     @Override
     public String draw() {

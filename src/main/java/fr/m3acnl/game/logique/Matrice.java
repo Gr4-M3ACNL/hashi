@@ -23,6 +23,10 @@ public class Matrice {
 
     /**
      * Contient la matrice de départ du jeu avec les valeurs de type Double.
+     * <br>
+     * La matrice est de type Double car elle contient des valeurs négatives pour
+     * les noeuds et des valeurs positives pour les liens. Les liens verticaux et horizontaux
+     * sont représentés par la partie entière et décimale de la valeur.
      */
     private final ArrayList<ArrayList<Double>> matrice2;
 
@@ -187,6 +191,8 @@ public class Matrice {
     /**
      * Vérifie si il y a un noeud a droite et crée un lien entre les deux
      * noeuds.
+     * <br>
+     * Cette méthode est déterministe l'ordre de la liste de lien es donc toujours le même.
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
@@ -220,6 +226,8 @@ public class Matrice {
     /**
      * Vérifie si il y a un noeud en dessous et crée un lien entre les deux
      * noeuds.
+     * <br>
+     * Cette méthode est déterministe l'ordre de la liste de lien es donc toujours le même.
      *
      * @param y La colonne de l'élément
      * @param x La ligne de l'élément
@@ -345,6 +353,8 @@ public class Matrice {
 
     /**
      * Dessine la matrice.
+     * <br>
+     * Utilisé pour le terminal.
      */
     public void drawTerm() {
         int count = 0;

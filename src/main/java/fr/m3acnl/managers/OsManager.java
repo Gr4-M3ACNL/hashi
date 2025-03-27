@@ -2,6 +2,8 @@ package fr.m3acnl.managers;
 
 /**
  * Classe utilisée pour obtenir le type de système d'exploitation actuel.
+ * <br>
+ * Elle implémente le singleton pour ne créer qu'une seule instance de la classe.
  *
  * @author PUREN Mewen
  * @see OsType

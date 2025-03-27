@@ -41,6 +41,8 @@ public class JsonManager {
 
     /**
      * Classe interne permettant de stocker les informations d'une grille.
+     * <br>
+     * Cette représentation correspond à la structure du fichier JSON.
      *
      * @param taille Taille de la grille
      * @param serialise Grille sérialisée sous forme de tableau 2D de Double
@@ -62,6 +64,7 @@ public class JsonManager {
      * @param difficulte Difficulté de la grille
      * @param index Index de la grille
      * @return Les informations de la grille
+     * @throws IllegalArgumentException si la grille n'existe pas
      */
     public GrilleInfo getGrilleInfo(Difficulte difficulte, int index) {
         try {
@@ -108,7 +111,7 @@ public class JsonManager {
     /**
      * Récupère les différentes difficultés disponibles.
      *
-     * @return Les différentes difficultés
+     * @return Les différentes difficultés disponibles sous forme de liste
      */
     public List<String> getListeDifficultes() {
         try {

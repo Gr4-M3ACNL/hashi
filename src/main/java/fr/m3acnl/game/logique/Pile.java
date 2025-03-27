@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Classe Pile représentant une Pile d'objets.
+ * Classe Pile représentant une Pile de lien.
+ * <br>
+ * Cette classe permet de gérer une pile de lien, avec des méthodes pour empiler, dépiler et vérifier l'état de la pile.
+ * Elle est utilisée pour gérer les mouvements des éléments dans le jeu.
  *
  * @author MABIRE Aymeric
  * @version 1.0
@@ -116,6 +119,8 @@ public class Pile implements JsonSerializable {
     // ==================== Sérialisation ====================
     /**
      * Méthode pour sérialiser une pile de liens.
+     * <br>
+     * La sérialisation du lien est représentée par son index dans un tableau listant l'ensemble des liens.
      *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation

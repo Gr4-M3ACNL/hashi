@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import fr.m3acnl.managers.ProfileManager;
 
 /**
- * Profil d'un utilisateur.
+ * Paramère d'un profil utilisateur.
  *
  * @author PUREN Mewen
  */

@@ -136,7 +136,7 @@ public class ProfileManager {
     }
 
     /**
-     * Supprime un profil. a partir de son nom
+     * Supprime un profil. A partir de son nom.
      *
      * @param nom nom du profil à supprimer
      */
@@ -148,7 +148,7 @@ public class ProfileManager {
     }
 
     /**
-     * Supprime un profil. a partir de son objet
+     * Supprime un profil. A partir de son objet.
      *
      * @param profile profil à supprimer
      */
@@ -161,8 +161,12 @@ public class ProfileManager {
 
     /**
      * Crée un profil.
+     * Cette méthode vérifie d'abord si le profil existe déjà. Si c'est le cas,
+     * une exception est levée. Sinon, elle crée un nouveau profil et le sauvegarde.
+     * Le profil crée devien le profil actif.
      *
      * @param nom nom du profil à créer
+     * @throws IllegalArgumentException si le profil existe déjà
      */
     public void creerProfil(String nom) {
         List<String> listeProfils = listeProfils();

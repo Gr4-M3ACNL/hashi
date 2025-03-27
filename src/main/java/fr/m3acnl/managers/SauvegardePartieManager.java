@@ -72,7 +72,7 @@ public class SauvegardePartieManager {
     }
 
     /**
-     * Charge une partie. si une partie est deja en cours elle est relancée.
+     * Charge une partie. si une partie est deja en cours elle est relancée,
      * sinon une nouvelle partie est créée.
      *
      * @param difficulte la difficulté de la partie à charger
