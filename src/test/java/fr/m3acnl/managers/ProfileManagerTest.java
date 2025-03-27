@@ -210,10 +210,15 @@ public class ProfileManagerTest extends Tests {
         profileTest = profileManager.getProfileActif();
         assertNotNull(profileTest);
         profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(1));
-        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(2));
         profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(3));
-        profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(4));
         profileTest.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(5));
+
+        profileManager.creerProfil("TestManager2");
+        Profile profileTest2 = profileManager.getProfileActif();
+        assertNotNull(profileTest2);
+        profileTest2.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(2));
+        profileTest2.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(4));
+        profileTest2.getHistoriquePartieProfile().ajouterTemps(Difficulte.difficile, Duration.ofSeconds(6));
         
         profileManager.sauvegarder(profileTest);
 
@@ -223,11 +228,11 @@ public class ProfileManagerTest extends Tests {
         assertEquals(5, classement.size());
         assertEquals("TestManager", classement.get(0).nomProfil());
         assertEquals(Duration.ofSeconds(1), classement.get(0).duree());
-        assertEquals("TestManager", classement.get(1).nomProfil());
+        assertEquals("TestManager2", classement.get(1).nomProfil());
         assertEquals(Duration.ofSeconds(2), classement.get(1).duree());
         assertEquals("TestManager", classement.get(2).nomProfil());
         assertEquals(Duration.ofSeconds(3), classement.get(2).duree());
-        assertEquals("TestManager", classement.get(3).nomProfil());
+        assertEquals("TestManager2", classement.get(3).nomProfil());
         assertEquals(Duration.ofSeconds(4), classement.get(3).duree());
         assertEquals("TestManager", classement.get(4).nomProfil());
         assertEquals(Duration.ofSeconds(5), classement.get(4).duree());
