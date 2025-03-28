@@ -10,7 +10,6 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
  *
  * @see Aide
  * @see AideVoisin
- * @see AideGraphe
  * @see Noeud
  *
  * @author MABIRE Aymeric

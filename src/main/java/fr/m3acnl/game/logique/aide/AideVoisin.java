@@ -30,6 +30,9 @@ public class AideVoisin extends Aide {
      */
     private static List<AideVoisin> aidesVoisins = new ArrayList<>();
 
+    /**
+     * la zonne dans la quelle se trouve l'aide.
+     */
     private Map<String, List<Noeud>> zones;
 
     /**

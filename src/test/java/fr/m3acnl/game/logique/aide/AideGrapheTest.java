@@ -5,10 +5,9 @@ import fr.m3acnl.Tests;
 /**
  * Classe de test pour la classe AideGraphe.
  *
- * @see AideGraphe
  * @see Tests
  */
-public class AideGrapheTest extends Tests {
+public class AideGrapheTest {
     /**
      * Constructeur de la classe de test.
      */
