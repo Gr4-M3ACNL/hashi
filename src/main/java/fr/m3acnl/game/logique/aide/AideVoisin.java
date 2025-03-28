@@ -218,7 +218,8 @@ public class AideVoisin extends Aide {
      * description.
      *
      * @param noeud Le noeud du jeu à analyser
-     * @return Aide correspondante avec un numéro selon la priorité.
+     * @return Aide correspondante avec un numéro selon la priorité. UTILISER
+     * TROUVERVOISINS DISPO ?
      */
     public int poidsRestantVoisins(Noeud noeud) {
         List<Noeud> voisins = trouverVoisinsDispoComplet(noeud);
