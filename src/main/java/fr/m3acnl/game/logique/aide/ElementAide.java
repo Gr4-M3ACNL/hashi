@@ -10,7 +10,6 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
  *
  * @see Aide
  * @see AideVoisin
- * @see AideGraphe
  * @see Noeud
  *
  * @author MABIRE Aymeric
@@ -37,6 +36,7 @@ public class ElementAide {
 
         for (int i = 0; i < 3; i++) {
             noeudsSurbrillance[i] = new ArrayList<>();
+            this.addTexte(i, "");
         }
     }
 
