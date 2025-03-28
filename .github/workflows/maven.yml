@@ -45,10 +45,10 @@ jobs:
     - name: download dependencies
       if : steps.cache.outputs.cache-hit != 'true'
       run: |
-        mvn -B dependency:resolve --file pom.xml
-        mvn -B dependency:go-offline --file pom.xml
-        mvn -B package --file pom.xml
-        mvn -B javadoc:javadoc --file pom.xml
+        mvn dependency:resolve --file pom.xml
+        mvn dependency:go-offline --file pom.xml
+        mvn package --file pom.xml
+        mvn javadoc:javadoc --file pom.xml
 
 
   check:
@@ -74,7 +74,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: check with maven checkstyle
-      run: mvn -B clean validate --file pom.xml
+      run: mvn clean validate --file pom.xml
 
   compile:
 
@@ -99,7 +99,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Maven
-      run: mvn -B clean compile --file pom.xml
+      run: mvn clean compile --file pom.xml
 
   documentation:
 
@@ -124,7 +124,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Generate documentation
-      run: mvn -B clean javadoc:javadoc --file pom.xml
+      run: mvn clean javadoc:javadoc --file pom.xml
 
   documentation-test:
 
@@ -149,7 +149,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Generate documentation test
-      run: mvn -B clean test javadoc:test-javadoc --file pom.xml
+      run: mvn clean test javadoc:test-javadoc --file pom.xml
 
   existence-test:
 
@@ -186,7 +186,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Test with Maven
-      run: mvn -B clean test --file pom.xml
+      run: mvn clean test --file pom.xml
 
   test_windows:
 
@@ -211,7 +211,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Test with Maven
-      run: mvn -B clean test --file pom.xml
+      run: mvn clean test --file pom.xml
 
   test_macos:
 
@@ -236,7 +236,7 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Test with Maven
-      run: mvn -B clean test --file pom.xml
+      run: mvn clean test --file pom.xml
 
   package:
 
@@ -261,4 +261,4 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Package with Maven
-      run: mvn -B clean package --file pom.xml
+      run: mvn clean package --file pom.xml

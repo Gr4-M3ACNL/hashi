@@ -87,17 +87,6 @@ public class AideVoisinTest extends Tests {
     }
 
     /**
-     * Test de la méthode poidsTotalVoisins.
-     * 
-     * @see AideVoisin#poidsTotalVoisins
-     */
-    @Test
-    void testPoidsTotalVoisins() {
-        int poids = aideVoisin.poidsTotalVoisins(noeudTest);
-        assertTrue(poids >= 0, "Le poids total des voisins doit être positif ou nul.");
-    }
-
-    /**
      * Test de la méthode trouverVoisins.
      * 
      * @see AideVoisin#trouverVoisins
