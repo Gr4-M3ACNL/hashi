@@ -29,7 +29,6 @@ public class AideVoisin extends Aide {
      * liste d'aide sur les voisins.
      */
     private static List<AideVoisin> aidesVoisins = new ArrayList<>();
-    ;
 
     private Map<String, List<Noeud>> zones;
 
