@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import fr.m3acnl.Tests;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.Partie;
+import fr.m3acnl.managers.JsonManager.GrilleInfo;
 import fr.m3acnl.profile.Profile;
 
 /**
@@ -412,5 +413,51 @@ public class JsonManagerTest extends Tests {
         // restauration des profils
         ProfileManager.getInstance().supprimerProfil("testUser");
         restoreProfils();
+    }
+
+    /**
+     * Test si des grilles ne sont pas les mêmes.
+     */
+    @Test
+    public void testDifferenceGrille() {
+        JsonManager manager = new JsonManager();
+        
+        // Pour chaque difficulté
+        for (Difficulte difficulte : Difficulte.values()) {
+            
+            // Comparer chaque paire de grilles
+            for (int i = 0; i < manager.getNbGrilles(difficulte); i++) {
+                GrilleInfo grille1 = manager.getGrilleInfo(difficulte, i);
+
+                for (Difficulte difficulte2 : Difficulte.values()){
+
+                    for (int j = i + 1; j < manager.getNbGrilles(difficulte2); j++) {
+                        GrilleInfo grille2 = manager.getGrilleInfo(difficulte2, j);
+                        
+                        if (grille1.taille() != grille2.taille()) {
+                            continue; // Si les tailles sont différentes, passer à la prochaine paire
+                        }
+                        
+                        boolean grillesIdentiques = true;
+                        // Comparer chaque valeur
+                        comparaison: for (int x = 0; x < grille1.taille(); x++) {
+                            for (int y = 0; y < grille1.taille(); y++) {
+                                if (!grille1.serialise()[x][y].equals(grille2.serialise()[x][y])) {
+                                    grillesIdentiques = false;
+                                    break comparaison;
+                                }
+                            }
+                        }
+                        
+                        assertFalse(grillesIdentiques, 
+                            String.format("Les grilles %d et %d de difficulté %s sont identiques", i, j, difficulte));
+                        if (grillesIdentiques) {
+                            System.out.println("La grille " + i + " de difficulté " + difficulte +
+                                " est identique à la grille " + j + " de difficulté " + difficulte2);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
