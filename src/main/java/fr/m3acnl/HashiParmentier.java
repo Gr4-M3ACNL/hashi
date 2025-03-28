@@ -168,7 +168,7 @@ public class HashiParmentier extends Application {
         Button level3 = genererMenu.creerBoutonStyle("Difficile");
         level3.setOnAction(e -> lancerPartieAffichage(Difficulte.difficile));
 
-        Button level4 = genererMenu.creerBoutonStyle("expert");
+        Button level4 = genererMenu.creerBoutonStyle("Expert");
         level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
 
         Button historique = genererMenu.creerBoutonStyle("Historique");
