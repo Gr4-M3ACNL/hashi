@@ -100,7 +100,7 @@ public class HashiParmentier extends Application {
         Button bouttonQuitter = genererMenu.creerBoutonStyle("Quitter le jeu");
         bouttonQuitter.setOnAction(e -> genererMenu.showConfirmQuitPage(primaryStage, quitterAppli));
 
-        centerBox.getChildren().addAll(bouttonJouer, bouttonQuitter);
+        centerBox.getChildren().addAll(bouttonJouer, bouttonClassement, bouttonQuitter);
         root.setCenter(centerBox);
 
         mainScene = new Scene(root, 500, 400);
@@ -224,6 +224,46 @@ public class HashiParmentier extends Application {
      */
     private void showProfileSelectionPage() {
         primaryStage.setScene(selectionProfile); // Changement pour afficher la page de sélection de profil
+    }
+
+    /**
+     * Affiche la page de classement.
+     *
+     * @param background Image de fond.
+     */
+    private void showClassement(BackgroundImage background) {
+        VBox vboxContainer = new VBox(20);
+        vboxContainer.setAlignment(Pos.CENTER);
+        vboxContainer.setBackground(new Background(background));
+
+        HBox hboxClassement = new HBox(20);
+        hboxClassement.setAlignment(Pos.CENTER);
+
+        java.util.Arrays.asList(Difficulte.facile, Difficulte.moyen, Difficulte.difficile, Difficulte.expert).forEach(difficulte -> {
+            VBox vboxDifficulte = new VBox(10);
+            vboxDifficulte.setAlignment(Pos.TOP_CENTER);
+
+            Label difficultyLabel = genererMenu.creerLabelStyle("Classement " + difficulte);
+            vboxDifficulte.getChildren().add(difficultyLabel);
+
+            ProfileManager.getInstance().getClassementTemps(difficulte).forEach(tempsPartie -> {
+                String formattedTime = (tempsPartie.duree() != null)
+                        ? tempsPartie.duree().toMinutesPart() + " min " + tempsPartie.duree().toSecondsPart() + " sec"
+                        : "";
+
+                Label profileLabel = genererMenu.creerLabelStyle(tempsPartie.nomProfil() + " : " + formattedTime);
+                vboxDifficulte.getChildren().add(profileLabel);
+            });
+
+            hboxClassement.getChildren().add(vboxDifficulte);
+        });
+
+        Button retour = genererMenu.creerBoutonStyle("Retour");
+        retour.setOnAction(e -> primaryStage.setScene(mainScene));
+
+        vboxContainer.getChildren().addAll(hboxClassement, retour);
+
+        primaryStage.setScene(new Scene(vboxContainer, 1000, 600));
     }
 
     // ======================== Gestion des profils ========================
