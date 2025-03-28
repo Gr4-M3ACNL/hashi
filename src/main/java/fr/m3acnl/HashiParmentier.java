@@ -24,6 +24,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -94,7 +95,8 @@ public class HashiParmentier extends Application {
         centerBox.setAlignment(Pos.CENTER);
         Button bouttonJouer = genererMenu.creerBoutonStyle("Jouer");
         bouttonJouer.setOnAction(e -> showProfileSelectionPage());
-
+        Button bouttonClassement = genererMenu.creerBoutonStyle("Classement");
+        bouttonClassement.setOnAction(e -> showClassement(background));
         Button bouttonQuitter = genererMenu.creerBoutonStyle("Quitter le jeu");
         bouttonQuitter.setOnAction(e -> genererMenu.showConfirmQuitPage(primaryStage, quitterAppli));
 
@@ -152,7 +154,7 @@ public class HashiParmentier extends Application {
         vboxLevels.setBackground(new Background(background));
 
         Button tuto = genererMenu.creerBoutonStyle("Tutoriel");
-        tuto.setOnAction(e -> primaryStage.setScene(genererMenu.creerSlideshow(primaryStage, mainScene)));
+        tuto.setOnAction(e -> primaryStage.setScene(genererMenu.creerSlideshow(primaryStage, selectionNiveau)));
 
         Button level1 = genererMenu.creerBoutonStyle("Facile");
         level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
@@ -167,7 +169,7 @@ public class HashiParmentier extends Application {
         level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
 
         Button historique = genererMenu.creerBoutonStyle("Historique");
-        //historique.setOnAction(e -> genererMenu.showHistorique(primaryStage, mainScene));
+        historique.setOnAction(e -> creerHistorique());
 
         Button levelRetour = genererMenu.creerBoutonStyle("Retour");
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
@@ -176,6 +178,45 @@ public class HashiParmentier extends Application {
         vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, historique, levelRetour);
         selectionNiveau = new Scene(vboxLevels, 500, 400);
 
+    }
+
+    private void creerHistorique() {
+
+    }
+
+    private void showClassement(BackgroundImage background) {
+        VBox vboxContainer = new VBox(20);
+        vboxContainer.setAlignment(Pos.CENTER);
+        vboxContainer.setBackground(new Background(background));
+
+        HBox hboxClassement = new HBox(20);
+        hboxClassement.setAlignment(Pos.CENTER);
+
+        java.util.Arrays.asList(Difficulte.facile, Difficulte.moyen, Difficulte.difficile, Difficulte.expert).forEach(difficulte -> {
+            VBox vboxDifficulte = new VBox(10);
+            vboxDifficulte.setAlignment(Pos.TOP_CENTER);
+
+            Label difficultyLabel = genererMenu.creerLabelStyle("Classement " + difficulte);
+            vboxDifficulte.getChildren().add(difficultyLabel);
+
+            ProfileManager.getInstance().getClassementTemps(difficulte).forEach(tempsPartie -> {
+                String formattedTime = (tempsPartie.duree() != null)
+                        ? tempsPartie.duree().toMinutesPart() + " min " + tempsPartie.duree().toSecondsPart() + " sec"
+                        : "";
+
+                Label profileLabel = genererMenu.creerLabelStyle(tempsPartie.nomProfil() + " : " + formattedTime);
+                vboxDifficulte.getChildren().add(profileLabel);
+            });
+
+            hboxClassement.getChildren().add(vboxDifficulte);
+        });
+
+        Button retour = genererMenu.creerBoutonStyle("Retour");
+        retour.setOnAction(e -> primaryStage.setScene(mainScene));
+
+        vboxContainer.getChildren().addAll(hboxClassement, retour);
+
+        primaryStage.setScene(new Scene(vboxContainer, 1000, 600));
     }
 
     /**
