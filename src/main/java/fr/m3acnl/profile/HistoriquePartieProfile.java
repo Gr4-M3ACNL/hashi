@@ -328,7 +328,6 @@ public class HistoriquePartieProfile implements JsonSerializable {
                 break;
             case expert:
                 this.expert.add(temps);
-                this.expert.sort(Duration::compareTo);
                 this.indexExpert++;
                 this.indexExpert %= jsonManager.getNbGrilles(Difficulte.expert);
                 break;

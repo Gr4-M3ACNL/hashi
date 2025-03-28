@@ -1,5 +1,8 @@
 package fr.m3acnl;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -154,7 +157,7 @@ public class HashiParmentier extends Application {
         vboxLevels.setBackground(new Background(background));
 
         Button tuto = genererMenu.creerBoutonStyle("Tutoriel");
-        tuto.setOnAction(e -> primaryStage.setScene(genererMenu.creerSlideshow(primaryStage, mainScene)));
+        tuto.setOnAction(e -> primaryStage.setScene(genererMenu.creerSlideshow(primaryStage, selectionNiveau)));
 
         Button level1 = genererMenu.creerBoutonStyle("Facile");
         level1.setOnAction(e -> lancerPartieAffichage(Difficulte.facile));
@@ -165,16 +168,69 @@ public class HashiParmentier extends Application {
         Button level3 = genererMenu.creerBoutonStyle("Difficile");
         level3.setOnAction(e -> lancerPartieAffichage(Difficulte.difficile));
 
-        Button level4 = genererMenu.creerBoutonStyle("expert");
+        Button level4 = genererMenu.creerBoutonStyle("Expert");
         level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
+
+        Button historique = genererMenu.creerBoutonStyle("Historique");
+        historique.setOnAction(e -> creerHistorique(background));
 
         Button levelRetour = genererMenu.creerBoutonStyle("Retour");
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
         Label levelTitle = genererMenu.creerLabelStyle("Choisissez votre niveau de jeu :");
-        vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, levelRetour);
-        selectionNiveau = new Scene(vboxLevels, 500, 400);
+        vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, historique, levelRetour);
+        selectionNiveau = new Scene(vboxLevels, 700, 600);
 
+    }
+
+    /**
+     * Permet de fournir l'historique des 5 dernieres parties jouer par
+     * l'utilisateur sur chaque difficulté.
+     *
+     * @param background Le background de la fenetre
+     */
+    private void creerHistorique(BackgroundImage background) {
+        VBox vboxContainer = new VBox(20);
+        vboxContainer.setAlignment(Pos.CENTER);
+        vboxContainer.setBackground(new Background(background));
+
+        HBox hboxClassement = new HBox(20);
+        hboxClassement.setAlignment(Pos.CENTER);
+
+        java.util.Arrays.asList(Difficulte.facile, Difficulte.moyen, Difficulte.difficile, Difficulte.expert).forEach(difficulte -> {
+            VBox vboxDifficulte = new VBox(10);
+            vboxDifficulte.setAlignment(Pos.TOP_CENTER);
+
+            Label difficultyLabel = genererMenu.creerLabelStyle("Historique " + difficulte);
+            vboxDifficulte.getChildren().add(difficultyLabel);
+
+            List<Duration> tempsList = new ArrayList<>(ProfileManager.getInstance()
+                    .getProfileActif()
+                    .getHistoriquePartieProfile()
+                    .getTemps(difficulte));
+
+            Collections.reverse(tempsList); // Inverse la liste temporairement
+
+            tempsList.stream()
+                    .limit(5)
+                    .forEach(tempsPartie -> {
+                        String formattedTime = (tempsPartie != null)
+                                ? tempsPartie.toMinutesPart() + " min " + tempsPartie.toSecondsPart() + " sec"
+                                : "";
+
+                        Label profileLabel = genererMenu.creerLabelStyle(formattedTime);
+                        vboxDifficulte.getChildren().add(profileLabel);
+                    });
+
+            hboxClassement.getChildren().add(vboxDifficulte);
+        });
+
+        Button retour = genererMenu.creerBoutonStyle("Retour");
+        retour.setOnAction(e -> startGame());
+
+        vboxContainer.getChildren().addAll(hboxClassement, retour);
+
+        primaryStage.setScene(new Scene(vboxContainer, 1000, 600));
     }
 
     /**
@@ -255,7 +311,7 @@ public class HashiParmentier extends Application {
             ProfileManager.getInstance().setProfileActif(name);
             System.out.println("Profil créé et sauvegardé : " + name);
 
-            showProfileSelectionPage();
+            startGame();
         });
     }
 
