@@ -166,11 +166,14 @@ public class HashiParmentier extends Application {
         Button level4 = genererMenu.creerBoutonStyle("expert");
         level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
 
+        Button historique = genererMenu.creerBoutonStyle("Historique");
+        //historique.setOnAction(e -> genererMenu.showHistorique(primaryStage, mainScene));
+
         Button levelRetour = genererMenu.creerBoutonStyle("Retour");
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
         Label levelTitle = genererMenu.creerLabelStyle("Choisissez votre niveau de jeu :");
-        vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, levelRetour);
+        vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, historique, levelRetour);
         selectionNiveau = new Scene(vboxLevels, 500, 400);
 
     }
@@ -213,7 +216,7 @@ public class HashiParmentier extends Application {
             ProfileManager.getInstance().setProfileActif(name);
             System.out.println("Profil créé et sauvegardé : " + name);
 
-            showProfileSelectionPage();
+            startGame();
         });
     }
 
