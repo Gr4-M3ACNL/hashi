@@ -131,16 +131,17 @@ public class Partie implements JsonSerializable {
             // On définit le chrono comme l'heure actuelle moins la durée du chrono
             chrono = Instant.now().minusMillis(getChronoDuration().toMillis());
             pause = false;
+            sauvegarde();
         }
     }
-
+    
     /**
      * Méthode pour ajouter un malus au chrono.
      *
-     * @param malusEnMillisecondes le malus à ajouter en millisecondes
+     * @param secondes le malus à ajouter en secondes
      */
-    public void addMalus(long malusEnMillisecondes) {
-        chrono = chrono.minusMillis(malusEnMillisecondes * 1000);
+    public void addMalus(long secondes) {
+        chrono = chrono.minusSeconds(secondes);
     }
 
     /**
