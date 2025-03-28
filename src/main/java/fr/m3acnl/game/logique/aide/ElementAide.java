@@ -17,7 +17,7 @@ import fr.m3acnl.game.logique.elementjeu.Noeud;
 public class ElementAide {
 
     /**
-     * Les différents texte d'aides à afficher.
+     * Les différents textes d'aides à afficher.
      */
     private List<String> texte;
 

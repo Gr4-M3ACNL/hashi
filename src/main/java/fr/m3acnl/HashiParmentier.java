@@ -301,7 +301,6 @@ public class HashiParmentier extends Application {
             return;
         }
 
-        // Création de la fenêtre modale
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
         dialogStage.setTitle("Sélection du profil");
@@ -313,14 +312,12 @@ public class HashiParmentier extends Application {
         Label titleLabel = new Label("Choisissez un profil :");
         titleLabel.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 18px; -fx-text-fill: black;");
 
-        // Menu déroulant (ComboBox)
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.getItems().addAll(profileNames);
-        comboBox.setValue(profileNames.get(0)); // Sélection par défaut
+        comboBox.setValue(profileNames.get(0));
         comboBox.setStyle("-fx-font-family: 'Arial'; -fx-font-size: 16px; -fx-text-fill: #3d1e10;");
-        comboBox.setStyle(comboBox.getStyle() + "-fx-background-color: #f0f0f0;"); // Fond de la ComboBox
+        comboBox.setStyle(comboBox.getStyle() + "-fx-background-color: #f0f0f0;");
 
-        // Personnalisation du fond de la liste déroulante (popup)
         comboBox.setCellFactory(lv -> {
             ListCell<String> cell = new ListCell<>() {
                 @Override
@@ -328,14 +325,14 @@ public class HashiParmentier extends Application {
                     super.updateItem(item, empty);
                     if (empty || item == null) {
                         setText(null);
-                        setStyle("-fx-background-color: #ffffff;"); // Fond de chaque élément
+                        setStyle("-fx-background-color: #ffffff;");
                     } else {
                         setText(item);
-                        setStyle("-fx-background-color: #ffffff; -fx-font-size: 16px; -fx-text-fill: #3d1e10"); // Fond de chaque élément
+                        setStyle("-fx-background-color: #ffffff; -fx-font-size: 16px; -fx-text-fill: #3d1e10");
                     }
                 }
             };
-            return cell; // Il faut renvoyer le cell ici
+            return cell;
         });
 
         // Bouton de validation

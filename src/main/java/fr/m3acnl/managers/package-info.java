@@ -1,7 +1,7 @@
 /**
  * Package contenant les managers du jeux HashiParmentier.
  * <br>
- * les manager sont de classe implémentant le Singleton et qui gère l'utilisation d'autres classes.
+ * Les manager sont des classes implémentant le Singleton gérant l'utilisation d'autres classes.
  * <br>
  * <br>
  * <a href="javascript:void(0);" onclick="toggleDiagram()" style="padding:5px 10px; background-color:#007BFF; color:white; text-decoration:none; border-radius:5px;">Afficher/Cacher le diagramme de classe</a>

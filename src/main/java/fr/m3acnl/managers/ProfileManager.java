@@ -9,20 +9,20 @@ import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.profile.Profile;
 
 /**
- * Classe singleton permettant de gérer les profils. ce mangeur permet de
+ * Classe singleton permettant de gérer les profils. Ce manager permet de
  * définir le profil actif, de le sauvegarder, de le supprimer et de le créer.
  */
 public class ProfileManager {
 
     // ======================== Attributs ========================
     /**
-     * Instance de la classe JsonManager. utilisée pour charger et sauvegarder
-     * les profils.
+     * Instance de la classe JsonManager. 
+     * Utilisée pour charger et sauvegarder les profils.
      */
     private static final JsonManager jsonManager = new JsonManager();
 
     /**
-     * Instance de la classe ProfileManager. permet d'implémenter le singleton.
+     * Instance de la classe ProfileManager. Permet d'implémenter le singleton.
      */
     private static final ProfileManager instance = new ProfileManager();
 
@@ -87,7 +87,7 @@ public class ProfileManager {
 
     // ======================== Setter ========================
     /**
-     * Définir le profil actif. charge le profil en fonction de son nom.
+     * Définir le profil actif. Charge le profil en fonction de son nom.
      *
      * @param profile le profil actif
      */
@@ -106,7 +106,7 @@ public class ProfileManager {
     }
 
     /**
-     * Retourne la liste de nom des profils.
+     * Retourne la liste de noms des profils.
      *
      * @return la liste des profils
      */
@@ -136,7 +136,7 @@ public class ProfileManager {
     }
 
     /**
-     * Supprime un profil. A partir de son nom.
+     * Supprime un profil à partir de son nom.
      *
      * @param nom nom du profil à supprimer
      */
@@ -148,7 +148,7 @@ public class ProfileManager {
     }
 
     /**
-     * Supprime un profil. A partir de son objet.
+     * Supprime un profil à partir de son objet.
      *
      * @param profile profil à supprimer
      */
@@ -163,7 +163,7 @@ public class ProfileManager {
      * Crée un profil.
      * Cette méthode vérifie d'abord si le profil existe déjà. Si c'est le cas,
      * une exception est levée. Sinon, elle crée un nouveau profil et le sauvegarde.
-     * Le profil crée devien le profil actif.
+     * Le profil crée devient le profil actif.
      *
      * @param nom nom du profil à créer
      * @throws IllegalArgumentException si le profil existe déjà
@@ -190,7 +190,7 @@ public class ProfileManager {
      * Retourne le classement des temps de jeu pour une difficulté donnée.
      * 
      * @param difficulte difficulté pour laquelle on veut le classement
-     * @return une liste ordonée de tuple (nomProfil, tempsPartie)
+     * @return une liste ordonée de tuples (nomProfil, tempsPartie)
      */
     public List<TempsPartie> getClassementTemps(Difficulte difficulte) {
 

@@ -304,7 +304,7 @@ public class JsonManager {
     }
 
     /**
-     * Sauvegarde une partie dans le fichier de parties. l'organisation du
+     * Sauvegarde une partie dans le fichier de parties. L'organisation du
      * fichier est la suivante : { "nomProfil1": { "difficulte1": {Infos de la
      * partie}, "difficulte2": {Infos de la partie} }, "nomProfil2": {
      * "difficulte1": {Infos de la partie}, "difficulte2": {Infos de la partie},
@@ -332,12 +332,12 @@ public class JsonManager {
             }
             rootNode = mapper.readTree(cheminFichier.toFile());
 
-            // Création ou récupération du nœud du profil
+            // Création ou récupération du noeud du profil
             if (!rootNode.has(nomProfil)) {
                 ((ObjectNode) rootNode).putObject(nomProfil);
             }
 
-            // ajoute ou met à jour le nœud de la partie dans le profil
+            // ajoute ou met à jour le noeud de la partie dans le profil
             JsonNode profilNode = rootNode.get(nomProfil);
             ((ObjectNode) profilNode).set(partie.getDifficulte().toString(), mapper.valueToTree(partie));
 
@@ -350,9 +350,7 @@ public class JsonManager {
 
     /**
      * Charge une partie à partir du fichier de parties.
-     * <p>
-     * si la partie n'existe pas, retourne null
-     * </p>
+     * Si la partie n'existe pas, retourne null
      *
      * @param nomProfil Nom du profil associé à la partie
      * @param difficulte Difficulté de la partie
