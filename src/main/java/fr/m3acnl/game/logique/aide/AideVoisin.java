@@ -250,7 +250,7 @@ public class AideVoisin extends Aide {
                         jeu, noeud.getPosition()));
                 return 1;
             } else if (poidsRestant > 0) { //Le noeud a de la place pour se connecter
-                aidesVoisins.add(new AideVoisin(matrice, "Connexion partiel" + noeud.getPosition(), "Voisinage",
+                aidesVoisins.add(new AideVoisin(matrice, "Connexion partielle" + noeud.getPosition(), "Voisinage",
                         jeu, noeud.getPosition()));
                 return 2;
             } else if (poidsRestant < 0) { //Le noeud est surchargé

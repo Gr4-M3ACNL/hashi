@@ -351,8 +351,9 @@ public class PartieAffichage extends Application {
         aideBox.setStyle("-fx-background-color: transparent; -fx-border-radius: 10;");
 
         // Création du label d'aide
-        labelAide = genererMenu.creerLabelStyle("Voici un texte d'aide qui donne des indices sur le jeu. "
-                + "Il contient jusqu'à 300 caractères pour expliquer certaines mécaniques ou donner des conseils.");
+        labelAide = genererMenu.creerLabelStyle("Ici vous pourrez demander des aides en cas de besoins."
+                + "Vous pouvez aussi utiliser la vérification de grille pour repartir d'une base valide"
+                + "Vous pouvez changer le niveau d'aide dans le menu pause.");
         labelAide.setWrapText(true);
         labelAide.setMaxWidth(250);
         labelAide.setAlignment(Pos.CENTER);

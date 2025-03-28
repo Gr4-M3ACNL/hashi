@@ -1,5 +1,8 @@
 package fr.m3acnl;
 
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -169,22 +172,24 @@ public class HashiParmentier extends Application {
         level4.setOnAction(e -> lancerPartieAffichage(Difficulte.expert));
 
         Button historique = genererMenu.creerBoutonStyle("Historique");
-        historique.setOnAction(e -> creerHistorique());
+        historique.setOnAction(e -> creerHistorique(background));
 
         Button levelRetour = genererMenu.creerBoutonStyle("Retour");
         levelRetour.setOnAction(e -> primaryStage.setScene(mainScene));
 
         Label levelTitle = genererMenu.creerLabelStyle("Choisissez votre niveau de jeu :");
         vboxLevels.getChildren().addAll(levelTitle, tuto, level1, level2, level3, level4, historique, levelRetour);
-        selectionNiveau = new Scene(vboxLevels, 500, 400);
+        selectionNiveau = new Scene(vboxLevels, 700, 600);
 
     }
 
-    private void creerHistorique() {
-
-    }
-
-    private void showClassement(BackgroundImage background) {
+    /**
+     * Permet de fournir l'historique des 5 dernieres parties jouer par
+     * l'utilisateur sur chaque difficulté.
+     *
+     * @param background Le background de la fenetre
+     */
+    private void creerHistorique(BackgroundImage background) {
         VBox vboxContainer = new VBox(20);
         vboxContainer.setAlignment(Pos.CENTER);
         vboxContainer.setBackground(new Background(background));
@@ -196,23 +201,32 @@ public class HashiParmentier extends Application {
             VBox vboxDifficulte = new VBox(10);
             vboxDifficulte.setAlignment(Pos.TOP_CENTER);
 
-            Label difficultyLabel = genererMenu.creerLabelStyle("Classement " + difficulte);
+            Label difficultyLabel = genererMenu.creerLabelStyle("Historique " + difficulte);
             vboxDifficulte.getChildren().add(difficultyLabel);
 
-            ProfileManager.getInstance().getClassementTemps(difficulte).forEach(tempsPartie -> {
-                String formattedTime = (tempsPartie.duree() != null)
-                        ? tempsPartie.duree().toMinutesPart() + " min " + tempsPartie.duree().toSecondsPart() + " sec"
-                        : "";
+            List<Duration> tempsList = new ArrayList<>(ProfileManager.getInstance()
+                    .getProfileActif()
+                    .getHistoriquePartieProfile()
+                    .getTemps(difficulte));
 
-                Label profileLabel = genererMenu.creerLabelStyle(tempsPartie.nomProfil() + " : " + formattedTime);
-                vboxDifficulte.getChildren().add(profileLabel);
-            });
+            Collections.reverse(tempsList); // Inverse la liste temporairement
+
+            tempsList.stream()
+                    .limit(5)
+                    .forEach(tempsPartie -> {
+                        String formattedTime = (tempsPartie != null)
+                                ? tempsPartie.toMinutesPart() + " min " + tempsPartie.toSecondsPart() + " sec"
+                                : "";
+
+                        Label profileLabel = genererMenu.creerLabelStyle(formattedTime);
+                        vboxDifficulte.getChildren().add(profileLabel);
+                    });
 
             hboxClassement.getChildren().add(vboxDifficulte);
         });
 
         Button retour = genererMenu.creerBoutonStyle("Retour");
-        retour.setOnAction(e -> primaryStage.setScene(mainScene));
+        retour.setOnAction(e -> startGame());
 
         vboxContainer.getChildren().addAll(hboxClassement, retour);
 
