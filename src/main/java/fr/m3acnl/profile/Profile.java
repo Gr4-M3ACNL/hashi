@@ -87,7 +87,6 @@ public class Profile implements JsonSerializable {
      * @param parametre les paramètres du profil
      */
     protected void setParametre(ParametreProfile parametre) {
-        this.parametre.setEffetVisuel(parametre.getEffetVisuel());
         this.parametre.setVolumeEffetsSonore(parametre.getVolumeEffetsSonore());
         this.parametre.setNiveauAide(parametre.getNiveauAide());
     }

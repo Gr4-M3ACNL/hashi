@@ -124,7 +124,7 @@ public class PartieAffichage extends Application {
     AideVoisin aideVoisin;
 
     /**
-     * Generateur de menu.
+     * Générateur de menu.
      */
     private final GenererAsset genererMenu = new GenererAsset("/META-INF/assetsGraphiques/back/backPartie.png");
 
@@ -470,7 +470,7 @@ public class PartieAffichage extends Application {
         }
 
         if (element instanceof DoubleLien doubleLien) {
-            // Trouver le nœud le plus proche de la souris
+            // Trouver le noeud le plus proche de la souris
             Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event);
 
             if (noeudProche != null) {

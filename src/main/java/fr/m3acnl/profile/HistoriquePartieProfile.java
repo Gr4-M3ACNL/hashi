@@ -39,19 +39,19 @@ public class HistoriquePartieProfile implements JsonSerializable {
     private List<Duration> expert;
 
     /**
-     * Index de la grille de la dernière partie finie en facile.
+     * Index de la grille de la dernière partie finie en facile. Ordonné dans l'ordre des partie.
      */
     private int indexFacile;
     /**
-     * Index de la grille de la dernière partie finie en moyen.
+     * Index de la grille de la dernière partie finie en moyen. Ordonné dans l'ordre des partie.
      */
     private int indexMoyen;
     /**
-     * Index de la grille de la dernière partie finie en difficile.
+     * Index de la grille de la dernière partie finie en difficile. Ordonné dans l'ordre des partie.
      */
     private int indexDifficile;
     /**
-     * Index de la grille de la dernière partie finie en expert.
+     * Index de la grille de la dernière partie finie en expert. Ordonné dans l'ordre des partie.
      */
     private int indexExpert;
 
@@ -313,25 +313,21 @@ public class HistoriquePartieProfile implements JsonSerializable {
         switch (difficulte) {
             case facile:
                 this.facile.add(temps);
-                this.facile.sort(Duration::compareTo);
                 this.indexFacile++;
                 this.indexFacile %= jsonManager.getNbGrilles(Difficulte.facile);
                 break;
             case moyen:
                 this.moyen.add(temps);
-                this.moyen.sort(Duration::compareTo);
                 this.indexMoyen++;
                 this.indexMoyen %= jsonManager.getNbGrilles(Difficulte.moyen);
                 break;
             case difficile:
                 this.difficile.add(temps);
-                this.difficile.sort(Duration::compareTo);
                 this.indexDifficile++;
                 this.indexDifficile %= jsonManager.getNbGrilles(Difficulte.difficile);
                 break;
             case expert:
                 this.expert.add(temps);
-                this.expert.sort(Duration::compareTo);
                 this.indexExpert++;
                 this.indexExpert %= jsonManager.getNbGrilles(Difficulte.expert);
                 break;

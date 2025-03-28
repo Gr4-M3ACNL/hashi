@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 /**
- * Classe pour générer les menus partager entres les affichages.
+ * Classe pour générer les menus partagés entre les affichages.
  *
  * @author MABIRE Aymeric, TOUISSI Nassim
  */
@@ -296,8 +296,8 @@ public class GenererAsset {
     }
 
     /**
-     * Demande à l'utilisateur s'il veut vraiment quitter. Si oui, ferme
-     * l'application.
+     * Demande à l'utilisateur s'il veut vraiment quitter.
+     * Si oui, ferme l'application.
      *
      * @param event L'événement de fermeture
      */

@@ -286,6 +286,9 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     // ==================== Affichage ====================
     /**
      * Affiche le Noeud.
+     * <br>
+     * Renvoie le chemin d'accès de la texture du noeud.
+     * Selon le degré solution et le degré actuelle.
      */
     @Override
     public String draw() {

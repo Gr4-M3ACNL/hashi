@@ -18,8 +18,8 @@ import fr.m3acnl.managers.SauvegardePartieManager;
 import fr.m3acnl.managers.SauvegardePartieManager.JeuEnCour;
 
 /**
- * Classe Partie pour une représentation de la partie et gérer la partie. elle a
- * la gestion du chrono et de la sauvegarde.
+ * Classe Partie pour la logique et la gestion d'une partie. 
+ * Cette classe s'occupe aussi de la gestion du chronomètre et de la sauvegarde.
  *
  * @author PUREN Mewen
  *
@@ -51,17 +51,15 @@ public class Partie implements JsonSerializable {
      * <br>
      * Vaut true si la partie est en pause, false sinon.
      * <br>
-     * quand la partie est en pause le chrono est a calculer entre le chron et
-     * l'heure zéro
+     * Quand la partie est en pause le chronomètre est à calculer entre le chronomètre et l'heure zéro.
      * <br>
-     * quand la partie n'est pas en pause le chrono est a calculer entre le
-     * chron et l'heure actuelle
+     * Quand la partie n'est pas en pause le chronomètre est a calculer entre le chronomètre et l'heure actuelle.
      */
     private Boolean pause = false;
 
     /**
-     * Constructeur pour une instance d'objet Partie. Crée ou charge une partie
-     * en fonction de la difficulté.
+     * Constructeur pour une instance d'objet Partie. 
+     * Crée ou charge une partie en fonction de la difficulté.
      *
      * @param difficulte la difficulté de la partie
      * @see SauvegardePartieManager#charger(Difficulte)
@@ -83,10 +81,10 @@ public class Partie implements JsonSerializable {
      */
     public Duration getChronoDuration() {
         if (!pause) {
-            // Si le chrono est en cours, on calcule la durée entre le chrono et l'heure
+            // Si le chronomètre est en cours, on calcule la durée entre le chronomètre et l'heure
             return Duration.between(chrono, Instant.now());
         }
-        // Si le chrono est en pause, on calcule la durée entre le chrono et l'heure zéro
+        // Si le chronomètre est en pause, on calcule la durée entre le chronomètre et l'heure zéro
         return Duration.between(Instant.EPOCH, chrono);
     }
 
@@ -110,12 +108,11 @@ public class Partie implements JsonSerializable {
 
     // ==================== Action ====================
     /**
-     * Méthode pour arrêter le chronomètre. Si le chronomètre est déjà en pause,
-     * il ne fait rien.
+     * Méthode pour arrêter le chronomètre. Si le chronomètre est déjà en pause, il ne fait rien.
      */
     public void stopChrono() {
         if (!pause) {
-            // On définit le chrono comme l'heure zéro plus la durée du chrono
+            // On définit le chronomètre comme l'heure zéro plus la durée du chrono
             chrono = Instant.EPOCH.plusMillis(getChronoDuration().toMillis());
             pause = true;
             sauvegarde();
@@ -128,7 +125,7 @@ public class Partie implements JsonSerializable {
      */
     public void startChrono() {
         if (pause) {
-            // On définit le chrono comme l'heure actuelle moins la durée du chrono
+            // On définit le chronomètre comme l'heure actuelle moins la durée du chronomètre
             chrono = Instant.now().minusMillis(getChronoDuration().toMillis());
             pause = false;
             sauvegarde();
@@ -136,7 +133,7 @@ public class Partie implements JsonSerializable {
     }
     
     /**
-     * Méthode pour ajouter un malus au chrono.
+     * Méthode pour ajouter un malus au chronomètre.
      *
      * @param secondes le malus à ajouter en secondes
      */
@@ -185,7 +182,7 @@ public class Partie implements JsonSerializable {
         // Ajoute la liste des coups joués
         partieNode.set("CoupJouer", mapper.valueToTree(jeu.getCoupsJouer()));
 
-        // Ajouter les coup de retour arrière
+        // Ajouter les coups de retour arrière
         partieNode.set("CoupJouerBuff", mapper.valueToTree(jeu.getCoupsJouerBuff()));
 
         // Ajouter le checkpoint de la partie
@@ -193,15 +190,15 @@ public class Partie implements JsonSerializable {
         jeu.getPointDeSauvegarde().forEach(lien -> pointDeSauvegarde.add(lien.getIndex()));
         partieNode.set("PointDeSauvegarde", pointDeSauvegarde);
 
-        // Ajouter le tableaux de validation
+        // Ajouter le tableau de validation
         ArrayNode sauvegardeAutomatique = mapper.createArrayNode();
         jeu.getSauvegardeAutomatique().forEach(lien -> sauvegardeAutomatique.add(lien.getIndex()));
         partieNode.set("SauvegardeAutomatique", sauvegardeAutomatique);
 
-        // Ajouter le chrono
+        // Ajouter le chronomètre
         partieNode.put("Chrono", getChronoDuration().toMillis());
 
-        // écrie la partie dans l'objet JSON
+        // Ecrire la partie dans l'objet JSON
         gen.writeStartObject();
         gen.writeObjectField("partie", partieNode);
         gen.writeEndObject();

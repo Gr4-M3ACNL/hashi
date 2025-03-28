@@ -41,6 +41,8 @@ public class JsonManager {
 
     /**
      * Classe interne permettant de stocker les informations d'une grille.
+     * <br>
+     * Cette représentation correspond à la structure du fichier JSON.
      *
      * @param taille Taille de la grille
      * @param serialise Grille sérialisée sous forme de tableau 2D de Double
@@ -62,6 +64,7 @@ public class JsonManager {
      * @param difficulte Difficulté de la grille
      * @param index Index de la grille
      * @return Les informations de la grille
+     * @throws IllegalArgumentException si la grille n'existe pas
      */
     public GrilleInfo getGrilleInfo(Difficulte difficulte, int index) {
         try {
@@ -75,8 +78,7 @@ public class JsonManager {
                         grilleNode.get("taille").asInt(),
                         mapper.convertValue(grilleNode.get("serialise"), Double[][].class));
             }
-            throw new IllegalArgumentException(
-                    "La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
+            throw new IllegalArgumentException();
         } catch (Exception e) {
             throw new IllegalArgumentException(
                     "La grille n'existe pas (difficulté : " + difficulte + ", index : " + index + ")");
@@ -97,18 +99,18 @@ public class JsonManager {
 
             JsonNode difficulteNode = rootNode.get(difficulte.toString());
             if (difficulteNode == null) {
-                throw new IllegalArgumentException("La difficulté n'existe pas");
+                throw new IllegalArgumentException();
             }
             return difficulteNode.size();
         } catch (Exception e) {
-            throw new IllegalArgumentException("La difficulté n'existe pas");
+            throw new IllegalArgumentException("La difficulté n'a pas été trouvée : " + difficulte);
         }
     }
 
     /**
      * Récupère les différentes difficultés disponibles.
      *
-     * @return Les différentes difficultés
+     * @return Les différentes difficultés disponibles sous forme de liste
      */
     public List<String> getListeDifficultes() {
         try {
@@ -302,7 +304,7 @@ public class JsonManager {
     }
 
     /**
-     * Sauvegarde une partie dans le fichier de parties. l'organisation du
+     * Sauvegarde une partie dans le fichier de parties. L'organisation du
      * fichier est la suivante : { "nomProfil1": { "difficulte1": {Infos de la
      * partie}, "difficulte2": {Infos de la partie} }, "nomProfil2": {
      * "difficulte1": {Infos de la partie}, "difficulte2": {Infos de la partie},
@@ -330,12 +332,12 @@ public class JsonManager {
             }
             rootNode = mapper.readTree(cheminFichier.toFile());
 
-            // Création ou récupération du nœud du profil
+            // Création ou récupération du noeud du profil
             if (!rootNode.has(nomProfil)) {
                 ((ObjectNode) rootNode).putObject(nomProfil);
             }
 
-            // ajoute ou met à jour le nœud de la partie dans le profil
+            // ajoute ou met à jour le noeud de la partie dans le profil
             JsonNode profilNode = rootNode.get(nomProfil);
             ((ObjectNode) profilNode).set(partie.getDifficulte().toString(), mapper.valueToTree(partie));
 
@@ -348,9 +350,7 @@ public class JsonManager {
 
     /**
      * Charge une partie à partir du fichier de parties.
-     * <p>
-     * si la partie n'existe pas, retourne null
-     * </p>
+     * Si la partie n'existe pas, retourne null
      *
      * @param nomProfil Nom du profil associé à la partie
      * @param difficulte Difficulté de la partie

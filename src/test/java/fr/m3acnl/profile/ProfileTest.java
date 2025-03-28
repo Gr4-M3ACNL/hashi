@@ -125,13 +125,11 @@ public class ProfileTest extends Tests {
     public void testSetParametre() {
         Profile profile = new Profile("TestProfile");
         ParametreProfile nouveauParam = new ParametreProfile();
-        nouveauParam.setEffetVisuel(false);
         nouveauParam.setVolumeEffetsSonore(0.7f);
         nouveauParam.setNiveauAide(2);
 
         profile.setParametre(nouveauParam);
 
-        assertEquals(false, profile.getParametre().getEffetVisuel());
         assertEquals(0.7f, profile.getParametre().getVolumeEffetsSonore());
         assertEquals(2, profile.getParametre().getNiveauAide());
     }
