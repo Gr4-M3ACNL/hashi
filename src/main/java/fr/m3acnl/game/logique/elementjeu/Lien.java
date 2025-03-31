@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import fr.m3acnl.game.logique.Jeu;
 
 /**
- * Classe Lien, afin de les utilisés pour lié 2 noeuds.
+ * Classe Lien, afin de les utiliser pour lier 2 noeuds.
  *
  * @author COGNARD Luka
  * @version 1.0
@@ -29,7 +29,7 @@ public class Lien implements ElementJeu {
     private final Noeud noeud2;
 
     /**
-     * Nombre de lien actuelle.
+     * Nombre de liens actuels.
      */
     private int nbLien;
 
@@ -269,9 +269,9 @@ public class Lien implements ElementJeu {
     // ==================== Override ====================
     /**
      * Active le lien le faisant passer à son état suivant et met à jour le
-     * degré actuelle des noeud liés.
+     * degré actuel des noeud liés.
      *
-     * @return true si le lien a été activer false sinon
+     * @return true si le lien a été activé false sinon
      */
     @Override
     public Boolean activer() {
@@ -329,7 +329,7 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Permet d'indiquer que l'élément a été consulter.
+     * Permet d'indiquer que l'élément a été consulté.
      */
     @Override
     public void verifie() {

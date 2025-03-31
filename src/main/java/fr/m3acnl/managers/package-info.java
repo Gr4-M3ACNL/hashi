@@ -1,5 +1,5 @@
 /**
- * Package contenant les managers du jeux HashiParmentier.
+ * Package contenant les managers du jeu HashiParmentier.
  * <br>
  * Les manager sont des classes implémentant le Singleton gérant l'utilisation d'autres classes.
  * <br>

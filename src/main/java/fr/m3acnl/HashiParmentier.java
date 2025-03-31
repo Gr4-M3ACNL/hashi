@@ -33,7 +33,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Classe principale de l'application HashiParmentier.
+ * Classe de gestion des menus.
  *
  * @author TOUISSI Nassim
  *
@@ -184,7 +184,7 @@ public class HashiParmentier extends Application {
     }
 
     /**
-     * Permet de fournir l'historique des 5 dernieres parties jouer par
+     * Permet de fournir l'historique des 5 dernieres parties jouées par
      * l'utilisateur sur chaque difficulté.
      *
      * @param background Le background de la fenetre

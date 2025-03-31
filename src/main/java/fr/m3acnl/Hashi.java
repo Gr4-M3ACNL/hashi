@@ -3,7 +3,7 @@ package fr.m3acnl;
 import javafx.application.Application;
 
 /**
- * Main class of the Hashi game.
+ * Classe principale de l'application HashiParmentier.
  *
  * @author COGNARD Luka, GAUMONT Maël, LELANDAIS Clément, MABIRE Aymeric, PESANTEZ Maëlig, PUREN Mewen, TOUISSI Nassim
  */

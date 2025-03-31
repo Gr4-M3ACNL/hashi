@@ -27,7 +27,7 @@ public interface ElementJeu {
 
     // ==================== Setter ====================
     /**
-     * Permet d'indiquer que l'élément a été consulter.
+     * Permet d'indiquer que l'élément a été consulté.
      */
     public void verifie();
 
