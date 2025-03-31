@@ -318,7 +318,7 @@ public class AideVoisin extends Aide {
      * @param noeud le noeud du jeu à analyser
      * @return true si le noeud peut se relier à un voisin, sinon false
      */
-    private boolean checkIsolement(Noeud noeud) {
+    protected boolean checkIsolement(Noeud noeud) {
         List<Noeud> voisins = trouverVoisins(noeud);
         if (voisins.isEmpty()) {
             aidesVoisins.add(new AideVoisin(matrice, "Aucun voisin accessible", "Isolement", jeu, noeud.getPosition()));
