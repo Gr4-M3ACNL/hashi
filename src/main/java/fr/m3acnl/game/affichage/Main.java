@@ -1,7 +1,7 @@
 package fr.m3acnl.game.affichage;
 
 /**
- * Classe utiliser pour tester le lancement de l'application.
+ * Classe utilisée pour tester le lancement de l'application.
  */
 public class Main {
 
