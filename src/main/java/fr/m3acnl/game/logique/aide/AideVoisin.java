@@ -237,7 +237,7 @@ public class AideVoisin extends Aide {
                     "Noeud : " + noeud + "Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : "
                     + poidsVoisinsReels);
 
-            if (!checkIsolement(noeud)/*noeud.getDegreActuelle() == 0 && poidsVoisins > 0*/) { // Le noeud est isolé   /**/ 
+            if (!checkIsolement(noeud)) { // Le noeud est isolé   /**/ 
                 /*aidesVoisins.add(new AideVoisin(matrice, "Noeud isolé" + noeud.getPosition(), "Isolement", jeu,
                         noeud.getPosition()));*/
                 return 4;
