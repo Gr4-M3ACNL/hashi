@@ -269,9 +269,9 @@ public class Lien implements ElementJeu {
     // ==================== Override ====================
     /**
      * Active le lien le faisant passer à son état suivant et met à jour le
-     * degré actuelle des noeud liés.
+     * degré actuel des noeud liés.
      *
-     * @return true si le lien a été activer false sinon
+     * @return true si le lien a été activé false sinon
      */
     @Override
     public Boolean activer() {
