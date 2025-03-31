@@ -184,7 +184,7 @@ public class HashiParmentier extends Application {
     }
 
     /**
-     * Permet de fournir l'historique des 5 dernieres parties jouer par
+     * Permet de fournir l'historique des 5 dernieres parties jouées par
      * l'utilisateur sur chaque difficulté.
      *
      * @param background Le background de la fenetre
