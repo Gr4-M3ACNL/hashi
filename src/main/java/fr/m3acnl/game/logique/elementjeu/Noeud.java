@@ -22,7 +22,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     private final int degreSoluce;
 
     /**
-     * Le degré actuelle du noeud.
+     * Le degré actuel du noeud.
      */
     private int degreActuelle;
 
@@ -72,9 +72,9 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Récupère le degré actuelle.
+     * Récupère le degré actuel.
      *
-     * @return le degré actuelle
+     * @return le degré actuel
      */
     public int getDegreActuelle() {
         return degreActuelle;
@@ -128,7 +128,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Incrémente le degré actuelle du noeud.
+     * Incrémente le degré actuel du noeud.
      */
     public void ajouterDegre() {
         degreActuelle += 1;
@@ -136,7 +136,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Décrémente le degré actuelle du noeud de 2 pour enlever le lien.
+     * Décrémente le degré actuel du noeud de 2 pour enlever le lien.
      */
     public void suppressionDegre() {
         degreActuelle -= 2;
@@ -144,7 +144,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * décrémente le degré actuelle du noeud de 1 pour le retour arrière.
+     * décrémente le degré actuel du noeud de 1 pour le retour arrière.
      */
     public void diminuerDegre() {
         degreActuelle -= 1;
@@ -210,7 +210,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Permet d'indiquer que l'élément a été consulter.
+     * Permet d'indiquer que l'élément a été consulté.
      */
     @Override
     public void verifie() {
@@ -226,7 +226,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Affiche le réseaux de connection du noeud.
+     * Affiche le réseau de connection du noeud.
      *
      * @return false pour l'instant
      */
@@ -273,7 +273,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
     }
 
     /**
-     * Comparaison entre deux noeuds Les noeuds sont comparé par leur position.
+     * Comparaison entre deux noeuds Les noeuds sont comparés par leur position.
      *
      * @param n2 le noeud avec qui comparé
      * @return le résultat de la comparaison
@@ -288,7 +288,7 @@ public class Noeud implements ElementJeu, Comparable<Noeud> {
      * Affiche le Noeud.
      * <br>
      * Renvoie le chemin d'accès de la texture du noeud.
-     * Selon le degré solution et le degré actuelle.
+     * Selon le degré solution et le degré actuel.
      */
     @Override
     public String draw() {
