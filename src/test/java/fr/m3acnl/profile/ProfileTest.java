@@ -9,7 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,8 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.time.Duration;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * Classe de test de la classe Profile.
@@ -128,13 +125,11 @@ public class ProfileTest extends Tests {
     public void testSetParametre() {
         Profile profile = new Profile("TestProfile");
         ParametreProfile nouveauParam = new ParametreProfile();
-        nouveauParam.setEffetVisuel(false);
         nouveauParam.setVolumeEffetsSonore(0.7f);
         nouveauParam.setNiveauAide(2);
 
         profile.setParametre(nouveauParam);
 
-        assertEquals(false, profile.getParametre().getEffetVisuel());
         assertEquals(0.7f, profile.getParametre().getVolumeEffetsSonore());
         assertEquals(2, profile.getParametre().getNiveauAide());
     }

@@ -44,15 +44,6 @@ public class ParametreProfileTest extends Tests {
     ParametreProfileTest() {}
 
     /**
-     * Test de la méthode getEffetVisuel de la classe ParametreProfile.
-     */
-    @Test
-    public void testGetEffetVisuel() {
-        ParametreProfile parametreProfile = new ParametreProfile();
-        assertEquals(true, parametreProfile.getEffetVisuel());
-    }
-
-    /**
      * Test de la méthode getNiveauAide de la classe ParametreProfile.
      */
     @Test
@@ -70,15 +61,6 @@ public class ParametreProfileTest extends Tests {
         assertEquals(0.5f, parametreProfile.getVolumeEffetsSonore());
     }
 
-    /**
-     * Test du constructeur de la classe ParametreProfile.
-     */
-    @Test
-    public void testSetEffetVisuel() {
-        ParametreProfile parametreProfile = new ParametreProfile();
-        parametreProfile.setEffetVisuel(false);
-        assertEquals(false, parametreProfile.getEffetVisuel());
-    }
 
     /**
      * Test de la méthode setNiveauAide de la classe ParametreProfile.
@@ -123,7 +105,6 @@ public class ParametreProfileTest extends Tests {
         String json = writer.toString();
         assertTrue(json.contains("\"niveauAide\":0"));
         assertTrue(json.contains("\"volumeEffetsSonore\":0.5"));
-        assertTrue(json.contains("\"effetVisuel\":true"));
     }
 
     /**
@@ -143,6 +124,5 @@ public class ParametreProfileTest extends Tests {
         String json = writer.toString();
         assertTrue(json.contains("\"niveauAide\":0"));
         assertTrue(json.contains("\"volumeEffetsSonore\":0.5"));
-        assertTrue(json.contains("\"effetVisuel\":true"));
     }
 }

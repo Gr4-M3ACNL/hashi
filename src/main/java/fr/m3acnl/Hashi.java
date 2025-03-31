@@ -3,7 +3,9 @@ package fr.m3acnl;
 import javafx.application.Application;
 
 /**
- * Main class of the Hashi game.
+ * Classe principale de l'application HashiParmentier.
+ *
+ * @author COGNARD Luka, GAUMONT Maël, LELANDAIS Clément, MABIRE Aymeric, PESANTEZ Maëlig, PUREN Mewen, TOUISSI Nassim
  */
 public class Hashi {
 
@@ -20,7 +22,6 @@ public class Hashi {
      * @param args Arguments passés en ligne de commande.
      */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
         Application.launch(HashiParmentier.class, args);
     }
 }

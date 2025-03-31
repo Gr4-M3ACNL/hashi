@@ -1,48 +1,46 @@
 package fr.m3acnl.profile;
 
+import java.io.IOException;
+
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+
 import fr.m3acnl.managers.ProfileManager;
-import java.io.IOException;
 
 /**
- * Profil d'un utilisateur.
- * 
+ * Paramère d'un profil utilisateur.
+ *
  * @author PUREN Mewen
  */
 public class ParametreProfile implements JsonSerializable {
 
+    // ======================== Attributs ========================
     /**
      * Limite du niveau d'aide.
      */
     private Integer niveauAide;
     /**
-     * Volume des effets sonores.
-     * Valeur entre 0 et 1.
+     * Volume des effets sonores. Valeur entre 0 et 1.
      */
     private float volumeEffetsSonore;
-    /**
-     * Activation des effets visuels.
-     */
-    private Boolean effetVisuel;
-    
+
     /**
      * Constructeur des paramètres de profil par défaut.
      */
     protected ParametreProfile() {
         this.niveauAide = 0;
         this.volumeEffetsSonore = 0.5f;
-        this.effetVisuel = true;
     }
 
+    // ======================== Getter ========================
     /**
      * Méthode pour connaître la limite du niveau d'aide.
      *
      * @return le niveau d'aide
      */
-    protected Integer getNiveauAide() {
+    public Integer getNiveauAide() {
         return this.niveauAide;
     }
 
@@ -51,25 +49,17 @@ public class ParametreProfile implements JsonSerializable {
      *
      * @return le volume des effets sonores
      */
-    protected float getVolumeEffetsSonore() {
+    public float getVolumeEffetsSonore() {
         return this.volumeEffetsSonore;
     }
 
-    /**
-     * Méthode pour connaître l'état des effets visuels.
-     *
-     * @return l'état des effets visuels
-     */
-    protected Boolean getEffetVisuel() {
-        return this.effetVisuel;
-    }
-
+    // ======================== Setter ========================
     /**
      * Méthode pour modifier la limite du niveau d'aide.
-     * 
+     *
      * @param niveauAide le niveau d'aide
      */
-    protected void setNiveauAide(Integer niveauAide) {
+    public void setNiveauAide(Integer niveauAide) {
         if (niveauAide < 0 || niveauAide > 2) {
             throw new IllegalArgumentException("Le niveau d'aide doit être compris entre 0 et 2");
         }
@@ -79,10 +69,10 @@ public class ParametreProfile implements JsonSerializable {
 
     /**
      * Méthode pour modifier le volume des effets sonores.
-     * 
+     *
      * @param volumeEffetsSonore le volume des effets sonores
      */
-    protected void setVolumeEffetsSonore(float volumeEffetsSonore) {
+    public void setVolumeEffetsSonore(float volumeEffetsSonore) {
         if (volumeEffetsSonore < 0 || volumeEffetsSonore > 1) {
             throw new IllegalArgumentException("Le volume des effets sonores doit être compris entre 0 et 1");
         }
@@ -90,22 +80,13 @@ public class ParametreProfile implements JsonSerializable {
         ProfileManager.getInstance().sauvegarder();
     }
 
-    /**
-     * Méthode pour modifier l'état des effets visuels.
-     * 
-     * @param effetVisuel l'état des effets visuels
-     */
-    protected void setEffetVisuel(Boolean effetVisuel) {
-        this.effetVisuel = effetVisuel;
-        ProfileManager.getInstance().sauvegarder();
-    }
-
+    // ======================== Sérialisation ========================
     /**
      * Serialize les paramètres de profil pour un format JSON.
-     * 
+     *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation
-     * 
+     *
      * @throws IOException si une erreur d'entrée/sortie survient
      * @see JsonSerializable#serialize
      */
@@ -114,17 +95,16 @@ public class ParametreProfile implements JsonSerializable {
         gen.writeStartObject();
         gen.writeNumberField("niveauAide", this.niveauAide);
         gen.writeNumberField("volumeEffetsSonore", this.volumeEffetsSonore);
-        gen.writeBooleanField("effetVisuel", this.effetVisuel);
         gen.writeEndObject();
     }
 
     /**
      * Serialize les paramètres de profil pour un format JSON avec un type.
-     * 
+     *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation
      * @param typeSer sérialiseur de type
-     * 
+     *
      * @throws IOException si une erreur d'entrée/sortie survient
      * @see #serialize
      * @see JsonSerializable#serializeWithType

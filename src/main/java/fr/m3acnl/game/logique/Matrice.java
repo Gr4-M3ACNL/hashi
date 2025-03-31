@@ -2,6 +2,11 @@ package fr.m3acnl.game.logique;
 
 import java.util.ArrayList;
 
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.Noeud;
+
 /**
  * Classe matrice du jeu pour gérer sa création et sa validité.
  *
@@ -9,8 +14,8 @@ import java.util.ArrayList;
  * @version 1.0
  */
 public class Matrice {
-    //Variables de la classe Matrice.
 
+    // =========================== Attributs ===========================
     /**
      * Contient la matrice du jeu avec les objets de type ElementJeu.
      */
@@ -18,6 +23,10 @@ public class Matrice {
 
     /**
      * Contient la matrice de départ du jeu avec les valeurs de type Double.
+     * <br>
+     * La matrice est de type Double car elle contient des valeurs négatives pour
+     * les noeuds et des valeurs positives pour les liens. Les liens verticaux et horizontaux
+     * sont représentés par la partie entière et décimale de la valeur.
      */
     private final ArrayList<ArrayList<Double>> matrice2;
 
@@ -32,7 +41,7 @@ public class Matrice {
      * @param lignes Nombre de lignes de la matrice
      * @param cols Nombre de colonnes de la matrice
      * @param mat La matrice pour générer le jeu
-     * @param jeu Le jeu au quel la matrice appartient
+     * @param jeu Le jeu auquel la matrice appartient
      */
     public Matrice(int lignes, int cols, Double[][] mat, Jeu jeu) {
         matrice = new ArrayList<>();
@@ -57,10 +66,11 @@ public class Matrice {
 
     }
 
+    // =========================== Getter ===========================
     /**
      * Récupère une copie de la liste des liens.
      *
-     * @return La copie de la liste de lien
+     * @return La copie de la liste de liens
      */
     public ArrayList<Lien> getCopListeLien() {
         return new ArrayList<>(listeLien);
@@ -76,14 +86,29 @@ public class Matrice {
     }
 
     /**
-     * Récupère un élément de la matrice a la position donnée.
+     * Récupère un élément de la matrice à la position donnée.
      *
      * @param ligne La ligne de l'élément
      * @param col La colonne de l'élément
-     * @return L'élément a la position donnée
+     * @return L'élément à la position donnée
      */
     public ElementJeu getElement(int ligne, int col) {
         return matrice.get(ligne).get(col);
+    }
+
+    /**
+     * Récupère la matrice2 en array.
+     *
+     * @return La matrice2 en array.
+     */
+    public Double[][] getMatrice2Array() {
+        int taille = matrice2.size();
+        Double[][] array = new Double[taille][taille];
+
+        for (int i = 0; i < taille; i++) {
+            array[i] = matrice2.get(i).toArray(new Double[0]);
+        }
+        return array;
     }
 
     /**
@@ -95,8 +120,9 @@ public class Matrice {
         return listeLien;
     }
 
+    // =========================== Setter ===========================
     /**
-     * Modifie un élément de la matrice a la position donnée.
+     * Modifie un élément de la matrice à la position donnée.
      *
      * @param ligne La ligne de l'élément
      * @param col La colonne de l'élément
@@ -106,11 +132,12 @@ public class Matrice {
         matrice.get(ligne).set(col, element);
     }
 
+    // =========================== Generation ===========================
     /**
-     * Récupère la partie entière d'un nombre. La partie entière représente la
-     * solution vertical du lien.
+     * Récupère la partie entière d'un nombre. 
+     * La partie entière représente la solution verticale du lien.
      *
-     * @param val Le nombre a traiter
+     * @param val Le nombre à traiter
      * @return La partie entière du nombre
      */
     private double horiz(double val) {
@@ -118,10 +145,10 @@ public class Matrice {
     }
 
     /**
-     * Récupère la partie décimale d'un nombre. La partie décimale représente la
-     * solution horizontal du lien.
+     * Récupère la partie décimale d'un nombre.
+     * La partie décimale représente la solution horizontale du lien.
      *
-     * @param val Le nombre a traiter
+     * @param val Le nombre à traiter
      * @return La partie décimale du nombre
      */
     private double vertic(double val) {
@@ -131,10 +158,9 @@ public class Matrice {
     /**
      * Génère la matrice avec les noeuds et les liens.
      *
-     * @param jeu Le jeu au quel la matrice appartient
+     * @param jeu Le jeu auquel la matrice appartient
      */
     private void genMatrice(Jeu jeu) {
-        // Generate the nodes
         for (int i = 0; i < matrice2.size(); i++) {
             for (int j = 0; j < matrice2.get(i).size(); j++) {
                 if (matrice2.get(i).get(j) < 0) {
@@ -149,7 +175,7 @@ public class Matrice {
     /**
      * Génère les liens de la matrice.
      *
-     * @param jeu le jeu au quel la matrice et les liens appartiennent
+     * @param jeu le jeu auquel la matrice et les liens appartiennent
      */
     private void genLink(Jeu jeu) {
         for (int i = 0; i < matrice.size(); i++) {
@@ -163,16 +189,17 @@ public class Matrice {
     }
 
     /**
-     * Vérifie si il y a un noeud a droite et crée un lien entre les deux
-     * noeuds.
+     * Vérifie si il y a un noeud à droite et crée un lien entre les deux noeuds.
+     * <br>
+     * Cette méthode est déterministe, l'ordre de la liste de liens est donc toujours le même.
      *
-     * @param y La colonne de l'élément
-     * @param x La ligne de l'élément
-     * @param jeu le jeu au quel la matrice et les liens appartiennent
+     * @param y la colonne de l'élément
+     * @param x la ligne de l'élément
+     * @param jeu le jeu auquel la matrice et les liens appartiennent
      */
     private void verifHorizontale(int y, int x, Jeu jeu) {
-        //verification si il y a un noeud a droite
-        //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
+        // vérification si il y a un noeud à droite
+        // Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu actuel = matrice.get(x).get(y);
         Double sol;
         for (int i = y + 1; i < matrice.get(x).size(); i++) {
@@ -198,14 +225,16 @@ public class Matrice {
     /**
      * Vérifie si il y a un noeud en dessous et crée un lien entre les deux
      * noeuds.
+     * <br>
+     * Cette méthode est déterministe, l'ordre de la liste de liens est donc toujours le même.
      *
-     * @param y La colonne de l'élément
-     * @param x La ligne de l'élément
-     * @param jeu le jeu au quel la matrice et les liens appartiennent
+     * @param y la colonne de l'élément
+     * @param x la ligne de l'élément
+     * @param jeu le jeu auquel la matrice et les liens appartiennent
      */
     private void verifVerticale(int y, int x, Jeu jeu) {
-        //verification si il y a un noeud en bas
-        //Si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
+        // vérification si il y a un noeud en bas
+        // si il y a un noeud, crée un lien entre les deux noeuds et le rajoute dans la matrice
         ElementJeu actuel = matrice.get(x).get(y);
         Double sol;
         for (int i = x + 1; i < matrice.size(); i++) {
@@ -232,6 +261,7 @@ public class Matrice {
         }
     }
 
+    // =========================== Action ===========================
     /**
      * Vérifie si la matrice est valide.
      *
@@ -247,7 +277,7 @@ public class Matrice {
     }
 
     /**
-     * Remet la matrice a zero.
+     * Remets la matrice à zero.
      */
     public void remiseAzero() {
         for (Lien lien : listeLien) {
@@ -256,9 +286,9 @@ public class Matrice {
     }
 
     /**
-     * Vérifie si les liens actif sont valide.
+     * Vérifie si les liens actifs sont valides.
      *
-     * @return Renvoie true si les liens sont valide false sinon
+     * @return Renvoie true si les liens sont valides false sinon
      */
     public Boolean liensValide() {
         for (Lien lien : listeLien) {
@@ -274,15 +304,15 @@ public class Matrice {
     /**
      * Permet de trouver le noeud le plus proche d'un point donné.
      *
-     * @param x La coordonnée x
-     * @param y La coordonnée y
-     * @return Le noeud le plus proche
+     * @param x la coordonnée x
+     * @param y la coordonnée y
+     * @return le noeud le plus proche
      */
     public Noeud trouverNoeudLePlusProche(int x, int y) {
         Noeud noeudLePlusProche = null;
         double distanceMin = Double.MAX_VALUE;
 
-        // Parcours tout le plateau pour trouver le Noeud le plus proche
+        // Parcours tout le plateau pour trouver le noeud le plus proche
         for (int i = 0; i < getTaille(); i++) {
             for (int j = 0; j < getTaille(); j++) {
                 ElementJeu elem = this.getElement(i, j);
@@ -301,7 +331,29 @@ public class Matrice {
     }
 
     /**
+     * Permet de retirer la surbrillance de tous les éléments.
+     */
+    public void setSurbrillanceOff() {
+        for (ArrayList<ElementJeu> ligne : matrice) {
+            for (ElementJeu element : ligne) {
+                if (element != null) {
+                    if (element instanceof Noeud) {
+                        ((Noeud) element).setActiver(true);
+                        ((Noeud) element).surbrillanceOff();
+                        ((Noeud) element).setActiver(false);
+                    } else {
+                        element.surbrillanceOff();
+                    }
+                }
+            }
+        }
+    }
+    // =========================== Affichage ===========================
+
+    /**
      * Dessine la matrice.
+     * <br>
+     * Utilisé pour le terminal.
      */
     public void drawTerm() {
         int count = 0;

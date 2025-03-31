@@ -5,7 +5,7 @@ MAIN_DIR="src/main/java"
 TEST_DIR="src/test/java"
 
 # Trouver les fichiers Java dans les deux répertoires
-main_files=$(find "$MAIN_DIR" -type f -name "*.java" | sed "s|$MAIN_DIR/||" | sed "s|.java$||")
+main_files=$(find "$MAIN_DIR" -type f -name "*.java" ! -name "package-info.java" | sed "s|$MAIN_DIR/||" | sed "s|.java$||")
 test_files=$(find "$TEST_DIR" -type f -name "*.java" | sed "s|$TEST_DIR/||" | sed "s|.java$||")
 
 # Initialiser une variable pour suivre les fichiers sans test

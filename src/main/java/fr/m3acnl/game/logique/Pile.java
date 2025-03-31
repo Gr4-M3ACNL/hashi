@@ -1,5 +1,6 @@
 package fr.m3acnl.game.logique;
 
+import fr.m3acnl.game.logique.elementjeu.Lien;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -8,13 +9,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Classe Pile représentant une Pile d'objets.
+ * Classe Pile représentant une pile de liens.
+ * <br>
+ * Cette classe permet de gérer une pile de liens, avec des méthodes pour empiler, dépiler et vérifier l'état de la pile.
+ * Elle est utilisée pour gérer les mouvements des éléments dans le jeu.
  *
  * @author MABIRE Aymeric
  * @version 1.0
  */
 public class Pile implements JsonSerializable {
 
+    // ==================== Attributs ====================
     /**
      * Tableau contenant la pile.
      */
@@ -27,15 +32,7 @@ public class Pile implements JsonSerializable {
         tab = new ArrayList<>();
     }
 
-    /**
-     * Initialisation d'un nouveau tableau pour la pile.
-     *
-     * @param t Le tableau a initialisé.
-     */
-    public void setTab(ArrayList<Lien> t) {
-        tab = new ArrayList<>(t);
-    }
-
+    // ==================== Getter ====================
     /**
      * Méthode pour retourner la taille d'une pile.
      *
@@ -54,6 +51,29 @@ public class Pile implements JsonSerializable {
         return tab.isEmpty();
     }
 
+    /**
+     * Méthode pour retourner l'objet au sommet de la pile.
+     *
+     * @return : l'objet au sommet de la pile
+     */
+    public Lien sommet() {
+        if (!estVide()) {
+            return tab.get(this.taille() - 1);
+        }
+        return null;
+    }
+
+    // ==================== Setter ====================
+    /**
+     * Initialisation d'un nouveau tableau pour la pile.
+     *
+     * @param t Le tableau à initialiser.
+     */
+    public void setTab(ArrayList<Lien> t) {
+        tab = new ArrayList<>(t);
+    }
+
+    // ==================== Action ====================
     /**
      * Méthode pour empiler un objet dans une pile.
      *
@@ -79,18 +99,6 @@ public class Pile implements JsonSerializable {
     }
 
     /**
-     * Méthode pour retourner l'objet au sommet de la pile.
-     *
-     * @return : l'objet au sommet de la pile
-     */
-    public Lien sommet() {
-        if (!estVide()) {
-            return tab.get(this.taille() - 1);
-        }
-        return null;
-    }
-
-    /**
      * Méthode pour vider entièrement une pile.
      */
     public void vidange() {
@@ -102,14 +110,17 @@ public class Pile implements JsonSerializable {
     /**
      * Récupère une copie du tableau.
      *
-     * @return Le tableau copier de la pile.
+     * @return Le tableau copié de la pile.
      */
     public ArrayList<Lien> copieTab() {
         return new ArrayList<Lien>(tab);
     }
 
+    // ==================== Sérialisation ====================
     /**
      * Méthode pour sérialiser une pile de liens.
+     * <br>
+     * La sérialisation du lien est représentée par son index dans un tableau listant l'ensemble des liens.
      *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation

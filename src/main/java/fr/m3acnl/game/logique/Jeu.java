@@ -1,17 +1,22 @@
 package fr.m3acnl.game.logique;
 
+import fr.m3acnl.game.logique.elementjeu.Noeud;
+import fr.m3acnl.game.logique.elementjeu.Lien;
+import fr.m3acnl.game.logique.elementjeu.DoubleLien;
+import fr.m3acnl.game.logique.elementjeu.ElementJeu;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
 /**
- * Classe Jeu pour une représentation du jeu et gérer le jeu.
+ * Classe Jeu pour la logique et la gestion du jeu.
  *
  * @author COGNARD Luka
  * @version 1.0
  */
 public class Jeu {
 
+    // ==================== Attributs ====================
     /**
      * Le plateau de jeu.
      */
@@ -24,16 +29,18 @@ public class Jeu {
 
     /**
      * Temps fin de partie.
+     * @deprecated le chronomètre est calculé dans la partie
      */
+    @Deprecated
     private long tempsFinal;
 
     /**
-     * Pile des coup jouer.
+     * Pile des coups joués.
      */
     private final Pile coupsJouer;
 
     /**
-     * Pile des coup jouer en buffeur pour le retour.
+     * Pile des coup joués en buffer pour le retour.
      */
     private final Pile coupsJouerBuff;
 
@@ -48,7 +55,7 @@ public class Jeu {
     private ArrayList<Lien> sauvegardeAutomatique;
 
     /**
-     * La pile des coups de la sauvegarde manuel par le joueur.
+     * La pile des coups de la sauvegarde manuelle par le joueur.
      */
     private ArrayList<Lien> pointDeSauvegarde;
 
@@ -69,6 +76,7 @@ public class Jeu {
         pointDeSauvegarde = new ArrayList<Lien>();
     }
 
+    // ==================== Getter ====================
     /**
      * Récupère la taille.
      *
@@ -88,9 +96,9 @@ public class Jeu {
     }
 
     /**
-     * Récupère la pile des coups jouer.
+     * Récupère la pile des coups joués.
      *
-     * @return La pile des coups jouer
+     * @return La pile des coups joués
      */
     public Pile getCoupsJouer() {
         return coupsJouer;
@@ -98,7 +106,7 @@ public class Jeu {
 
     /**
      * Récupère le tableau de la sauvegarde automatique.
-     * 
+     *
      * @return Le tableau de la sauvegarde automatique
      */
     public ArrayList<Lien> getSauvegardeAutomatique() {
@@ -106,28 +114,31 @@ public class Jeu {
     }
 
     /**
-     * Récupère le tableau de la sauvegarde manuel.
-     * 
-     * @return Le tableau de la sauvegarde manuel
+     * Récupère le tableau de la sauvegarde manuelle.
+     *
+     * @return Le tableau de la sauvegarde manuelle
      */
     public ArrayList<Lien> getPointDeSauvegarde() {
         return pointDeSauvegarde;
     }
 
     /**
-     * Récupère la pile des coups jouer en buffeur.
+     * Récupère la pile des coups joués en buffer.
      *
-     * @return La pile des coups jouer en buffeur
+     * @return La pile des coups joués en buffer
      */
     public Pile getCoupsJouerBuff() {
         return coupsJouerBuff;
     }
 
     /**
-     * Done le temp écouler actuellement en seconde.
+     * Done le temp écoulé actuellement en secondes.
      *
-     * @return le temp écouler
+     * @return le temp écoulé
+     * 
+     * @deprecated le chronomètre est maintent calculé dans la partie
      */
+    @Deprecated
     public Long getTempsEcouler() {
         return tempsFinal + Duration.between(instantDebut, Instant.now()).toSeconds();
     }
@@ -135,30 +146,71 @@ public class Jeu {
     /**
      * Récupère le temps final.
      *
-     * @return le temp final
+     * @return le temps final
+     * 
+     * @deprecated le chronomètre est maintenant calculé dans la partie
      */
+    @Deprecated
     public Long getTempsFinal() {
         return tempsFinal;
     }
 
     /**
+     * Vérifie si le jeu est gagné.
+     *
+     * @return true si le joueur à gagné
+     */
+    public Boolean gagner() {
+        if (plateau.validationMatrice()) {
+            tempsFinal = getTempsEcouler();
+            return true;
+        }
+        return false;
+    }
+
+    // ==================== Setter ====================
+    /**
      * Modification du temps final.
      *
      * @param temps Le temp final
+     * 
+     * @deprecated le chronomètre est maintenant calculé dans la partie
      */
+    @Deprecated
     public void setTempsFinal(long temps) {
         tempsFinal = temps;
     }
 
+    // ==================== Action ====================
     /**
-     * Vérification si le lien horizontal n'est pas couper sur son chemin.
+     * Renvoie une copie du jeu.
+     * 
+     * @return La copie du jeu.
+     */
+    public Jeu copieJeu() {
+        Jeu newJeu = new Jeu(taille, plateau.getMatrice2Array());
+        Noeud n1 = null;
+        for (Lien l : coupsJouer.copieTab()) {
+            n1 = l.getNoeud1();
+            if (l.getOrientation() == 1) {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX(), n1.getPosition().getCoordY() + 1, n1);
+            } else {
+                newJeu.activeElemJeu(n1.getPosition().getCoordX() + 1, n1.getPosition().getCoordY(), n1);
+            }
+        }
+        return newJeu;
+    }
+    
+    /**
+     * Vérification si le lien horizontal n'est pas coupé sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
-     * @param nbLien Le nombre de lien actuel
-     * @return 1 si il est couper 0 sinon
+     * @param nbLien Le nombre de liens actuel
+     * @param aide Si la fonction est appelée pour une aide true, false sinon
+     * @return 1 si il est coupé 0 sinon
      */
-    public int verificationHorizontal(Noeud noeud1, Noeud noeud2, int nbLien) {
+    public int verificationHorizontal(Noeud noeud1, Noeud noeud2, int nbLien, boolean aide) {
         int y1 = noeud1.getPosition().getCoordY();
         int y2 = noeud2.getPosition().getCoordY();
         int x = noeud1.getPosition().getCoordX();
@@ -177,21 +229,24 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++) {
-            doubleLienPossible.get(i).activeInterrupteur();
+        if (!aide) {
+            for (int i = 0; i < doubleLienPossible.size(); i++) {
+                doubleLienPossible.get(i).activeInterrupteur();
+            }
         }
         return 0;
     }
 
     /**
-     * Vérification si le lien vertical n'est pas couper sur son chemin.
+     * Vérification si le lien vertical n'est pas coupé sur son chemin.
      *
      * @param noeud1 Le 1er noeud du lien
      * @param noeud2 Le 2eme noeud du lien
-     * @param nbLien Le nombre de lien actuel
-     * @return 1 si il est couper 0 sinon
+     * @param nbLien Le nombre de liens actuel
+     * @param aide Si la fonction est appelée pour une aide true, false sinon
+     * @return 1 si il est coupé 0 sinon
      */
-    public int verificationVertical(Noeud noeud1, Noeud noeud2, int nbLien) {
+    public int verificationVertical(Noeud noeud1, Noeud noeud2, int nbLien, boolean aide) {
         int x1 = noeud1.getPosition().getCoordX();
         int x2 = noeud2.getPosition().getCoordX();
         int y = noeud1.getPosition().getCoordY();
@@ -210,14 +265,18 @@ public class Jeu {
                 }
             }
         }
-        for (int i = 0; i < doubleLienPossible.size(); i++) {
-            doubleLienPossible.get(i).activeInterrupteur();
+        if (!aide) {
+            for (int i = 0; i < doubleLienPossible.size(); i++) {
+                doubleLienPossible.get(i).activeInterrupteur();
+            }
         }
         return 0;
     }
 
     /**
      * Sauvegarde automatiquement seulement si le graphe est valide.
+     * <br>
+     * utiliser pour les validation de la matrice.
      */
     private void sauvegardeAuto() {
         if (plateau.liensValide()) {
@@ -226,19 +285,21 @@ public class Jeu {
     }
 
     /**
-     * Sauvegarde manuellement peut importe l'état du graphe.
+     * Sauvegarde manuellement peu importe l'état du graphe.
+     * <br>
+     * Utiliser pour les sauvegardes manuelles.
      */
     public void sauvegarderManuellement() {
         pointDeSauvegarde = coupsJouer.copieTab();
     }
 
     /**
-     * Active l’élément de jeu selectionner.
+     * Active l’élément de jeu selectionné.
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
-     * @param n Le noeud du lien a activer dans le doubleLien
-     * @return Renvoie le lien activer si il n'a pas été activer renvoie null
+     * @param n Le noeud du lien à activer dans le doubleLien
+     * @return Renvoie le lien activé, si il n'a pas été activé renvoie null
      */
     private Lien activeElem(int x, int y, Noeud n) {
         ElementJeu elem = plateau.getElement(x, y);
@@ -259,11 +320,11 @@ public class Jeu {
     }
 
     /**
-     * Active Element du jeu sélectionner par le joueur.
+     * Active l'élément du jeu sélectionné par le joueur.
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
-     * @param n Le noeud du lien a activer dans le doubleLien
+     * @param n Le noeud du lien à activer dans le doubleLien
      */
     public void activeElemJeu(int x, int y, Noeud n) {
         Lien elem = activeElem(x, y, n);
@@ -275,18 +336,19 @@ public class Jeu {
     }
 
     /**
-     * Active Element du jeu pour les aide.
+     * Active l'élément du jeu pour les aides.
      *
      * @param x Coordonnée en x
      * @param y Coordonnée en y
      * @param n Le noeud du lien a activer dans le doubleLien
+     * @return Renvoie null si le lien n'as pas été activé sinon renvoie le lien.
      */
-    public void activeElemAide(int x, int y, Noeud n) {
-        activeElem(x, y, n);
+    public Lien activeElemAide(int x, int y, Noeud n) {
+        return activeElem(x, y, n);
     }
 
     /**
-     * Reviens en arrière en revenant au coup précédent.
+     * Retour au coup précédent.
      */
     public void retour() {
         if (!coupsJouer.estVide()) {
@@ -296,7 +358,9 @@ public class Jeu {
     }
 
     /**
-     * Avance en effectuant le coup suivant.
+     * Avance au coup suivant.
+     * <br>
+     * Uniquement si il y a un coup dans le buffer.
      */
     public void avancer() {
         if (!coupsJouerBuff.estVide()) {
@@ -306,36 +370,29 @@ public class Jeu {
     }
 
     /**
-     * Vérifie si le jeu est gagner.
-     *
-     * @return true si le joueur a gagner
+     * Méthode qui met le chronomètre en pause.
+     * 
+     * @deprecated le chronomètre est maintenant calculé dans la partie
      */
-    public Boolean gagner() {
-        if (plateau.validationMatrice()) {
-            tempsFinal = getTempsEcouler();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Méthode stoppant le chrono.
-     */
+    @Deprecated
     public void stopChrono() {
         tempsFinal += Duration.between(instantDebut, Instant.now()).toSeconds();
     }
 
     /**
-     * Méthode remettant le chrono en marche.
+     * Méthode qui remet le chronomètre en marche.
+     * 
+     * @deprecated le chronomètre est maintenant calculé dans la partie
      */
+    @Deprecated
     public void reprendreChrono() {
         instantDebut = Instant.now();
     }
 
     /**
-     * Charge la sauvegarde donner.
+     * Charge la sauvegarde donnée.
      *
-     * @param sauvegarde la sauvegarde a charger.
+     * @param sauvegarde la sauvegarde à charger.
      */
     private void chargerSauvegarde(ArrayList<Lien> sauvegarde) {
         if (sauvegarde == null) {
@@ -352,23 +409,27 @@ public class Jeu {
 
     /**
      * Charge la sauvegarde automatique.
+     * <br>
+     * Utiliser pour les validation de la matrice.
      */
     public void chargerSauvegardeAuto() {
         chargerSauvegarde(sauvegardeAutomatique);
     }
 
     /**
-     * Charge la sauvegarde manuel.
+     * Charge la sauvegarde manuelle.
      */
     public void chargerSauvegardeManuel() {
         chargerSauvegarde(pointDeSauvegarde);
     }
 
     /**
-     * Rejoue un coup du lien a l'index donner lors du chargement.
-     *
-     * @param index L'index du lien a ajouter et empiler.
-     * @throws RuntimeException si le Lien ne c'est pas activer.
+     * Rejoue un coup du lien à l'index donné lors du chargement.
+     * <br>
+     * L'index est celui de la liste des liens.
+     * 
+     * @param index L'index du lien à ajouter et empiler.
+     * @throws RuntimeException si le lien ne s'est pas activé.
      */
     public void rejouer(int index) {
         if (plateau.getCopListeLien().get(index).activer()) {
@@ -378,8 +439,11 @@ public class Jeu {
         }
     }
 
+    // ==================== Affichage ====================
     /**
      * Affiche le jeu.
+     * <br>
+     * Utilisé pour le terminal.
      */
     public void drawJeuTerm() {
         plateau.drawTerm();
