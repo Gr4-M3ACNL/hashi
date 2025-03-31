@@ -138,7 +138,11 @@ public class Partie implements JsonSerializable {
      * @param secondes le malus à ajouter en secondes
      */
     public void addMalus(long secondes) {
-        chrono = chrono.minusSeconds(secondes);
+        if (!pause) {
+            chrono = chrono.minusSeconds(secondes);
+        } else {
+            chrono = chrono.plusSeconds(secondes);
+        }
     }
 
     /**
