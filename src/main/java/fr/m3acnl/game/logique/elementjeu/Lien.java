@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import fr.m3acnl.game.logique.Jeu;
 
 /**
- * Classe Lien, afin de les utilisés pour lié 2 noeuds.
+ * Classe Lien, afin de les utiliser pour lier 2 noeuds.
  *
  * @author COGNARD Luka
  * @version 1.0
