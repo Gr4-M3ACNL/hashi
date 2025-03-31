@@ -329,7 +329,7 @@ public class Lien implements ElementJeu {
     }
 
     /**
-     * Permet d'indiquer que l'élément a été consulter.
+     * Permet d'indiquer que l'élément a été consulté.
      */
     @Override
     public void verifie() {
