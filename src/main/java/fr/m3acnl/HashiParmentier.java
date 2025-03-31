@@ -33,7 +33,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * Classe principale de l'application HashiParmentier.
+ * Classe de gestion des menus.
  *
  * @author TOUISSI Nassim
  *
