@@ -2,6 +2,8 @@ package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Classe DoubleLien pour gérer les liens croisés.
+ * <br>
+ * Cette classe sert d'agrégateur pour deux liens, cela permet de gérer l'impossibilité d'avoir les deux liens actifs en même temps.
  *
  * @author COGNARD Luka
  * @version 1.0
@@ -243,6 +245,9 @@ public class DoubleLien implements ElementJeu {
         return null;
     }
 
+    /** 
+     * Met en surbrillance le lien actif.
+     */
     @Override
     public void surbrillanceOn() {
         averifie();
@@ -251,6 +256,9 @@ public class DoubleLien implements ElementJeu {
         }
     }
 
+    /**
+     * Désactive la surbrillance du lien actif.
+     */
     @Override
     public void surbrillanceOff() {
         averifie();

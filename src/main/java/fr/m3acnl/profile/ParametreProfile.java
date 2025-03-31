@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
 import fr.m3acnl.managers.ProfileManager;
 
 /**
- * Profil d'un utilisateur.
+ * Paramère d'un profil utilisateur.
  *
  * @author PUREN Mewen
  */
@@ -25,10 +25,6 @@ public class ParametreProfile implements JsonSerializable {
      * Volume des effets sonores. Valeur entre 0 et 1.
      */
     private float volumeEffetsSonore;
-    /**
-     * Activation des effets visuels.
-     */
-    private Boolean effetVisuel;
 
     /**
      * Constructeur des paramètres de profil par défaut.
@@ -36,7 +32,6 @@ public class ParametreProfile implements JsonSerializable {
     protected ParametreProfile() {
         this.niveauAide = 0;
         this.volumeEffetsSonore = 0.5f;
-        this.effetVisuel = true;
     }
 
     // ======================== Getter ========================
@@ -56,15 +51,6 @@ public class ParametreProfile implements JsonSerializable {
      */
     public float getVolumeEffetsSonore() {
         return this.volumeEffetsSonore;
-    }
-
-    /**
-     * Méthode pour connaître l'état des effets visuels.
-     *
-     * @return l'état des effets visuels
-     */
-    protected Boolean getEffetVisuel() {
-        return this.effetVisuel;
     }
 
     // ======================== Setter ========================
@@ -94,16 +80,6 @@ public class ParametreProfile implements JsonSerializable {
         ProfileManager.getInstance().sauvegarder();
     }
 
-    /**
-     * Méthode pour modifier l'état des effets visuels.
-     *
-     * @param effetVisuel l'état des effets visuels
-     */
-    protected void setEffetVisuel(Boolean effetVisuel) {
-        this.effetVisuel = effetVisuel;
-        ProfileManager.getInstance().sauvegarder();
-    }
-
     // ======================== Sérialisation ========================
     /**
      * Serialize les paramètres de profil pour un format JSON.
@@ -119,7 +95,6 @@ public class ParametreProfile implements JsonSerializable {
         gen.writeStartObject();
         gen.writeNumberField("niveauAide", this.niveauAide);
         gen.writeNumberField("volumeEffetsSonore", this.volumeEffetsSonore);
-        gen.writeBooleanField("effetVisuel", this.effetVisuel);
         gen.writeEndObject();
     }
 

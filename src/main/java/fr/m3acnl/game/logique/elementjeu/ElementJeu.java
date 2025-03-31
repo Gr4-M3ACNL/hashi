@@ -2,6 +2,8 @@ package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Interface ElementJeu pour représenter les éléments du jeu.
+ * <br>
+ * touts les éléments du jeu doivent implémenter cette interface.
  *
  * @author Aymeric MABIRE
  * @version 1.0

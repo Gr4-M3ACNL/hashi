@@ -17,7 +17,7 @@ public abstract class Aide {
      */
     protected String description;
     /**
-     * coupt en temps de l'aide.
+     * Coût en temps de l'aide.
      */
     protected int cout;
     /**

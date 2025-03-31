@@ -1,5 +1,5 @@
 /**
- * Package contenant le launcher et les menu du jeu hashiParmentier.
+ * Package contenant le launcher et les menus du jeu hashiParmentier.
  * <br>
  * <br>
  * <a href="javascript:void(0);" onclick="toggleDiagram()" style="padding:5px 10px; background-color:#007BFF; color:white; text-decoration:none; border-radius:5px;">Afficher/Cacher le diagramme de classe</a>

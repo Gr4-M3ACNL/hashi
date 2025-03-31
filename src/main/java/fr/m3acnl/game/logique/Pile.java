@@ -9,7 +9,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Classe Pile représentant une Pile d'objets.
+ * Classe Pile représentant une pile de liens.
+ * <br>
+ * Cette classe permet de gérer une pile de liens, avec des méthodes pour empiler, dépiler et vérifier l'état de la pile.
+ * Elle est utilisée pour gérer les mouvements des éléments dans le jeu.
  *
  * @author MABIRE Aymeric
  * @version 1.0
@@ -64,7 +67,7 @@ public class Pile implements JsonSerializable {
     /**
      * Initialisation d'un nouveau tableau pour la pile.
      *
-     * @param t Le tableau a initialisé.
+     * @param t Le tableau à initialiser.
      */
     public void setTab(ArrayList<Lien> t) {
         tab = new ArrayList<>(t);
@@ -107,7 +110,7 @@ public class Pile implements JsonSerializable {
     /**
      * Récupère une copie du tableau.
      *
-     * @return Le tableau copier de la pile.
+     * @return Le tableau copié de la pile.
      */
     public ArrayList<Lien> copieTab() {
         return new ArrayList<Lien>(tab);
@@ -116,6 +119,8 @@ public class Pile implements JsonSerializable {
     // ==================== Sérialisation ====================
     /**
      * Méthode pour sérialiser une pile de liens.
+     * <br>
+     * La sérialisation du lien est représentée par son index dans un tableau listant l'ensemble des liens.
      *
      * @param gen générateur de JSON
      * @param serializers fournisseur de sérialisation
