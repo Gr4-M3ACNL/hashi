@@ -29,7 +29,7 @@ public class Lien implements ElementJeu {
     private final Noeud noeud2;
 
     /**
-     * Nombre de lien actuelle.
+     * Nombre de liens actuels.
      */
     private int nbLien;
 
