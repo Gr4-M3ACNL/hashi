@@ -296,8 +296,11 @@ public class PartieAffichage extends Application {
                 + "-fx-border-width: 2px;"
                 + "-fx-border-radius: 10;"
                 + "-fx-text-fill: white;"
-                + "-fx-font-size: 14px;"
-                + "-fx-font-family: 'Georgia'; -fx-padding: 5px;");
+                + "-fx-font-size: 20px;"
+                + "-fx-font-family: 'Georgia'; -fx-padding: 5px;"
+                + "-fx-text-alignment: center;"
+                + "-fx-alignment: center;");
+        labelTemps.setMinSize(290, 50);
         actualiserLabelTemps();
 
         // Mise à jour de la taille des boutons lorsqu'on redimensionne la fenêtre
