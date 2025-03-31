@@ -306,8 +306,8 @@ public class Lien implements ElementJeu {
                 if (noeud1.getSurbrillance() || noeud2.getSurbrillance()) {
                     noeud1.setActiver(true);
                     noeud2.setActiver(true);
-                    noeud1.surbrillanceOn();
-                    noeud2.surbrillanceOn();
+                    noeud1.activer();
+                    noeud2.activer();
                     noeud1.setActiver(false);
                     noeud2.setActiver(false);
                 }
