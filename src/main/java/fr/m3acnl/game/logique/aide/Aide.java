@@ -11,23 +11,23 @@ public abstract class Aide {
     /**
      * Nom de l'aide.
      */
-    String nom;
+    protected String nom;
     /**
      * Description de l'aide.
      */
-    String description;
+    protected String description;
     /**
      * coupt en temps de l'aide.
      */
-    int cout;
+    protected int cout;
     /**
      * Matrice du jeu.
      */
-    Matrice matrice;
+    protected Matrice matrice;
     /**
      * Coordonnée de l'aide.
      */
-    Coord coord;
+    protected Coord coord;
 
     /**
      * Constructeur de la classe Aide.

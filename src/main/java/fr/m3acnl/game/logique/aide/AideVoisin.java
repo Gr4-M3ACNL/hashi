@@ -218,7 +218,8 @@ public class AideVoisin extends Aide {
      * description.
      *
      * @param noeud Le noeud du jeu à analyser
-     * @return Aide correspondante avec un numéro selon la priorité. UTILISER TROUVERVOISINS DISPO ?
+     * @return Aide correspondante avec un numéro selon la priorité. UTILISER
+     * TROUVERVOISINS DISPO ?
      */
     public int poidsRestantVoisins(Noeud noeud) {
         List<Noeud> voisins = trouverVoisinsDispoComplet(noeud);
@@ -318,7 +319,7 @@ public class AideVoisin extends Aide {
      * @param noeud le noeud du jeu à analyser
      * @return true si le noeud peut se relier à un voisin, sinon false
      */
-    public boolean checkIsolement(Noeud noeud) {
+    private boolean checkIsolement(Noeud noeud) {
         List<Noeud> voisins = trouverVoisins(noeud);
         if (voisins.isEmpty()) {
             aidesVoisins.add(new AideVoisin(matrice, "Aucun voisin accessible", "Isolement", jeu, noeud.getPosition()));
