@@ -2,6 +2,8 @@ package fr.m3acnl.game.logique.elementjeu;
 
 /**
  * Classe Coord pour une représentation de coordonnée.
+ * <br>
+ * Cette classe représente les coordonnées d'un élément au sein de la matrice du jeu.
  *
  * @author COGNARD Luka
  * @version 1.0

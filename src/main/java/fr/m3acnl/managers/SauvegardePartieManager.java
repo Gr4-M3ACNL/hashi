@@ -24,7 +24,7 @@ public class SauvegardePartieManager {
     // ======================== Attributs ========================
     /**
      * Instance de la classe JsonManager. utilisée pour charger et sauvegarder
-     * les partie par rapport au profile.
+     * les parties par rapport au profile.
      */
     private static final JsonManager jsonManager = new JsonManager();
 
@@ -41,10 +41,10 @@ public class SauvegardePartieManager {
     }
 
     /**
-     * Classe interne permettant de stocker une partie en cours avec son chrono.
-     * utilisée pour charger une partie.
+     * Classe interne permettant de stocker une partie en cours avec son chronomètre.
+     * Utilisée pour charger une partie.
      *
-     * @param chrono le chrono de la partie
+     * @param chrono le chronomètre de la partie
      * @param jeu le jeu en cours
      */
     public record JeuEnCour(long chrono, Jeu jeu) {
@@ -72,7 +72,7 @@ public class SauvegardePartieManager {
     }
 
     /**
-     * Charge une partie. si une partie est deja en cours elle est relancée.
+     * Charge une partie. Si une partie est déjà en cours elle est relancée,
      * sinon une nouvelle partie est créée.
      *
      * @param difficulte la difficulté de la partie à charger
@@ -89,7 +89,7 @@ public class SauvegardePartieManager {
             return new JeuEnCour(0, jeu); // On retourne une nouvelle partie
         }
 
-        // On charge rempli les différentes piles de coups
+        // On charge et rempli les différentes piles de coups
         partie.get("CoupJouer").forEach(coup -> jeu.rejouer(coup.asInt()));
         partie.get("CoupJouerBuff").forEach(coup -> jeu.getCoupsJouerBuff().empiler(jeu.getPlateau().getListeLien().get(coup.asInt())));
         partie.get("SauvegardeAutomatique").forEach(coup -> jeu.getSauvegardeAutomatique().add(jeu.getPlateau().getListeLien().get(coup.asInt())));
