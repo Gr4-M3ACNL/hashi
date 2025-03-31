@@ -133,7 +133,7 @@ public class DoubleLien implements ElementJeu {
     }
 
     /**
-     * Désactive l'interrupteur si les liens sont égaux.
+     * Désactive l'interrupteur si les liens sont désactivés.
      */
     public void desactiveInterrupteur() {
         if (lien1.getNbLien() == lien2.getNbLien()) {
