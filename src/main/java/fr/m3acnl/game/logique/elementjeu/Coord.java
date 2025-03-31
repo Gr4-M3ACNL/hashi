@@ -58,6 +58,7 @@ public class Coord implements Comparable<Coord> {
      * @param co2 le Coord avec qui comparé
      * @return le résultat de la comparaison
      */
+    @Override
     public int compareTo(Coord co2) {
         int res = Integer.compare(this.coordX, co2.getCoordX());
         if (res == 0) {
