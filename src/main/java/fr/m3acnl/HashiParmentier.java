@@ -10,7 +10,6 @@ import fr.m3acnl.affichage.GenererAsset;
 import fr.m3acnl.game.Difficulte;
 import fr.m3acnl.game.affichage.PartieAffichage;
 import fr.m3acnl.managers.ProfileManager;
-import fr.m3acnl.profile.Profile;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -397,7 +396,7 @@ public class HashiParmentier extends Application {
             String selectedProfile = comboBox.getValue();
             if (selectedProfile != null) {
                 ProfileManager.getInstance().setProfileActif(selectedProfile);
-                Profile profile = ProfileManager.getInstance().getProfileActif();
+                //Profile profile = ProfileManager.getInstance().getProfileActif();
                 //System.out.println("Profil chargé : " + profile.getNom());
                 dialogStage.close();
                 startGame();

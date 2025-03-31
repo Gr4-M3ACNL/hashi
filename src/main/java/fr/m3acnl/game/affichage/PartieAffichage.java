@@ -695,7 +695,7 @@ public class PartieAffichage extends Application {
         // Vérifier si l'élément du plateau est un DoubleLien
         ElementJeu element = partie.getJeu().getPlateau().getElement(x, y);
 
-        if (element instanceof DoubleLien doubleLien) {
+        if (element instanceof DoubleLien) {
             // Trouver le nœud le plus proche de la souris
             /*Noeud noeudProche = trouverNoeudLePlusProche(doubleLien, event); //!! Ne pas supprimer !!
             
@@ -711,10 +711,10 @@ public class PartieAffichage extends Application {
                     ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son de lien
         } else {
             partie.getJeu().activeElemJeu(x, y, null);
-            if (element instanceof Noeud noeud) {
+            if (element instanceof Noeud) {
                 genererMenu.jouerSon("noeud.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son du nœud
-            } else if (element instanceof Lien lien) {
+            } else if (element instanceof Lien) {
                 genererMenu.jouerSon("lien.wav",
                         ProfileManager.getInstance().getProfileActif().getParametre().getVolumeEffetsSonore()); // Jouer le son du lien
             }
