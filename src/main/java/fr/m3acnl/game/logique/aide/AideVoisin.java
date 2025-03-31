@@ -230,11 +230,11 @@ public class AideVoisin extends Aide {
             poidsVoisins += voisin.getDegreActuelle();
             poidsVoisinsReels += voisin.getDegreSoluce();
         }
-        System.out.println("Noeud : " + noeud + "Poids restant : " + poidsRestant);
+        //System.out.println("Noeud : " + noeud + "Poids restant : " + poidsRestant);
         if (poidsRestant != 0) {
-            System.out.println(
+            /*System.out.println(
                     "Noeud : " + noeud + "Pr : " + poidsRestant + " noeud : " + noeud.getPosition() + "Voisins : "
-                    + poidsVoisinsReels);
+                    + poidsVoisinsReels);*/
 
             if (!checkIsolement(noeud)) { // Le noeud est isolé   /**/ 
                 /*aidesVoisins.add(new AideVoisin(matrice, "Noeud isolé" + noeud.getPosition(), "Isolement", jeu,
@@ -482,11 +482,11 @@ public class AideVoisin extends Aide {
         ElementAide elementAide = new ElementAide();  // Créer un nouvel élément d'aide
         for (Noeud noeud : tousLesNoeuds) {
             // Test 2: Aide sur l'isolement
-            System.out.println("Poids restant : " + poidsRestantVoisins(noeud));
+            //System.out.println("Poids restant : " + poidsRestantVoisins(noeud));
             if (elementAide.getTexte().get(0).equals("")) {
                 switch (poidsRestantVoisins(noeud)) {
                     case 0 -> {
-                        System.out.println("0");
+                        //System.out.println("0");
                         elementAide.addTexte(0, "Un noeud ne possède plus assez de place pour se relier.");
                         elementAide.addTexte(1, "Un noeud ne possède plus assez de place pour se relier. Il se trouve dans la zone "
                                 + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
@@ -500,7 +500,7 @@ public class AideVoisin extends Aide {
                         elementAide.addNoeud(2, noeud);
                     }
                     case 1 -> {
-                        System.out.println("1");
+                        //System.out.println("1");
                         elementAide.addTexte(0, "Un noeud peut complètement se relier avec ses voisins ");
                         elementAide.addTexte(1, "Un noeud peut complètement se relier avec ses voisins . Il se trouve dans la zone "
                                 + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
@@ -514,23 +514,23 @@ public class AideVoisin extends Aide {
                         elementAide.addNoeud(2, noeud);
                     }
                     case 2 -> {
-                        System.out.println("2");
+                        //System.out.println("2");
                         elementAide.addTexte(0, "Un noeud peut se relier avec ses voisins ");
-                        System.out.println("2 - 0");
+                        //System.out.println("2 - 0");
                         elementAide.addTexte(1, "Un noeud peut se relier avec ses voisins . Il se trouve dans la zone "
                                 + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
                                         .getKey());
                         zones.entrySet().stream().filter(
                                 e -> e.getValue().contains(noeud)).findFirst().get().getValue().forEach(
                                         n -> elementAide.addNoeud(1, n));
-                        System.out.println("2 - 1 Size : " + aidesVoisins.size());
+                        //System.out.println("2 - 1 Size : " + aidesVoisins.size());
                         elementAide.addTexte(2, "Un noeud peut se relier avec ses voisins "
                                 + aidesVoisins.get(aidesVoisins.size() - 1).getDescription() + conseil(noeud));
                         elementAide.addNoeud(2, noeud);
-                        System.out.println("End 2");
+                        //System.out.println("End 2");
                     }
                     case 3 -> {
-                        System.out.println("3");
+                        //System.out.println("3");
                         elementAide.addTexte(0, "Un noeud est saturé, liberer le un peu ");
                         elementAide.addTexte(1, "Un noeud est saturé, liberer le un peu. Il se trouve dans la zone "
                                 + zones.entrySet().stream().filter(e -> e.getValue().contains(noeud)).findFirst().get()
@@ -544,7 +544,7 @@ public class AideVoisin extends Aide {
                         elementAide.addNoeud(2, noeud);
                     }
                     case 4 -> {
-                        System.out.println("4");
+                        //System.out.println("4");
                         elementAide.addTexte(0,
                                 "Un noeud est isolé");
                         elementAide.addTexte(1, "Un noeud est isolé. Il se trouve dans la zone "

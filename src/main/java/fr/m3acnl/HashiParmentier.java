@@ -309,7 +309,7 @@ public class HashiParmentier extends Application {
         result.ifPresent(name -> {
             ProfileManager.getInstance().creerProfil(name);
             ProfileManager.getInstance().setProfileActif(name);
-            System.out.println("Profil créé et sauvegardé : " + name);
+            //System.out.println("Profil créé et sauvegardé : " + name);
 
             startGame();
         });
@@ -398,7 +398,7 @@ public class HashiParmentier extends Application {
             if (selectedProfile != null) {
                 ProfileManager.getInstance().setProfileActif(selectedProfile);
                 Profile profile = ProfileManager.getInstance().getProfileActif();
-                System.out.println("Profil chargé : " + profile.getNom());
+                //System.out.println("Profil chargé : " + profile.getNom());
                 dialogStage.close();
                 startGame();
             }

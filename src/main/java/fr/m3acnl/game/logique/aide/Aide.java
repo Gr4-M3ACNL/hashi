@@ -48,7 +48,7 @@ public abstract class Aide {
      * @param index Index de l'aide à afficher.
      */
     public void afficherAide(int index) {
-        //System.out.println("Aide");
+        System.out.println("Aide");
     }
 
 }

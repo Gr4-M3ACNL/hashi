@@ -561,7 +561,7 @@ public class PartieAffichage extends Application {
      */
     private void afficherOverlayVictoire() {
         if (!(mainScene != null && mainScene.getRoot() instanceof BorderPane mainLayout)) {
-            System.out.println("ERREUR : Scène ou BorderPane invalide !");
+            //System.out.println("ERREUR : Scène ou BorderPane invalide !");
             return;
         }
 
@@ -619,7 +619,7 @@ public class PartieAffichage extends Application {
         String aide = numeroAide < niveauAide + 1
                 ? elementAide.getTexte().get(numeroAide)
                 : "Utiliser la vérification de grille pour repartir d'une base valide";
-        System.out.println("Aide : " + aide);
+        //System.out.println("Aide : " + aide);
         labelAide.setText(aide);
         numeroAide++;
     }
@@ -629,9 +629,9 @@ public class PartieAffichage extends Application {
      */
     private void surbrillanceAide() {
         if (elementAide != null && numeroAide < niveauAide + 1) {
-            System.out.println("Surbrillance de l'aide : " + numeroAide);
+            //System.out.println("Surbrillance de l'aide : " + numeroAide);
             for (Noeud n : elementAide.getNoeudsSurbrillance()[numeroAide]) {
-                System.out.println(n);
+                //System.out.println(n);
                 n.setActiver(true);
                 n.surbrillanceOn();
                 n.setActiver(false);
@@ -663,7 +663,7 @@ public class PartieAffichage extends Application {
             niveauAide = ProfileManager.getInstance().getProfileActif().getParametre().getNiveauAide();
             numeroAide = 0;
         }
-        System.out.println("Niveau de l'aide du profile " + (niveauAide + 1));
+        //System.out.println("Niveau de l'aide du profile " + (niveauAide + 1));
         if (ajoue) {
             aideVoisin = new AideVoisin(partie.getJeu().getPlateau(), "Aide sur les voisins", "Voisinage", partie.getJeu(), new Coord(0, 0));
             elementAide = aideVoisin.aideGlobale();
@@ -672,7 +672,7 @@ public class PartieAffichage extends Application {
         }
         if (numeroAide < niveauAide + 1) {
             partie.addMalus((numeroAide + 1) * 5);
-            System.out.println("Aide de niveau : " + (numeroAide + 1) + " sur " + (niveauAide + 1));
+            //System.out.println("Aide de niveau : " + (numeroAide + 1) + " sur " + (niveauAide + 1));
         }
         partie.getJeu().getPlateau().setSurbrillanceOff();
         surbrillanceAide();
@@ -740,7 +740,7 @@ public class PartieAffichage extends Application {
      */
     private Noeud trouverNoeudLePlusProche(DoubleLien doubleLien, MouseEvent event) {
         if (!(event.getSource() instanceof Node source)) {
-            System.out.println("L'élément source n'est pas un Node !");
+            //System.out.println("L'élément source n'est pas un Node !");
             return null;
         }
 
